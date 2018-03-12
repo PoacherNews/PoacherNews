@@ -1,6 +1,6 @@
 
 # Possible Ideas: 
-## (*) = Highly considerable
+### (*) = Highly considerable
 ## * Resturant/Bar software service(*)
 ## * Task Manager
 ## * Email auto sorting
