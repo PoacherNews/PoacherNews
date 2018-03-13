@@ -19,6 +19,7 @@
 * Adventure from the Atari 2600
   - The top down shooter but without the shooter and with no idea what you're doing
 * Snake should be easy to make right?
+* Top Down Sports game (Football or Futbol)
 
 * All of these could have online leaderboards via MySQL on my AWS server
 
