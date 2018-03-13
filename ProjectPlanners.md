@@ -7,6 +7,7 @@
 * Onion of Mizzou*
 * GPS for grocery store
 * Textbook trading/selling service for students
+* Campus Connect
 
 ### Game Ideas. By Kirtis
 * What if Risk had a baby with Mario Kart?
