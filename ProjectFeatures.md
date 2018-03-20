@@ -21,5 +21,9 @@
 * Randomize Articles
 * Trending Top Stories
 * Rate Articles
-  
-  
+* Caroseul
+* Jump-to Page
+* Login Service 
+ * Writer
+ * User
+ * Admin
