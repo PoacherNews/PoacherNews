@@ -26,4 +26,4 @@
 * Login Service
   * Writer
   * User
-  * Admins
+  * Admin
