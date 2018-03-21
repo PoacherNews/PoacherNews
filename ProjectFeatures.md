@@ -27,3 +27,4 @@
   * Writer
   * User
   * Admin
+* InBrowser Editor
