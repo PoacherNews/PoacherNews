@@ -5,7 +5,9 @@
 }
 .wrapper > header { order: 1; }
 .wrapper > #primary-section { order: 2; }
-.wrapper > footer { order: 3; }
+.wrapper > .banner-ad { order: 3; }
+.wrapper > #secondary-section { order: 4; }
+.wrapper > footer { order: 5; }
 
 header,footer {
     width: 100%;
@@ -43,6 +45,11 @@ section {
 #primary-section > .right-divider  { order: 4; }
 #primary-section > .right-sidebar  { order: 5; }
 
+#secondary-section article {
+    width: 100%;
+    border: 1px dashed blue;
+}
+
 
 .divider {
     flex-shrink: 1;
@@ -63,4 +70,19 @@ section {
     min-width: 250px;
     min-height: 0px;
     background: papayawhip;
+}
+
+.banner-ad { 
+    width: 100%;
+    margin: 15px auto 15px auto;
+    padding: 15px;
+    border: 1px solid black;
+}
+
+.ad { /* Temporary styling for placeholder purposes */
+    margin: 0px auto;
+    text-align: center;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 1.5em;
 }
