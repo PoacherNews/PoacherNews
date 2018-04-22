@@ -69,6 +69,7 @@ section {
 
 #secondary-section article > img {
     display: block;
+    margin: 0px auto;
 }
 
 #secondary-section .stacked-text {
