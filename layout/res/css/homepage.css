@@ -89,6 +89,8 @@ section {
     word-wrap: break-word;
 }
 
+#secondary-section .stacked-text > p { font-family: Arial,Helvetica,sans-serif; }
+
 .divider {
     flex-shrink: 1;
     width: 1px;
