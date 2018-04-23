@@ -1,7 +1,13 @@
+body {
+    overflow-x: scroll;
+}
+
 .wrapper {
     display: flex;
     flex-flow: row wrap;
-    width: 100%;
+    margin: 0px auto;
+    min-width: 1500px;
+    overflow-x: hidden;
 }
 .wrapper > header { order: 1; }
 .wrapper > #primary-section { order: 2; }
@@ -29,13 +35,15 @@ footer {
 
 article { padding: 20px; }
 article > img {
+    min-width: 100%;
     display: block;
     margin: 0px auto;
 }
 
 section {
-    width: 80%;
-    margin: 0px auto;
+    /*width: 80%; 
+    margin: 0px auto; */
+    margin: auto 10% auto 10%;
     display: flex;
     flex-wrap: wrap;
     align-content: center;
