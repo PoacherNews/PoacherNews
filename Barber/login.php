@@ -1,4 +1,6 @@
 <?php
+    require_once 'secureConnection.php';
+
     if(!session_start()) {
       header("Location: error.php")
       exit;
