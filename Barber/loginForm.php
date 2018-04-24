@@ -4,10 +4,18 @@
     <title>Login Page</title>
         <link rel="stylesheet" type="text/css" href="login.css">
         <link href="https://fonts.googleapis.com/css?family=Do+Hyeon" rel="stylesheet">
-        
+
 </head>
 <body>
-    <form action="login.php" method="post">
+    <?php
+      if($error){
+        echo "<script type='text/javascript'>
+                alert($error)
+              </script>";
+      }
+    ?>
+    <form action="login.php" method="POST">
+        <input type="hidden" name="action" value="do_login">
         <div class="loginWrap">
             <div class="form">
                 <h1>Login</h1>
@@ -24,6 +32,6 @@
         </div>
         <div class="relative"></div>
     </form>
-    
+
 </body>
 </html>
