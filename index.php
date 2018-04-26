@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <?php include('includes/globalHead.html'); ?>
-        <link rel="stylesheet" type="text/css" href="res/css/homepage.css"/>
-        <!-- Additional CSS imports here -->
+	<?php include 'includes/globalHead.html' ?>
         <!-- Javascript/Jquery imports here -->
     </head>
-<body>
+<body class="hpBody">
+    
+    <?php 
+        include 'includes/header.php';
+        include 'includes/nav.php';
+        //include 'includesfooter.html'; // Disabled until bugfix completed by Roland
+    ?>
     <div class="wrapper">
-
-        <header class="header">
-            <p>PLACEHOLDER HEADER</p>
-            <!-- Header include goes here -->
-        </header>
-        
         <!-- Three column section -->
         <section id="primary-section">
             <div class="main-article">
@@ -91,12 +89,6 @@
                     </div>
                 </article>
         </section>
-   
-        <footer class="footer">
-            <p>PLACEHOLDER FOOTER</p>
-            <!-- Footer include goes here -->
-        </footer>
-        
     </div>
 </body>
 </html>
