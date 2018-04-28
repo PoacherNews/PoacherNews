@@ -5,7 +5,6 @@
         <!-- Javascript/Jquery imports here -->
         <script>
             function createColumnArticle(rowData) {
-                console.log(rowData); //DEBUG
                 /* Makes an article DOM object and populates elements for page display.
                    Accepts a JSON formatted string object for parsing.
                 */
@@ -35,7 +34,6 @@
             }
             
             function createStackedArticle(rowData) {
-                console.log(rowData); //DEBUG
                 /* Makes an article DOM object and populates elements for page display.
                    Accepts a JSON formatted string object for parsing.
                 */
@@ -88,22 +86,26 @@
                     $.getJSON("util/homepage.php", {
                         'request' : 'main'
                     }).done(function(data) {
+                        $(".main-article").children().remove('.loader');
                         $(".main-article").append(createColumnArticle(data[0]));
                     });
                 </script>
+                <div class="loader"></div>
             </div>
             <div class="divider left-divider"></div>
             <div id="leftSidebar" class="sidebar left-sidebar">
-                <h1 class="sidebar-heading">Editor's Choice</h1>
+                <h1 class="sidebar-heading">Editor Picks</h1>
                 <script>
                     $.getJSON("util/homepage.php", {
                         'request' : 'editorpicks'
                     }).done(function(data) {
                         $.each(data, function(i, row) {
+                            $("#leftSidebar").children().remove('.loader');
                             $("#leftSidebar").append(createColumnArticle(row));
                         });
                     });
                 </script>
+                <div class="loader"></div>
             </div>
             <div class="divider right-divider"></div>
             <div id="rightSidebar" class="sidebar right-sidebar">
@@ -113,10 +115,12 @@
                         'request' : 'trending'
                     }).done(function(data) {
                         $.each(data, function(i, row) {
+                            $("#rightSidebar").children().remove('.loader');
                             $("#rightSidebar").append(createColumnArticle(row));
                         });
                     })
-                </script>             
+                </script>
+                <div class="loader"></div>
             </div>
         </section>
 
@@ -134,10 +138,12 @@
                     'request' : 'secondaryarticles'
                 }).done(function(data) {
                     $.each(data, function(i, row) {
+                        $("#secondary-section").children().remove('.loader');
                         $("#secondary-section").append(createStackedArticle(row));
                     });
                 });
             </script>
+            <div class="loader"></div>
         </section>
     </div>
 </body>
