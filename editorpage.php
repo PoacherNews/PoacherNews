@@ -13,8 +13,18 @@
 
         <form id="epEditor">
             <div>
-                <h1>Article Title</h1>
+                <h1>Article Details</h1>
                 <input type="text" placeholder="Article Title" id="epArticleTitle">
+                <input type="text" placeholder="Image path" id="img">
+                <select name="category">
+                    <option selected>Category</option>
+                    <option value="politics">Politics</option>
+                    <option value="sports">Sports</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="video">Video</option>
+                    <option value="local">Local</option>
+                    <option value="opinion">Opinion</option>
+                </select>
             </div>
             <div id="epArticle-body">
                 <h1>Article Contents</h1>
