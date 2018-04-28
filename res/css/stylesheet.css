@@ -327,9 +327,9 @@ p.ftCpyright {
     overflow-x: hidden;
 }
 
-.wrapper > #hpPrimary-section { order: 2; }
-.wrapper > .banner-ad { order: 3; }
-.wrapper > #secondary-section { order: 4; }
+.wrapper > #hpPrimary-section { order: 1; }
+.wrapper > #hpAdvert { order: 2; }
+.wrapper > #secondary-section { order: 3; }
 
 
 
@@ -341,8 +341,8 @@ article > img {
 }
 
 section {
-    /*width: 80%; 
-    margin: 0px auto; */
+    width: 80%; 
+    margin: 0px auto; 
     margin: auto 10% auto 10%;
     display: flex;
     flex-wrap: wrap;
@@ -377,11 +377,11 @@ section {
 
 #secondary-section article > img {
     display: block;
-    margin: 0px auto;
+    margin: 0px 10px;
 }
 
 #secondary-section .stacked-text {
-    margin-left: 15px;
+    margin-left: 20px;
     display: inline;
 }
 
@@ -430,7 +430,12 @@ section {
     min-height: 0px;
 }
 
-.sidebar > article > h2 {
+.sidebar > article > img {
+    max-width: 325px;
+    max-height: 217px;
+}
+
+.sidebar > article > h1 {
     margin: 10px auto 0px auto;
     font-size: 40px;
     font-weight: bold;
@@ -444,7 +449,7 @@ section {
     font-family: Arial,Helvetica,sans-serif;
 }
 
-.banner-ad { 
+#hpAdvert { 
     width: 100%;
     margin: 15px auto 15px auto;
     padding: 15px;
