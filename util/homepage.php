@@ -1,7 +1,7 @@
 <?php
 /*
 Takes the following arguments as specified in a GET request in 'request':
-    - "trending" : Returns the articles within the specified date range from that day and a past cutoff (eg. articles in the past 3 days) that meet a minimum number of views.
+    - "trending" : Returns the articles within the specified date range from that day and a past cutoff (eg. articles in the past 3 days) that meet a minimum number of views and are not editor picks or the main article.
     - "main" : Returns the article whose ArticleID matches one manually set in $mainArticleId.
     - "editorpicks" : Returns the articles whose ArticleID matches the ones set in the $editorPicks array.
     - "secondaryarticles" : Returns up to $secondaryResultCap articles from the last week for use in the secondary stacked article section.
@@ -25,7 +25,11 @@ $editorPicks = array(13, 20);
 
 if(!empty($_GET)) {
     if($_GET['request'] === "trending") {
-        $sql = "SELECT * FROM Articles WHERE PublishDate >= DATE(NOW()) - INTERVAL ".$trendingDaySpan." DAY AND Views > ".$trendingViewThreshold." LIMIT ".$trendingResultCap.";";
+        $sql = "SELECT * FROM Articles WHERE PublishDate >= DATE(NOW()) - INTERVAL ".$trendingDaySpan." DAY AND Views > ".$trendingViewThreshold." AND ArticleID != ".$mainArticleId." ";
+        foreach($editorPicks as &$val) {
+            $sql .= "AND ArticleID != ".$val." ";
+        }
+        $sql .= "LIMIT ".$trendingResultCap.";";
     } else if($_GET['request'] === "main") {
         $sql = "SELECT * FROM Articles WHERE ArticleID = ".$mainArticleId.";";
     } else if($_GET['request'] === "editorpicks") {
@@ -53,5 +57,6 @@ $data = array();
 while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) { // Put each returned row into a PHP array
     $data[] = $row;
 }
+// sleep(2);
 print json_encode($data); // Encode PHP array of db rows as JSON
 ?>
