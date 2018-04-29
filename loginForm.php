@@ -4,7 +4,7 @@
     <title>Login Page</title>
         <link rel="stylesheet" type="text/css" href="login.css">
         <link href="https://fonts.googleapis.com/css?family=Do+Hyeon" rel="stylesheet">
-
+	<?php include 'includes/globalHead.html' ?>
 </head>
 <body>
     <?php
@@ -13,6 +13,9 @@
                 alert($error)
               </script>";
       }
+    	include 'includes/header.php';
+        include 'includes/nav.php';
+        //include 'includes/footer.html';
     ?>
     <form action="login.php" method="POST">
         <input type="hidden" name="action" value="do_login">
