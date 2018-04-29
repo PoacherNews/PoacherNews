@@ -1,1 +1,2 @@
-# 4320FinalProject
+# 4320 Final Project
+The Poacher News
