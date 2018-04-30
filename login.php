@@ -1,31 +1,66 @@
-<!DOCTYPE html>
-<html>
-<head>
-       <?php include 'includes/globalHead.html' ?> 
-</head>
-<body>
-    <?php 
-        include 'includes/header.php';
-        include 'includes/nav.php';
-        //include 'includes/footer.html';
-    ?>
-    <form action="login.php" method="post">
-        <div class="loginWrap">
-            <div class="loginForm">
-                <h1 class="loginH1">Login</h1>
-                <label class="loginLbl" for="username">Username: </label>
-                <input type="text" id="loginUsername" name="username" placeholder="Username">
-                <label class="loginLbl" for="password">Password: </label>
-                <input type="password" id="loginPassword" name="password" placeholder="Password">
-            </div>
-            <img class="loginImg" src="res/img/logo.png">
-        </div>
-        <div class="loginButtons">
-            <input class="loginInput" type="submit" value="Submit">
-            <a href="createUser.php">Create an account</a>
-        </div>
-        <div class="loginRelative"></div>
-    </form>
-    
-</body>
-</html>
+<?php
+    require_once 'secureConnection.php';
+
+    if(!session_start()) {
+      header("Location: error.php");
+      exit;
+    }
+
+    $loggedin = empty($_SESSION['loggedin']) ? false : $_SESSION['loggedin'];
+
+    if($loggedin){
+      header("Location: index.php");
+      exit;
+    }
+
+    $action = empty($_POST['action']) ? '' : $_POST['action'];
+
+    if($action == 'do_login') {
+      handle_login();
+    }
+    else {
+      login_form();
+    }
+
+    function handle_login() {
+
+      $username = empty($_POST['username']) ? '' : $_POST['username'];
+      $password = empty($_POST['password']) ? '' : $_POST['password'];
+
+      require_once '/util/db.php';
+
+      if($db->connect_error) {
+        $error = 'Error: ' . $db->connect_errno . ' ' . $db->connect_error;
+        require "loginForm.php";
+        exit;
+      }
+
+      $username = $db->real_escape_string($username);
+      $password = sha1($db->real_escape_string($password));
+
+      $query = "SELECT ID FROM users WHERE username = '$username' AND password = '$password'";
+
+      $queryResult = $db->query($query);
+
+      if(!$queryResult) {
+        $error = 'Error: Contact system administrator';
+        require 'loginForm.php';
+        exit;
+      }
+
+      if($queryResult->num_rows == 1) {
+        $_SESSION['loggedin'] = $username;
+        header("Location: index.php");
+        exit;
+      }
+      else {
+        if($db->query("SELECT ID FROM users WHERE username = '$username'")->num_rows == 1)
+          $error = "Error: Username does not exist";
+        else
+          $error = "Error: Incorrect password";
+
+        require "loginForm.php";
+        exit;
+      }
+    }
+?>
