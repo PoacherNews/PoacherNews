@@ -13,6 +13,9 @@
 	VALUES (3, 'TestAdmin', 'A', 'FDSA4321');
 	
 ## Connection to the Server
-	Public DNS: ec2-52-14-177-55.us-east-2.compute.amazonaws.com
-	Username: user
-	Password: pass
+	Hostname: poacherdatabase.ccbtf4xhozoc.us-east-2.rds.amazonaws.com
+	Username: mysqladmin
+	Password: Hunter1234
+	Database Name: poacherdatabase
+	
+	mysql command: mysql -h poacherdatabase.ccbtf4xhozoc.us-east-2.rds.amazonaws.com -u mysqladmin -p
