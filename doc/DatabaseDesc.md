@@ -16,6 +16,6 @@
 	Hostname: poacherdatabase.ccbtf4xhozoc.us-east-2.rds.amazonaws.com
 	Username: mysqladmin
 	Password: Hunter1234
-	Database Name: poacherdatabase
+	Database Name: PoacherNews
 	
 	mysql command: mysql -h poacherdatabase.ccbtf4xhozoc.us-east-2.rds.amazonaws.com -u mysqladmin -p
