@@ -8,6 +8,6 @@
             </div>
             <div class="hdrRight">
                 <a class="hdrA" href="search.php"><i class="hdrSearch fa fa-search"></i></a>
-                <a class="hdrA" href="login.php"><i class="hdrLogin fa fa-user-circle"></i></a>
+                <a class="hdrA" href="loginForm.php"><i class="hdrLogin fa fa-user-circle"></i></a>
             </div>
         </header>

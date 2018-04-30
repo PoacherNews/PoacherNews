@@ -2,7 +2,7 @@
     require_once 'secureConnection.php';
 
     if(!session_start()) {
-      header("Location: error.php")
+      header("Location: error.php");
       exit;
     }
 
@@ -50,7 +50,7 @@
 
       if($queryResult->num_rows == 1) {
         $_SESSION['loggedin'] = $username;
-        header(Location: index.php);
+        header("Location: index.php");
         exit;
       }
       else {
