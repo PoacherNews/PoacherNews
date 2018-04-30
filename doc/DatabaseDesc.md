@@ -14,5 +14,5 @@
 	
 ## Connection to the Server
 	Public DNS: ec2-52-14-177-55.us-east-2.compute.amazonaws.com
-	User: ec2-user
-	Open MySQL: mysql -u root
+	Username: user
+	Password: pass
