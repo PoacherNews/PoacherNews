@@ -27,7 +27,7 @@
       $username = empty($_POST['username']) ? '' : $_POST['username'];
       $password = empty($_POST['password']) ? '' : $_POST['password'];
 
-      require_once 'db.php';
+      require_once '/util/db.php';
 
       if($db->connect_error) {
         $error = 'Error: ' . $db->connect_errno . ' ' . $db->connect_error;
