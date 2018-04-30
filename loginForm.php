@@ -31,7 +31,7 @@
         </div>
         <div class="buttons">
             <input type="submit" value="Submit">
-            <a href="createUser.html">Create an account</a>
+            <a href="createUser_Form.php">Create an account</a>
         </div>
         <div class="relative"></div>
     </form>
