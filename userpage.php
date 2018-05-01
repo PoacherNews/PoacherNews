@@ -5,9 +5,19 @@
     </head>
        
     <body>
-        <?php 
-            include 'includes/header.php';
-            include 'includes/nav.php';
+    
+    <?php
+	include 'loginCheck.php';
+	// Error check
+
+    if($loggedin) {
+        include 'includes/header_internal.php';
+    }
+    else {
+        include 'includes/header.php';
+        $usertype = NULL;
+    }
+        include 'includes/nav.php';
             //include 'includes/footer.html';
         ?>
         <br>
@@ -17,28 +27,38 @@
             <div class="PageBorder"></div>
 
         <div class="PageColumn">
+        <?php if($_SESSION['usertype'] == NULL) { ?>
             <div>
-                <p class="tools">Favorite Articles</p>
-                <br>
-                <br>
+                <p class="tools">Error Not Logged In</p>
             </div>
-            <div>
-            <p class="tools">Writer Tools</p>
-                <a href="url placerholder">Link Text Placerholder</a>
-                <br>
-                <br>
-            </div>
-            <div>
-            <p class="tools">Admin Tools</p>
-                <a href="url placeholder">Link Text Placerholder</a>
-                <br>
-                <br>
-            </div>
-        </div>
+        <?php } ?>
 
+        <?php if($_SESSION['usertype'] == 'U' || $_SESSION['usertype'] == 'W' || $_SESSION['usertype'] == 'A') { ?>
+	       <div>
+               <h1 class="tools">Favorite Articles</h1>
+           </div>
+        <?php } ?>
+           
+        <?php if($_SESSION['usertype'] == 'W' || $_SESSION['usertype'] == 'A') { ?>
+            <div>   
+	       <h1 class="tools">Writer Tools</h1>
+               <a href="editorpage.php">Editor Page</a>
+	        </div>
+        <?php } ?>
+      
+        <?php if($_SESSION['usertype'] == 'A') { ?>
+            <div>
+                <h1 class="tools">Admin Tools</h1>
+		<a href="userManagement.php">Manage Users</a>
+		<br>
+                <a href="articleManagement.php">Manage Articles</a>
+            </div>
+            <?php } ?>
+        </div>
             <div class="PageBorder"></div>
         </div>
         <br>
         <!-- Content Tail -->
     </body>
 </html>
+

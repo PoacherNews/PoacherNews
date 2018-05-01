@@ -36,14 +36,11 @@
         <div class="relative"></div>
     </form>
 
-	            <?php
-	            if (isset($error)) {
-                    echo "<p>$error</p>\n";
-                }
-                else {
-                    echo "<p>Error.</p>\n";
-                }
-                ?>
+    <?php
+        if (isset($error)) {
+            echo "<p>$error</p>\n";
+        }
+    ?>
 
 </body>
 </html>
