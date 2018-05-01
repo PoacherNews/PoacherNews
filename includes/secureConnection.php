@@ -13,6 +13,9 @@
         return false;
   }
 
+<<<<<<< HEAD
+  if(!checkHTTPS()) {
+    $redirectURL = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
   if(!checkHTTPS) {
     $redirectURL = 'https://' . $_SERVER['HTTPS_HOST'] . $_SERVER['REQUEST_URI'];
     header("Location: $redirectURL");
