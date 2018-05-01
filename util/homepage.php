@@ -18,10 +18,32 @@ $trendingViewThreshold = 50;
 $trendingResultCap = 3;
 // Rules for secondary stacked article results
 $secondaryResultCap = 4;
-// Manually assigned main article id
+// Manually assigned main article id OLDID = 97
 $mainArticleId = 97;
 // Manually assigned set of article ids picked by the editors
 $editorPicks = array(13, 20);
+
+if(isset($argv[1])) { // Allow local testing without an HTTP GET
+    $_GET['request'] = $argv[1];
+}
+
+class Error {
+    public $errorId = 0;
+    public $errorString = "";
+    public $request = "";
+    public $sqlQuery = "";
+}
+
+function throwError($errorId, $errorString, $sqlQuery) {
+    $e = new Error();
+    $e->errorId = $errorId;
+    $e->errorString = $errorString;
+    $e->request = $_GET['request'];
+    $e->sqlQuery = $sqlQuery;
+
+    print json_encode($e);
+    exit;
+}
 
 if(!empty($_GET)) {
     if($_GET['request'] === "trending") {
@@ -29,28 +51,29 @@ if(!empty($_GET)) {
         foreach($editorPicks as &$val) {
             $sql .= "AND ArticleID != ".$val." ";
         }
+        $sql .= "AND IsPublished = 1 ";
         $sql .= "LIMIT ".$trendingResultCap.";";
     } else if($_GET['request'] === "main") {
-        $sql = "SELECT * FROM Articles WHERE ArticleID = ".$mainArticleId.";";
+        $sql = "SELECT * FROM Articles WHERE ArticleID = ".$mainArticleId." AND IsPublished = 1;";
     } else if($_GET['request'] === "editorpicks") {
         $sql = "SELECT * FROM Articles WHERE ArticleID = ".$editorPicks[0]." ";
         $a = array_slice($editorPicks, 1); // Use the rest of the picks, except for the first item
         foreach($a as &$val) { // Gather results for all other specified editor picks
             $sql .= "OR ArticleID = ".$val." ";
         }
-        $sql .= ";";
+        $sql .= "AND IsPublished = 1;";
     } else if($_GET['request'] === "secondaryarticles") {
         $sql = "SELECT * FROM Articles WHERE PublishDate >= DATE(NOW()) - INTERVAL 7 DAY LIMIT ".$secondaryResultCap.";";
     } else {
-        print "Error: Empty or invalid request.";
-        exit;
+        throwError(0, "Invalid or empty GET request.", "");
     }
 }
 
+//echo "SQL : ".$sql; //DEBUG
+
 $result = mysqli_query($db, $sql);
 if(mysqli_num_rows($result) == 0) {
-    print "Error: No rows returned from database.";
-    exit;
+    throwError(1, "No rows returned from database for request.", $sql);
 }
 
 $data = array();
