@@ -4,7 +4,18 @@
 	<?php include 'includes/globalHead.html' ?>
         <!-- Javascript/Jquery imports here -->
         <script>
+            function logError(e) {
+                console.log("ERROR [ErrorID: "+e['errorId']+"] // "+e['errorString']+"\nError details: \n\tAttempted SQL string: "+e['sqlQuery']+"\n\tRequest: "+e['request']);
+            }
+
             function createColumnArticle(rowData) {
+                if(rowData.hasOwnProperty('errorId')) {
+                    logError(rowData);
+                    return;
+                }
+                if($.isArray(rowData)) { // This is an encapsulated JSON object
+                    rowData = rowData[0];
+                }
                 /* Makes an article DOM object and populates elements for page display.
                    Accepts a JSON formatted string object for parsing.
                 */
@@ -93,7 +104,7 @@
                         'request' : 'main'
                     }).done(function(data) {
                         $(".main-article").children().remove('.loader');
-                        $(".main-article").append(createColumnArticle(data[0]));
+                        $(".main-article").append(createColumnArticle(data));
                     });
                 </script>
                 <div class="loader"></div>
