@@ -48,6 +48,14 @@
                 /* Makes an article DOM object and populates elements for page display.
                    Accepts a JSON formatted string object for parsing.
                 */
+                if(rowData.hasOwnProperty('errorId')) {
+                    logError(rowData);
+                    return;
+                }
+                if($.isArray(rowData)) { // This is an encapsulated JSON object
+                    rowData = rowData[0];
+                }
+
                 var $previewCharLimit = 400;
                 var $continueReading = $("<a/>", {
                     'class' : "continue-reading",
