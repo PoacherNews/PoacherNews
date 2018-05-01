@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<!-- TODO:
+    * Get author data
+    * Ensure the article requested is not unPublished
+        - Check if user logged in is an admin?
+    * Do checking on required fields to see if anything is empty
+    * Ensure category is given along with rest of data
+    * Get the bottom six articles from this article's category and display them
+-->
 <html>
     <head>
 	<?php include 'includes/globalHead.html' ?>
