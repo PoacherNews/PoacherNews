@@ -8,11 +8,11 @@
 </head>
 <body>
     <?php
-      if($error){
-        echo "<script type='text/javascript'>
-                alert($error)
-              </script>";
-      }
+//     if($error){
+//        echo "<script type='text/javascript'>
+//                alert($error)
+//              </script>";
+//      }
     	include 'includes/header.php';
         include 'includes/nav.php';
         //include 'includes/footer.html';
@@ -35,6 +35,12 @@
         </div>
         <div class="relative"></div>
     </form>
+
+    <?php
+        if (isset($error)) {
+            echo "<p>$error</p>\n";
+        }
+    ?>
 
 </body>
 </html>

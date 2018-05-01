@@ -4,8 +4,14 @@
 	<?php include 'includes/globalHead.html' ?>
     </head>
     <body>
-        <?php 
+        <?php
+        include 'loginCheck.php';
+        if($loggedin) {
+            include 'includes/header_internal.php';
+        }
+        else {
             include 'includes/header.php';
+        }
             include 'includes/nav.php';
             //include 'includes/footer.html';
         ?>
