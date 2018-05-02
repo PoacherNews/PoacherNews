@@ -13,7 +13,7 @@ Returns:
 include("db.php");
 
 // Rules for trending article results
-$trendingDaySpan = 3;
+$trendingDaySpan = 6;
 $trendingViewThreshold = 50;
 $trendingResultCap = 3;
 // Rules for secondary stacked article results
@@ -47,33 +47,34 @@ function throwError($errorId, $errorString, $sqlQuery) {
 
 if(!empty($_GET)) {
     if($_GET['request'] === "trending") {
-        $sql = "SELECT * FROM Articles WHERE PublishDate >= DATE(NOW()) - INTERVAL ".$trendingDaySpan." DAY AND Views > ".$trendingViewThreshold." AND ArticleID != ".$mainArticleId." ";
+        $sql = "SELECT * FROM Articles WHERE IsPublished = 1 AND ArticleId != ".$mainArticleId." ";
         foreach($editorPicks as &$val) {
             $sql .= "AND ArticleID != ".$val." ";
         }
-        $sql .= "AND IsPublished = 1 ";
+        $sql .= "AND PublishDate >= DATE(NOW()) - INTERVAL ".$trendingDaySpan." DAY AND Views > ".$trendingViewThreshold." ";
         $sql .= "LIMIT ".$trendingResultCap.";";
     } else if($_GET['request'] === "main") {
-        $sql = "SELECT * FROM Articles WHERE ArticleID = ".$mainArticleId." AND IsPublished = 1;";
+        $sql = "SELECT * FROM Articles WHERE IsPublished =1 AND ArticleID = ".$mainArticleId.";";
     } else if($_GET['request'] === "editorpicks") {
-        $sql = "SELECT * FROM Articles WHERE ArticleID = ".$editorPicks[0]." ";
+        $sql = "SELECT * FROM Articles WHERE IsPublished = 1 AND ArticleID = ".$editorPicks[0]." ";
         $a = array_slice($editorPicks, 1); // Use the rest of the picks, except for the first item
         foreach($a as &$val) { // Gather results for all other specified editor picks
             $sql .= "OR ArticleID = ".$val." ";
         }
-        $sql .= "AND IsPublished = 1;";
     } else if($_GET['request'] === "secondaryarticles") {
-        $sql = "SELECT * FROM Articles WHERE PublishDate >= DATE(NOW()) - INTERVAL 7 DAY LIMIT ".$secondaryResultCap.";";
+        $sql = "SELECT * FROM Articles WHERE IsPublished = 1 AND PublishDate >= DATE(NOW()) - INTERVAL 7 DAY LIMIT ".$secondaryResultCap.";";
     } else {
-        throwError(0, "Invalid or empty GET request.", "");
+        throwError(1, "Invalid or empty GET request.", null);
     }
+} else {
+    throwError(0, "Empty GET request.", null);
 }
 
 //echo "SQL : ".$sql; //DEBUG
 
 $result = mysqli_query($db, $sql);
-if(mysqli_num_rows($result) == 0) {
-    throwError(1, "No rows returned from database for request.", $sql);
+if(!$result || mysqli_num_rows($result) == 0) {
+    throwError(2, "No rows returned from database for request.", $sql);
 }
 
 $data = array();
