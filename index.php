@@ -10,9 +10,12 @@
 
             function createColumnArticle(rowData) {
                 if(rowData.hasOwnProperty('errorId')) {
+                    console.log("Err triggered"); //DEBUG
+                    console.log(rowData); //DEBUG
                     logError(rowData);
                     return;
                 }
+                console.log("past error check in col arts"); //DEBUG
                 if($.isArray(rowData)) { // This is an encapsulated JSON object
                     rowData = rowData[0];
                 }
@@ -52,6 +55,7 @@
                     logError(rowData);
                     return;
                 }
+                console.log("past error check in stacked arts"); //DEBUG
                 if($.isArray(rowData)) { // This is an encapsulated JSON object
                     rowData = rowData[0];
                 }
