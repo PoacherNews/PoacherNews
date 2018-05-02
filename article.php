@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <!-- TODO:
     * Get author data
+    * Incriment views on page load
     * Ensure the article requested is not unPublished
         - Check if user logged in is an admin?
     * Do checking on required fields to see if anything is empty
     * Ensure category is given along with rest of data
     * Get the bottom six articles from this article's category and display them
 -->
+<?php 
+    function redirectHome() {
+        header('Location: index.php');
+    }
+?>
 <html>
     <head>
 	<?php include 'includes/globalHead.html' ?>
@@ -17,24 +23,22 @@
             include 'includes/header.php';
             include 'includes/nav.php';
             //include 'includes/footer.html';
+            include('util/db.php');
+            include('util/articleUtils.php');
         ?>
-        
-        <?php include('util/db.php'); ?>
+
         <?php 
-            //echo "ARTICLE ID IN URL: ".$_GET['articleid']
             date_default_timezone_set('America/Chicago');
-            $sql = "SELECT * FROM Articles WHERE ArticleID = ".$_GET['articleid'];
-            $result = mysqli_query($db, $sql);
-            if(mysqli_num_rows($result) == 0) {
-                print "Error! ArticleID not found!";
+            $articleData = getArticleByID($_GET['articleid'], $db);
+            if(!$articleData) {
+                redirectHome();
             }
-            $articleData = mysqli_fetch_assoc($result);
         ?>
         <div class="articleColumns">
             <section id="articleColumn">
                 <span class="articleDetails">
                     <h1><?php print $articleData['Headline'] ?></h1>
-                    <p><?php print $articleData['Author'] ?></p>
+                    <p>By George Washington<?php print $articleData['Author'] ?></p>
                     <p>Published on <?php print date(DATE_RFC850, $articleData['PublishDate'])." &mdash; ".$articleData['Views']." Views"; ?></p>
                 </span>
                 <div class="articleImage">
@@ -55,7 +59,7 @@
             <hr/>
         </div>
         <div class="articleColumns">
-            <?php echo "Article cat: ".$articleData['Views']; ?>
+            <?php echo "Article cat: ".$articleData['Category']; ?>
             <section class="threeColumnSection">
                 <article>
                     <div class="articleBody">

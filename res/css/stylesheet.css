@@ -595,7 +595,8 @@ section {
     color:dimgrey;
     padding: 14px 16px;
     width: 101px;
-    text-decoration: none;            
+    text-decoration: none;
+    font-family: sans-serif;         
 }
 
 .navLi .navA:hover {
