@@ -14,7 +14,6 @@
         <?php 
             include 'includes/header.php';
             include 'includes/nav.php';
-            //include 'includes/footer.html';
             include('util/db.php');
             include('util/articleUtils.php');
         ?>
@@ -78,6 +77,6 @@
                 }
             ?>
         </div>
-
+        <?php include('includes/footer.html'); ?>
     </body>
 </html>

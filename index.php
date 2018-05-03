@@ -105,7 +105,6 @@
     <?php
         include 'includes/header.php';
         include 'includes/nav.php';
-        //include 'includesfooter.html'; // Disabled until bugfix completed by Roland
     ?>
     <div class="wrapper">
         <!-- Three column section -->
@@ -185,5 +184,6 @@
             <div class="loader"></div>
         </section>
     </div>
+    <?php include('includes/footer.html'); ?>
 </body>
 </html>
