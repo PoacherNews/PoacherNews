@@ -1,13 +1,4 @@
 <!DOCTYPE html>
-<!-- TODO:
-    * Get author data
-    * Incriment views on page load
-    * Ensure the article requested is not unPublished
-        - Check if user logged in is an admin?
-    * Do checking on required fields to see if anything is empty
-    * Ensure category is given along with rest of data
-    * Get the bottom six articles from this article's category and display them
--->
 <?php 
     function redirectHome() {
         header('Location: index.php');
@@ -33,13 +24,23 @@
             if(!$articleData) {
                 redirectHome();
             }
+            if($articleData['IsPublished'] == 0 && $_SESSION['usertype'] != "A") { // Only allow admins to view unPublished articles
+                redirectHome();
+            }
+            
+            increaseViewCount($articleData['ArticleID'], $db);
         ?>
         <div class="articleColumns">
             <section id="articleColumn">
                 <span class="articleDetails">
                     <h1><?php print $articleData['Headline'] ?></h1>
-                    <p>By George Washington<?php print $articleData['Author'] ?></p>
-                    <p>Published on <?php print date(DATE_RFC850, $articleData['PublishDate'])." &mdash; ".$articleData['Views']." Views"; ?></p>
+                    <p> <!-- TODO: Link this to the author's page (or other articles by them? -->
+                        <?php
+                            $authorData = getAuthorByID($articleData['AuthorID'], $db);
+                            print "Written by {$authorData['FirstName']} {$authorData['LastName']}";
+                        ?>
+                    </p>
+                    <p>Published on <?php print date(DATE_RFC850, strtotime($articleData['PublishDate']))." &mdash; ".$articleData['Views']." Views"; ?></p>
                 </span>
                 <div class="articleImage">
                     <img src="<?php print $articleData['Img'] ?>"/>
@@ -48,7 +49,7 @@
                     <p><?php print $articleData['Body'] ?></p>
                 </div>
             </section>
-            <section id="adColumn">
+            <section id="articleAdColumn">
                 <div class="ad"><p>AD</p></div>
                 <div class="ad"><p>AD</p></div>
                 <div class="ad"><p>AD</p></div>
@@ -59,55 +60,22 @@
             <hr/>
         </div>
         <div class="articleColumns">
-            <?php echo "Article cat: ".$articleData['Category']; ?>
-            <section class="threeColumnSection">
-                <article>
-                    <div class="articleBody">
-                        <h1>Headline</h1>
-                        <p>Foo</p>
-                        <a class="continue-reading" href="#">Continue Reading</a>
-                    </div>
-                </article>
-                <article>
-                    <div class="articleBody">
-                        <h1>Headline</h1>
-                        <p>Foo</p>
-                        <a class="continue-reading" href="#">Continue Reading</a>
-                    </div>
-                </article>
-            </section>
-            <section class="threeColumnSection center">
-                <article>
-                    <div class="articleBody">
-                        <h1>Headline</h1>
-                        <p>Foo</p>
-                        <a class="continue-reading" href="#">Continue Reading</a>
-                    </div>
-                </article>
-                <article>
-                    <div class="articleBody">
-                        <h1>Headline</h1>
-                        <p>Foo</p>
-                        <a class="continue-reading" href="#">Continue Reading</a>
-                    </div>
-                </article>
-            </section>
-            <section class="threeColumnSection">
-                <article>
-                    <div class="articleBody">
-                        <h1>Headline</h1>
-                        <p>Foo</p>
-                        <a class="continue-reading" href="#">Continue Reading</a>
-                    </div>
-                </article>
-                <article>
-                    <div class="articleBody">
-                        <h1>Headline</h1>
-                        <p>Foo</p>
-                        <a class="continue-reading" href="#">Continue Reading</a>
-                    </div>
-                </article>
-            </section>
+            <?php
+                $categoryArticles = array_chunk(getRelatedArticles($articleData['Category'], $articleData['ArticleID'], $db), 2);
+                foreach ($categoryArticles as $key => $categorySet) {
+                    print '<section class="threeColumnSection '.($key == 1 ? 'center' : '').'">';
+                    foreach($categorySet as $key => $article) {
+                    print   "<article>
+                                <div class=\"articleBody\">
+                                    <h1><a href=\"article.php?articleid={$article['ArticleId']}\">{$article['Headline']}</a></h1>
+                                    <p>".substr($article['Body'], 0, 100)."...</p>
+                                    <a class=\"continue-reading\" href=\"article.php?articleid={$article['ArticleId']}\">Continue Reading</a>
+                                </div>
+                            </article>";
+                    }
+                    print '</section>';
+                }
+            ?>
         </div>
 
     </body>
