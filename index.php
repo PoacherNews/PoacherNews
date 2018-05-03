@@ -80,9 +80,13 @@
                     'height' : "217",
                     'width' : "325",
                 }));
-                $text.append($("<h1/>", {
+                var $headerWrap = $("<a/>", {
+                    'href' : "article.php?articleid="+rowData['ArticleID']
+                });
+                $headerWrap.append($("<h1/>", {
                     'text' : rowData['Headline']
                 }));
+                $text.append($headerWrap);
                 $text.append($("<p/>", {
                     // Trim article contents to a set length, add ellipsis to denote continuation in article page
                     'text' : rowData['Body'].substring(0, $previewCharLimit)+"..."
