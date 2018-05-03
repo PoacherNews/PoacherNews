@@ -21,6 +21,7 @@
 
 
 #searchInput {
+    /*min-width: 400px;*/
     width: 60%;
     float: left;
     background-repeat: no-repeat;
@@ -70,8 +71,14 @@ form.search:after {
 #filter:hover {
     text-decoration: underline;
 }
-#divFilterHolder {
-
+.tip span {
+    margin-left:10px;
+    vertical-align: top;
+    font-family: serif;
+    font-size: 20px;
+} 
+.image img {
+    vertical-align: middle; 
 }
 
 #divFilter {
