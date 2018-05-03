@@ -12,17 +12,30 @@ function getArticleByID($id, $db) {
     return mysqli_fetch_assoc($result);
 }
 
-function getAuthorByID() {
-	// TODO: Wait for Bruce or Kirtis (mainly bruce cause kirits doesnt know what the fuck to do) to fix the database!
+function getAuthorByID($id, $db) {
+    /* Returns an associative array representation of the MYSQL result for the author of the provided id. */
+    $sql = "SELECT * FROM Users WHERE UserID = {$id};";
+    $result = mysqli_query($db, $sql);
+    return mysqli_fetch_assoc($result);
 }
 
-
-function getRelatedArticles($category) {
-	/* Returns a 3-item array, each containing an array of two JSON-encoded MYSQL results.
+function getRelatedArticles($category, $excludeId, $db) {
+	/* Returns an array of MYSQL results.
 	   Intended for display in the three-column "Further Reading" section of the article page.
 	*/
+	$sql = "SELECT ArticleId,Headline,Body FROM Articles WHERE IsPublished = 1 AND ArticleId != {$excludeId} AND Category = '{$category}' ORDER BY PublishDate DESC LIMIT 6;";
+	$result = mysqli_query($db, $sql);
+	
+	$data = array();
+    while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) { // Put each returned row into a PHP array
+        $data[] = $row;
+    }
+    return $data;
 }
 
-//getArticleByID(97);
+function increaseViewCount($id, $db) {
+    $sql = "UPDATE Articles SET Views = Views + 1 WHERE ArticleId = {$id};";
+    $db->query($sql);
+}
 
 ?>
