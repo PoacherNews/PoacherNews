@@ -14,6 +14,20 @@ header {
     width: 25%;
 }
 
+.hdrRight {
+    padding-right: 10px;
+}
+
+.hdrRight > a {
+    display: block;
+    float: right;
+}
+
+.hdrRight > .username {
+    margin-top: 15px;
+    font-family: sans-serif;
+}
+
 .hdrCenter {
     width: 50%;
     display: flex;
