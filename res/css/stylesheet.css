@@ -517,7 +517,7 @@ section {
 .main-article > article {
     margin: auto 20px auto 20px;
 }
-.main-article > article > h1 {
+.main-article > article > a > h1 {
     margin: 10px auto 0px auto;
     font-family: Arial black, Arial, Helvetiva, sans-serif;
     font-size: 40px;
@@ -536,7 +536,7 @@ section {
     max-height: 217px;
 }
 
-.sidebar > article > h1 {
+.sidebar > article > a > h1 {
     margin: 10px auto 0px auto;
     font-size: 40px;
     font-weight: bold;
