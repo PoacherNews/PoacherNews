@@ -13,13 +13,13 @@ Returns:
 include("db.php");
 
 // Rules for trending article results
-$trendingDaySpan = 6;
-$trendingViewThreshold = 50;
+$trendingDaySpan = 14;
+$trendingViewThreshold = 20;
 $trendingResultCap = 3;
 // Rules for secondary stacked article results
 $secondaryResultCap = 4;
 // Manually assigned main article id OLDID = 97
-$mainArticleId = 97;
+$mainArticleId = 11;
 // Manually assigned set of article ids picked by the editors
 $editorPicks = array(13, 20);
 
@@ -27,15 +27,16 @@ if(isset($argv[1])) { // Allow local testing without an HTTP GET
     $_GET['request'] = $argv[1];
 }
 
-class Error {
+class homepageError {
     public $errorId = 0;
     public $errorString = "";
     public $request = "";
     public $sqlQuery = "";
 }
 
+
 function throwError($errorId, $errorString, $sqlQuery) {
-    $e = new Error();
+    $e = new homepageError();
     $e->errorId = $errorId;
     $e->errorString = $errorString;
     $e->request = $_GET['request'];
