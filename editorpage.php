@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-	    <?php include 'includes/globalHead.html'
+	    <?php include 'includes/globalHead.html'?>
       <script type="text/javascript">
-        var control = document.getElementById("epUploadTextButton");
-        control.addEventListener("change", function(event){
+        var controlBody = document.getElementById("epUploadTextButton");
+        controlBody.addEventListener("change", function(event){
           var reader = new FileReader();
           reader.onload = function(event){
             var contents = event.target.result;
@@ -13,9 +13,26 @@
           reader.onerror = function(event){
             console.error("File could not be read! Code " + event.target.error.code);
           };
-          reader.readAsText(control.files[0]);
+          reader.readAsText(controlBody.files[0]);
         }, false);
 
+        var controlImage = document.getElementById("epImageUploadButton");
+        controlImage.addEventListener("change", function(event){
+          var reader = new FileReader();
+          reader.onload = function(event){
+            var contents = event.target.result;
+            document.getElementById('epArticleImage').src = contents;
+          }
+        }, false);
+
+        function preview() {
+          var html = file_get_contents("article.php");
+          var body = document.getElementById("epArticleBody").value;
+          var title = document.getElementById("epArticleTitle").value;
+          var author = <?php echo $_SESSION['firstname'] . " " . $_SESSION['lastname']?>;
+          html = html.replace("<h1 class='apHead1'>", "<h1 class='apHead1'>".concat(title));
+          html = html.replace("<p class='apPArt'>", "<p class='apPArt'>".concat(body));
+        }
       </script>
     </head>
     <body>
@@ -33,6 +50,7 @@
     <div class="epWrapper">
 
         <form id="epEditor" action="submitArticle.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="saveArticle">
             <div>
                 <h1>Article Details</h1>
                 <input type="text" placeholder="Article Title" id="epArticleTitle" name="title">
@@ -50,6 +68,9 @@
                 <h1>Article Contents</h1>
                 <textarea id="epArticleBody" placeholder="Article contents.." name="body"></textarea>
             </div>
+            <div id="epArticle-image">
+              <img id="epArticleImage" src="#"></img>
+            </div>
 
             <div id="epButtons">
                 <div class="epButton-column">
@@ -57,11 +78,13 @@
                     <input id="epUploadTextButton" type="file" value="Upload Text File">
                 </div>
                 <div class="epButton-column">
-                    <input id ="epPreviewButton" type="button" value="Preview">
+                    <input id ="epPreviewButton" type="button" value="Preview" onclick="preview()">
                     <input id="epSubmit" type="button" value="Submit" name="submit">
                 </div>
             </div>
         </form>
+    </div>
+    <div id="preview">
     </div>
     </body>
 </html>
