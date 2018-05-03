@@ -7,7 +7,6 @@
         <?php 
             include 'includes/header.php';
             include 'includes/nav.php';
-            //include 'includes/footer.html';
         ?>
         <div class="abtDivLeft"></div> 
         <div class="abtDivRight"></div>
@@ -32,5 +31,6 @@
         <hr class="abtHr">
         <div id="abtDivAds">Placeholder Advertisement</div>
         <hr class="abtHr">
+        <?php include('includes/footer.html'); ?>
     </body>
 </html>
