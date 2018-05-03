@@ -1,7 +1,7 @@
+<?php session_start(); ?>
 <!-- TODO: 
 Fix css (Resizing issues / min-width)
 -->
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,13 +10,7 @@ Fix css (Resizing issues / min-width)
     
     <body>
         <?php 
-        include 'loginCheck.php';
-        if($loggedin) {
-            include 'includes/header_internal.php';
-        }
-        else {
             include 'includes/header.php';
-        }
             include 'includes/nav.php';
             //include 'includes/footer.html';
         ?>
