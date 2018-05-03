@@ -1,7 +1,22 @@
 <!DOCTYPE html>
 <html>
     <head>
-	<?php include 'includes/globalHead.html' ?>
+	    <?php include 'includes/globalHead.html'
+      <script type="text/javascript">
+        var control = document.getElementById("epUploadTextButton");
+        control.addEventListener("change", function(event){
+          var reader = new FileReader();
+          reader.onload = function(event){
+            var contents = event.target.result;
+            document.getElementById('epArticleBody').value = contents;
+          };
+          reader.onerror = function(event){
+            console.error("File could not be read! Code " + event.target.error.code);
+          };
+          reader.readAsText(control.files[0]);
+        }, false);
+
+      </script>
     </head>
     <body>
         <?php
@@ -17,34 +32,33 @@
         ?>
     <div class="epWrapper">
 
-        <form id="epEditor">
+        <form id="epEditor" action="submitArticle.php" method="post" enctype="multipart/form-data">
             <div>
                 <h1>Article Details</h1>
-                <input type="text" placeholder="Article Title" id="epArticleTitle">
-                <input type="text" placeholder="Image path" id="img">
-                <select name="category">
-                    <option selected>Category</option>
-                    <option value="politics">Politics</option>
-                    <option value="sports">Sports</option>
-                    <option value="entertainment">Entertainment</option>
-                    <option value="video">Video</option>
-                    <option value="local">Local</option>
-                    <option value="opinion">Opinion</option>
-                </select>
+                <input type="text" placeholder="Article Title" id="epArticleTitle" name="title">
+                <input list="category" name="category">
+                <datalist id="category">
+                    <option value="politics">
+                    <option value="sports">
+                    <option value="entertainment">
+                    <option value="video">
+                    <option value="local">
+                    <option value="opinion">
+                </datalist>
             </div>
             <div id="epArticle-body">
                 <h1>Article Contents</h1>
-                <textarea id="epArticleBody" placeholder="Article contents.."></textarea>
+                <textarea id="epArticleBody" placeholder="Article contents.." name="body"></textarea>
             </div>
 
             <div id="epButtons">
                 <div class="epButton-column">
-                    <input id="epImageUploadButton" type="button" value="Upload Image">
-                    <input id="epUploadTextButton" type="button" value="Upload Text File">
+                    <input id="epImageUploadButton" type="file" value="Upload Image" name="image">
+                    <input id="epUploadTextButton" type="file" value="Upload Text File">
                 </div>
                 <div class="epButton-column">
                     <input id ="epPreviewButton" type="button" value="Preview">
-                    <input id="epSubmit" type="button" value="Submit">
+                    <input id="epSubmit" type="button" value="Submit" name="submit">
                 </div>
             </div>
         </form>
