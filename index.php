@@ -1,17 +1,30 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
     <head>
 	<?php include 'includes/globalHead.html' ?>
         <!-- Javascript/Jquery imports here -->
         <script>
+            function logError(e) {
+                console.log("ERROR [ErrorID: "+e['errorId']+"] // "+e['errorString']+"\nError details: \n\tAttempted SQL string: "+e['sqlQuery']+"\n\tRequest: "+e['request']);
+            }
+
             function createColumnArticle(rowData) {
+                console.log(rowData);
+                if($.isArray(rowData)) { // This is an encapsulated JSON object
+                    rowData = rowData[0];
+                }
+                if(rowData.hasOwnProperty('errorId')) {
+                    logError(rowData);
+                    return;
+                }
                 /* Makes an article DOM object and populates elements for page display.
                    Accepts a JSON formatted string object for parsing.
                 */
                 var $previewCharLimit = 375;
                 var $continueReading = $("<a/>", {
                     'class' : "continue-reading",
-                    'href' : "#", //TODO: Figure out how to determine the article URL
+                    'href' : "article.php?articleid="+rowData['ArticleID'],
                     'text' : "Continue Reading"
                 });
                 var $article = $("<article/>");
@@ -21,9 +34,13 @@
                     'width' : "600",
                     'height' : "430"
                 }));
-                $article.append($("<h1/>", {
+                var $headerWrap = $("<a/>", {
+                    'href' : "article.php?articleid="+rowData['ArticleID']
+                });
+                $headerWrap.append($("<h1/>", {
                     'text' : rowData['Headline']
                 }));
+                $article.append($headerWrap);
                 $article.append($("<p/>", {
                     // Trim article contents to a set length, add ellipsis to denote continuation in article page
                     'text' : rowData['Body'].substring(0, $previewCharLimit)+"..."
@@ -36,11 +53,19 @@
             function createStackedArticle(rowData) {
                 /* Makes an article DOM object and populates elements for page display.
                    Accepts a JSON formatted string object for parsing.
-                */
+                */                
+                if($.isArray(rowData)) { // This is an encapsulated JSON object
+                    rowData = rowData[0];
+                }
+                if(rowData.hasOwnProperty('errorId')) {
+                    logError(rowData);
+                    return;
+                }
+
                 var $previewCharLimit = 400;
                 var $continueReading = $("<a/>", {
                     'class' : "continue-reading",
-                    'href' : "#", //TODO: Figure out how to determine the article URL
+                    'href' : "article.php?articleid="+rowData['ArticleID'],
                     'text' : "Continue Reading"
                 });
                 var $article = $("<article/>");
@@ -56,9 +81,13 @@
                     'height' : "217",
                     'width' : "325",
                 }));
-                $text.append($("<h1/>", {
+                var $headerWrap = $("<a/>", {
+                    'href' : "article.php?articleid="+rowData['ArticleID']
+                });
+                $headerWrap.append($("<h1/>", {
                     'text' : rowData['Headline']
                 }));
+                $text.append($headerWrap);
                 $text.append($("<p/>", {
                     // Trim article contents to a set length, add ellipsis to denote continuation in article page
                     'text' : rowData['Body'].substring(0, $previewCharLimit)+"..."
@@ -74,15 +103,8 @@
 <body class="hpBody">
     
     <?php
-	include 'loginCheck.php';
-	if($loggedin) { 
-        include 'includes/header_internal.php';
-	}
-	else {
-		include 'includes/header.php';
-	}
+        include 'includes/header.php';
         include 'includes/nav.php';
-        //include 'includesfooter.html'; // Disabled until bugfix completed by Roland
     ?>
     <div class="wrapper">
         <!-- Three column section -->
@@ -93,7 +115,7 @@
                         'request' : 'main'
                     }).done(function(data) {
                         $(".main-article").children().remove('.loader');
-                        $(".main-article").append(createColumnArticle(data[0]));
+                        $(".main-article").append(createColumnArticle(data));
                     });
                 </script>
                 <div class="loader"></div>
@@ -105,10 +127,15 @@
                     $.getJSON("util/homepage.php", {
                         'request' : 'editorpicks'
                     }).done(function(data) {
-                        $.each(data, function(i, row) {
-                            $("#leftSidebar").children().remove('.loader');
-                            $("#leftSidebar").append(createColumnArticle(row));
-                        });
+                        $("#leftSidebar").children().remove('.loader');
+                        if(!$.isArray(data)) {
+                            createColumnArticle(data);
+                            return;
+                        } else {
+                            $.each(data, function(i, row) {
+                                $("#leftSidebar").append(createColumnArticle(row));
+                            });
+                        }
                     });
                 </script>
                 <div class="loader"></div>
@@ -120,10 +147,15 @@
                     $.getJSON("util/homepage.php", {
                         'request' : 'trending'
                     }).done(function(data) {
-                        $.each(data, function(i, row) {
-                            $("#rightSidebar").children().remove('.loader');
-                            $("#rightSidebar").append(createColumnArticle(row));
-                        });
+                        $("#rightSidebar").children().remove('.loader');
+                        if(!$.isArray(data)) {
+                            createColumnArticle(data);
+                            return;
+                        } else {
+                            $.each(data, function(i, row) {
+                                $("#rightSidebar").append(createColumnArticle(row));
+                            });
+                        }
                     })
                 </script>
                 <div class="loader"></div>
@@ -152,5 +184,6 @@
             <div class="loader"></div>
         </section>
     </div>
+    <?php include('includes/footer.html'); ?>
 </body>
 </html>
