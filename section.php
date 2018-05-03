@@ -12,7 +12,6 @@ Fix css (Resizing issues / min-width)
         <?php 
             include 'includes/header.php';
             include 'includes/nav.php';
-            //include 'includes/footer.html';
         ?>
         
         <p id="secName">Section</p>
@@ -148,6 +147,6 @@ Fix css (Resizing issues / min-width)
     </div>
     </section>
         <!-- containerSecondary Tail -->      
-
+    <?php include('includes/footer.html'); ?>
     </body>
 </html>
