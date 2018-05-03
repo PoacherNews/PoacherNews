@@ -7,7 +7,6 @@
         <?php 
             include 'includes/header.php';
             include 'includes/nav.php';
-            //include 'includes/footer.html';
         ?>
         <div class="fbDivLeft"></div> 
         <div class="fbDivRight"></div>
@@ -19,5 +18,6 @@
         <hr class="fbHr">
         <div id="fbDivAds">Placeholder Advertisement</div>
         <hr class="fbHr">
+        <?php include('includes/footer.html'); ?>
     </body>
 </html>
