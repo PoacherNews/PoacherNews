@@ -10,7 +10,6 @@
     <?php
     	include 'includes/header.php';
         include 'includes/nav.php';
-        //include 'includes/footer.html';
     ?>
     <form action="util/handleLogin.php" method="POST">
         <div class="loginWrap">
@@ -33,8 +32,5 @@
             </div>
         </div>
     </form>
-
-
-
 </body>
 </html>
