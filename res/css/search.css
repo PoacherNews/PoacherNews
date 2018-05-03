@@ -1,0 +1,103 @@
+.searchFlex {
+    display: flex;
+    flex-direction: column;
+}
+
+.adFlex {
+    display: flex;
+    flex-direction: column;
+    margin-right: 30%;
+}
+
+.testFlex {
+    display: flex;
+    flex-direction: row;
+}
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+}
+
+
+#searchInput {
+    width: 60%;
+    float: left;
+    background-repeat: no-repeat;
+    font-size: 16px;
+    padding: 12px 10px 12px 10px;
+    border: 1px solid #DDD;
+    margin-bottom: 12px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+form.search button {
+    float: left;
+    width: 10%;
+    padding: 12px 10px 12px 10px;
+    background: #83A8F0;
+    color: white;
+    font-size: 16px;
+    border: 1px solid #DDD;
+    border-left: none;
+    cursor: pointer;
+    margin-bottom: 12px;
+    margin-right: 10%;
+}
+
+form.search button:hover {
+    background: #0b7dda;
+}
+
+form.search:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+#filter {
+    color: #83A8F0;
+    text-decoration: none;
+    font-size: 20px;
+    font-family: serif;
+    display: block;
+    
+}
+
+#filter:hover {
+    text-decoration: underline;
+}
+#divFilterHolder {
+
+}
+
+#divFilter {
+    border: 1px solid black;
+    background-color: aquamarine;
+    width: 20%;
+    margin-left: 12.5%;
+    display: none;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+#divSideAds {
+    height: 100vh;
+    float: left;
+    margin: 20%;
+    margin-top: 0px;
+    border: 1px solid #DDD;
+    
+}
+
+#divTest {
+    border: 1px solid black;
+    background-color: white;
+    width: 60%;
+    float: left;
+    overflow: hidden;
+    
+}
