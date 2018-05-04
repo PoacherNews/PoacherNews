@@ -19,12 +19,18 @@
     ?>
     <div class="flexRow">
         <div class="searchFlex">
-            <h2>Search Results</h2>
+            <h1>Search Results</h1>
             <form class="search" action="" method="GET">
-                <input type="text" id="searchInput" placeholder="What are you looking for?" name="query"/>
-                <button type="submit"><i class="fa fa-search"></i></button>
-                <p id="filter">Filter</p>
+                <input type="text" id="searchInput" onkeyup="searchFilter()" placeholder="What are you looking for?" name="query"/>
+                <div class="buttonFlex">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </div>
             </form>
+            <!--
+            <div class="filterFlex">
+                <p id="filter">Filter</p>
+            </div>
+            -->
             <div class="testFlex">
             <?php
             $query = $_GET['query'];
@@ -38,12 +44,24 @@
                 echo "<div id='divTest'>";
                 if(mysql_num_rows($raw_results) > 0){ 
                     while($results = mysql_fetch_array($raw_results)){
-                        echo "<img src=".$results['Img']." class='image img' height='100' width='100'>"."<span class='tip span'>".$results['Headline']."</span>";
-                        echo "<br>";
+                        print   "<div class='flexRow'>
+                                    <div class='imgFlex'>
+                                        <a href=\"article.php?articleid={$results['ArticleID']}\">
+                                            <img src=".$results['Img']." class='image' height='120' width='140'>
+                                        </a>
+                                    </div>
+                                    <div class='spanFlex'>
+                                        <span class='tip'>
+                                            <a href=\"article.php?articleid={$results['ArticleID']}\">{$results['Headline']}</a>
+                                        </span>
+                                    </div>
+                                </div>
+                                <br>
+                                <hr class='searchHr'>";
                     }
                 }
                 else{
-                    echo "No results.";
+                    print "<b>No results.</b>";
                 }
             }
             else{
@@ -65,12 +83,50 @@
             -->
             </div>
     </div>
-    <script>
+    <script> 
+        /* FOR THE DIV FILTER */
         $(document).ready(function(){
             $("#filter").hover(function(){
                 $("#divFilter").slideDown("slow");
             });
         });
+        
+        
+        $(function() {
+                function showResults(message) {
+                    $("<div>").text(message).prependTo("#divTest");
+                    $("#divTest").scrollTop(0);
+                }
+
+            $("#searchInput").autocomplete({
+                source: "search.php",
+                minLength: 1,
+                select: function(event, ui) {
+                    showResults("Selected:" + ui.item.value + " aka " + ui.item.id);
+                }
+            });
+        });
+        /* FOR THE INPUT/SEARCH FILTER */
+        function searchFilter() {
+            
+            var input, filter, span, a, img, i;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            img = document.getElementsByClassName("image"); 
+            span = document.getElementsByClassName("tip"); 
+            
+            // FOR SPAN
+            for(i = 0; i < span.length; i++) {
+                a = span[i].getElementsByTagName("a")[0];
+                if(span.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    span[i].style.display = "";
+                } else {
+                    span[i].style.display = "none";
+                }
+            }
+            // FOR IMAGE
+            
+        }
     </script>
     <?php include('includes/footer.html'); ?>
 </body>
