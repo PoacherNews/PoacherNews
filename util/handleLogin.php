@@ -7,21 +7,35 @@ if(!session_start()) {
     exit;
 }
 
+
 // Check to see if the user has already logged in
 if(empty($_SESSION['loggedin'])) {
     $loggedIn = false;
 } else { // The user is already logged in, so send them back to the index
     print "You are already logged in."; //DEBUG
-//     header("Location: index.php");
+    echo '<meta http-equiv="refresh" content="0; url=/index.php">';
     exit;
 }
+
 
 if(isset($_POST['submit'])) {
     handle_login();
 }
+else 
+{
+    new_form();
+}
+
+function new_form()
+{
+    //$username = "";
+    $error = "";
+    include '../login.php';
+    exit;
+}
 
 function handle_login() {
-    print "Beginning login handling..<br>"; //DEBUG
+//    print "Beginning login handling..<br>"; //DEBUG
     $username = empty($_POST['username']) ? '' : $_POST['username'];
     $password = empty($_POST['password']) ? '' : $_POST['password'];
 
@@ -63,8 +77,8 @@ function handle_login() {
     if ($result->num_rows != 1)
     {
         $error = "Username does not exist<br>";
-        print $error; //DEBUG
-//         include 'loginForm.php';
+        //print $error; //DEBUG
+        include '../login.php';
         exit;
     }
     
@@ -78,12 +92,12 @@ function handle_login() {
     if (!password_verify($password, $row['Password']))
     {
         $error = "Password does not match // ";
-        print $error; //DEBUG
-        print "provided pass: ".$password."<br>";
-//         include 'loginForm.php';
+       // print $error; //DEBUG
+       // print "provided pass: ".$password."<br>";
+        include '../login.php';
         exit;
     } else {
-        print "Good password<br>"; //DEBUG
+       // print "Good password<br>"; //DEBUG
     }
         
     // Put user details into session
@@ -94,8 +108,9 @@ function handle_login() {
     $_SESSION['email'] = $row['Email'];
     $_SESSION['username'] = $row['Username'];
     $_SESSION['usertype'] = $row['Usertype'];
-    // redirect
-    header("Location: {$_SERVER['HTTP_REFERER']}");
+    // redirect    
+    // header("Location: index.php");
+    echo '<meta http-equiv="refresh" content="1; url=/index.php">';
     exit;
 }
 ?>
