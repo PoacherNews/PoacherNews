@@ -8,15 +8,7 @@
     
     <?php
 	include 'loginCheck.php';
-	// Error check
-
-    if($loggedin) {
-        include 'includes/header_internal.php';
-    }
-    else {
         include 'includes/header.php';
-        $usertype = NULL;
-    }
         include 'includes/nav.php';
             //include 'includes/footer.html';
         ?>
