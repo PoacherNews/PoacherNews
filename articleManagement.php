@@ -115,9 +115,8 @@ table, th, td {
 
     <body>
         <?php 
-	    include 'includes/header.php';
+	    	include 'includes/header.php';
             include 'includes/nav.php';
-            //include 'includes/footer.html';
         ?>
         <main>
             <h1>Manage Articles</h1>
@@ -129,5 +128,6 @@ list_users();
             
             </div>
         </main>
+        <?php include 'includes/footer.html'; ?>
     </body>
 </html>
