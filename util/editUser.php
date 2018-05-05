@@ -79,9 +79,8 @@ if (!isset($data) || !$data)
     <body>
         <?php
 //include $_SERVER['DOCUMENT_ROOT'].'/sprint3/includes/header.php';
-	    include '../includes/header.php';
+	    	include '../includes/header.php';
             include '../includes/nav.php';
-            //include '../includes/footer.html';
         ?>
         <main>
             <h1>Edit User &#8216;<?php echo $data['Username']; ?>&#8217;</h1>
@@ -176,5 +175,6 @@ $db->close();
 } ?>
 
         </main>
+        <?php include '../includes/footer.html'; ?>
     </body>
 </html>
