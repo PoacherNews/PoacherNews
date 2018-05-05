@@ -14,6 +14,7 @@ Fix css (Resizing issues / min-width)
             include 'includes/nav.php';
             include 'includes/db.php';
         ?>
+        <section>
             <?php
                 if(strlen($query) >= $min_length){ 
                     
