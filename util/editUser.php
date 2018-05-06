@@ -3,7 +3,7 @@
 // Changing Users/Writers to Admins permissions
 // Changing Admins permissions
 
-include '../loginCheck.php';
+include 'loginCheck.php';
 // quit if not an admin or not logged in
 if (!$loggedin || !($_SESSION['usertype'] == 'A'))
 {

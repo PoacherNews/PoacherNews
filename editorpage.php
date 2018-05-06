@@ -5,7 +5,7 @@
     </head>
     <body>
         <?php
-        include 'loginCheck.php';
+        include 'util/loginCheck.php';
             include 'includes/header.php';
             include 'includes/nav.php';
             //include 'includes/footer.html';

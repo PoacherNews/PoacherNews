@@ -12,6 +12,7 @@
 </head>
 <body>
     <?php
+		include 'util/loginCheck.php';
         include 'includes/header.php';
         include 'includes/nav.php';
     ?>
