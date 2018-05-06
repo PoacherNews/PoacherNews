@@ -7,11 +7,10 @@
     <body>
     
     <?php
-	include 'loginCheck.php';
+		include 'loginCheck.php';
         include 'includes/header.php';
         include 'includes/nav.php';
-            //include 'includes/footer.html';
-        ?>
+    ?>
         <br>
 
         <!-- Content Head -->
@@ -51,6 +50,7 @@
         </div>
         <br>
         <!-- Content Tail -->
+        <?php include 'includes/footer.html'; ?>
     </body>
 </html>
 
