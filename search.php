@@ -5,11 +5,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="res/css/search.css">
     
-    <?php include 'includes/globalHead.html' ?>
-    <?php
-    mysql_connect("poacherdatabase.ccbtf4xhozoc.us-east-2.rds.amazonaws.com", "mysqladmin", "Hunter1234") or die("Error connecting to database: ".mysql_error());
-         
-    mysql_select_db("PoacherNews") or die(mysql_error());
+    <?php 
+        include 'includes/globalHead.html'; 
+        include 'util/db.php';    
     ?>
 </head>
 <body>
@@ -49,13 +47,14 @@
                     $min_length = 1;
                     if(strlen($query) >= $min_length){ 
                         $query = htmlspecialchars($query); 
-                        $query = mysql_real_escape_string($query);
-                        $raw_results = mysql_query("SELECT * FROM Articles
-                        WHERE IsPublished = 1 AND ((`Headline` LIKE '%".$query."%') OR (`Img` LIKE '%".$query."%'))") or die(mysql_error());
+                        $query = mysqli_real_escape_string($db, $query);
+                        $raw_results = "SELECT * FROM Articles
+                        WHERE IsPublished = 1 AND ((`Headline` LIKE '%".$query."%') OR (`Img` LIKE '%".$query."%'))";
+                        $test = mysqli_query($db, $raw_results);
                         echo "<div id='divTest'>";
                         
-                        if(mysql_num_rows($raw_results) > 0){ 
-                            while($results = mysql_fetch_array($raw_results)){
+                        if(mysqli_num_rows($test) > 0){ 
+                            while($results = mysqli_fetch_array($test, MYSQLI_ASSOC)){
                                 print   "<div class='flexRow'>
                                             <div class='imgFlex'>
                                                 <a href=\"article.php?articleid={$results['ArticleID']}\">

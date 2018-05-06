@@ -10,7 +10,7 @@ if(!@session_start()) {
         return;
     }
     // If the session couldn't start, present an error
-    header("Location: error.php");
+    //header("Location: error.php");
     exit;
 }
 if (session_status() == PHP_SESSION_NONE) {

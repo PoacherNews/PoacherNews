@@ -46,7 +46,7 @@
           exit;
       }
 
-      if (!$stmt->bind_param('sssis', $title, $category, $body, $authorid, $filepath))
+      if (!$stmt->bind_param('sssis', $title, $body, $category, $authorid, $filepath))
       {
           echo "Error binding parameters: \n";
           print_r($stmt->error_list);

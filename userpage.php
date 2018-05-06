@@ -7,19 +7,10 @@
     <body>
     
     <?php
-	include 'loginCheck.php';
-	// Error check
-
-    if($loggedin) {
-        include 'includes/header_internal.php';
-    }
-    else {
+		include 'loginCheck.php';
         include 'includes/header.php';
-        $usertype = NULL;
-    }
         include 'includes/nav.php';
-            //include 'includes/footer.html';
-        ?>
+    ?>
         <br>
 
         <!-- Content Head -->
@@ -59,6 +50,7 @@
         </div>
         <br>
         <!-- Content Tail -->
+        <?php include 'includes/footer.html'; ?>
     </body>
 </html>
 
