@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<?php error_reporting(E_ALL);
-ini_set('display_errors', 1);
-?>
+
 <html>
     <head>
 	    <?php include 'includes/globalHead.html'?>
@@ -13,7 +11,6 @@ ini_set('display_errors', 1);
             include 'loginCheck.php';
             include 'includes/header.php';
             include 'includes/nav.php';
-            //include 'includes/footer.html';
         ?>
     <div class="epWrapper">
 
