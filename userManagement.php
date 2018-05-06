@@ -1,5 +1,5 @@
 <?php
-include 'loginCheck.php';
+include 'util/loginCheck.php';
 // quit if not an admin or not logged in
 if (!$loggedin || !($_SESSION['usertype'] == 'A'))
 {
@@ -71,6 +71,10 @@ function list_users()
     </head>
 
 <style>
+h1 {
+	text-align: center;
+}
+
 table {
 	margin-left:auto;
 	margin-right:auto;
