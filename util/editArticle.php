@@ -1,5 +1,5 @@
 <?php
-include '../loginCheck.php';
+include 'loginCheck.php';
 // quit if not an admin or not logged in
 if (!$loggedin || !($_SESSION['usertype'] == 'A'))
 {
@@ -102,7 +102,7 @@ if (!isset($data) || !$data)
 
 <form method="post" action="">
 
-<legend>Pending / Approved</legend>
+<legend>IsPublished</legend>
 <div>
 <input type="radio" name="status" id="pending" value="0" /><label for="pending">Pending</label><br />
 <input type="radio" name="status" id="approved" value="1" /><label for="approved">Approved</label><br />

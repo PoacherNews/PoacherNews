@@ -14,12 +14,14 @@ CREATE TABLE Users (
 
 CREATE TABLE Articles (
     ArticleID INT AUTO_INCREMENT,
+    AuthorID INT,
     Headline VARCHAR(255),
     Body VARCHAR(10000),
     Category VARCHAR(50),
     IsPublished BOOLEAN DEFAULT false,
     PublishDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Views MEDIUMINT(9),
-    Img VARCHAR(500),
+    Img VARCHAR(500) DEFAULT 'https://i.imgur.com/U469uHI.jpg',
+    FOREIGN KEY (AuthorID) REFERENCES Users (UserID),
     CONSTRAINT PKArticles PRIMARY KEY (ArticleID)
 );
