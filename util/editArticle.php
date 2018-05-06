@@ -78,7 +78,10 @@ if (!isset($data) || !$data)
             //include '../includes/footer.html';
         ?>
         <main>
-            <h1>Edit Article &#8216;<?php echo $data['Headline']; ?>&#8217;</h1>
+            <h1>Edit Article &#8216;<?php
+            	echo "<a href='/article.php?articleid={$data['ArticleID']}'>"; 
+				echo $data['Headline'];
+				echo "</a>";  ?>&#8217;</h1>
             <table>
                 <thead>
                     <tr>

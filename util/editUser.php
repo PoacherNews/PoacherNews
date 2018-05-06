@@ -127,16 +127,17 @@ if ($data['Usertype'] == 'U' || $data['Usertype'] == 'W') { ?>
 </div>
 </form>
 
-<form action="../userManagement.php">
-        <input type="submit" value="User Management" />
-</form>
-
 <?php } ?>
 
 <?php
 if($data['Usertype'] == 'A') { 
 echo "<br>You must have persmissions to edit this user";
  } ?>
+
+<form action="../userManagement.php">
+        <input type="submit" value="User Management" />
+</form>
+
 
 <?php 
 if(isset($_POST['submit'])){ 
