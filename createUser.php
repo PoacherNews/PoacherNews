@@ -4,8 +4,8 @@
 	   <?php include 'includes/globalHead.html' ?>
     </head>
     <body>
-    
-        <?php 
+
+        <?php
         	include 'util/loginCheck.php';
 // Check to see if the user has already logged in
 if(empty($_SESSION['loggedin'])) {
@@ -15,12 +15,12 @@ if(empty($_SESSION['loggedin'])) {
     echo '<meta http-equiv="refresh" content="0; url=/index.php">';
     exit;
 }
-        	
+
             include 'includes/header.php';
             include 'includes/nav.php';
             //include 'includes/footer.html';
         ?>
-        
+
     <!-- Added by Bruce -->
         <form action="/util/handleCreateUser.php" method="POST">
     <!-- -->
@@ -28,7 +28,7 @@ if(empty($_SESSION['loggedin'])) {
         <div id="titleDiv">
             <h1 id="titleText">Create a New User</h1>
         </div>
-       
+
         <div id = "bodyDiv">
             <div id="imgContainer">
                     <img id="mascotImage" src="/res/img/logo.png">
@@ -43,7 +43,7 @@ if(empty($_SESSION['loggedin'])) {
                     <label for="firstName"><b>First Name</b></label>
                     <input type="text" placeholder="First Name" name="firstname" required>
                 </div>
-                
+
                 <div>
                     <label for="lastName"><b>Last Name</b></label>
                     <input type="text" placeholder="Last Name" name="lastname" required>
@@ -57,9 +57,9 @@ if(empty($_SESSION['loggedin'])) {
 		        <div>
                     <label for="confirmEmail"><b>Confirm Email</b></label>
                     <input type="text" placeholder="Confirm Email" name="email_confirm" required>
-                </div>            
+                </div>
     <!-- -->
-                
+
                 <div>
                     <label for="username"><b>Username</b></label>
                     <input type="text" placeholder="Username" name="username" required>
@@ -69,7 +69,7 @@ if(empty($_SESSION['loggedin'])) {
                     <label for="password"><b>Password</b></label>
                     <input type="password" placeholder="*****" name="password" required>
                 </div>
-                
+
 	<!-- Added by Bruce -->
                 <div>
                     <label for="confirmPassword"><b>Confirm Password</b></label>
@@ -83,7 +83,7 @@ if(empty($_SESSION['loggedin'])) {
                 }
                 ?>
 	<!-- -->
-                
+
                 <div>
                     <input type="submit" name="submit" value="Create">
                 </div>
@@ -97,5 +97,6 @@ if(empty($_SESSION['loggedin'])) {
            <!-- </form> -->
         </div>
         </form>
+        <?php include('includes/footer.html'); ?>
     </body>
 </html>
