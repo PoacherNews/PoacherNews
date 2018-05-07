@@ -8,11 +8,7 @@
     </head>
     <body>
         <?php
-<<<<<<< HEAD
-            //include 'loginCheck.php';
-=======
-        include 'util/loginCheck.php';
->>>>>>> 78ce0bf8bdcf09c95cca2e252ff4806db4596be5
+        	include 'util/loginCheck.php';
             include 'includes/header.php';
             include 'includes/nav.php';
         ?>
