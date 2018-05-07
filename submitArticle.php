@@ -1,5 +1,5 @@
 <?php
-
+  session_start();
   $action = empty($_POST['action']) ? '' : $_POST['action'];
 
   if(empty($_POST['title']) || empty($_POST['category']) || file_exists($_FILES['image']['temp_name'])){
@@ -149,7 +149,6 @@
   function getAuthorID(){
     $username = empty($_SESSION['username']) ? 'error' : $_SESSION['username'];
     $db = dbConnect();
-    $username = "bob";
 
     $stmt = $db->stmt_init();
 
