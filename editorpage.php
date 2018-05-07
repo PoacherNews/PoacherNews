@@ -1,7 +1,7 @@
 <?php
 include 'util/loginCheck.php';
 // quit if not an admin or not logged in
-if (!$loggedin || !($_SESSION['usertype'] == 'A') || !($_SESSION['usertype'] == 'W')  )
+if (!$loggedin || ($_SESSION['usertype'] == 'U'))
 {
     header("HTTP/1.1 403 Forbidden", true, 403);
     echo "You must be an administrator. Redirecting in 1 second...";

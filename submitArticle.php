@@ -104,7 +104,7 @@
       }
 
 
-      $filepath = sprintf('/res/img/%s.%s',
+      $filepath = sprintf('res/img/%s.%s',
           // Encrypt file name to avoid user selected name
           sha1_file($_FILES['image']['tmp_name']),
           // Use valid file extension
