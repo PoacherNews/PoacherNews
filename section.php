@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+ ?>
 <!-- TODO: 
 Fix css (Resizing issues / min-width)
 -->
@@ -23,16 +27,28 @@ Fix css (Resizing issues / min-width)
             <div class="secBorderPrimary"></div>
 
             <div class="secColumnPrimary">
-            <article>
-                <div class="thumbnailPrimary">
-                    <img src="moon.jpg" width="350" height="250">
+<?php
+include 'util/db.php';
+$query = "SELECT * FROM Articles WHERE Category='" . mysqli_real_escape_string($db, $_GET['Category']) . "' ORDER BY PublishDate DESC LIMIT 4";
+$results = mysqli_query($db, $query) or die (mysqli_error());
+
+while($row = mysqli_fetch_assoc($results)){
+if($row['IsPublished'] == 1) {
+$substr_value = substr($row['Body'],0,200).'...';
+          echo "<article>
+                <div class='thumbnailPrimary'>
+                    <img src='{$row['Img']}' width='350' height='250'>
                 </div>
-                <div class="textPrimary">
-                    <h1 class="secHeadlinePrimary"><a href="">(Headline Placeholder)</a></h1>
-                    <p>(Filler Text Filler Text Filler Text)</p>
+                <div class='textPrimary'>
+                    <h1 class='secHeadlinePrimary'><a href='/article.php?articleid={$row['ArticleID']}'>{$row['Headline']}</a></h1>
+                    <p>$substr_value</p>
                 </div>
-            </article>
-            
+            </article>";
+}
+}
+?>
+
+<!--      
             <article>
                 <div class="thumbnailPrimary">
                     <img src="" width="350" height="250">
@@ -52,6 +68,7 @@ Fix css (Resizing issues / min-width)
                     <p>(Filler Text Filler Text Filler Text)</p>
                 </div>
             </article>
+-->
 
             <!-- Show More -->
             <div class="showMore">
