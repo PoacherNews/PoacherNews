@@ -21,7 +21,7 @@
   * __'Real-time' search results (automated)__
   * __Find proper documentation for: Privacy, Terms of Use, etc.__
   * __Feedback form from users__
-  * More articles in "Further Reading"
+  * ~~More articles in "Further Reading"~~
   * __Comment section for the articles__
   * Drop down navigation directory
   * Sticky nav for following down the page
