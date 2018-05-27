@@ -6,7 +6,7 @@
   * __Incorporate less clutter/Provide more spacing (Includes: articles, images, sub-paragraphs, etc.)__
   * __Extend articles through "Show More"__
   * __Empasize section page through via navigation bar (i.e. highlight sports section in nav bar when on sports page)__
-  * __Tiddy up design__
+  * __Tidy up design__
   * Persuave ideas/features to have users sign up
   * Fix footer
   * __Basic login/signup configurations__
