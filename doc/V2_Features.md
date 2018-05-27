@@ -31,3 +31,4 @@
   * __Reconstructing Database__
   * __Make linebreaks/newlines in articles work properly__
   * Text editor tools (i.e bold, italics, etc.)
+  * Dropdown menu
