@@ -5,6 +5,7 @@
   * Grey Blue: #8693AB
   * Pale Aqua: #BDD4E7
   * Raisin Black: #212227
+  * Arsenic: #414141
 ### (*) = all
 #### Font-Family:
   * (*): Arial, Helvetica, sans-serif
@@ -15,9 +16,12 @@
   * Horizontal Dividers: 1px solid
   * Vertical Dividers: 2px solid
 #### Font-Color:
-  * Headline: black
-  * Article Content: black
-  * Sub-Headline: #414141
-  * Continue Reading Link: #83A8FO
-  * Horizontal Dividers: #83A8FO
-  * Vertical Dividers: #83A8FO
+  * Headline: Raisin Black
+  * Article Content: Raisin Black
+  * Sub-Headline: Arsenic
+  * Continue Reading Link: Jordy Blue
+  * Horizontal Dividers: Jordy Blue
+  * Vertical Dividers: Jordy Blue
+#### Background-Color:
+  * Header: Jordy Blue, Blue Crayola
+  * Footer: Jordy Blue, Blue Crayola
