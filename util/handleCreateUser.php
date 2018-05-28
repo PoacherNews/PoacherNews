@@ -122,7 +122,7 @@ function handle_create()
     //$query = "SELECT * FROM Users WHERE Username = '$username'";
     // build statement
     $stmt = $db->stmt_init();
-    if (!$stmt->prepare("SELECT Username FROM Users WHERE Username=?"))
+    if (!$stmt->prepare("SELECT Username FROM User WHERE Username=?"))
     {
         echo "Error preparing statement: \n";
         print_r($stmt->error_list);
@@ -153,7 +153,7 @@ function handle_create()
     }
 
     // Build query email
-    if (!$stmt->prepare("SELECT Email FROM Users WHERE Email=?"))
+    if (!$stmt->prepare("SELECT Email FROM User WHERE Email=?"))
     {
         echo "Error preparing statement: \n";
         print_r($stmt->error_list);
@@ -191,7 +191,7 @@ function handle_create()
     $stmt_users = $db->stmt_init();
 
     // prepare
-    if (!$stmt_users->prepare("INSERT INTO Users (UserID, FirstName, LastName, Email, Username, Password) VALUES (?,?,?,?,?,?)"))
+    if (!$stmt_users->prepare("INSERT INTO User (UserID, FirstName, LastName, Email, Username, Password) VALUES (?,?,?,?,?,?)"))
     {
         echo "Error preparing INSERT statement: \n";
         echo nl2br(print_r($stmt_users->error_list, true), false);

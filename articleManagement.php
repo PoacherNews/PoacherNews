@@ -87,7 +87,7 @@ function list_users()
 {
     include 'util/db.php';
     // query Users
-    $query = "SELECT ArticleID, Headline, Category, IsPublished FROM Articles";
+    $query = "SELECT ArticleID, Headline, Category, IsPublished FROM Article";
     // display
     display_table($db, $query, "Articles");
     // done

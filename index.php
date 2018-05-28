@@ -30,7 +30,7 @@
                 var $article = $("<article/>");
                 
                 $article.append($("<img/>", {
-                    'src' : rowData['Img'],
+                    'src' : rowData['Image'],
                     'width' : "600",
                     'height' : "430"
                 }));
@@ -77,7 +77,7 @@
                 });
                 
                 $thumbnail.append($("<img/>", {
-                    'src' : rowData['Img'],
+                    'src' : rowData['Image'],
                     'height' : "217",
                     'width' : "325",
                 }));

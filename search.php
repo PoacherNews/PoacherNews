@@ -49,8 +49,8 @@
                     if(strlen($query) >= $min_length){ 
                         $query = htmlspecialchars($query); 
                         $query = mysqli_real_escape_string($db, $query);
-                        $raw_results = "SELECT * FROM Articles
-                        WHERE IsPublished = 1 AND ((`Headline` LIKE '%".$query."%') OR (`Img` LIKE '%".$query."%'))";
+                        $raw_results = "SELECT * FROM Article
+                        WHERE IsPublished = 1 AND ((`Headline` LIKE '%".$query."%') OR (`Image` LIKE '%".$query."%'))";
                         $test = mysqli_query($db, $raw_results);
                         echo "<div id='divTest'>";
                         
@@ -59,7 +59,7 @@
                                 print   "<div class='flexRow'>
                                             <div class='imgFlex'>
                                                 <a href=\"article.php?articleid={$results['ArticleID']}\">
-                                                    <img src=".$results['Img']." class='image' height='120' width='140'>
+                                                    <img src=".$results['Image']." class='image' height='120' width='140'>
                                                 </a>
                                             </div>
                                             <div class='spanFlex'>
@@ -82,14 +82,14 @@
                     } else {
                         switch($sort) {
                             case "Relevancy":
-                                $raw_results = mysql_query("SELECT * FROM Articles ORDER BY PublishDate DESC") or die(mysql_error());
+                                $raw_results = mysql_query("SELECT * FROM Article ORDER BY PublishDate DESC") or die(mysql_error());
                                 echo "<div id='divTest'>";
                                 if(mysql_num_rows($raw_results) > 0){ 
                                     while($results = mysql_fetch_array($raw_results)){
                                         print   "<div class='flexRow'>
                                                     <div class='imgFlex'>
                                                         <a href=\"article.php?articleid={$results['ArticleID']}\">
-                                                            <img src=".$results['Img']." class='image' height='120' width='140'>
+                                                            <img src=".$results['Image']." class='image' height='120' width='140'>
                                                         </a>
                                                     </div>
                                                     <div class='spanFlex'>
@@ -108,14 +108,14 @@
                                 break;
 
                             case "Name":
-                                $raw_results = mysql_query("SELECT * FROM Articles ORDER BY Headline DESC") or die(mysql_error());
+                                $raw_results = mysql_query("SELECT * FROM Article ORDER BY Headline DESC") or die(mysql_error());
                                 echo "<div id='divTest'>";
                                 if(mysql_num_rows($raw_results) > 0){ 
                                     while($results = mysql_fetch_array($raw_results)){
                                         print   "<div class='flexRow'>
                                                     <div class='imgFlex'>
                                                         <a href=\"article.php?articleid={$results['ArticleID']}\">
-                                                            <img src=".$results['Img']." class='image' height='120' width='140'>
+                                                            <img src=".$results['Image']." class='image' height='120' width='140'>
                                                         </a>
                                                     </div>
                                                     <div class='spanFlex'>
@@ -133,14 +133,14 @@
                                 break;
 
                             case "Views":
-                                $raw_results = mysql_query("SELECT * FROM Articles ORDER BY Views DESC") or die(mysql_error());
+                                $raw_results = mysql_query("SELECT * FROM Article ORDER BY Views DESC") or die(mysql_error());
                                 echo "<div id='divTest'>";
                                 if(mysql_num_rows($raw_results) > 0){ 
                                     while($results = mysql_fetch_array($raw_results)){
                                         print   "<div class='flexRow'>
                                                     <div class='imgFlex'>
                                                         <a href=\"article.php?articleid={$results['ArticleID']}\">
-                                                            <img src=".$results['Img']." class='image' height='120' width='140'>
+                                                            <img src=".$results['Image']." class='image' height='120' width='140'>
                                                         </a>
                                                     </div>
                                                     <div class='spanFlex'>

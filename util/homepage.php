@@ -48,22 +48,22 @@ function throwError($errorId, $errorString, $sqlQuery) {
 
 if(!empty($_GET)) {
     if($_GET['request'] === "trending") {
-        $sql = "SELECT * FROM Articles WHERE IsPublished = 1 AND ArticleId != ".$mainArticleId." ";
+        $sql = "SELECT * FROM Article WHERE IsPublished = 1 AND ArticleId != ".$mainArticleId." ";
         foreach($editorPicks as &$val) {
             $sql .= "AND ArticleID != ".$val." ";
         }
         $sql .= "AND PublishDate >= DATE(NOW()) - INTERVAL ".$trendingDaySpan." DAY AND Views > ".$trendingViewThreshold." ";
         $sql .= "LIMIT ".$trendingResultCap.";";
     } else if($_GET['request'] === "main") {
-        $sql = "SELECT * FROM Articles WHERE IsPublished =1 AND ArticleID = ".$mainArticleId.";";
+        $sql = "SELECT * FROM Article WHERE IsPublished =1 AND ArticleID = ".$mainArticleId.";";
     } else if($_GET['request'] === "editorpicks") {
-        $sql = "SELECT * FROM Articles WHERE IsPublished = 1 AND ArticleID = ".$editorPicks[0]." ";
+        $sql = "SELECT * FROM Article WHERE IsPublished = 1 AND ArticleID = ".$editorPicks[0]." ";
         $a = array_slice($editorPicks, 1); // Use the rest of the picks, except for the first item
         foreach($a as &$val) { // Gather results for all other specified editor picks
             $sql .= "OR ArticleID = ".$val." ";
         }
     } else if($_GET['request'] === "secondaryarticles") {
-        $sql = "SELECT * FROM Articles WHERE IsPublished = 1 AND PublishDate >= DATE(NOW()) - INTERVAL 7 DAY LIMIT ".$secondaryResultCap.";";
+        $sql = "SELECT * FROM Article WHERE IsPublished = 1 AND PublishDate >= DATE(NOW()) - INTERVAL 7 DAY LIMIT ".$secondaryResultCap.";";
     } else {
         throwError(1, "Invalid or empty GET request.", null);
     }
