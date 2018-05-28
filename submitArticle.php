@@ -40,14 +40,14 @@
       $db = dbConnect();
       $stmt = $db->stmt_init();
 
-      if (!$stmt->prepare("INSERT INTO Articles(Headline, Body, Category, AuthorID, Img) VALUES(?, ?, ?, ?, ?)"))
+      if (!$stmt->prepare("INSERT INTO Article(UserID, Headline, Body, Category, Image) VALUES(?, ?, ?, ?, ?)"))
       {
           echo "Error preparing statement: \n";
           print_r($stmt->error_list);
           exit;
       }
 
-      if (!$stmt->bind_param('sssis', $title, $body, $category, $authorid, $filepath))
+      if (!$stmt->bind_param('issss', $authorid, $title, $body, $category, $filepath))
       {
           echo "Error binding parameters: \n";
           print_r($stmt->error_list);
@@ -114,7 +114,7 @@
       $db = dbConnect();
       $stmt = $db->stmt_init();
 
-      if(!$stmt->prepare("SELECT Img FROM Articles WHERE Img=?")){
+      if(!$stmt->prepare("SELECT Image FROM Article WHERE Image=?")){
         echo "Error preparing statement: \n";
         print_r($stmt->error_list);
         exit;
@@ -152,7 +152,7 @@
 
     $stmt = $db->stmt_init();
 
-    if(!$stmt->prepare("SELECT UserID FROM Users WHERE Username=?")){
+    if(!$stmt->prepare("SELECT UserID FROM User WHERE Username=?")){
       echo "Error preparing statement: \n";
       print_r($stmt->error_list);
       exit;
