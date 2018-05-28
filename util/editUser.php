@@ -27,7 +27,7 @@ function getUserData($db)
 //    require_once ('util/db.php');
     // prepare statement
     $stmt = $db->stmt_init();
-    if (!$stmt->prepare("SELECT UserID, FirstName, LastName, Email, Username, Usertype FROM Users WHERE Username =?"))
+    if (!$stmt->prepare("SELECT UserID, FirstName, LastName, Email, Username, Usertype FROM User WHERE Username =?"))
     {
         echo "Error preparing statement: <br>";
         echo nl2br(print_r($stmt->error_list, true), false);
@@ -142,7 +142,7 @@ echo "<br>You must have persmissions to edit this user";
 <?php 
 if(isset($_POST['submit'])){ 
 $selected_radio = $_POST['role'];
-$query = "UPDATE Users SET Usertype = '".$selected_radio."' WHERE Username = ?";
+$query = "UPDATE User SET Usertype = '".$selected_radio."' WHERE Username = ?";
 
 // Refresh
 echo "<meta http-equiv='refresh' content='0'>";

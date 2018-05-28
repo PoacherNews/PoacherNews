@@ -23,7 +23,7 @@ function getUserData($db)
 //    require_once ('util/db.php');
     // prepare statement
     $stmt = $db->stmt_init();
-    if (!$stmt->prepare("SELECT ArticleID, Headline, Category, IsPublished  FROM Articles WHERE Headline =?"))
+    if (!$stmt->prepare("SELECT ArticleID, Headline, Category, IsPublished  FROM Article WHERE Headline =?"))
     {
         echo "Error preparing statement: <br>";
         echo nl2br(print_r($stmt->error_list, true), false);
@@ -123,7 +123,7 @@ if (!isset($data) || !$data)
 <?php 
 if(isset($_POST['submit'])){ 
 $selected_radio = $_POST['status'];
-$query = "UPDATE Articles SET IsPublished = '".$selected_radio."' WHERE Headline = ?";
+$query = "UPDATE Article SET IsPublished = '".$selected_radio."' WHERE Headline = ?";
 
 // Refresh
 echo "<meta http-equiv='refresh' content='0'>";

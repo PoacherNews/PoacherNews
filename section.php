@@ -29,7 +29,7 @@ Fix css (Resizing issues / min-width)
             <div class="secColumnPrimary">
 <?php
 include 'util/db.php';
-$query = "SELECT * FROM Articles WHERE Category='" . mysqli_real_escape_string($db, $_GET['Category']) . "' ORDER BY PublishDate DESC LIMIT 4";
+$query = "SELECT * FROM Article WHERE Category='" . mysqli_real_escape_string($db, $_GET['Category']) . "' ORDER BY PublishDate DESC LIMIT 3";
 $results = mysqli_query($db, $query) or die (mysqli_error());
 
 while($row = mysqli_fetch_assoc($results)){
@@ -37,7 +37,7 @@ if($row['IsPublished'] == 1) {
 $substr_value = substr($row['Body'],0,200).'...';
           echo "<article>
                 <div class='thumbnailPrimary'>
-                    <img src='{$row['Img']}' width='350' height='250'>
+                    <img src='{$row['Image']}' width='350' height='250'>
                 </div>
                 <div class='textPrimary'>
                     <h1 class='secHeadlinePrimary'><a href='/article.php?articleid={$row['ArticleID']}'>{$row['Headline']}</a></h1>

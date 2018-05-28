@@ -45,7 +45,7 @@ session_start(); ?>
                     <p>Published on <?php print date(DATE_RFC850, strtotime($articleData['PublishDate']))." &mdash; ".$articleData['Views']." Views"; ?></p>
                 </span>
                 <div class="articleImage">
-                    <img src="<?php print $articleData['Img'] ?>"/>
+                    <img src="<?php print $articleData['Image'] ?>"/>
                 </div>
                 <div class="articleBody">
                     <p><?php print $articleData['Body'] ?></p>
