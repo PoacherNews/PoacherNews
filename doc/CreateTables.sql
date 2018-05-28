@@ -1,7 +1,9 @@
-DROP TABLE IF EXISTS Users;
-DROP TABLE IF EXISTS Articles;
+DROP TABLE IF EXISTS Favorite;
+DROP TABLE IF EXISTS Comment;
+DROP TABLE IF EXISTS Article;
+DROP TABLE IF EXISTS User;
 
-CREATE TABLE Users (
+CREATE TABLE User (
     UserID INT AUTO_INCREMENT,
     FirstName VARCHAR(50),
     LastName VARCHAR(50),
@@ -9,19 +11,38 @@ CREATE TABLE Users (
     Username VARCHAR(50),
     Usertype VARCHAR(50) DEFAULT 'U',
     Password VARCHAR(255),
-    CONSTRAINT PKUsers PRIMARY KEY (UserID)
+    CONSTRAINT PKUser PRIMARY KEY (UserID)
 );
 
-CREATE TABLE Articles (
+CREATE TABLE Article (
     ArticleID INT AUTO_INCREMENT,
-    AuthorID INT,
+    UserID INT NULL,
     Headline VARCHAR(255),
     Body VARCHAR(10000),
     Category VARCHAR(50),
-    IsPublished BOOLEAN DEFAULT false,
     PublishDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Views MEDIUMINT(9),
-    Img VARCHAR(500) DEFAULT 'https://i.imgur.com/U469uHI.jpg',
-    FOREIGN KEY (AuthorID) REFERENCES Users (UserID),
-    CONSTRAINT PKArticles PRIMARY KEY (ArticleID)
+    Image VARCHAR(500) DEFAULT 'https://i.imgur.com/U469uHI.jpg',
+    IsDraft BOOLEAN DEFAULT true,
+    IsPublished BOOLEAN DEFAULT false,
+    FOREIGN KEY (UserID) REFERENCES User (UserID),
+    CONSTRAINT PKArticle PRIMARY KEY (ArticleID)
+);
+
+CREATE TABLE Comment (
+    CommentID INT,
+    UserID INT,
+    ArticleID INT,
+    FOREIGN KEY (UserID) REFERENCES User (UserID),
+    FOREIGN KEY (ArticleID) REFERENCES Article (ArticleID),
+    CONSTRAINT PKComment PRIMARY KEY (CommentID)
+
+);
+
+CREATE TABLE Favorite (
+    UserID INT,
+    ArticleID INT,
+    FOREIGN KEY (UserID) REFERENCES User (UserID),
+    FOREIGN KEY (ArticleID) REFERENCES Article (ArticleID),
+    CONSTRAINT PKFavorite PRIMARY KEY (UserID, ArticleID)
 );

@@ -56,7 +56,7 @@ function list_users()
 {
     include 'util/db.php';
     // query Users
-    $query = "SELECT UserID, FirstName, LastName, Email, Username, Usertype FROM Users";
+    $query = "SELECT UserID, FirstName, LastName, Email, Username, Usertype FROM User";
     // display
     display_table($db, $query, "Users");
     // done

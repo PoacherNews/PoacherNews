@@ -54,7 +54,7 @@ function handle_login() {
     // Build query: "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
     // Prepare statement
     $stmt = $db->stmt_init();
-    if (!$stmt->prepare("SELECT * FROM Users WHERE Username = ?"))
+    if (!$stmt->prepare("SELECT * FROM User WHERE Username = ?"))
     {
         echo "Error preparing statement: <br>";
         nl2br(print_r($stmt->error_list, true), false);
