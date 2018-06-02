@@ -23,7 +23,7 @@ INSERT INTO User (UserID, FirstName, LastName, Email, Username, Usertype, Passwo
 
 
 -- Article
-INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "10", "Tom got a small piece of pie.", "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "10", "Tom got a small piece of pie.", "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
 
 Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.
 
@@ -41,9 +41,9 @@ Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue ve
 
 Nullam accumsan lorem in dui. Cras ultricies mi eu turpis hendrerit fringilla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia. Nam pretium turpis et arcu.
 
-Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent adipiscing. Phasellus ullamcorper ipsum rutrum nunc. Nunc nonummy metus. Vestibulum volutpat pretium libero. Cras id dui. Aenean ut", "Sports", "2016-04-01", "10", "", "", "1");
+Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent adipiscing. Phasellus ullamcorper ipsum rutrum nunc. Nunc nonummy metus. Vestibulum volutpat pretium libero. Cras id dui. Aenean ut", "Sports", "2016-04-01", "10", "", "3.2", "0", "1");
     
-  INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "9", " She advised him to come back at once.", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+  INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "9", " She advised him to come back at once.", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
 Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
 
@@ -61,9 +61,9 @@ Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo
 
 Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione", "Entertainment", "2016-05-04", "20", "", "", "1");  
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione", "Entertainment", "2016-05-04", "20", "", "4.5", "0", "1");  
   
-  INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "8", "When I was little I had a car door slammed shut on my hand. I still remember it quite vividly.", "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness.
+  INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "8", "When I was little I had a car door slammed shut on my hand. I still remember it quite vividly.", "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness.
 
 No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful.
 
@@ -79,9 +79,9 @@ These cases are perfectly simple and easy to distinguish.
 
 In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided.
 
-But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that", "Politics", "2017-07-08", "30", "", "", "1");  
+But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that", "Politics", "2017-07-08", "30", "", "2.1", "0", "1");  
   
-  INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "7", "The quick brown fox jumps over the lazy dog.", "Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular.
+  INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "7", "The quick brown fox jumps over the lazy dog.", "Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular.
 
 Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules.
 
@@ -99,9 +99,9 @@ Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar pay
 
 Ma quande lingues coalesce, li grammatica del resultant lingue es plu simplic e regulari quam ti del coalescent lingues. Li nov lingua franca va esser plu simplic e regulari quam li existent Europan lingues.
 
-It va esser tam simplic quam Occidental in fact, it va esser Occidental. A un Angleso it va semblar un simplificat Angles, quam un skeptic Cambridge amico dit me que Occidental es. Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation", "Video", "2018-01-24", "40", "", "", "1");  
+It va esser tam simplic quam Occidental in fact, it va esser Occidental. A un Angleso it va semblar un simplificat Angles, quam un skeptic Cambridge amico dit me que Occidental es. Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation", "Video", "2018-01-24", "40", "", "4.4", "0", "1");  
   
-  INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "6", "Hurry!", "The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary.
+  INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "6", "Hurry!", "The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary.
 
 The languages only differ in their grammar, their pronunciation and their most common words.
 
@@ -119,9 +119,9 @@ The languages only differ in their grammar, their pronunciation and their most c
 
 To achieve this, it would be necessary to have uniform grammar, pronunciation and more common words. If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages.
 
-The new common language will be more simple and regular than the existing European languages. It will be as simple as Occidental; in fact, it will be Occidental. To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental is. The European languages are members of the same family. Their separate existence is a", "Video", "2018-12-10", "50", "", "", "1");  
+The new common language will be more simple and regular than the existing European languages. It will be as simple as Occidental; in fact, it will be Occidental. To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental is. The European languages are members of the same family. Their separate existence is a", "Video", "2018-12-10", "50", "", "3.6", "0", "1");  
   
-INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "6", "She did her best to help him.", "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.
+INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "6", "She did her best to help him.", "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.
 
 Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
 
@@ -139,9 +139,9 @@ Pityful a rethoric question ran over her cheek, then she continued her way. On h
 
 The copy warned the Little Blind Text, that where it came from it would have been rewritten a thousand times and everything that was left from its origin would be the word and and the Little Blind Text should turn around and return to its own, safe country.
 
-But nothing the copy said could convince her and so it didn’t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their", "Sports", "2016-03-03", "60", "", "", "");  
+But nothing the copy said could convince her and so it didn’t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their", "Sports", "2016-03-03", "60", "", "2.8", "1", "0");  
   
-INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "7", "Italy is my favorite country; in fact, I plan to spend two weeks there next year.", "A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.
+INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "7", "Italy is my favorite country; in fact, I plan to spend two weeks there next year.", "A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.
 
 I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine.
 
@@ -151,9 +151,9 @@ I should be incapable of drawing a single stroke at the present moment; and yet 
 
 When, while the lovely valley teems with vapour around me, and the meridian sun strikes the upper surface of the impenetrable foliage of my trees, and but a few stray gleams steal into the inner sanctuary, I throw myself down among the tall grass by the trickling stream; and, as I lie close to the earth, a thousand unknown plants are noticed by me: when I hear the buzz of the little world among the stalks, and grow familiar with the countless indescribable forms of the insects and flies, then I feel the presence of the Almighty, who formed us in his own image, and the breath of that universal love which bears and sustains us, as it floats around us in an eternity of bliss; and then, my friend, when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing, Oh, would I could describe these conceptions, could impress upon paper all that is living so full and warm within me, that it might be the mirror of my soul, as my soul is the mirror of the infinite God!
 
-O my friend -- but", "Local", "2017-09-22", "70", "", "", "");  
+O my friend -- but", "Local", "2017-09-22", "70", "", "4.7", "1", "0");  
   
-INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "8", "Joe made the sugar cookies; Susan decorated them.", "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin.
+INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "8", "Joe made the sugar cookies; Susan decorated them.", "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin.
 
 He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections.
 
@@ -171,9 +171,9 @@ Gregor then turned to look out the window at the dull weather. Drops of rain cou
 
 How about if I sleep a little bit longer and forget all this nonsense, he thought, but that was something he was unable to do because he was used to sleeping on his right, and in his present state couldn't get into that position.
 
-However hard he threw himself onto his right, he always rolled back to where he was. He must have tried it a hundred times, shut his eyes so that he wouldn't have to look at the floundering legs, and only stopped when", "Politics", "2018-02-17", "80", "", "", "");  
+However hard he threw himself onto his right, he always rolled back to where he was. He must have tried it a hundred times, shut his eyes so that he wouldn't have to look at the floundering legs, and only stopped when", "Politics", "2018-02-17", "80", "", "1.4", "1", "0");  
   
-INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "9", "The lake is a long way from here.", "The quick, brown fox jumps over a lazy dog. DJs flock by when MTV ax quiz prog. Junk MTV quiz graced by fox whelps. Bawds jog, flick quartz, vex nymphs.
+INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "9", "The lake is a long way from here.", "The quick, brown fox jumps over a lazy dog. DJs flock by when MTV ax quiz prog. Junk MTV quiz graced by fox whelps. Bawds jog, flick quartz, vex nymphs.
 
 Waltz, bad nymph, for quick jigs vex! Fox nymphs grab quick-jived waltz. Brick quiz whangs jumpy veldt fox. Bright vixens jump; dozy fowl quack.
 
@@ -191,9 +191,9 @@ Brawny gods just flocked up to quiz and vex him. Adjusting quiver and bow, Zompy
 
 Amazingly few discotheques provide jukeboxes. My girl wove six dozen plaid jackets before she quit. Six big devils from Japan quickly forgot how to waltz.
 
-Big July earthquakes confound zany experimental vow. Foxy parsons quiz and cajole the lovably dim wiki-girl. Have a pick: twenty six letters - no forcing a jumbled quiz! Crazy Fredericka bought many very exquisite opal jewels. Sixty zippers were quickly picked from the woven jute bag. A quick", "Opinion", "1017-11-07", "90", "", "", "");  
+Big July earthquakes confound zany experimental vow. Foxy parsons quiz and cajole the lovably dim wiki-girl. Have a pick: twenty six letters - no forcing a jumbled quiz! Crazy Fredericka bought many very exquisite opal jewels. Sixty zippers were quickly picked from the woven jute bag. A quick", "Opinion", "1017-11-07", "90", "", "1.1", "1", "0");  
 
-INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "10", "Check back tomorrow; I will see if the book has arrived.", "
+INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "10", "Check back tomorrow; I will see if the book has arrived.", "
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vehicula hendrerit dolor, ut feugiat eros luctus vel. Mauris odio orci, aliquam eu rhoncus et, facilisis nec nunc. Nullam a fermentum metus. Proin non massa aliquet, molestie augue a, ultricies mi. Suspendisse potenti. Integer pulvinar mi sapien, sed egestas nisl varius ut. Vestibulum a pretium ex. Mauris a augue ut justo convallis tempus. Interdum et malesuada fames ac ante ipsum primis in faucibus.
 
@@ -213,9 +213,9 @@ Integer in viverra libero. Proin varius ligula nec congue tempor. Ut at ultrices
 
 Donec iaculis neque at orci congue tempus. Aliquam nec mauris vestibulum, lobortis risus viverra, pretium dolor. Nulla rutrum leo et leo varius suscipit. Mauris eget laoreet massa, aliquet euismod odio. Aliquam a nisl ipsum. Praesent non molestie arcu. Proin sed iaculis libero. Integer molestie efficitur tortor in lacinia. Mauris dapibus nisl id tortor pellentesque suscipit. Morbi eget massa nibh. Pellentesque tincidunt elit ante. Donec egestas molestie interdum. Sed vel ligula quis orci laoreet facilisis et id velit.
 
-Donec malesuada rhoncus rutrum. Vivamus eleifend sit amet tortor tristique feugiat. Pellentesque pretium porta tempus. Ut in ornare lacus. Etiam facilisis urna libero, ut auctor est tempus ac. Etiam congue mauris ac quam mattis condimentum. Vestibulum arcu dui, pulvinar quis venenatis at, ultrices vel sem. Duis vel accumsan arcu, eu fringilla diam. Aenean ut risus vulputate, auctor risus a, efficitur diam. Curabitur efficitur, sapien vitae tempor aliquet, velit metus ultricies urna, eu tempus magna urna vel nunc. Donec lacinia justo a dapibus auctor. Nulla dignissim dui lectus, vitae suscipit nisi ornare ut. Nunc eget finibus est, sed feugiat enim. In hac habitasse platea dictumst. Nam tincidunt, augue id mattis commodo, ex velit scelerisque velit, a aliquet eros arcu et lorem. ", "Opinion", "2018-08-12", "100", "", "", "");
+Donec malesuada rhoncus rutrum. Vivamus eleifend sit amet tortor tristique feugiat. Pellentesque pretium porta tempus. Ut in ornare lacus. Etiam facilisis urna libero, ut auctor est tempus ac. Etiam congue mauris ac quam mattis condimentum. Vestibulum arcu dui, pulvinar quis venenatis at, ultrices vel sem. Duis vel accumsan arcu, eu fringilla diam. Aenean ut risus vulputate, auctor risus a, efficitur diam. Curabitur efficitur, sapien vitae tempor aliquet, velit metus ultricies urna, eu tempus magna urna vel nunc. Donec lacinia justo a dapibus auctor. Nulla dignissim dui lectus, vitae suscipit nisi ornare ut. Nunc eget finibus est, sed feugiat enim. In hac habitasse platea dictumst. Nam tincidunt, augue id mattis commodo, ex velit scelerisque velit, a aliquet eros arcu et lorem. ", "Opinion", "2018-08-12", "100", "", "2.9", "1", "0");
 
-INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "6", "testArticle11", "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "6", "testArticle11", "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
 
 Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.
 
@@ -233,9 +233,9 @@ Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue ve
 
 Nullam accumsan lorem in dui. Cras ultricies mi eu turpis hendrerit fringilla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia. Nam pretium turpis et arcu.
 
-Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent adipiscing. Phasellus ullamcorper ipsum rutrum nunc. Nunc nonummy metus. Vestibulum volutpat pretium libero. Cras id dui. Aenean ut", "Sports", "2016-03-01", "10", "", "", "1");
+Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent adipiscing. Phasellus ullamcorper ipsum rutrum nunc. Nunc nonummy metus. Vestibulum volutpat pretium libero. Cras id dui. Aenean ut", "Sports", "2016-03-01", "10", "", "5.0", "0", "1");
     
-INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "7", "testArticle12", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "7", "testArticle12", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
 Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
 
@@ -253,9 +253,9 @@ Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo
 
 Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione", "Entertainment", "2016-07-04", "20", "", "", "1");  
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione", "Entertainment", "2016-07-04", "20", "", "3.1", "0", "1");  
   
-INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "8", "testArticle13", "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness.
+INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "8", "testArticle13", "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness.
 
 No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful.
 
@@ -271,9 +271,9 @@ These cases are perfectly simple and easy to distinguish.
 
 In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided.
 
-But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that", "Politics", "2017-01-08", "30", "", "", "1");  
+But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that", "Politics", "2017-01-08", "30", "", "1.9", "0", "1");  
   
-INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "9", "testArticle14", "Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular.
+INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "9", "testArticle14", "Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular.
 
 Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules.
 
@@ -291,9 +291,9 @@ Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar pay
 
 Ma quande lingues coalesce, li grammatica del resultant lingue es plu simplic e regulari quam ti del coalescent lingues. Li nov lingua franca va esser plu simplic e regulari quam li existent Europan lingues.
 
-It va esser tam simplic quam Occidental in fact, it va esser Occidental. A un Angleso it va semblar un simplificat Angles, quam un skeptic Cambridge amico dit me que Occidental es. Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation", "Video", "2018-01-03", "40", "", "", "1");  
+It va esser tam simplic quam Occidental in fact, it va esser Occidental. A un Angleso it va semblar un simplificat Angles, quam un skeptic Cambridge amico dit me que Occidental es. Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation", "Video", "2018-01-03", "40", "", "0.4", "0", "1");  
   
-INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "10", "testArticle15", "The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary.
+INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "10", "testArticle15", "The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary.
 
 The languages only differ in their grammar, their pronunciation and their most common words.
 
@@ -311,9 +311,9 @@ The languages only differ in their grammar, their pronunciation and their most c
 
 To achieve this, it would be necessary to have uniform grammar, pronunciation and more common words. If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages.
 
-The new common language will be more simple and regular than the existing European languages. It will be as simple as Occidental; in fact, it will be Occidental. To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental is. The European languages are members of the same family. Their separate existence is a", "Video", "2018-08-21", "50", "", "", "1");  
+The new common language will be more simple and regular than the existing European languages. It will be as simple as Occidental; in fact, it will be Occidental. To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental is. The European languages are members of the same family. Their separate existence is a", "Video", "2018-08-21", "50", "", "0.7", "0", "1");  
   
-INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "6", "testArticle16", "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.
+INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "6", "testArticle16", "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.
 
 Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
 
@@ -331,9 +331,9 @@ Pityful a rethoric question ran over her cheek, then she continued her way. On h
 
 The copy warned the Little Blind Text, that where it came from it would have been rewritten a thousand times and everything that was left from its origin would be the word and and the Little Blind Text should turn around and return to its own, safe country.
 
-But nothing the copy said could convince her and so it didn’t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their", "Sports", "2016-02-13", "60", "", "", "");  
+But nothing the copy said could convince her and so it didn’t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their", "Sports", "2016-02-13", "60", "", "2.4", "1", "0");  
   
-INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "7", "testArticle17", "A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.
+INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "7", "testArticle17", "A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.
 
 I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine.
 
@@ -343,9 +343,9 @@ I should be incapable of drawing a single stroke at the present moment; and yet 
 
 When, while the lovely valley teems with vapour around me, and the meridian sun strikes the upper surface of the impenetrable foliage of my trees, and but a few stray gleams steal into the inner sanctuary, I throw myself down among the tall grass by the trickling stream; and, as I lie close to the earth, a thousand unknown plants are noticed by me: when I hear the buzz of the little world among the stalks, and grow familiar with the countless indescribable forms of the insects and flies, then I feel the presence of the Almighty, who formed us in his own image, and the breath of that universal love which bears and sustains us, as it floats around us in an eternity of bliss; and then, my friend, when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing, Oh, would I could describe these conceptions, could impress upon paper all that is living so full and warm within me, that it might be the mirror of my soul, as my soul is the mirror of the infinite God!
 
-O my friend -- but", "Local", "2017-07-15", "70", "", "", "");  
+O my friend -- but", "Local", "2017-07-15", "70", "", "3.3", "1", "0");  
   
-INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "8", "testArticle18", "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin.
+INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "8", "testArticle18", "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin.
 
 He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections.
 
@@ -363,9 +363,9 @@ Gregor then turned to look out the window at the dull weather. Drops of rain cou
 
 How about if I sleep a little bit longer and forget all this nonsense, he thought, but that was something he was unable to do because he was used to sleeping on his right, and in his present state couldn't get into that position.
 
-However hard he threw himself onto his right, he always rolled back to where he was. He must have tried it a hundred times, shut his eyes so that he wouldn't have to look at the floundering legs, and only stopped when", "Politics", "2018-04-04", "80", "", "", "");  
+However hard he threw himself onto his right, he always rolled back to where he was. He must have tried it a hundred times, shut his eyes so that he wouldn't have to look at the floundering legs, and only stopped when", "Politics", "2018-04-04", "80", "", "4.6", "1", "0");  
   
-INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "9", "testArticle19", "The quick, brown fox jumps over a lazy dog. DJs flock by when MTV ax quiz prog. Junk MTV quiz graced by fox whelps. Bawds jog, flick quartz, vex nymphs.
+INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "9", "testArticle19", "The quick, brown fox jumps over a lazy dog. DJs flock by when MTV ax quiz prog. Junk MTV quiz graced by fox whelps. Bawds jog, flick quartz, vex nymphs.
 
 Waltz, bad nymph, for quick jigs vex! Fox nymphs grab quick-jived waltz. Brick quiz whangs jumpy veldt fox. Bright vixens jump; dozy fowl quack.
 
@@ -383,9 +383,9 @@ Brawny gods just flocked up to quiz and vex him. Adjusting quiver and bow, Zompy
 
 Amazingly few discotheques provide jukeboxes. My girl wove six dozen plaid jackets before she quit. Six big devils from Japan quickly forgot how to waltz.
 
-Big July earthquakes confound zany experimental vow. Foxy parsons quiz and cajole the lovably dim wiki-girl. Have a pick: twenty six letters - no forcing a jumbled quiz! Crazy Fredericka bought many very exquisite opal jewels. Sixty zippers were quickly picked from the woven jute bag. A quick", "Opinion", "2017-01-19", "90", "", "", "");  
+Big July earthquakes confound zany experimental vow. Foxy parsons quiz and cajole the lovably dim wiki-girl. Have a pick: twenty six letters - no forcing a jumbled quiz! Crazy Fredericka bought many very exquisite opal jewels. Sixty zippers were quickly picked from the woven jute bag. A quick", "Opinion", "2017-01-19", "90", "", "2.9", "1", "0");  
 
-INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, IsDraft, IsPublished) VALUES ("", "10", "testArticle20", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vehicula hendrerit dolor, ut feugiat eros luctus vel. Mauris odio orci, aliquam eu rhoncus et, facilisis nec nunc. Nullam a fermentum metus. Proin non massa aliquet, molestie augue a, ultricies mi. Suspendisse potenti. Integer pulvinar mi sapien, sed egestas nisl varius ut. Vestibulum a pretium ex. Mauris a augue ut justo convallis tempus. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+INSERT INTO Article (ArticleID, UserID, Headline, Body, Category, PublishDate, Views, Image, ArticleRating, IsDraft, IsPublished) VALUES ("", "10", "testArticle20", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vehicula hendrerit dolor, ut feugiat eros luctus vel. Mauris odio orci, aliquam eu rhoncus et, facilisis nec nunc. Nullam a fermentum metus. Proin non massa aliquet, molestie augue a, ultricies mi. Suspendisse potenti. Integer pulvinar mi sapien, sed egestas nisl varius ut. Vestibulum a pretium ex. Mauris a augue ut justo convallis tempus. Interdum et malesuada fames ac ante ipsum primis in faucibus.
 
 Phasellus posuere tellus sit amet auctor hendrerit. Vivamus eget porta ex. Nunc vel urna in mauris convallis maximus et sed turpis. Vivamus posuere finibus nisl sit amet dignissim. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas ac luctus libero, vel rhoncus nisi. Nam quis sem quis felis rutrum pretium.
 
@@ -403,4 +403,4 @@ Integer in viverra libero. Proin varius ligula nec congue tempor. Ut at ultrices
 
 Donec iaculis neque at orci congue tempus. Aliquam nec mauris vestibulum, lobortis risus viverra, pretium dolor. Nulla rutrum leo et leo varius suscipit. Mauris eget laoreet massa, aliquet euismod odio. Aliquam a nisl ipsum. Praesent non molestie arcu. Proin sed iaculis libero. Integer molestie efficitur tortor in lacinia. Mauris dapibus nisl id tortor pellentesque suscipit. Morbi eget massa nibh. Pellentesque tincidunt elit ante. Donec egestas molestie interdum. Sed vel ligula quis orci laoreet facilisis et id velit.
 
-Donec malesuada rhoncus rutrum. Vivamus eleifend sit amet tortor tristique feugiat. Pellentesque pretium porta tempus. Ut in ornare lacus. Etiam facilisis urna libero, ut auctor est tempus ac. Etiam congue mauris ac quam mattis condimentum. Vestibulum arcu dui, pulvinar quis venenatis at, ultrices vel sem. Duis vel accumsan arcu, eu fringilla diam. Aenean ut risus vulputate, auctor risus a, efficitur diam. Curabitur efficitur, sapien vitae tempor aliquet, velit metus ultricies urna, eu tempus magna urna vel nunc. Donec lacinia justo a dapibus auctor. Nulla dignissim dui lectus, vitae suscipit nisi ornare ut. Nunc eget finibus est, sed feugiat enim. In hac habitasse platea dictumst. Nam tincidunt, augue id mattis commodo, ex velit scelerisque velit, a aliquet eros arcu et lorem. ", "Opinion", "2018-07-26", "100", "", "", "");
+Donec malesuada rhoncus rutrum. Vivamus eleifend sit amet tortor tristique feugiat. Pellentesque pretium porta tempus. Ut in ornare lacus. Etiam facilisis urna libero, ut auctor est tempus ac. Etiam congue mauris ac quam mattis condimentum. Vestibulum arcu dui, pulvinar quis venenatis at, ultrices vel sem. Duis vel accumsan arcu, eu fringilla diam. Aenean ut risus vulputate, auctor risus a, efficitur diam. Curabitur efficitur, sapien vitae tempor aliquet, velit metus ultricies urna, eu tempus magna urna vel nunc. Donec lacinia justo a dapibus auctor. Nulla dignissim dui lectus, vitae suscipit nisi ornare ut. Nunc eget finibus est, sed feugiat enim. In hac habitasse platea dictumst. Nam tincidunt, augue id mattis commodo, ex velit scelerisque velit, a aliquet eros arcu et lorem. ", "Opinion", "2018-07-26", "100", "", "5.0", "1", "0");
