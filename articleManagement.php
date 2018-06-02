@@ -29,6 +29,7 @@ function display_table($db, $query, $tablename)
     {
         echo "<th>$field->name</th>";
     }
+    echo "<th>Draft</th>";
     echo "<th>Pending</th>";
     echo "<th>Approved</th>";
 //    echo "<th>Submit</th>";
@@ -38,56 +39,89 @@ function display_table($db, $query, $tablename)
     while ($row = $result->fetch_assoc())
     {
         echo "<tr>\n";
+
         foreach ($row as $key => $r)
         {
+            if($key != 'IsPublished'){
             echo '<td>';
             if ($key == 'Headline') 
-		echo "<a href='util/editArticle.php?Headline=$r'>";
+            echo "<a href='util/editArticle.php?Headline=$r'>";
             echo $r;
             if ($key == 'Headline')
                 echo '</a>';
             echo '</td>'; 
+            }
+            
+            foreach ($row as $nextKey => $nextR)
+            {
+                if($key=='IsDraft' && $r==1)
+                {
+                    // DRAFT
+                    if($nextKey=='IsPublished' && $nextR==0)
+                    {
+                        echo '<td>';
+                        echo $nextR;
+                        echo '</td>';
+                        //echo "<td>Draft</td>";
+                        echo "<td style='text-align:center;'><i class='fa fa-circle' style='color:red'></i></td>";
+                        echo '<td></td>';
+                        echo '<td></td>';
+                    }
+                    // PENDING
+                    else if($nextKey=='IsPublished' && $nextR==1)
+                    {
+                        echo '<td>';
+                        echo $nextR;
+                        echo '</td>';
+                        echo '<td></td>';
+                        //echo"<td>Pending</td>";
+                        echo "<td style='text-align:center;'><i class='fa fa-circle' style='color:yellow'></i></td>";
+                        echo '<td></td>';
+                    }
+                }
+                
+                if($key=='IsDraft' && $r==0)
+                {
+                    // ERROR
+                    if($nextKey=='IsPublished' && $nextR==0)
+                    {
+                        echo '<td>';
+                        echo $nextR;
+                        echo '</td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        //echo "<td>Error</td>";
+                        echo "<td style='text-align:center;'><i class='fa fa-remove' style='color:black'></i></td>";
+                    }
+                    // APPROVED
+                    else if($nextKey=='IsPublished' && $nextR==1)
+                    {
+                        echo '<td>';
+                        echo $nextR;
+                        echo '</td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        //echo"<td>Approved</td>";
+                        echo "<td style='text-align:center;'><i class='fa fa-circle' style='color:green'></i></td>";
+                    }
+                }
+            }
         }
-	// PENDING
-	if($r==0){
-	    echo "<td style='text-align:center;'><i class='fa fa-circle' style='color:red'></i></td>";
-	}
-	else {
-//            echo "<td style='text-align:center;'><input type='checkbox' name='check_list[]' id='pending' value='0'></td>";
-	echo"<td></td>";
-	}
-	// APPROVED
-        if($r==1){
-            echo "<td style='text-align:center;'><i class='fa fa-check' style='color:green'></i></td>";
-        }
-        else {
-//            echo "<td style='text-align:center'><input type='checkbox' name='check_list[]' id='approved' value='1'></td>";
-		echo"<td></td>";
-        }
-	// SUBMIT
-//	    echo "<td>    <input type='submit' name='submit'/> </td>";	
-        
         echo "</tr>\n";
     }
     // close table
     echo "</tbody>\n</table>\n";
 	echo "</form>";
-//    $result->free();
-
-//if(isset($_POST['submit'])){ 
-//$selected_radio = $_POST['checkbox'];
-//$selected_radio = $_POST['status'];
-//echo "$selected_radio"; 
-//}
-
+    $result->free();
 }
 
-// displays Users as a table
-function list_users()
+// displays Articles as a table
+function list_articles()
 {
     include 'util/db.php';
     // query Users
-    $query = "SELECT ArticleID, Headline, Category, IsPublished FROM Article";
+    $query = "SELECT ArticleID, Headline, Category, IsDraft, IsPublished FROM Article";
     // display
     display_table($db, $query, "Articles");
     // done
@@ -125,11 +159,7 @@ table, th, td {
         <main>
             <h1>Manage Articles</h1>
             <div>
-<?php
-list_users();
-?>
-            
-            
+				<?php list_articles(); ?>
             </div>
         </main>
         <?php include 'includes/footer.html'; ?>
