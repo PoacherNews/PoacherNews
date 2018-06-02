@@ -8,7 +8,8 @@
     
     <?php
 		include 'util/loginCheck.php';
-		if (!$loggedin){
+		if (!$loggedin)
+		{
 			echo '<meta http-equiv="refresh" content="0; url=index.php">';
     		exit;
 		}
@@ -24,25 +25,28 @@
         <div class="PageColumn">
         <?php if($_SESSION['usertype'] == 'U' || $_SESSION['usertype'] == 'W' || $_SESSION['usertype'] == 'A') { ?>
 	       <div>
-               <h1 class="tools">Favorite Articles</h1>
+            	<h1 class="tools">User Tools</h1>
+            	<a href="/favorites.php">Favorites</a>
            </div>
         <?php } ?>
            
         <?php if($_SESSION['usertype'] == 'W' || $_SESSION['usertype'] == 'A') { ?>
             <div>   
-	       <h1 class="tools">Writer Tools</h1>
-               <a href="/editorpage.php">Editor Page</a>
+				<h1 class="tools">Writer Tools</h1>
+					<a href="/editorpage.php">Editor Page</a>
+					<br>
+					<a href="/editorHistory.php">Editor History</a>
 	        </div>
         <?php } ?>
       
         <?php if($_SESSION['usertype'] == 'A') { ?>
             <div>
-                <h1 class="tools">Admin Tools</h1>
-		<a href="/userManagement.php">Manage Users</a>
-		<br>
-                <a href="/articleManagement.php">Manage Articles</a>
+				<h1 class="tools">Admin Tools</h1>
+					<a href="/userManagement.php">Manage Users</a>
+					<br>
+                	<a href="/articleManagement.php">Manage Articles</a>
             </div>
-            <?php } ?>
+        <?php } ?>
         </div>
             <div class="PageBorder"></div>
         </div>
