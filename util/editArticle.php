@@ -23,7 +23,7 @@ function getUserData($db)
 //    require_once ('util/db.php');
     // prepare statement
     $stmt = $db->stmt_init();
-    if (!$stmt->prepare("SELECT ArticleID, Headline, Category, IsPublished  FROM Article WHERE Headline =?"))
+    if (!$stmt->prepare("SELECT ArticleID, Headline, Category, IsDraft, IsPublished  FROM Article WHERE Headline =?"))
     {
         echo "Error preparing statement: <br>";
         echo nl2br(print_r($stmt->error_list, true), false);
@@ -88,6 +88,7 @@ if (!isset($data) || !$data)
                         <th>ArticleID</th>
                         <th>Headline</th>
                         <th>Category</th>
+                        <th>IsDraft</th>
                         <th>IsPublished</th>
                     </tr>
                 </thead>
@@ -96,24 +97,184 @@ if (!isset($data) || !$data)
                         <td><?php echo $data['ArticleID']; ?></td>
                         <td><?php echo $data['Headline']; ?></td>
                         <td><?php echo $data['Category']; ?></td>
+                        <td><?php echo $data['IsDraft']; ?></td>
                         <td><?php echo $data['IsPublished']; ?></td>
                     </tr>
                 </tbody>
             </table>
             <h2>Article Options</h2>
 
-
+<!-- ERROR -->
 <form method="post" action="">
+    <legend>Error testing</legend>
+    <div>
+        <input type="radio" name="status" id="error" value="0" /><label for="error">Set Error</label><br />
+        <input type="radio" name="status" id="error" value="1" /><label for="error">Error to Draft</label><br />
+        <input type="radio" name="status" id="error" value="2" /><label for="error">Error to Pending</label><br />
+        <input type="radio" name="status" id="error" value="3" /><label for="error">Error to Approved</label><br />
+    </div>
 
-<legend>IsPublished</legend>
-<div>
-<input type="radio" name="status" id="pending" value="0" /><label for="pending">Pending</label><br />
-<input type="radio" name="status" id="approved" value="1" /><label for="approved">Approved</label><br />
-</div>
+    <div>
+        <input type="submit" name="ErrorSubmit" id="ErrorSubmit" value="Submit" />
+    </div>
+</form>
+          
+<?php 
+if(isset($_POST['ErrorSubmit']))
+{
+    $selected_radio = $_POST['status'];
+    // SET ERROR
+    if($selected_radio == 0)
+    {
+        $query = "UPDATE Article SET IsDraft = 0, IsPublished = 0 WHERE Headline = ?";
+    }
+    // Refactor  ($data['IsDraft'] == 0 &&   $data['IsPublished'] == 0) statements together
+    // Add error message
+    // ERROR TO DRAFT
+    else if($selected_radio == 1 && ($data['IsDraft'] == 0 &&   $data['IsPublished'] == 0))
+    {
+        $query = "UPDATE Article SET IsDraft = 1, IsPublished = 0 WHERE Headline = ?";
+    }
+    // ERROR TO PENDING
+    else if($selected_radio == 2 && ($data['IsDraft'] == 0 &&   $data['IsPublished'] == 0))
+    {
+        $query = "UPDATE Article SET IsDraft = 1, IsPublished = 1 WHERE Headline = ?";
+    }
+    // ERROR TO APPROVED
+    else if($selected_radio == 3 && ($data['IsDraft'] == 0 &&   $data['IsPublished'] == 0))
+    {
+        $query = "UPDATE Article SET IsDraft = 0, IsPublished = 1 WHERE Headline = ?";
+    }
+    
+    // Refresh
+    echo "<meta http-equiv='refresh' content='0'>";
+    //include 'util/db.php';
+    // prepare statement
+    $stmt = $db->stmt_init();
+    if (!$stmt->prepare($query))
+    {
+        echo "Error preparing statement: <br>";
+        echo nl2br(print_r($stmt->error_list, true), false);
+        return;
+    }
+    // bind username
+    if (!$stmt->bind_param('s', $data['Headline']))
+    {
+        echo "Error binding parameters: <br>";
+        echo nl2br(print_r($stmt->error_list, true), false);
+        return;
+    }
+    // query database
+    if (!$stmt->execute())
+    {
+        echo "Error executing query: <br>";
+        echo nl2br(print_r($stmt->error_list, true), false);
+        return;
+    }
+    // done
+    $stmt->close();
+}?>
+<br>
+<br> 
 
-<div>
-<input type="submit" name="submit" id="submit" value="Submit" />
-</div>
+<!-- ISDRAFT -->
+<form method="post" action="">
+    <legend>IsDraft</legend>
+    <div>
+        <input type="radio" name="status" id="draft" value="0" /><label for="draft">Draft to Pending</label><br />
+        <input type="radio" name="status" id="draft" value="1" /><label for="draft">Pending to Draft</label><br />
+        <input type="radio" name="status" id="draft" value="2" /><label for="draft">Approved to Draft</label><br />
+        <input type="checkbox" name="confirm" id="confirm" value="Confirm"/><label>Confirm draft state change</label>
+    </div>
+
+    <div>
+        <input type="submit" name="DraftSubmit" id="DraftSubmit" value="Submit" />
+    </div>
+</form>
+          
+<?php 
+if(isset($_POST['DraftSubmit']))
+{
+    if(!isset($_POST['confirm']))
+    {
+        echo"Please confirm draft state change";
+    }
+    else 
+    {
+        $selected_radio = $_POST['status'];
+        // Fix ERROR
+        // ERROR TESTING
+        if($data['IsDraft'] == 0 && $data['IsPublished'] == 0)
+        {
+            echo "Error. Article is in error state. Please update to continue.";
+        }              
+        //ERROR
+//       else if(($data['IsDraft'] == 0 && $data['IsPublished'] == 1))
+//       {
+//          echo "Error. Article is in approved state. Please update to continue.";
+//       }  
+        else 
+        {
+            // DRAFT TO PENDING
+            if($selected_radio == 0 && ($data['IsDraft'] == 1 && $data['IsPublish'] == 0))
+            {
+                $query = "UPDATE Article SET IsDraft = 1, IsPublished = 1 WHERE Headline = ?";
+            }
+            // PENDING TO DRAFT
+            else if($selected_radio == 1 && ($data['IsDraft'] == 1 &&   $data['IsPublished'] == 1))
+            {
+                $query = "UPDATE Article SET IsDraft = 1, IsPublished = 0 WHERE Headline = ?";
+            }
+            // APPROVED TO DRAFT
+            else if($selected_radio == 2 && ($data['IsDraft'] == 0 &&   $data['IsPublished'] == 1))
+            {
+                $query = "UPDATE Article SET IsDraft = 1, IsPublished = 0 WHERE Headline = ?";
+            }
+    
+            // Refresh
+            echo "<meta http-equiv='refresh' content='0'>";
+            //include 'util/db.php';
+            // prepare statement
+            $stmt = $db->stmt_init();
+            if (!$stmt->prepare($query))
+            {
+                echo "Error preparing statement: <br>";
+                echo nl2br(print_r($stmt->error_list, true), false);
+                return;
+            }
+            // bind username
+            if (!$stmt->bind_param('s', $data['Headline']))
+            {
+                echo "Error binding parameters: <br>";
+                echo nl2br(print_r($stmt->error_list, true), false);
+                return;
+            }
+            // query database
+            if (!$stmt->execute())
+            {
+                echo "Error executing query: <br>";
+                echo nl2br(print_r($stmt->error_list, true), false);
+                return;
+            }
+            // done
+            $stmt->close();
+        }
+    }
+}?>
+<br>
+<br>            
+            
+<!-- ISPUBLISHED -->            
+<form method="post" action="">
+    <legend>IsPublished</legend>
+    <div>
+        <input type="radio" name="status" id="published" value="0" /><label for="published">Approved to Pending</label><br />
+        <input type="radio" name="status" id="published" value="1" /><label for="published">Pending to Approved</label><br />
+    </div>
+
+    <div>
+        <input type="submit" name="PublishedSubmit" id="PublishedSubmit" value="Submit" />
+    </div>
 </form>
 
 <form action="../articleManagement.php">
@@ -121,39 +282,61 @@ if (!isset($data) || !$data)
 </form>
 
 <?php 
-if(isset($_POST['submit'])){ 
-$selected_radio = $_POST['status'];
-$query = "UPDATE Article SET IsPublished = '".$selected_radio."' WHERE Headline = ?";
-
-// Refresh
-echo "<meta http-equiv='refresh' content='0'>";
-
-//include 'util/db.php';
-// prepare statement
-$stmt = $db->stmt_init();
-if (!$stmt->prepare($query))
+if(isset($_POST['PublishedSubmit']))
 {
-    echo "Error preparing statement: <br>";
-    echo nl2br(print_r($stmt->error_list, true), false);
-    return;
-}
-// bind username
-if (!$stmt->bind_param('s', $data['Headline']))
-{
-    echo "Error binding parameters: <br>";
-    echo nl2br(print_r($stmt->error_list, true), false);
-    return;
-}
-// query database
-if (!$stmt->execute())
-{
-    echo "Error executing query: <br>";
-    echo nl2br(print_r($stmt->error_list, true), false);
-    return;
-}
-// done
-$stmt->close();
-$db->close();
+    $selected_radio = $_POST['status'];
+    
+    // ERROR TESTING
+    if($data['IsDraft'] == 0 && $data['IsPublished'] == 0)
+    {
+        echo "Error. Article is in error state. Please update to continue.";
+    }              
+    //ERROR
+    else if($data['IsDraft'] == 1 && $data['IsPublished'] == 0)
+    {
+        echo "Error. Article is in draft state. Please update to continue.";
+    }   
+    else 
+    {
+        //APPROVED TO PENDING
+        if($selected_radio == 0 && ($data['IsDraft'] == 0 && $data['IsPublished'] == 1))
+        {
+            $query = "UPDATE Article SET IsDraft = 1, IsPublished = 1 WHERE Headline = ?";
+        }
+        //PENDING TO APPROVED
+        else if($selected_radio == 1 && ($data['IsDraft'] == 1 && $data['IsPublished'] == 1))
+        {
+            $query = "UPDATE Article SET IsDraft = 0, IsPublished = 1 WHERE Headline = ?";
+        }
+        // Refresh
+        echo "<meta http-equiv='refresh' content='0'>";
+        //include 'util/db.php';
+        // prepare statement
+        $stmt = $db->stmt_init();
+        if (!$stmt->prepare($query))
+        {
+            echo "Error preparing statement: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        // bind username
+        if (!$stmt->bind_param('s', $data['Headline']))
+        {
+            echo "Error binding parameters: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        // query database
+        if (!$stmt->execute())
+        {
+            echo "Error executing query: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        // done
+        $stmt->close();
+        $db->close();
+    }
 } ?>
 
         </main>
