@@ -1,67 +1,159 @@
 /* HEADER */
-
-header {
+.header {
     width: 100%;
-    min-width: 800px;
-    height: 200px;
-    background-color:aliceblue;
+    min-width: 100vh;
+    height: 10vh;
+	background: #83a8f0;
+	background: linear-gradient(140deg, #83A8F0 0%, #BDD4E7 50%, #8693AB 75%);
+}
+
+.hdrflxr {
     display: flex;
-    border: solid 1px;
-    border-radius: 20px 20px 0px 0px;
+    flex-direction: row;
 }
 
-.hdrLeft, .hdrRight{
-    width: 25%;
+#hdrlft, #hdrrt {
+    display: flex;
+    flex-direction: column;
+    width: 25vw;
+    height: 10vh; /*Same height as header*/
 }
 
-.hdrRight {
-    padding-right: 10px;
+#hdrmid {
+    display: flex; 
+    flex-direction: column;
+    width: 50vw;
+    height: 10vh; /*Same height as header*/
+	display: inline-block;
 }
 
-.hdrRight > a {
+/* TITLE */
+.hdrTitle {
+    font-family: 'Do Hyeon', sans-serif;
+    font-size: 40px;
+    text-shadow: 4px 3px 2px #7E7F7F;
+	position: absolute;
+}
+
+.hdrctr {
+	width: 50%;
+	margin: 0 auto;
+	height: 100%;
+	max-height: 10vh;
+	white-space: nowrap;
+	
+}
+
+.hdrrtFlxr {
+	display: flex;
+	flex-direction: row;
+	height: 50%;
+}
+
+a.hdrA {
+    color: white;
+    text-decoration: none;
+}
+
+.hdrLogo {
+	/*height: 100%*/
+	position: relative;
+    width: 100px;
+   	margin:  auto auto auto auto;
+	display: inline-block;
+}
+
+
+/* LOGIN/SEARCH */
+
+.hdrlgn, .hdrsrc{
+    font-size: 40px;
+    margin: 20px 20px 0px 0px;
+    float: left;
+}
+
+.hdrrtFlxc {
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+	text-align: center;
+	line-height: 250%;
+}
+
+.hdrrtLgn, .hdrrtSgnUp {
+	width: 50%;
+}
+
+.hdrrtLgn {
+	margin: auto 0px auto auto;
+}
+
+.hdrrtSgnUp {
+	border: 1px solid #1864F7;
+	margin: auto auto auto 0px;	
+}
+
+
+
+.hdrrtSgnUp:hover {
+	background-color: #1864F7;
+	cursor: pointer;
+	
+}
+
+#hdrrt > a {
     display: block;
     float: right;
 }
 
-.hdrRight > .username {
+#hdrrt > .username {
     margin-top: 15px;
     font-family: sans-serif;
 }
 
-.hdrCenter {
-    width: 50%;
-    display: flex;
-}
-
-.hdrTitle {
-    font-family: 'Do Hyeon', sans-serif;
+#srcip{
+    width: 100%;;
+	height: 50%;
     float: left;
-    font-size: 70px;
-    text-shadow: 4px 3px 2px #7E7F7F;
-    margin: auto auto auto 20px;
+    background-repeat: no-repeat;
+    font-size: 14px;
+    padding: 12px 10px 12px 10px;
+    border: 1px solid #DDD;
+	display: none;
 }
 
-.hdrLogo {
-    width: 140px;
-    float: right;
-    height: 190px;
-    margin: auto 20px auto auto;
+form.src button {
+    float: left;
+    width: 10%;
+    padding: 12px 10px 12px 10px;
+    background-color: #83A8F0;
+    color: white;
+    font-size: 14px;
+    border: 1px solid #DDD;
+    border-left: none;
+    cursor: pointer;
 }
 
-.hdrLogin, .hdrSearch{
-    font-size: 40px;
-    margin: 20px 20px 0px 0px;
-    float: right;
+
+.fa:hover, .fa-search:hover {
+    cursor: pointer;
+	height: 100%;
 }
 
-.hdrLogin:hover, .hdrSearch:hover{
-    color: darkgray;
+#fade-insrc {
+  height: 100%;
+  width: 1px;
+  opacity: 0;
+  transition: all .75s ease;
 }
 
-a.hdrA {
-    color: inherit;
-    text-decoration: none;
+#fade-insrc.show {
+  	opacity: 1;
+  	height: 100%;
+  	width: 100%;
+	background-color: orange;
 }
+
 
 /* CREATE USER (LAYOUT) */
 
@@ -401,7 +493,7 @@ h2 {
 
 /* HOMEPAGE */
 
-.hpBody {
+#hpBody {
     overflow-x: scroll;
 }
 
@@ -591,34 +683,97 @@ section {
 
 /* NAVIGATION BAR */
 
-.navUl {
+#drpdwn {
+    margin: 10px 0px 0px 10px;
+    height: 20;
+    width: 15%;
+    overflow: hidden;   
+}
+
+#drpdwnIcon {
+    background-color: black;
+    height: 5px;
+    border-radius: 20px 20px 20px 20px;
+    margin-bottom: 5px;
+    width 70px;
+}
+
+#drpdwnNav {
+	position: absolute;
+    background-color: black;
+    height: 80vh;
     width: 100%;
-    min-width: 800px;
-    list-style-type: none;
-    margin: 0;
-    padding: 10px 0px;
-    overflow: hidden;
-    border: 1px solid #e7e7e7;
-    background-color: #f3f3f3;
+	min-width: 100vh;
+    display: none;
+    opacity: .9;
+	overflow: scroll;
+}
+.drpdwnFlxr {
+    display: flex;
+    flex-direction: row;
+}
+
+.drpdwnLink {
+    color: white;
+    text-decoration: none;
     text-align: center;
 }
 
-.navLi {
-    display: inline;
-    margin: 10px 0px;
-}
-            
-.navLi .navA {
-    color:dimgrey;
-    padding: 14px 16px;
-    width: 101px;
-    text-decoration: none;
-    font-family: sans-serif;         
+.drpdwnLink:hover {
+    color: #83A8F0;
 }
 
-.navLi .navA:hover {
-    background-color: #ddd;
+.drpdwnFlxc {
+    display: flex;
+    flex-direction: column;
+    width: 33.33%;
+    height: 50vh;
 }
+
+.drpdwnCont {
+    text-decoration: underline;
+    text-decoration-color: #83A8F0;
+    color: white;
+    text-align: center;
+}
+
+
+/* Navigation Bar */
+#navbar {
+	overflow: hidden;
+  	background-color: #f3f3f3;
+	text-align: center;
+	width: 100%;
+	min-width: 100vh;
+	list-style-type: none;
+    margin: 0;
+    padding: 10px 0px;
+	opacity: .8;
+}
+
+#navbar a {
+  	display: inline;
+  	color: black;
+  	text-align: center;
+  	padding: 14px 16px;
+  	text-decoration: none;
+  	font-size: 17px;
+	font-family: sans-serif;
+	margin-right: auto auto auto auto;
+	width: 101px;
+}
+
+#navbar a:hover {
+  background-color: #ddd;
+}
+
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
     
 /* LOGIN */
 
