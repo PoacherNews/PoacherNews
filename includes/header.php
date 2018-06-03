@@ -1,10 +1,18 @@
 <header class="header">
     <div class="hdrflxr">
         <div id="hdrlft">
-            <div id="drpdwn">
-                <div id="drpdwnIcon"></div>
-                <div id="drpdwnIcon"></div>
-                <div id="drpdwnIcon"></div>
+            <div class="hdrlftFlxr">
+                <div id="drpdwn">
+                    <div id="drpdwnIcon"></div>
+                    <div id="drpdwnIcon"></div>
+                    <div id="drpdwnIcon"></div>
+                </div>
+            </div>
+            
+            <div class="hdrlftFlxr">
+                <!--href="/search.php" -->
+                <a><i class="fa fa-search"></i></a>
+                <input type="text" id="srcip" placeholder="What are you looking for?" name="searchBar">
             </div>
         </div>
         <div id="hdrmid">
@@ -31,19 +39,15 @@
                     </a>
                 </div>
             </div>
-            <div class="hdrrtFlxr">
-                <!--href="/search.php" -->
-                <a><i class="fa fa-search"></i></a>
-                <input type="text" id="srcip" placeholder="What are you looking for?" name="searchBar">
-            </div>
-            <!--
+            
+        
             <?php
                 if($_SESSION['loggedin']) {
                     print "<a href=\"/logout.php\"><i class=\"fa fa-sign-out\"></i></a>";
                     print "<a class=\"username\" href=\"/userpage.php\">{$_SESSION['username']}</a>"; //TODO: Link to user's userpage 
                 }
             ?>
-            -->
+            
         </div>
     </div>
 </header>
