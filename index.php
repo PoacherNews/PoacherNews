@@ -100,7 +100,7 @@
             }
         </script>
     </head>
-<body class="hpBody">
+<body id="hpBody">
     
     <?php
         include 'includes/header.php';
