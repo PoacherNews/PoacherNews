@@ -50,6 +50,12 @@
 	height: 50%;
 }
 
+.hdrlftFlxr {
+	display: flex;
+	flex-direction: row;
+	height: 50%;
+}
+
 a.hdrA {
     color: white;
     text-decoration: none;
