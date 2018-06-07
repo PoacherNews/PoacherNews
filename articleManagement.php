@@ -132,7 +132,9 @@ function list_articles()
 <!DOCTYPE html>
 <html lang="en">
     <head>
-	   <?php include 'includes/globalHead.html' ?>
+        <?php include 'includes/globalHead.html' ?>
+        <link rel="stylesheet" href="res/css/profile.css">
+        <link rel="stylesheet" href="res/css/profileNav.css">
     </head>
 
 <style>
@@ -156,12 +158,33 @@ table, th, td {
 	    	include 'includes/header.php';
             include 'includes/nav.php';
         ?>
+        
+        <div class="user">
+            <div class="picture">
+                (Profile Picture)
+            </div>
+            
+            <div class="info">
+                (User Information)
+            </div>
+        </div>
+        
+        <div class="nav">
+            <?php
+                $current = 'manageArticles';
+                include 'includes/profileNav.php';
+            ?>
+        </div>
+        
+        <div class="display">
         <main>
             <h1>Manage Articles</h1>
             <div>
 				<?php list_articles(); ?>
             </div>
         </main>
+        </div>
+        
         <?php include 'includes/footer.html'; ?>
     </body>
 </html>
