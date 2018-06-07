@@ -1,7 +1,5 @@
-<?php session_start();
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+<?php
+    session_start();
  ?>
 <!-- TODO: 
 Fix css (Resizing issues / min-width)
@@ -10,6 +8,7 @@ Fix css (Resizing issues / min-width)
 <html>
     <head>
 	   <?php include 'includes/globalHead.html' ?>
+       <link rel="stylesheet" href="res/css/section.css">
     </head>
     
     <body>
@@ -18,7 +17,7 @@ Fix css (Resizing issues / min-width)
             include 'includes/nav.php';
         ?>
         
-        <p id="secName">Section</p>
+        <p id="secName"><?php echo $_GET['Category'] ?></p>
 
         <!-- containerPrimary Head -->
         <section class="secPrimary">
