@@ -69,6 +69,8 @@ if (!isset($data) || !$data)
 <html lang="en">
     <head>
 	   <?php include '../includes/globalHead.html' ?>
+        <link rel="stylesheet" href="../res/css/profile.css">
+        <link rel="stylesheet" href="../res/css/profileNav.css">
         <title><?php echo $data['Headline']; ?> | Edit Article</title>
     </head>
     <body>
@@ -77,6 +79,25 @@ if (!isset($data) || !$data)
             include '../includes/nav.php';
             //include '../includes/footer.html';
         ?>
+        
+        <div class="user">
+            <div class="picture">
+                (Profile Picture)
+            </div>
+            
+            <div class="info">
+                (User Information)
+            </div>
+        </div>
+        
+        <div class="nav">
+            <?php
+                $current = 'manageArticles';
+                include '../includes/profileNav.php';
+            ?>
+        </div>
+        
+        <div class="display">
         <main>
             <h1>Edit Article &#8216;<?php
             	echo "<a href='/article.php?articleid={$data['ArticleID']}'>"; 
@@ -340,6 +361,8 @@ if(isset($_POST['PublishedSubmit']))
 } ?>
 
         </main>
+        </div>
+        
         <?php include '../includes/footer.html'; ?>
     </body>
 </html>

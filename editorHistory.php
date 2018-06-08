@@ -93,7 +93,9 @@ function list_approved()
 <!DOCTYPE html>
 <html lang="en">
     <head>
-	   <?php include 'includes/globalHead.html' ?>
+        <?php include 'includes/globalHead.html' ?>
+        <link rel="stylesheet" href="res/css/profile.css">
+        <link rel="stylesheet" href="res/css/profileNav.css">
     </head>
 
 <style>
@@ -110,12 +112,32 @@ function list_approved()
 	    	include 'includes/header.php';
             include 'includes/nav.php';
         ?>
+        
+        <div class="user">
+            <div class="picture">
+                (Profile Picture)
+            </div>
+            
+            <div class="info">
+                (User Information)
+            </div>
+        </div>
+        
+        <div class="nav">
+            <?php
+                $current = 'editorHistory';
+                include 'includes/profileNav.php';
+            ?>
+        </div>
+        
+        <div class="display">
         <h1>Drafts</h1> 
             <?php list_drafts(); ?>
         <h1>Pending</h1> 
             <?php list_pending(); ?>
         <h1>Approved</h1>
         <?php list_approved(); ?>
+        </div>
         
         <?php include 'includes/footer.html'; ?>
     </body>
