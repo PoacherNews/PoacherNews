@@ -22,25 +22,21 @@
             </div>
         </div>
         <div id="hdrrt">
-            <div class="hdrrtFlxr">
-               
-
-                <a href="/login.php"><i class="fa fa-user-circle"></i></a>
-                
-
-                <div class="hdrrtFlxc">
-                    <a href="/login.php">
-                        <div class="hdrrtLgn">Sign In</div>
-                    </a>
+            <span class="lgnLink">Need an account?<b> Log In</b>
+                <div class="lgnDrpdwn-content">
+                    <p>Login in here!</p>
+                    <form action="/util/handleLogin.php" method="POST">
+                        <input type="text" id="username" name="username" placeholder="Username"><br>
+                        <input type="password" id="password" name="password" placeholder="Password"><br>
+                        <input type="submit" name="submit" value="Submit">
+                    </form>
+                    <hr>
+                    <button>
+                        <a href="/createUser.php">Sign Up</a>
+                    </button>
                 </div>
-                <div class="hdrrtFlxc">
-                    <a href="/createUser.php">
-                        <div class="hdrrtSgnUp">Sign Up</div>
-                    </a>
-                </div>
-            </div>
+            </span>
             
-        
             <?php
                 if($_SESSION['loggedin']) {
                     print "<a href=\"/logout.php\"><i class=\"fa fa-sign-out\"></i></a>";
@@ -51,3 +47,13 @@
         </div>
     </div>
 </header>
+<script>
+    function drpdwnLgn() {
+        var x = document.getElementById("lgnDrpdwn");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>

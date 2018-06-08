@@ -78,33 +78,60 @@ a.hdrA {
     float: left;
 }
 
-.hdrrtFlxc {
-	display: flex;
-	flex-direction: column;
-	width: 50%;
-	text-align: center;
-	line-height: 250%;
+.lgnLink {
+    margin: auto auto auto auto;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.hdrrtLgn, .hdrrtSgnUp {
-	width: 50%;
+.lgnLink:hover {
+    text-decoration: underline;
+    cursor: pointer;
 }
 
-.hdrrtLgn {
-	margin: auto 0px auto auto;
+.lgnDrpdwn-content { 
+    position: absolute;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    border: 1px solid black;
+    text-align: center;
+    z-index: 1;
+    min-width: 180px;
+    background-color: white;
+    display: none;
 }
 
-.hdrrtSgnUp {
-	border: 1px solid #1864F7;
-	margin: auto auto auto 0px;	
+.lgnLink:hover .lgnDrpdwn-content {
+    display: block;
 }
 
+.lgnDrpdwn-content a {
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    text-decoration: none;
+    display: block;
+}
 
+.lgnDrpdwn-content a:hover {
+    text-decoration: underline;
+}
 
-.hdrrtSgnUp:hover {
-	background-color: #1864F7;
-	cursor: pointer;
-	
+.lgnDrpdwn-content hr {
+    margin: auto auto auto auto;
+}
+
+.lgnDrpdwn-content form {
+    align-content: center;
+    justify-content: center;
+}
+
+.lgnDrpdwn-content p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+.lgnDrpdwn-content input {
+    margin: auto auto 10px auto;
+    height: 20px;
 }
 
 #hdrrt > a {
@@ -693,7 +720,8 @@ section {
     margin: 10px 0px 0px 10px;
     height: 20;
     width: 15%;
-    overflow: hidden;   
+    overflow: hidden;
+    max-width: 35px;
 }
 
 #drpdwnIcon {
