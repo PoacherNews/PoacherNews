@@ -71,19 +71,12 @@ a.hdrA {
 
 
 /* LOGIN/SEARCH */
-
-.hdrlgn, .hdrsrc{
-    font-size: 40px;
-    margin: 20px 20px 0px 0px;
-    float: left;
-}
-
-.lgnLink {
+.lgnLink, .username {
     margin: auto auto auto auto;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.lgnLink:hover {
+.lgnLink:hover, .username:hover {
     text-decoration: underline;
     cursor: pointer;
 }
@@ -111,12 +104,13 @@ a.hdrA {
     display: block;
 }
 
-.lgnDrpdwn-content a:hover {
+.lgnDrpdwn-content > a:hover {
     text-decoration: underline;
 }
 
 .lgnDrpdwn-content hr {
     margin: auto auto auto auto;
+    opacity: 0.5;
 }
 
 .lgnDrpdwn-content form {
@@ -127,25 +121,80 @@ a.hdrA {
 .lgnDrpdwn-content p {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
+    cursor: auto;
 }
 
 .lgnDrpdwn-content input {
     margin: auto auto 10px auto;
-    height: 20px;
+    padding: 5px 10px 5px; 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
-#hdrrt > a {
+.lgnDrpdwn-content input[type="submit"] {
+    background: #83A8F0;
+    color: white;
+    cursor: pointer;
+}
+
+.lgnDrpdwn-content button {
+    margin: auto auto 10px auto;
+    padding: 5px 10px 5px; 10px;
+    border: 1px solid #83A8F0;
+    background-color: white;
+    color: #83A8F0;
+    border-radius: 4px;
+}
+
+.lgnDrpdwn-content button:hover {
+    border: 1px solid #1864F7;
+    background-color: #83A8F0;
+    opacity: 0.5;
+}
+
+.username-content {
+    position: absolute;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    border: 1px solid black;
+    text-align: center;
+    z-index: 1;
+    min-width: 180px;
+    background-color: white;
+    display: none;
+}
+
+.username:hover .username-content {
     display: block;
-    float: right;
 }
 
-#hdrrt > .username {
-    margin-top: 15px;
-    font-family: sans-serif;
+.username-content a {
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    text-decoration: none;
+    display: block;
+    padding: 10px 0px 10px 0px;
+
+}
+
+.username-content p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    cursor: auto;
+}
+
+.username-content a[href="/profile.php"]:hover, a[href="/help.php"]:hover, a[href="/settings.php"]:hover, a[href="/logout.php"]:hover {
+    background-color: #83A8F0;
+    color: white;
+}
+
+.username-content hr {
+    margin: auto auto auto auto;
+    opacity: 0.5;
 }
 
 #srcip{
-    width: 100%;;
+    width: 100%;
 	height: 50%;
     float: left;
     background-repeat: no-repeat;
@@ -154,6 +203,8 @@ a.hdrA {
     border: 1px solid #DDD;
 	display: none;
 }
+
+
 
 form.src button {
     float: left;
