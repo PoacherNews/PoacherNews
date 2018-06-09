@@ -1,3 +1,7 @@
+<?php
+    include 'util/loginCheck.php';
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
