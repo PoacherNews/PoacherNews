@@ -26,7 +26,7 @@ session_start(); ?>
             if(!$articleData) {
                 redirectHome();
             }
-            if($articleData['IsPublished'] == 0 && $_SESSION['usertype'] != "A") { // Only allow admins to view unPublished articles
+            if($articleData['IsSubmitted'] == 0 && $_SESSION['usertype'] != "A") { // Only allow admins to view unPublished articles
                 redirectHome();
             }
             
@@ -38,7 +38,7 @@ session_start(); ?>
                     <h1><?php print $articleData['Headline'] ?></h1>
                     <p> <!-- TODO: Link this to the author's page (or other articles by them? -->
                         <?php
-                            $authorData = getAuthorByID($articleData['AuthorID'], $db);
+                            $authorData = getAuthorByID($articleData['UserID'], $db);
                             print "Written by {$authorData['FirstName']} {$authorData['LastName']}";
                         ?>
                     </p>

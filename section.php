@@ -33,7 +33,7 @@ $query = "SELECT * FROM Article WHERE Category='" . mysqli_real_escape_string($d
 $results = mysqli_query($db, $query) or die (mysqli_error());
 
 while($row = mysqli_fetch_assoc($results)){
-if($row['IsPublished'] == 1) {
+if($row['IsSubmitted'] == 1) {
 $substr_value = substr($row['Body'],0,200).'...';
           echo "<article>
                 <div class='thumbnailPrimary'>

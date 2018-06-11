@@ -27,7 +27,7 @@ CREATE TABLE Article (
     Image VARCHAR(500) DEFAULT 'https://i.imgur.com/U469uHI.jpg',
     ArticleRating DOUBLE DEFAULT 0,
     IsDraft BOOLEAN DEFAULT true,
-    IsPublished BOOLEAN DEFAULT false,
+    IsSubmitted BOOLEAN DEFAULT false,
     FOREIGN KEY (UserID) REFERENCES User (UserID),
     CONSTRAINT PKArticle PRIMARY KEY (ArticleID)
 );
@@ -63,7 +63,7 @@ CREATE TABLE Rating (
 );
 
 CREATE TABLE Featured (
-    FeaturedType ENUM('EditorPick'),
+    FeaturedType ENUM('EditorPick', 'Main'),
     ArticleID INT,
     FOREIGN KEY (ArticleID) REFERENCES Article (ArticleID),
     CONSTRAINT PKFeatured PRIMARY KEY (FeaturedType)
