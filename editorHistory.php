@@ -58,7 +58,7 @@ function list_drafts()
     $userid = $_SESSION['userid'];
     include 'util/db.php';
     // query Users
-    $query = "SELECT ArticleID, Headline FROM Article JOIN User ON Article.UserID = User.UserID WHERE (IsDraft=1 AND IsPublished=0) AND Article.UserID = '$userid'";
+    $query = "SELECT ArticleID, Headline FROM Article JOIN User ON Article.UserID = User.UserID WHERE (IsDraft=1 AND IsSubmitted=0) AND Article.UserID = '$userid'";
     //  AND Article.UserID = '$username'
     // display
     display_table($db, $query, "Drafts");
@@ -70,7 +70,7 @@ function list_pending()
     $userid = $_SESSION['userid'];
     include 'util/db.php';
     // query Users
-    $query = "SELECT ArticleID, Headline FROM Article JOIN User ON User.UserID = Article.UserID WHERE (IsDraft=1 AND IsPublished=1) AND Article.UserID = '$userid'";
+    $query = "SELECT ArticleID, Headline FROM Article JOIN User ON User.UserID = Article.UserID WHERE (IsDraft=1 AND IsSubmitted=1) AND Article.UserID = '$userid'";
     //  AND Article.UserID = '$username'
     // display
     display_table($db, $query, "Pending");
@@ -82,7 +82,7 @@ function list_approved()
     $userid = $_SESSION['userid'];
     include 'util/db.php';
     // query Users
-    $query = "SELECT ArticleID, Headline FROM Article INNER JOIN User ON User.UserID = Article.UserID WHERE (IsDraft=0 AND IsPublished=1) AND Article.UserID = '$userid'";
+    $query = "SELECT ArticleID, Headline FROM Article INNER JOIN User ON User.UserID = Article.UserID WHERE (IsDraft=0 AND IsSubmitted=1) AND Article.UserID = '$userid'";
     //  AND Article.UserID = '$username'
     // display
     display_table($db, $query, "Approved");

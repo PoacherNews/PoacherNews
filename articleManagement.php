@@ -42,7 +42,7 @@ function display_table($db, $query, $tablename)
 
         foreach ($row as $key => $r)
         {
-            if($key != 'IsPublished'){
+            if($key != 'IsSubmitted'){
             echo '<td>';
             if ($key == 'Headline') 
             echo "<a href='util/editArticle.php?Headline=$r'>";
@@ -57,7 +57,7 @@ function display_table($db, $query, $tablename)
                 if($key=='IsDraft' && $r==1)
                 {
                     // DRAFT
-                    if($nextKey=='IsPublished' && $nextR==0)
+                    if($nextKey=='IsSubmitted' && $nextR==0)
                     {
                         echo '<td>';
                         echo $nextR;
@@ -68,7 +68,7 @@ function display_table($db, $query, $tablename)
                         echo '<td></td>';
                     }
                     // PENDING
-                    else if($nextKey=='IsPublished' && $nextR==1)
+                    else if($nextKey=='IsSubmitted' && $nextR==1)
                     {
                         echo '<td>';
                         echo $nextR;
@@ -83,7 +83,7 @@ function display_table($db, $query, $tablename)
                 if($key=='IsDraft' && $r==0)
                 {
                     // ERROR
-                    if($nextKey=='IsPublished' && $nextR==0)
+                    if($nextKey=='IsSubmitted' && $nextR==0)
                     {
                         echo '<td>';
                         echo $nextR;
@@ -95,7 +95,7 @@ function display_table($db, $query, $tablename)
                         echo "<td style='text-align:center;'><i class='fa fa-remove' style='color:black'></i></td>";
                     }
                     // APPROVED
-                    else if($nextKey=='IsPublished' && $nextR==1)
+                    else if($nextKey=='IsSubmitted' && $nextR==1)
                     {
                         echo '<td>';
                         echo $nextR;
@@ -121,7 +121,7 @@ function list_articles()
 {
     include 'util/db.php';
     // query Users
-    $query = "SELECT ArticleID, Headline, Category, IsDraft, IsPublished FROM Article";
+    $query = "SELECT ArticleID, Headline, Category, IsDraft, IsSubmitted FROM Article";
     // display
     display_table($db, $query, "Articles");
     // done
