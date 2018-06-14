@@ -54,7 +54,7 @@
                 /* Makes an article DOM object and populates elements for page display.
                    Accepts a JSON formatted string object for parsing.
                 */                
-                if($.isArray(rowData)) { // This is an encapsulated JSON object
+                if($.isArray(rowData)) { // In case this is an encapsulated JSON object
                     rowData = rowData[0];
                 }
                 if(rowData.hasOwnProperty('errorId')) {
