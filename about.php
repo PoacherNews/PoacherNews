@@ -1,11 +1,83 @@
+<?php
+    include 'util/loginCheck.php';
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
 	<?php include 'includes/globalHead.html' ?>
     </head>
+	<style>
+		.abtDivLeft {
+			border-left: 1px solid grey;
+			height: auto;
+			height: 100vh;
+			float: left;
+			margin-left: 20%;
+			margin-right: 30px;
+		}
+
+		.abtDivRight {
+			border-right: 1px solid grey;
+			height: 100vh;
+			float: right;
+			margin-right: 20%;
+			margin-left: 30px;
+		}
+
+		.abtDivh {
+			margin-right: 50%;
+			margin-left: 23%;
+			border: 3px solid black;
+			border-radius: 10%;
+			text-decoration: underline;
+		}
+
+		.adbDivp {
+			border: 3px solid black;
+			margin-left: 23%;
+		}
+
+
+		#abtTitleId {
+			text-align: center;
+			font-size: 40px;
+			text-decoration: underline;
+		}
+
+		.abtHead1 {
+			padding-left: 20px;
+			font-family: serif;
+		}
+
+		.abtVl {
+			border-left: 2px solid #83A8F0;
+			height: 15px;
+			display: inline;
+			margin: 20px;
+		}
+
+		p.abtPar {
+			padding-left: 20px;
+			font-family: serif;
+			font-size: 26px;
+		}
+
+		.abtHr {
+			width: 100%;
+			margin-bottom: 0%;
+			border: 1px dashed grey;
+		}
+
+		#abtDivAds {
+			background-color: antiquewhite;
+			text-align: center;
+			font-size: 30px;
+			height: 20vh;
+		}
+	</style>
     <body>
         <?php 
-			include 'util/loginCheck.php';
             include 'includes/header.php';
             include 'includes/nav.php';
         ?>

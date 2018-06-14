@@ -1,3 +1,7 @@
+<?php
+    include 'util/loginCheck.php';
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,9 +10,63 @@
     <link rel="stylesheet" type="text/css" href="login.css">
     <link href="https://fonts.googleapis.com/css?family=Do+Hyeon" rel="stylesheet">
 </head>
+	<style>
+		.loginWrap {
+			width: 400px;
+			background-color: beige;
+			height: 200px;
+			border: solid 2px lightblue;
+			border-radius: 20px 0px;
+			padding: 10px;
+		}
+
+		img.loginImg {
+			width: 140px;
+			float: right;
+			height: 190px;
+			padding: 5px;
+		}
+
+		h1.loginH1, label.loginLbl{
+			font-family: 'Do Hyeon', sans-serif
+		}
+
+		#loginUsername, #loginPassword {
+			margin: 5px;
+			border: solid 1px lightblue;
+			width: 100%;
+			border-radius: 5px;
+			height: 20px;
+			font-size: 12px;
+		}
+
+		.loginButtons, .loginWrap, .loginRelative {
+			margin: 10px auto;
+			display: flex;
+		}
+
+		.loginButtons {
+			width: 426px;
+			height: 50px;
+			align-items: center;
+		}
+
+		.loginButtons a.loginA, .loginButtons input.loginInput {
+			height: 50px;
+			width: 50%;
+			text-decoration: none;
+			color: black;
+			text-align: center;
+			background-color: lightblue;
+			font-family: 'Do Hyeon', sans-serif;
+			font-size: 20px;
+			border: solid 2px black;
+			margin: 5px;
+			border-radius: 5px;
+		}
+	</style>
 <body>
     <?php
-    	include 'util/loginCheck.php';
 
 // Check to see if the user has already logged in
 if(empty($_SESSION['loggedin'])) {
