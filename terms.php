@@ -1,54 +1,11 @@
-<?php
-    include 'util/loginCheck.php';
-?>
-
 <!DOCTYPE html>
 <html>
     <head>
 	<?php include 'includes/globalHead.html' ?>
     </head>
-	<style>
-		.termsDivLeft {
-			border-left: 1px solid grey;
-			height: auto;
-			height: 100vh;
-			float: left;
-			margin-left: 20%;
-			margin-right: 30px;
-		}
-
-		.termsDivRight {
-			border-right: 1px solid grey;
-			height: 100vh;
-			float: right;
-			margin-right: 20%;
-			margin-left: 30px;
-		}
-
-		#termsTitleId {
-			text-align: center;
-			font-size: 40px;
-			text-decoration: underline;
-		}
-
-		.termsP {
-			font-size: 20px;
-		}
-		.termsHr {
-			width: 100%;
-			margin-bottom: 0%;
-			border: 1px dashed grey;
-		}
-
-		#termsDivAds {
-			background-color: antiquewhite;
-			text-align: center;
-			font-size: 30px;
-			height: 20vh;
-		}
-	</style>
     <body>
         <?php 
+			include 'util/loginCheck.php';
             include 'includes/header.php';
             include 'includes/nav.php';
         ?>

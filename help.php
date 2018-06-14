@@ -1,68 +1,11 @@
-<?php
-    include 'util/loginCheck.php';
-?>
-
 <!DOCTYPE html>
 <html>
     <head>
 	<?php include 'includes/globalHead.html' ?>
     </head>
-	<style>
-		.helpDivLeft {
-			border-left: 1px solid grey;
-			height: auto;
-			height: 100vh;
-			float: left;
-			margin-left: 20%;
-			margin-right: 30px;
-		}
-
-		.helpDivRight {
-			border-right: 1px solid grey;
-			height: 100vh;
-			float: right;
-			margin-right: 20%;
-			margin-left: 30px;
-		}
-
-		#helpTitleId {
-			text-align: center;
-			font-size: 40px;
-			text-decoration: underline;
-		}
-
-		.helpHead1 {
-			padding-left: 20px;
-			font-family: serif;
-		}
-
-		.helpHead2 {
-			padding-left: 20px;
-			font-family: serif;
-		}
-
-		.helpVl {
-			border-left: 2px solid #83A8F0;
-			height: 15px;
-			display: inline;
-			margin: 20px;
-		}
-
-		.helpHr {
-			width: 100%;
-			margin-bottom: 0%;
-			border: 1px dashed grey;
-		}
-
-		#helpDivAds {
-			background-color: antiquewhite;
-			text-align: center;
-			font-size: 30px;
-			height: 20vh;
-		}
-	</style>
     <body>
-        <?php             
+        <?php 
+			include 'util/loginCheck.php';            
             include 'includes/header.php';
             include 'includes/nav.php';
         ?>
