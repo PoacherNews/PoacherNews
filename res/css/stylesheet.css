@@ -282,6 +282,38 @@ a.hdrA {
 /* END OF HEADER */
 
 
+/* SEARCH BAR */
+
+#searchbar {
+    z-index: 1;
+    background: #f3f3f3;
+    max-width: 100%;
+    min-width: 100vh;
+    list-style-type: none;
+    margin: 0;
+    padding: 20px 0px 10px 20px;
+    text-align: center;
+    opacity: 0.8;
+    display: none;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#searchbar input[type="text"] {
+    opacity: 1;
+    border-radius: 5px;
+    padding: 10px 15px 10px 15px;
+    min-width: 200px;
+    font-size: 14px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+}
+
+#searchbar > hr {
+    margin: 0px 20% 20px 20%;
+    max-width: 80%;
+	box-shadow: 0 20px 20px -20px #333;
+	border-bottom: 1px solid #1f1209;
+}
+
 /* CREATE USER (LAYOUT) */
 
 #titleText {
