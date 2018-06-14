@@ -41,9 +41,10 @@
     font-family: 'Do Hyeon', sans-serif;
     font-size: 50px;
     text-shadow: 4px 3px 2px #7E7F7F;
-	position: absolute;
-	text-align: center;
-	margin: 1% auto auto 0.5%;
+	  position: absolute;
+    text-align: center;
+    margin: 1% auto auto 0.5%;
+
 }
 
 .hdrctr {
@@ -373,7 +374,6 @@ p.ftCpyright {
     color: black;
 }
 
-/* DROPDOWN NAV */
 
 #drpdwn {
     margin: 10px 0px 0px 10px;
