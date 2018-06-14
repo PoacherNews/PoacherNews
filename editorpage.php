@@ -18,6 +18,39 @@ if (!$loggedin || ($_SESSION['usertype'] == 'U'))
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     </head>
+	<style>
+		.epWrapper {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+		}
+
+		.epWrapper > #epEditor { order: 2; }
+
+		#epEditor {
+			width: 85%;
+			margin: 0px auto;
+			padding: 25px;
+			font-family: "Helvetica Nue",Helvetica,sans-serif;
+		}
+
+		#epArticle-body > textarea {
+			min-width: 100%;
+			min-height: 500px;
+		}
+
+		#epButtons > .epButton-column {
+			float: left;
+			min-width: 10%;
+		}
+
+		#epBbuttons > .epButton-column > input {
+			min-width: 150px;
+			margin: 10px;
+			padding: 5px;
+			display: block;
+		}
+	</style>
     <body>
         <?php
             include 'includes/header.php';
