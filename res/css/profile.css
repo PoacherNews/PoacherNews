@@ -1,0 +1,49 @@
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: aliceblue;
+        }
+        
+        .user {
+            display: flex;
+            flex-direction: row;
+            align-self: center;
+            width: 80%;
+            height: 170px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        
+        .picture {
+            display: flex;
+            flex-direction: column;
+            background-color: crimson;
+            height: auto;
+            width: 30%;
+        }
+        
+        .info {
+            display: flex;
+            flex-direction: column;
+            width: 70%;
+            background-color: blueviolet;
+        }
+        
+        .nav {
+            display: flex;
+            flex-direction: column;
+            align-self: center;
+            width: 80%;
+        }
+        
+        .display {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            width: 80%;
+            align-self: center;
+        }

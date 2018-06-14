@@ -70,6 +70,42 @@ Fix css (Resizing issues / min-width)
     
     <p id="secName"><?php echo $_GET['Category'] ?></p>
 
+  <body>
+        <?php 
+            include 'includes/header.php';
+            include 'includes/nav.php';
+        ?>
+        
+        <p id="secName">Section</p>
+
+        <!-- containerPrimary Head -->
+        <section class="secPrimary">
+        <div class="secContainerPrimary">
+        <div class="secRowPrimary">
+            <div class="secBorderPrimary"></div>
+
+            <div class="secColumnPrimary">
+<?php
+include 'util/db.php';
+$query = "SELECT * FROM Article WHERE Category='" . mysqli_real_escape_string($db, $_GET['Category']) . "' ORDER BY PublishDate DESC LIMIT 3";
+$results = mysqli_query($db, $query) or die (mysqli_error());
+
+while($row = mysqli_fetch_assoc($results)){
+if($row['IsSubmitted'] == 1) {
+$substr_value = substr($row['Body'],0,200).'...';
+          echo "<article>
+                <div class='thumbnailPrimary'>
+                    <img src='{$row['Image']}' width='350' height='250'>
+                </div>
+                <div class='textPrimary'>
+                    <h1 class='secHeadlinePrimary'><a href='/article.php?articleid={$row['ArticleID']}'>{$row['Headline']}</a></h1>
+                    <p>$substr_value</p>
+                </div>
+            </article>";
+}
+}
+?>
+
     <!-- containerPrimary Head -->
     <section class="secPrimary">
     <div class="secContainerPrimary">

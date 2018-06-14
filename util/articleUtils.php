@@ -23,7 +23,7 @@ function getRelatedArticles($category, $excludeId, $db) {
 	/* Returns an array of MYSQL results.
 	   Intended for display in the three-column "Further Reading" section of the article page.
 	*/
-	$sql = "SELECT ArticleId,Headline,Body FROM Article WHERE IsPublished = 1 AND ArticleId != {$excludeId} AND Category = '{$category}' ORDER BY PublishDate DESC LIMIT 6;";
+	$sql = "SELECT ArticleId,Headline,Body FROM Article WHERE IsSubmitted = 1 AND ArticleId != {$excludeId} AND Category = '{$category}' ORDER BY PublishDate DESC LIMIT 6;";
 	$result = mysqli_query($db, $sql);
 	
 	$data = array();
