@@ -3,6 +3,7 @@
     width: 100%;
     min-width: 100vh;
     height: 10vh;
+    min-height: 10vh;
 	background: #83a8f0;
 	background: linear-gradient(140deg, #83A8F0 0%, #BDD4E7 50%, #8693AB 75%);
 }
@@ -19,6 +20,14 @@
     height: 10vh; /*Same height as header*/
 }
 
+.hdrlftFlxr {
+	display: flex;
+	flex-direction: row;
+	height: 55%;
+	min-width: 100%;
+}
+
+
 #hdrmid {
     display: flex; 
     flex-direction: column;
@@ -30,9 +39,11 @@
 /* TITLE */
 .hdrTitle {
     font-family: 'Do Hyeon', sans-serif;
-    font-size: 40px;
+    font-size: 50px;
     text-shadow: 4px 3px 2px #7E7F7F;
 	position: absolute;
+	text-align: center;
+	margin: 1% auto auto 0.5%;
 }
 
 .hdrctr {
@@ -44,16 +55,11 @@
 	
 }
 
-.hdrrtFlxr {
-	display: flex;
-	flex-direction: row;
-	height: 50%;
-}
 
-.hdrlftFlxr {
+.hdrlftFlxc {
 	display: flex;
-	flex-direction: row;
-	height: 50%;
+	flex-direction: column;
+	width: 50%;
 }
 
 a.hdrA {
@@ -64,8 +70,10 @@ a.hdrA {
 .hdrLogo {
 	/*height: 100%*/
 	position: relative;
+	height: 104.89px;
+	min-height: 104.89px;
     width: 100px;
-   	margin:  auto auto auto auto;
+   	margin:  auto auto auto 20%;
 	display: inline-block;
 }
 
@@ -81,19 +89,50 @@ a.hdrA {
     cursor: pointer;
 }
 
+.lgnLink .fa {
+    font-size: 15px;
+    width: 15px;
+    margin: auto auto auto auto;
+}
+
 .lgnDrpdwn-content { 
     position: absolute;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
     border: 1px solid black;
     text-align: center;
-    z-index: 1;
-    min-width: 180px;
+    z-index: 900;
+	float: left;
+	max-height: 273px;
     background-color: white;
     display: none;
+	border-radius: 4px;
+	right: 0;
 }
+
 
 .lgnLink:hover .lgnDrpdwn-content {
     display: block;
+}
+
+.lgnDrpdwn-content .dropdown-caret {
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    width: 18px;
+    height: 10px;
+    float: left;
+    overflow: hidden;
+}
+
+.dropdown-caret .caret-outer {
+    border-bottom: 10px solid #657786;
+    border-bottom-color: rgba(0,0,0,0.1);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    height: auto;
+    left: 0;
+    top: 0;
+    width: auto;
 }
 
 .lgnDrpdwn-content a {
@@ -129,15 +168,29 @@ a.hdrA {
     padding: 5px 10px 5px; 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+	min-width: 200px;
+	margin: auto 10px 10px 10px;
+    font-size: 16px;
 }
 
 .lgnDrpdwn-content input[type="submit"] {
-    background: #83A8F0;
-    color: white;
+	background: #83A8F0;
+	color: white;
+	border-radius: 100px;
     cursor: pointer;
+    font-size: 14px;
+	min-width: 250px;
+    line-height: 15px;
+    padding: 6px 16px;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+	margin: auto 10px 10px 10px;
 }
 
 .lgnDrpdwn-content button {
+	min-width: 250px;
+	border-radius: 100px;
     margin: auto auto 10px auto;
     padding: 5px 10px 5px; 10px;
     border: 1px solid #83A8F0;
@@ -161,6 +214,7 @@ a.hdrA {
     min-width: 180px;
     background-color: white;
     display: none;
+	right: 0;
 }
 
 .username:hover .username-content {
@@ -193,50 +247,39 @@ a.hdrA {
     opacity: 0.5;
 }
 
-#srcip{
-    width: 100%;
-	height: 50%;
-    float: left;
-    background-repeat: no-repeat;
-    font-size: 14px;
-    padding: 12px 10px 12px 10px;
-    border: 1px solid #DDD;
-	display: none;
+.srcIcn{
+	margin: 7px 0px 0px 20%;
+    width: 120px;
+	max-width: 120px;
+	min-width: 120px;
+    height: 25px;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+    padding: 0px 5px 6px 5px;
+    border: 1px solid black;
+    border-radius: 15px;
+	position: relative;
+    overflow: hidden;
+    
 }
 
+.srcIcn .fa {
+    font-size: 15px;
+    text-decoration: none;
+    margin: 0px 0px 0px 0px;
+	
+}
 
-
-form.src button {
-    float: left;
-    width: 10%;
-    padding: 12px 10px 12px 10px;
-    background-color: #83A8F0;
+.srcIcn:hover {
+    background: linear-gradient(-140deg, #83A8F0 0%, #BDD4E7 50%, #8693AB 75%);
     color: white;
-    font-size: 14px;
-    border: 1px solid #DDD;
-    border-left: none;
     cursor: pointer;
 }
-
 
 .fa:hover, .fa-search:hover {
     cursor: pointer;
-	height: 100%;
 }
-
-#fade-insrc {
-  height: 100%;
-  width: 1px;
-  opacity: 0;
-  transition: all .75s ease;
-}
-
-#fade-insrc.show {
-  	opacity: 1;
-  	height: 100%;
-  	width: 100%;
-	background-color: orange;
-}
+/* END OF HEADER */
 
 
 /* CREATE USER (LAYOUT) */
