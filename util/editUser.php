@@ -74,6 +74,8 @@ if (!isset($data) || !$data)
     <head>
 	   <?php
 		include '../includes/globalHead.html' ?>
+        <link rel="stylesheet" href="../res/css/profile.css">
+        <link rel="stylesheet" href="../res/css/profileNav.css">
         <title><?php echo $data['Username']; ?> | Edit User</title>
     </head>
     <body>
@@ -82,6 +84,25 @@ if (!isset($data) || !$data)
 	    	include '../includes/header.php';
             include '../includes/nav.php';
         ?>
+        
+        <div class="user">
+            <div class="picture">
+                (Profile Picture)
+            </div>
+            
+            <div class="info">
+                (User Information)
+            </div>
+        </div>
+        
+        <div class="nav">
+            <?php
+                $current = 'manageUsers';
+                include '../includes/profileNav.php';
+            ?>
+        </div>
+        
+        <div class="display">
         <main>
             <h1>Edit User &#8216;<?php echo $data['Username']; ?>&#8217;</h1>
             <table>
@@ -176,6 +197,8 @@ $db->close();
 } ?>
 
         </main>
+        </div>
+        
         <?php include '../includes/footer.html'; ?>
     </body>
 </html>

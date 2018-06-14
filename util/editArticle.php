@@ -23,7 +23,7 @@ function getUserData($db)
 //    require_once ('util/db.php');
     // prepare statement
     $stmt = $db->stmt_init();
-    if (!$stmt->prepare("SELECT ArticleID, Headline, Category, IsDraft, IsPublished  FROM Article WHERE Headline =?"))
+    if (!$stmt->prepare("SELECT ArticleID, Headline, Category, IsDraft, IsSubmitted  FROM Article WHERE Headline =?"))
     {
         echo "Error preparing statement: <br>";
         echo nl2br(print_r($stmt->error_list, true), false);
@@ -69,6 +69,8 @@ if (!isset($data) || !$data)
 <html lang="en">
     <head>
 	   <?php include '../includes/globalHead.html' ?>
+        <link rel="stylesheet" href="../res/css/profile.css">
+        <link rel="stylesheet" href="../res/css/profileNav.css">
         <title><?php echo $data['Headline']; ?> | Edit Article</title>
     </head>
     <body>
@@ -77,6 +79,25 @@ if (!isset($data) || !$data)
             include '../includes/nav.php';
             //include '../includes/footer.html';
         ?>
+        
+        <div class="user">
+            <div class="picture">
+                (Profile Picture)
+            </div>
+            
+            <div class="info">
+                (User Information)
+            </div>
+        </div>
+        
+        <div class="nav">
+            <?php
+                $current = 'manageArticles';
+                include '../includes/profileNav.php';
+            ?>
+        </div>
+        
+        <div class="display">
         <main>
             <h1>Edit Article &#8216;<?php
             	echo "<a href='/article.php?articleid={$data['ArticleID']}'>"; 
@@ -89,7 +110,7 @@ if (!isset($data) || !$data)
                         <th>Headline</th>
                         <th>Category</th>
                         <th>IsDraft</th>
-                        <th>IsPublished</th>
+                        <th>IsSubmitted</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -98,7 +119,7 @@ if (!isset($data) || !$data)
                         <td><?php echo $data['Headline']; ?></td>
                         <td><?php echo $data['Category']; ?></td>
                         <td><?php echo $data['IsDraft']; ?></td>
-                        <td><?php echo $data['IsPublished']; ?></td>
+                        <td><?php echo $data['IsSubmitted']; ?></td>
                     </tr>
                 </tbody>
             </table>
@@ -126,24 +147,24 @@ if(isset($_POST['ErrorSubmit']))
     // SET ERROR
     if($selected_radio == 0)
     {
-        $query = "UPDATE Article SET IsDraft = 0, IsPublished = 0 WHERE Headline = ?";
+        $query = "UPDATE Article SET IsDraft = 0, IsSubmitted = 0 WHERE Headline = ?";
     }
-    // Refactor  ($data['IsDraft'] == 0 &&   $data['IsPublished'] == 0) statements together
+    // Refactor  ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 0) statements together
     // Add error message
     // ERROR TO DRAFT
-    else if($selected_radio == 1 && ($data['IsDraft'] == 0 &&   $data['IsPublished'] == 0))
+    else if($selected_radio == 1 && ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 0))
     {
-        $query = "UPDATE Article SET IsDraft = 1, IsPublished = 0 WHERE Headline = ?";
+        $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 0 WHERE Headline = ?";
     }
     // ERROR TO PENDING
-    else if($selected_radio == 2 && ($data['IsDraft'] == 0 &&   $data['IsPublished'] == 0))
+    else if($selected_radio == 2 && ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 0))
     {
-        $query = "UPDATE Article SET IsDraft = 1, IsPublished = 1 WHERE Headline = ?";
+        $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 1 WHERE Headline = ?";
     }
     // ERROR TO APPROVED
-    else if($selected_radio == 3 && ($data['IsDraft'] == 0 &&   $data['IsPublished'] == 0))
+    else if($selected_radio == 3 && ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 0))
     {
-        $query = "UPDATE Article SET IsDraft = 0, IsPublished = 1 WHERE Headline = ?";
+        $query = "UPDATE Article SET IsDraft = 0, IsSubmitted = 1 WHERE Headline = ?";
     }
     
     // Refresh
@@ -204,12 +225,12 @@ if(isset($_POST['DraftSubmit']))
         $selected_radio = $_POST['status'];
         // Fix ERROR
         // ERROR TESTING
-        if($data['IsDraft'] == 0 && $data['IsPublished'] == 0)
+        if($data['IsDraft'] == 0 && $data['IsSubmitted'] == 0)
         {
             echo "Error. Article is in error state. Please update to continue.";
         }              
         //ERROR
-//       else if(($data['IsDraft'] == 0 && $data['IsPublished'] == 1))
+//       else if(($data['IsDraft'] == 0 && $data['IsSubmitted'] == 1))
 //       {
 //          echo "Error. Article is in approved state. Please update to continue.";
 //       }  
@@ -218,17 +239,17 @@ if(isset($_POST['DraftSubmit']))
             // DRAFT TO PENDING
             if($selected_radio == 0 && ($data['IsDraft'] == 1 && $data['IsPublish'] == 0))
             {
-                $query = "UPDATE Article SET IsDraft = 1, IsPublished = 1 WHERE Headline = ?";
+                $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 1 WHERE Headline = ?";
             }
             // PENDING TO DRAFT
-            else if($selected_radio == 1 && ($data['IsDraft'] == 1 &&   $data['IsPublished'] == 1))
+            else if($selected_radio == 1 && ($data['IsDraft'] == 1 &&   $data['IsSubmitted'] == 1))
             {
-                $query = "UPDATE Article SET IsDraft = 1, IsPublished = 0 WHERE Headline = ?";
+                $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 0 WHERE Headline = ?";
             }
             // APPROVED TO DRAFT
-            else if($selected_radio == 2 && ($data['IsDraft'] == 0 &&   $data['IsPublished'] == 1))
+            else if($selected_radio == 2 && ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 1))
             {
-                $query = "UPDATE Article SET IsDraft = 1, IsPublished = 0 WHERE Headline = ?";
+                $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 0 WHERE Headline = ?";
             }
     
             // Refresh
@@ -266,7 +287,7 @@ if(isset($_POST['DraftSubmit']))
             
 <!-- ISPUBLISHED -->            
 <form method="post" action="">
-    <legend>IsPublished</legend>
+    <legend>IsSubmitted</legend>
     <div>
         <input type="radio" name="status" id="published" value="0" /><label for="published">Approved to Pending</label><br />
         <input type="radio" name="status" id="published" value="1" /><label for="published">Pending to Approved</label><br />
@@ -287,26 +308,26 @@ if(isset($_POST['PublishedSubmit']))
     $selected_radio = $_POST['status'];
     
     // ERROR TESTING
-    if($data['IsDraft'] == 0 && $data['IsPublished'] == 0)
+    if($data['IsDraft'] == 0 && $data['IsSubmitted'] == 0)
     {
         echo "Error. Article is in error state. Please update to continue.";
     }              
     //ERROR
-    else if($data['IsDraft'] == 1 && $data['IsPublished'] == 0)
+    else if($data['IsDraft'] == 1 && $data['IsSubmitted'] == 0)
     {
         echo "Error. Article is in draft state. Please update to continue.";
     }   
     else 
     {
         //APPROVED TO PENDING
-        if($selected_radio == 0 && ($data['IsDraft'] == 0 && $data['IsPublished'] == 1))
+        if($selected_radio == 0 && ($data['IsDraft'] == 0 && $data['IsSubmitted'] == 1))
         {
-            $query = "UPDATE Article SET IsDraft = 1, IsPublished = 1 WHERE Headline = ?";
+            $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 1 WHERE Headline = ?";
         }
         //PENDING TO APPROVED
-        else if($selected_radio == 1 && ($data['IsDraft'] == 1 && $data['IsPublished'] == 1))
+        else if($selected_radio == 1 && ($data['IsDraft'] == 1 && $data['IsSubmitted'] == 1))
         {
-            $query = "UPDATE Article SET IsDraft = 0, IsPublished = 1 WHERE Headline = ?";
+            $query = "UPDATE Article SET IsDraft = 0, IsSubmitted = 1 WHERE Headline = ?";
         }
         // Refresh
         echo "<meta http-equiv='refresh' content='0'>";
@@ -340,6 +361,8 @@ if(isset($_POST['PublishedSubmit']))
 } ?>
 
         </main>
+        </div>
+        
         <?php include '../includes/footer.html'; ?>
     </body>
 </html>

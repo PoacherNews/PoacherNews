@@ -59,11 +59,10 @@ function list_favorites()
 <!DOCTYPE html>
 <html lang="en">
     <head>
-	   <?php include 'includes/globalHead.html' ?>
+        <?php include 'includes/globalHead.html' ?>
+        <link rel="stylesheet" href="res/css/profile.css">
+        <link rel="stylesheet" href="res/css/profileNav.css">
     </head>
-
-<style>
-</style>
 
     <body>
         <?php 
@@ -76,12 +75,32 @@ function list_favorites()
 	    	include 'includes/header.php';
             include 'includes/nav.php';
         ?>
+        
+        <div class="user">
+            <div class="picture">
+                (Profile Picture)
+            </div>
+            
+            <div class="info">
+                (User Information)
+            </div>
+        </div>
+        
+        <div class="nav">
+            <?php
+                $current = 'favorites';
+                include 'includes/profileNav.php';
+            ?>
+        </div>
+        
+        <div class="display">
         <h1>Favorites</h1> 
         <?php
             echo "unfinished. Action to favorite articles must be implemented first.";
             echo '<br>';
             list_favorites();
         ?>
+        </div>
         
         <?php include 'includes/footer.html'; ?>
     </body>

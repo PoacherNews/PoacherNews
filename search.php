@@ -50,7 +50,7 @@
                         $query = htmlspecialchars($query); 
                         $query = mysqli_real_escape_string($db, $query);
                         $raw_results = "SELECT * FROM Article
-                        WHERE IsPublished = 1 AND ((`Headline` LIKE '%".$query."%') OR (`Image` LIKE '%".$query."%'))";
+                        WHERE IsSubmitted = 1 AND ((`Headline` LIKE '%".$query."%') OR (`Image` LIKE '%".$query."%'))";
                         $test = mysqli_query($db, $raw_results);
                         echo "<div id='divTest'>";
                         
