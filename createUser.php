@@ -1,20 +1,59 @@
+<?php
+    include 'util/loginCheck.php';
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
 	   <?php include 'includes/globalHead.html' ?>
     </head>
+	<style>
+		#titleText {
+			text-align: center;
+			font-size: 72px;
+			font-family: serif;
+		}
+
+		#titleDiv {
+			background-color: aquamarine;
+			padding: -10px;
+		}
+
+		#mascotImage {
+			height: 300px;
+			width: 240px;
+			float: left;
+		}
+
+		#newUserForm {
+			border: 2px solid black;
+			border-radius: 10%;
+			padding: 10px;
+
+			display: flex;
+			justify-content: center;
+			flex-direction: column;
+			height: 300px;
+			float: right;            
+		}
+
+		#bodyDiv {
+			margin: auto;
+			width: 600px;
+		}
+		
+	</style>
     <body>
 
         <?php
-        	include 'util/loginCheck.php';
-// Check to see if the user has already logged in
-if(empty($_SESSION['loggedin'])) {
-    $loggedIn = false;
-} else { // The user is already logged in, so send them back to the index
-    echo "You are already logged in";
-    echo '<meta http-equiv="refresh" content="0; url=/index.php">';
-    exit;
-}
+			// Check to see if the user has already logged in
+			if(empty($_SESSION['loggedin'])) {
+				$loggedIn = false;
+			} else { // The user is already logged in, so send them back to the index
+				echo "You are already logged in";
+				echo '<meta http-equiv="refresh" content="0; url=/index.php">';
+				exit;
+			}
 
             include 'includes/header.php';
             include 'includes/nav.php';

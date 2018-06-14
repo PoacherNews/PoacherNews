@@ -1,3 +1,7 @@
+<?php
+    include 'util/loginCheck.php';
+?>
+
 <!DOCTYPE>
 <html>
 <head>
@@ -12,7 +16,6 @@
 </head>
 <body>
     <?php
-		include 'util/loginCheck.php';
         include 'includes/header.php';
         include 'includes/nav.php';
     ?>
@@ -21,7 +24,9 @@
             <div class="searchFlex">
                 <h1>Search Results</h1>
                 <form class="search" action="" method="GET">
-                    <input type="text" id="searchInput" placeholder="What are you looking for?" name="query"/>
+                    <?php
+                        print "<input type=\"text\" id=\"searchInput\" placeholder=\"What are you looking for?\" name=\"query\" value={$_GET['query']}>";
+                    ?>
                     <div class="buttonFlex">
                         <button type="submit"><i class="fa fa-search"></i></button>
                     </div>
@@ -50,7 +55,7 @@
                         $query = htmlspecialchars($query); 
                         $query = mysqli_real_escape_string($db, $query);
                         $raw_results = "SELECT * FROM Article
-                        WHERE IsSubmitted = 1 AND ((`Headline` LIKE '%".$query."%') OR (`Image` LIKE '%".$query."%'))";
+                        WHERE IsSubmitted = 1 AND ((`Headline` LIKE '%".$query."%') OR (`Body` LIKE '%".$query."%'))";
                         $test = mysqli_query($db, $raw_results);
                         echo "<div id='divTest'>";
                         
