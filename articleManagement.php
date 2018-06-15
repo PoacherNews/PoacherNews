@@ -27,11 +27,21 @@ function display_table($db, $query, $tablename)
     echo "<tr>\n";
     foreach ($fields as $field)
     {
-        echo "<th>$field->name</th>";
+        if($field->name != 'IsDraft')
+        {
+            if($field->name != 'IsSubmitted')
+            {
+                echo "<th>$field->name</th>";
+            }
+            else if($field->name == 'IsSubmitted')
+            {
+                echo "<th>Article State</th>";
+            }
+        }
     }
 //    echo "<th>Draft</th>";
     echo "<th>Pending</th>";
-    echo "<th>Submitted</th>";
+    echo "<th>Approved</th>";
     echo "<th>FeaturedType</th>";
 //    echo "<th>Submit</th>";
     echo "<tr>\n";
@@ -40,17 +50,20 @@ function display_table($db, $query, $tablename)
     while ($row = $result->fetch_assoc())
     {
         echo "<tr>\n";
-
         foreach ($row as $key => $r)
         {
-            if($key != 'IsSubmitted'){
-            echo '<td>';
-            if ($key == 'Headline') 
-            echo "<a href='util/editArticle.php?Headline=$r'>";
-            echo $r;
-            if ($key == 'Headline')
-                echo '</a>';
-            echo '</td>'; 
+            if($key != 'IsDraft')
+            {
+                if($key != 'IsSubmitted')
+                {
+                    echo '<td>';
+                    if ($key == 'Headline') 
+                    echo "<a href='util/editArticle.php?Headline=$r'>";
+                    echo $r;
+                    if ($key == 'Headline')
+                    echo '</a>';
+                    echo '</td>'; 
+                }
             }
             
             foreach ($row as $nextKey => $nextR)
@@ -60,10 +73,7 @@ function display_table($db, $query, $tablename)
                     // DRAFT
                     if($nextKey=='IsSubmitted' && $nextR==0)
                     {
-                        echo '<td>';
-                        echo $nextR;
-                        echo '</td>';
-                        //echo "<td>Draft</td>";
+                        echo "<td>Draft</td>";
                         echo "<td style='text-align:center;'><i class='fa fa-circle' style='color:red'></i></td>";
                         echo '<td></td>';
                         echo '<td></td>';
@@ -71,11 +81,8 @@ function display_table($db, $query, $tablename)
                     // PENDING
                     else if($nextKey=='IsSubmitted' && $nextR==1)
                     {
-                        echo '<td>';
-                        echo $nextR;
-                        echo '</td>';
+                        echo "<td>Pending</td>";
                         echo '<td></td>';
-                        //echo"<td>Pending</td>";
                         echo "<td style='text-align:center;'><i class='fa fa-circle' style='color:yellow'></i></td>";
                         echo '<td></td>';
                     }
@@ -86,24 +93,18 @@ function display_table($db, $query, $tablename)
                     // ERROR
                     if($nextKey=='IsSubmitted' && $nextR==0)
                     {
-                        echo '<td>';
-                        echo $nextR;
-                        echo '</td>';
+                        echo "<td>Error</td>";
                         echo '<td></td>';
                         echo '<td></td>';
                         echo '<td></td>';
-                        //echo "<td>Error</td>";
                         echo "<td style='text-align:center;'><i class='fa fa-remove' style='color:black'></i></td>";
                     }
                     // APPROVED
                     else if($nextKey=='IsSubmitted' && $nextR==1)
                     {
-                        echo '<td>';
-                        echo $nextR;
-                        echo '</td>';
+                        echo"<td>Approved</td>";
                         echo '<td></td>';
                         echo '<td></td>';
-                        //echo"<td>Approved</td>";
                         echo "<td style='text-align:center;'><i class='fa fa-circle' style='color:green'></i></td>";
                     }
                 }
