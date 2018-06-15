@@ -29,9 +29,10 @@ function display_table($db, $query, $tablename)
     {
         echo "<th>$field->name</th>";
     }
-    echo "<th>Draft</th>";
+//    echo "<th>Draft</th>";
     echo "<th>Pending</th>";
-    echo "<th>Approved</th>";
+    echo "<th>Submitted</th>";
+    echo "<th>FeaturedType</th>";
 //    echo "<th>Submit</th>";
     echo "<tr>\n";
     echo "</thead>\n<tbody>\n";
@@ -121,7 +122,7 @@ function list_articles()
 {
     include 'util/db.php';
     // query Users
-    $query = "SELECT ArticleID, Headline, Category, IsDraft, IsSubmitted FROM Article";
+    $query = "SELECT Article.ArticleID, Headline, Category, IsDraft, IsSubmitted, FeaturedType AS Draft FROM Article LEFT JOIN Featured ON Featured.ArticleID = Article.ArticleID";
     // display
     display_table($db, $query, "Articles");
     // done
@@ -143,14 +144,15 @@ h1 {
 }
 
 table {
-	margin-left:auto;
-	margin-right:auto;
+	margin-left:20px;
+	margin-right:20px;
 	border-collapse:collapse;
 }
 
 table, th, td {
 	border: 1px solid black;
 }
+    
 </style>
 
     <body>
