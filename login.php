@@ -1,3 +1,7 @@
+<?php
+    include 'util/loginCheck.php';
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,8 +12,6 @@
 </head>
 <body>
     <?php
-    	include 'util/loginCheck.php';
-
 // Check to see if the user has already logged in
 if(empty($_SESSION['loggedin'])) {
     $loggedIn = false;
