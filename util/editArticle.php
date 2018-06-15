@@ -110,7 +110,8 @@ if (!isset($data) || !$data)
                         <th>ArticleID</th>
                         <th>Headline</th>
                         <th>Category</th>
-                        <th>Article State</th>
+                        <th>IsDraft</th>
+                        <th>IsSubmitted</th>
                         <th>Featured State</th>
                     </tr>
                 </thead>
@@ -119,24 +120,8 @@ if (!isset($data) || !$data)
                         <td><?php echo $data['ArticleID']; ?></td>
                         <td><?php echo $data['Headline']; ?></td>
                         <td><?php echo $data['Category']; ?></td>
-                        <td><?php 
-                            if($data['IsDraft'] == 1 && $data['IsSubmitted'] == 0)
-                            {
-                                echo "Draft";
-                            }
-                            else if($data['IsDraft'] == 1 && $data['IsSubmitted'] == 1)
-                            {
-                                echo "Pending";
-                            }
-                            else if($data['IsDraft'] == 0 && $data['IsSubmitted'] == 1)
-                            {
-                                echo "Approved";
-                            }
-                            else if($data['IsDraft'] == 0 && $data['IsSubmitted'] == 0)
-                            {
-                                echo "Error";
-                            }?>
-                        </td>
+                        <td><?php echo $data['IsDraft']; ?></td>
+                        <td><?php echo $data['IsSubmitted']; ?></td>
                         <td><?php 
                             if($data['FeaturedType'] == '')
                             {
@@ -376,7 +361,6 @@ if(isset($_POST['PublishedSubmit']))
         }
         // done
         $stmt->close();
-        $db->close();
     }
 } ?>
 <br>
@@ -401,57 +385,68 @@ if(isset($_POST['featuredTypeSubmit']))
 {
     $selected_radio = $_POST['status'];
     $articleid = $data['ArticleID'];
-    // NONE
-    if($selected_radio == 0)
-    {
-        $query = "DELETE FROM Featured WHERE ArticleID = ?";
-    }
-    // MAIN
-    if($selected_radio == 1 && $data['FeaturedType'] == '')
-    {
-        $query = "INSERT INTO Featured (FeaturedType, ArticleID) VALUES ('Main', ?)";
-    }
-    else if($selected_radio == 1 && $data['FeaturedType'] == 'EditorPick')
-    {
-        $query = "UPDATE Featured SET FeaturedType = 'Main' WHERE ArticleID = ?";
-    }
-    // EdITOR PICK
-    if($selected_radio == 2 && $data['FeaturedType'] == '')
-    {
-        $query = "INSERT INTO Featured (FeaturedType, ArticleID) VALUES ('EditorPick', ?)";
-    }
-    else if($selected_radio == 2 && $data['FeaturedType'] == 'Main')
-    {
-        $query = "UPDATE Featured SET FeaturedType = 'EditorPick' WHERE ArticleID = ?";
-    }
     
-    // Refresh
-    echo "<meta http-equiv='refresh' content='0'>";
-    //include 'util/db.php';
-    // prepare statement
-    $stmt = $db->stmt_init();
-    if (!$stmt->prepare($query))
+    if(($data['IsDraft'] == 1 && $data['IsSubmitted'] == 0) || $data['IsDraft'] == 1 && $data['IsSubmitted'] == 1)
     {
-        echo "Error preparing statement: <br>";
-        echo nl2br(print_r($stmt->error_list, true), false);
-        return;
+        echo "Error. Article must first be approved to change feature type.";
     }
-    // bind username
-    if (!$stmt->bind_param('i', $data['ArticleID']))
+    else 
     {
-        echo "Error binding parameters: <br>";
-        echo nl2br(print_r($stmt->error_list, true), false);
-        return;
+        // NONE
+        if($selected_radio == 0)
+        {
+            $query = "DELETE FROM Featured WHERE ArticleID = ?";
+        }
+        // MAIN
+        if($selected_radio == 1 && $data['FeaturedType'] == '')
+        {
+            $query = "INSERT INTO Featured (FeaturedType, ArticleID) VALUES ('Main', ?)";
+        }
+        else if($selected_radio == 1 && $data['FeaturedType'] == 'EditorPick')
+        {
+            $query = "UPDATE Featured SET FeaturedType = 'Main' WHERE ArticleID = ?";
+        }
+        // EdITOR PICK
+        if($selected_radio == 2 && $data['FeaturedType'] == '')
+        {
+            $query = "INSERT INTO Featured (FeaturedType, ArticleID) VALUES ('EditorPick', ?)";
+        }
+        else if($selected_radio == 2 && $data['FeaturedType'] == 'Main')
+        {
+            $query = "UPDATE Featured SET FeaturedType = 'EditorPick' WHERE ArticleID = ?";
+        }
+        
+        // Refresh
+        echo "<meta http-equiv='refresh' content='0'>";
+        
+        //include 'util/db.php';
+        // prepare statement
+        $stmt = $db->stmt_init();
+        if (!$stmt->prepare($query))
+        {
+            echo "Error preparing statement: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        // bind username
+        if (!$stmt->bind_param('i', $data['ArticleID']))
+        {
+            echo "Error binding parameters: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        
+        // query database
+        if (!$stmt->execute())
+        {
+            echo "Error executing query: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        // done
+        $stmt->close();
+        $db->close();
     }
-    // query database
-    if (!$stmt->execute())
-    {
-        echo "Error executing query: <br>";
-        echo nl2br(print_r($stmt->error_list, true), false);
-        return;
-    }
-    // done
-    $stmt->close();
 }?>
             
         </main>
