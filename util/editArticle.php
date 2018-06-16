@@ -235,10 +235,14 @@ if(isset($_POST['DraftSubmit']))
         $selected_radio = $_POST['status'];
         // Fix ERROR
         // ERROR TESTING
-        if($data['IsDraft'] == 0 && $data['IsSubmitted'] == 0)
+        if($data[FeaturedType] != '')
+        {
+            echo "Error. Featured type must be set to none to continue.";
+        }
+        else if($data['IsDraft'] == 0 && $data['IsSubmitted'] == 0)
         {
             echo "Error. Article is in error state. Please update to continue.";
-        }              
+        }
         //ERROR
 //       else if(($data['IsDraft'] == 0 && $data['IsSubmitted'] == 1))
 //       {
@@ -313,7 +317,11 @@ if(isset($_POST['PublishedSubmit']))
     $selected_radio = $_POST['status'];
     
     // ERROR TESTING
-    if($data['IsDraft'] == 0 && $data['IsSubmitted'] == 0)
+    if($data[FeaturedType] != '')
+    {
+        echo "Error. Featured type must be set to none to continue.";
+    }
+    else if($data['IsDraft'] == 0 && $data['IsSubmitted'] == 0)
     {
         echo "Error. Article is in error state. Please update to continue.";
     }              
@@ -384,7 +392,6 @@ if(isset($_POST['PublishedSubmit']))
 if(isset($_POST['featuredTypeSubmit']))
 {
     $selected_radio = $_POST['status'];
-    $articleid = $data['ArticleID'];
     
     if(($data['IsDraft'] == 1 && $data['IsSubmitted'] == 0) || $data['IsDraft'] == 1 && $data['IsSubmitted'] == 1)
     {
@@ -400,11 +407,29 @@ if(isset($_POST['featuredTypeSubmit']))
         // MAIN
         if($selected_radio == 1 && $data['FeaturedType'] == '')
         {
-            $query = "INSERT INTO Featured (FeaturedType, ArticleID) VALUES ('Main', ?)";
+            $sql = "SELECT * FROM Featured WHERE FeaturedType = 'Main'";
+            $result = $db->query($sql);
+            if($result->num_rows != 0)
+            {
+                echo "Error. Main article is already set.";
+                exit;
+            }
+            else {
+                $query = "INSERT INTO Featured (FeaturedType, ArticleID) VALUES ('Main', ?)";
+            }
         }
         else if($selected_radio == 1 && $data['FeaturedType'] == 'EditorPick')
         {
-            $query = "UPDATE Featured SET FeaturedType = 'Main' WHERE ArticleID = ?";
+            $sql = "SELECT * FROM Featured WHERE FeaturedType = 'Main'";
+            $result = $db->query($sql);
+            if($result->num_rows != 0)
+            {
+                echo "main article exists";
+                exit;
+            }
+            else {
+                $query = "UPDATE Featured SET FeaturedType = 'Main' WHERE ArticleID = ?";
+            }
         }
         // EdITOR PICK
         if($selected_radio == 2 && $data['FeaturedType'] == '')
@@ -418,7 +443,6 @@ if(isset($_POST['featuredTypeSubmit']))
         
         // Refresh
         echo "<meta http-equiv='refresh' content='0'>";
-        
         //include 'util/db.php';
         // prepare statement
         $stmt = $db->stmt_init();
@@ -435,7 +459,6 @@ if(isset($_POST['featuredTypeSubmit']))
             echo nl2br(print_r($stmt->error_list, true), false);
             return;
         }
-        
         // query database
         if (!$stmt->execute())
         {
@@ -443,9 +466,9 @@ if(isset($_POST['featuredTypeSubmit']))
             echo nl2br(print_r($stmt->error_list, true), false);
             return;
         }
+        
         // done
         $stmt->close();
-        $db->close();
     }
 }?>
             
