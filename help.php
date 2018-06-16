@@ -1,11 +1,14 @@
+<?php
+    include 'util/loginCheck.php';
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
 	<?php include 'includes/globalHead.html' ?>
     </head>
     <body>
-        <?php 
-			include 'util/loginCheck.php';            
+        <?php            
             include 'includes/header.php';
             include 'includes/nav.php';
         ?>

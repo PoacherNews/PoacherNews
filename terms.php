@@ -1,3 +1,7 @@
+<?php
+    include 'util/loginCheck.php';
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -5,7 +9,6 @@
     </head>
     <body>
         <?php 
-			include 'util/loginCheck.php';
             include 'includes/header.php';
             include 'includes/nav.php';
         ?>
