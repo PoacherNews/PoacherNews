@@ -1,5 +1,13 @@
 <?php
 
+function mysqliToArray($a) {
+    $data = array();
+    while($row = mysqli_fetch_array($a, MYSQLI_ASSOC)) { // Put each returned row into a PHP array
+        $data[] = $row;
+    }
+    return $data;
+}
+
 function getArticleByID($id, $db) {
 	/* Returns a PHP associative array from the MYSQL result for the article of the specified ID.
 	   Returns null if there does not exist an article with the provided ID.
@@ -45,6 +53,21 @@ function getEditorPickIDs($db) {
     return $data;
 }
 
+function getEditorPicks($db) {
+    $editorPicks = getEditorPickIDs($db);
+    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND ArticleID = {$editorPicks[0]} ";
+    foreach(array_slice($editorPicks, 1) as &$val) { // Gather results for all other specified editor picks
+        $sql .= "OR ArticleID = {$val} ";
+    }
+    $sql .= ";";
+
+    $result = mysqli_query($db, $sql);
+    if(!$result || mysqli_num_rows($result) == 0) {
+        return null;
+    }
+    return mysqliToArray($result);
+}
+
 function getMainArticleID($db) {
     /* Returns the ID of the article labled as 'Main */
     $sql = "SELECT ArticleID FROM Featured WHERE FeaturedType = 'Main';";
@@ -54,8 +77,17 @@ function getMainArticleID($db) {
     return $row['ArticleID'];
 }
 
+function getMainArticle($db) {
+    /* Returns the current main article. */
+    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ArticleID = ".getMainArticleID($db).";";
+    $result = mysqli_query($db, $sql);
+
+    $data[] = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    return $data;
+}
+
 function getTrendingArticles($limit, $db) {
-    /* Returns a JSON serialized array of trending articles. */
+    /* Returns an array of trending articles. */
     $trendingDaySpan = 14;
     $trendingViewThreshold = 20;
 
@@ -70,12 +102,7 @@ function getTrendingArticles($limit, $db) {
     if(!$result || mysqli_num_rows($result) == 0) {
         return null;
     }
-
-    $data = array();
-    while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) { // Put each returned row into a PHP array
-        $data[] = $row;
-    }
-    return json_encode($data);
+    return mysqliToArray($result);
 }
 
 function increaseViewCount($id, $db) {

@@ -42,17 +42,14 @@ function throwError($errorId, $errorString, $sqlQuery) {
 
 if(!empty($_GET)) {
     if($_GET['request'] === "trending") {
-        print(getTrendingArticles($trendingResultCap, $db));
+        print(json_encode(getTrendingArticles($trendingResultCap, $db)));
         return;
     } else if($_GET['request'] === "main") {
-        $sql = "SELECT * FROM Article WHERE IsSubmitted =1 AND ArticleID = ".getMainArticleID($db).";";
+        print(json_encode(getMainArticle($db)));
+        return;
     } else if($_GET['request'] === "editorpicks") {
-        $editorPicks = getEditorPickIDs($db);
-        $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND ArticleID = ".$editorPicks[0]." ";
-        $a = array_slice($editorPicks, 1); // Use the rest of the picks, except for the first item
-        foreach($a as &$val) { // Gather results for all other specified editor picks
-            $sql .= "OR ArticleID = ".$val." ";
-        }
+        print(json_encode(getEditorPicks($db)));
+        return;
     } else if($_GET['request'] === "secondaryarticles") {
         $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND PublishDate >= DATE(NOW()) - INTERVAL 7 DAY LIMIT ".$secondaryResultCap.";";
     } else {
