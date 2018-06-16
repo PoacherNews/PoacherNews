@@ -3,6 +3,7 @@
 <html>
     <head>
 	<?php include 'includes/globalHead.html' ?>
+    <link rel="stylesheet" type="text/css" href="/res/css/homepage.css">
         <!-- Javascript/Jquery imports here -->
         <script>
             function logError(e) {
@@ -29,11 +30,16 @@
                 });
                 var $article = $("<article/>");
                 
-                $article.append($("<img/>", {
+                $imageWrap = $("<a/>", {
+                    'href' : "article.php?articleid="+rowData['ArticleID'],
+                });
+                $imageWrap.append($("<img/>", {
                     'src' : rowData['Image'],
                     'width' : "600",
                     'height' : "430"
                 }));
+                $article.append($imageWrap);
+
                 var $headerWrap = $("<a/>", {
                     'href' : "article.php?articleid="+rowData['ArticleID']
                 });
