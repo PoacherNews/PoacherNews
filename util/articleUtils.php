@@ -33,6 +33,51 @@ function getRelatedArticles($category, $excludeId, $db) {
     return $data;
 }
 
+function getEditorPickIDs($db) {
+    /* Returns an array of article IDs that are labled as 'EditorPick'. */
+    $sql = "SELECT ArticleID FROM Featured WHERE FeaturedType = 'EditorPick';";
+    $result = mysqli_query($db, $sql);
+
+    $data = array();
+    while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) { // Put each returned row into a PHP array
+        $data[] = $row['ArticleID'];
+    }
+    return $data;
+}
+
+function getMainArticleID($db) {
+    /* Returns the ID of the article labled as 'Main */
+    $sql = "SELECT ArticleID FROM Featured WHERE FeaturedType = 'Main';";
+    $result = mysqli_query($db, $sql);
+
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    return $row['ArticleID'];
+}
+
+function getTrendingArticles($limit, $db) {
+    /* Returns a JSON serialized array of trending articles. */
+    $trendingDaySpan = 14;
+    $trendingViewThreshold = 20;
+
+    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ArticleId != ".getMainArticleID($db)." ";
+    foreach(getEditorPickIDs($db) as &$val) {
+        $sql .= "AND ArticleID != ".$val." ";
+    }
+    $sql .= "AND PublishDate >= DATE(NOW()) - INTERVAL ".$trendingDaySpan." DAY AND Views > ".$trendingViewThreshold." ";
+    $sql .= "LIMIT ".$limit.";";
+
+    $result = mysqli_query($db, $sql);
+    if(!$result || mysqli_num_rows($result) == 0) {
+        return null;
+    }
+
+    $data = array();
+    while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) { // Put each returned row into a PHP array
+        $data[] = $row;
+    }
+    return json_encode($data);
+}
+
 function increaseViewCount($id, $db) {
     $sql = "UPDATE Article SET Views = Views + 1 WHERE ArticleId = {$id};";
     $db->query($sql);

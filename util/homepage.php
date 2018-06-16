@@ -11,17 +11,12 @@ Returns:
     - If an invalid request is send in 'request' (ie. not "trending", "main", or "editorpicks"), a "Empty or invalid response" error string will be returned.
 */
 include("db.php");
+include("articleUtils.php");
 
 // Rules for trending article results
-$trendingDaySpan = 14;
-$trendingViewThreshold = 20;
 $trendingResultCap = 3;
 // Rules for secondary stacked article results
 $secondaryResultCap = 4;
-// Manually assigned main article id OLDID = 97
-$mainArticleId = 11;
-// Manually assigned set of article ids picked by the editors
-$editorPicks = array(13, 20);
 
 if(isset($argv[1])) { // Allow local testing without an HTTP GET
     $_GET['request'] = $argv[1];
@@ -33,7 +28,6 @@ class homepageError {
     public $request = "";
     public $sqlQuery = "";
 }
-
 
 function throwError($errorId, $errorString, $sqlQuery) {
     $e = new homepageError();
@@ -48,30 +42,25 @@ function throwError($errorId, $errorString, $sqlQuery) {
 
 if(!empty($_GET)) {
     if($_GET['request'] === "trending") {
-        $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND ArticleId != ".$mainArticleId." ";
-        foreach($editorPicks as &$val) {
-            $sql .= "AND ArticleID != ".$val." ";
-        }
-        $sql .= "AND PublishDate >= DATE(NOW()) - INTERVAL ".$trendingDaySpan." DAY AND Views > ".$trendingViewThreshold." ";
-        $sql .= "LIMIT ".$trendingResultCap.";";
+        print(getTrendingArticles($trendingResultCap, $db));
+        return;
     } else if($_GET['request'] === "main") {
-        $sql = "SELECT * FROM Article WHERE IsSubmitted =1 AND ArticleID = ".$mainArticleId.";";
+        $sql = "SELECT * FROM Article WHERE IsSubmitted =1 AND ArticleID = ".getMainArticleID($db).";";
     } else if($_GET['request'] === "editorpicks") {
+        $editorPicks = getEditorPickIDs($db);
         $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND ArticleID = ".$editorPicks[0]." ";
         $a = array_slice($editorPicks, 1); // Use the rest of the picks, except for the first item
         foreach($a as &$val) { // Gather results for all other specified editor picks
             $sql .= "OR ArticleID = ".$val." ";
         }
     } else if($_GET['request'] === "secondaryarticles") {
-        $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND PublishDate >= DATE(NOW()) - INTERVAL 7 DAY LIMIT ".$secondaryResultCap.";";
+        $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND PublishDate >= DATE(NOW()) - INTERVAL 7 DAY LIMIT ".$secondaryResultCap.";";
     } else {
         throwError(1, "Invalid or empty GET request.", null);
     }
 } else {
     throwError(0, "Empty GET request.", null);
 }
-
-//echo "SQL : ".$sql; //DEBUG
 
 $result = mysqli_query($db, $sql);
 if(!$result || mysqli_num_rows($result) == 0) {
@@ -82,6 +71,6 @@ $data = array();
 while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) { // Put each returned row into a PHP array
     $data[] = $row;
 }
-// sleep(2);
+
 print json_encode($data); // Encode PHP array of db rows as JSON
 ?>
