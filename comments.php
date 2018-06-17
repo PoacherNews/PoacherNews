@@ -1,5 +1,6 @@
 <?php
     include 'util/loginCheck.php';
+    $username = $_GET['Username'];
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +24,9 @@
             </div>
             
             <div class="info">
-                (User Information)
+                <?php 
+                	echo "<h3>$username</h3>";
+                ?>
             </div>
         </div>
         

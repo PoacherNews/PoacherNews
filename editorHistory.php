@@ -2,6 +2,8 @@
 // Redirect draft links to editorPage
 
 include 'util/loginCheck.php';
+$username = $_GET['Username'];
+
 // quit if not an admin or not logged in
 if (!$loggedin || !($_SESSION['usertype'] == 'W' || $_SESSION['usertype'] == 'A'))
 {
@@ -55,10 +57,10 @@ function display_table($db, $query, $tablename)
 // displays Users as a table
 function list_drafts()
 {
-    $userid = $_SESSION['userid'];
+	$username = $_GET['Username'];
     include 'util/db.php';
     // query Users
-    $query = "SELECT ArticleID, Headline FROM Article JOIN User ON Article.UserID = User.UserID WHERE (IsDraft=1 AND IsSubmitted=0) AND Article.UserID = '$userid'";
+    $query = "SELECT ArticleID, Headline, Username FROM Article JOIN User ON Article.UserID = User.UserID WHERE (IsDraft=1 AND IsSubmitted=0) AND User.Username = '".$username."'";
     //  AND Article.UserID = '$username'
     // display
     display_table($db, $query, "Drafts");
@@ -67,10 +69,10 @@ function list_drafts()
 
 function list_pending()
 {
-    $userid = $_SESSION['userid'];
+	$username = $_GET['Username'];
     include 'util/db.php';
     // query Users
-    $query = "SELECT ArticleID, Headline FROM Article JOIN User ON User.UserID = Article.UserID WHERE (IsDraft=1 AND IsSubmitted=1) AND Article.UserID = '$userid'";
+    $query = "SELECT ArticleID, Headline FROM Article JOIN User ON User.UserID = Article.UserID WHERE (IsDraft=1 AND IsSubmitted=1) AND User.Username = '".$username."'";
     //  AND Article.UserID = '$username'
     // display
     display_table($db, $query, "Pending");
@@ -79,10 +81,10 @@ function list_pending()
 
 function list_approved()
 {
-    $userid = $_SESSION['userid'];
+	$username = $_GET['Username'];
     include 'util/db.php';
     // query Users
-    $query = "SELECT ArticleID, Headline FROM Article INNER JOIN User ON User.UserID = Article.UserID WHERE (IsDraft=0 AND IsSubmitted=1) AND Article.UserID = '$userid'";
+    $query = "SELECT ArticleID, Headline FROM Article INNER JOIN User ON User.UserID = Article.UserID WHERE (IsDraft=0 AND IsSubmitted=1) AND User.Username = '".$username."'";
     //  AND Article.UserID = '$username'
     // display
     display_table($db, $query, "Approved");
@@ -94,8 +96,8 @@ function list_approved()
 <html lang="en">
     <head>
         <?php include 'includes/globalHead.html' ?>
-        <link rel="stylesheet" href="res/css/profile.css">
-        <link rel="stylesheet" href="res/css/profileNav.css">
+        <link rel="stylesheet" href="/res/css/profile.css">
+        <link rel="stylesheet" href="/res/css/profileNav.css">
     </head>
 
 <style>
@@ -119,7 +121,9 @@ function list_approved()
             </div>
             
             <div class="info">
-                (User Information)
+                <?php 
+                	echo "<h3>$username</h3>";
+                ?>
             </div>
         </div>
         
@@ -131,12 +135,17 @@ function list_approved()
         </div>
         
         <div class="display">
-        <h1>Drafts</h1> 
-            <?php list_drafts(); ?>
-        <h1>Pending</h1> 
-            <?php list_pending(); ?>
-        <h1>Approved</h1>
-        <?php list_approved(); ?>
+        <?php
+        if((strtolower($username) == strtolower($_SESSION['username'])) || $_SESSION['usertype'] == 'A')
+        {
+        	echo "<h1>Drafts</h1>";
+			echo list_drafts();
+        	echo "<h1>Pending</h1>";
+           	echo list_pending();
+        }
+        	echo "<h1>Approved</h1>";
+       		echo list_approved(); 
+       	?>
         </div>
         
         <?php include 'includes/footer.html'; ?>

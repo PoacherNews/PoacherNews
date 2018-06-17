@@ -1,5 +1,6 @@
 <?php
 include 'util/loginCheck.php';
+$username = $_GET['Username'];
 // quit if not an admin or not logged in
 if (!$loggedin)
 {
@@ -45,10 +46,20 @@ function display_table($db, $query, $tablename)
 // displays Users as a table
 function list_favorites()
 {
-    $userid = $_SESSION['userid'];
+	$username = $_GET['Username'];
     include 'util/db.php';
+    // Check connection
+    if ($db->connect_error)
+    {
+	   die("Connection failed: " . $db->connect_error);
+    }
+    
+    $sql = "SELECT * FROM User WHERE Username = '".$username."'";
+    $result = $db->query($sql);
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    $userid = $row['UserID'];    
     // query Users
-    $query = "SELECT Headline FROM Article JOIN Favorite ON Favorite.UserID = Article.UserID WHERE Favorite.UserID = '$userid'";
+    $query = "SELECT Headline FROM Article JOIN Favorite ON Favorite.UserID = Article.UserID WHERE Favorite.UserID = '".$userid."'";
     echo $query;
     // display
     display_table($db, $query, "Favorites");
@@ -82,7 +93,9 @@ function list_favorites()
             </div>
             
             <div class="info">
-                (User Information)
+                <?php 
+                	echo "<h3>$username</h3>";
+                ?>            
             </div>
         </div>
         

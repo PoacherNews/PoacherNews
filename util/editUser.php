@@ -104,7 +104,11 @@ if (!isset($data) || !$data)
         
         <div class="display">
         <main>
-            <h1>Edit User &#8216;<?php echo $data['Username']; ?>&#8217;</h1>
+            <h1>Edit User &#8216;<?php
+                echo "<a href='/profile.php?Username={$data['Username']}'>"; 
+				echo $data['Username'];
+				echo "</a>"; ?>&#8217;</h1>
+
             <table>
                 <thead>
                     <tr>
