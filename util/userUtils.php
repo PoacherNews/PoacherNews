@@ -28,14 +28,16 @@
 	    return $data;
 	}
 
-	function getUserFavorites($uid, $limit, $db) {
+	function getUserFavorites($uid, $limit=NULL, $db) {
 		/* Returns a `limit` length array of a provided user's favorite articles. */
 		$favorites = getFavoriteIDs($uid, $db);
 	    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ArticleID = {$favorites[0]} ";
 	    foreach(array_slice($favorites, 1) as &$val) { // Gather results for all other specified editor picks
 	        $sql .= "OR ArticleID = {$val} ";
 	    }
-	    $sql .= "LIMIT {$limit};";
+            if(!is_null($limit)) {
+	        $sql .= "LIMIT {$limit};";
+	    }
 
 	    $result = mysqli_query($db, $sql);
 	    if(!$result || mysqli_num_rows($result) == 0) {
