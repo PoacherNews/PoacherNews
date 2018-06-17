@@ -1,5 +1,11 @@
 <?php
-$username = $_GET['Username'];
+// set $username to $_SESSION['username'] if blank
+$username == $_GET['Username'];
+
+if($username == '')
+{
+	$username = $_SESSION['username'];
+}
 ?>
 
 <ul>
