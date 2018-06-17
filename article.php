@@ -48,7 +48,7 @@ session_start(); ?>
                     <img src="<?php print $articleData['Image'] ?>"/>
                 </div>
                 <div class="articleBody">
-                    <p><?php print $articleData['Body'] ?></p>
+                    <p><?php print nl2br($articleData['Body']); ?></p>
                 </div>
             </section>
             <section id="articleAdColumn">
