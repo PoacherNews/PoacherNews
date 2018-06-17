@@ -39,11 +39,9 @@ function display_table($db, $query, $tablename)
             }
         }
     }
-//    echo "<th>Draft</th>";
     echo "<th>Pending</th>";
     echo "<th>Approved</th>";
     echo "<th>FeaturedType</th>";
-//    echo "<th>Submit</th>";
     echo "<tr>\n";
     echo "</thead>\n<tbody>\n";
     // get row as an array
