@@ -1102,3 +1102,8 @@ p.abtPar {
     font-size: 30px;
     height: 20vh;
 }
+
+/* Globals (CS) */
+body {
+    font-family: Helvetica, Arial, sans-serif;
+}

@@ -11,7 +11,6 @@
             }
 
             function createColumnArticle(rowData) {
-                console.log(rowData);
                 if($.isArray(rowData)) { // This is an encapsulated JSON object
                     rowData = rowData[0];
                 }
@@ -63,10 +62,6 @@
                 if($.isArray(rowData)) { // This is an encapsulated JSON object
                     rowData = rowData[0];
                 }
-                if(rowData.hasOwnProperty('errorId')) {
-                    logError(rowData);
-                    return;
-                }
 
                 var $previewCharLimit = 400;
                 var $continueReading = $("<a/>", {
@@ -75,18 +70,23 @@
                     'text' : "Continue Reading"
                 });
                 var $article = $("<article/>");
+
+                $imageWrap = $("<a/>", {
+                    'href' : "article.php?articleid="+rowData['ArticleID'],
+                });
                 var $thumbnail = $("<div/>", {
                     'class' : "stacked-thumbnail"
                 });
-                var $text = $("<div/>", {
-                    'class' : 'stacked-text'
-                });
-                
-                $thumbnail.append($("<img/>", {
+                $imageWrap.append($("<img/>", {
                     'src' : rowData['Image'],
                     'height' : "217",
                     'width' : "325",
                 }));
+                $thumbnail.append($imageWrap);
+                var $text = $("<div/>", {
+                    'class' : 'stacked-text'
+                });
+                
                 var $headerWrap = $("<a/>", {
                     'href' : "article.php?articleid="+rowData['ArticleID']
                 });
@@ -154,6 +154,14 @@
                         'request' : 'trending'
                     }).done(function(data) {
                         $("#rightSidebar").children().remove('.loader');
+                        if(data === null) {
+                            $("#rightSidebar").append($("<div/>", {
+                                'class' : "columnError",
+                                'text' : "No trending articles to show."
+                            }));
+                            return;
+                        }
+                        
                         if(!$.isArray(data)) {
                             createColumnArticle(data);
                             return;
@@ -181,6 +189,10 @@
                  $.getJSON("util/homepage.php", {
                     'request' : 'secondaryarticles'
                 }).done(function(data) {
+                    if(data.hasOwnProperty('errorId')) {
+                        logError(data);
+                        return;
+                    }
                     $.each(data, function(i, row) {
                         $("#secondary-section").children().remove('.loader');
                         $("#secondary-section").append(createStackedArticle(row));
