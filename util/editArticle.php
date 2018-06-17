@@ -1,28 +1,29 @@
 <?php
-// Redirect deletion of article to articleManagement.php
+// TODO:
+// Check featuredType when deleting article
 
 include 'loginCheck.php';
-// quit if not an admin or not logged in
+// quit if not logged in or not an admin
 if (!$loggedin || !($_SESSION['usertype'] == 'A'))
 {
     header("HTTP/1.1 403 Forbidden", true, 403);
     echo "You must be an administrator.";
-    echo '<meta http-equiv="refresh" content="1; url=/index.php">';
+    echo '<meta http-equiv="refresh" content="1"; url=/index.php">';
     exit;
 }
 
 include_once ('db.php');
 
-function getUserData($db)
+function getArticleData($db)
 {
     if (!isset($_GET['Headline']))
     {
-        echo "Error: No user specified. ";
+        echo "Error: No headline specified.";
         return;
     }
  
-   // Connect to the database
-//    require_once ('util/db.php');
+	// Connect to the database
+	// require_once ('util/db.php');
     // prepare statement
     $stmt = $db->stmt_init();
     if (!$stmt->prepare("SELECT Article.ArticleID, Headline, Category, IsDraft, IsSubmitted, FeaturedType FROM Article LEFT JOIN Featured ON Article.ArticleID = Featured.ArticleID WHERE Headline =?"))
@@ -54,7 +55,7 @@ function getUserData($db)
     }
     if ($result->num_rows != 1)
     {
-        echo "Username incorrect. ";
+        echo "Headline incorrect.";
         return false;
     }
     $row = $result->fetch_assoc();
@@ -63,9 +64,9 @@ function getUserData($db)
     return $row;
 }
 // get user data as an array
-$data = getUserData($db);
+$data = getArticleData($db);
 if (!isset($data) || !$data)
-    die("Username incorrect or database error.");
+    die("Headline incorrect or database error.");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -142,21 +143,21 @@ if (!isset($data) || !$data)
 <form method="post" action="">
     <legend>Error testing</legend>
     <div>
-        <input type="radio" name="status" id="error" value="0" /><label for="error">Set Error</label><br />
-        <input type="radio" name="status" id="error" value="1" /><label for="error">Error to Draft</label><br />
-        <input type="radio" name="status" id="error" value="2" /><label for="error">Error to Pending</label><br />
-        <input type="radio" name="status" id="error" value="3" /><label for="error">Error to Approved</label><br />
+        <input type="radio" name="errorStatus" class="errorRadio" value="0" /><label>Set Error</label><br />
+        <input type="radio" name="errorStatus" class="errorRadio" value="1" /><label>Error to Draft</label><br />
+        <input type="radio" name="errorStatus" class="errorRadio" value="2" /><label>Error to Pending</label><br />
+        <input type="radio" name="errorStatus" class="errorRadio" value="3" /><label>Error to Approved</label><br />
     </div>
 
     <div>
-        <input type="submit" name="ErrorSubmit" id="ErrorSubmit" value="Submit" />
+        <input type="submit" name="errorSubmit" class="errorSubmit" value="Submit" />
     </div>
 </form>
           
 <?php 
-if(isset($_POST['ErrorSubmit']))
+if(isset($_POST['errorSubmit']))
 {
-    $selected_radio = $_POST['status'];
+    $selected_radio = $_POST['errorStatus'];
     // SET ERROR
     if($selected_radio == 0)
     {
@@ -214,27 +215,27 @@ if(isset($_POST['ErrorSubmit']))
 <form method="post" action="">
     <legend>IsDraft</legend>
     <div>
-        <input type="radio" name="status" id="draft" value="0" /><label for="draft">Draft to Pending</label><br />
-        <input type="radio" name="status" id="draft" value="1" /><label for="draft">Pending to Draft</label><br />
-        <input type="radio" name="status" id="draft" value="2" /><label for="draft">Approved to Draft</label><br />
-        <input type="checkbox" name="confirm" id="confirm" value="Confirm"/><label>Confirm draft state change</label>
+        <input type="radio" name="draftStatus" class="draftRadio" value="0" /><label>Draft to Pending</label><br />
+        <input type="radio" name="draftStatus" class="draftRadio" value="1" /><label>Pending to Draft</label><br />
+        <input type="radio" name="draftStatus" class="draftRadio" value="2" /><label>Approved to Draft</label><br />
+        <input type="checkbox" name="draftConfirm" class="draftConfirm" value="Confirm"/><label>Confirm draft state change</label>
     </div>
 
     <div>
-        <input type="submit" name="DraftSubmit" id="DraftSubmit" value="Submit" />
+        <input type="submit" name="draftSubmit" class="draftSubmit" value="Submit" />
     </div>
 </form>
           
 <?php 
-if(isset($_POST['DraftSubmit']))
+if(isset($_POST['draftSubmit']))
 {
-    if(!isset($_POST['confirm']))
+    if(!isset($_POST['draftConfirm']))
     {
         echo"Please confirm draft state change";
     }
     else 
     {
-        $selected_radio = $_POST['status'];
+        $selected_radio = $_POST['draftStatus'];
         // Fix ERROR
         // ERROR TESTING
         if($data[FeaturedType] != '')
@@ -300,23 +301,23 @@ if(isset($_POST['DraftSubmit']))
 }?>
 <br>
             
-<!-- ISPUBLISHED -->            
+<!-- ISSUBMITTED -->            
 <form method="post" action="">
     <legend>IsSubmitted</legend>
     <div>
-        <input type="radio" name="status" id="published" value="0" /><label for="published">Approved to Pending</label><br />
-        <input type="radio" name="status" id="published" value="1" /><label for="published">Pending to Approved</label><br />
+        <input type="radio" name="submittedStatus" class="submittedRadio" value="0" /><label>Approved to Pending</label><br />
+        <input type="radio" name="submittedStatus" class="submittedRadio" value="1" /><label>Pending to Approved</label><br />
     </div>
 
     <div>
-        <input type="submit" name="PublishedSubmit" id="PublishedSubmit" value="Submit" />
+        <input type="submit" name="submittedSubmit" id="submittedSubmit" value="Submit" />
     </div>
 </form>
 
 <?php 
-if(isset($_POST['PublishedSubmit']))
+if(isset($_POST['submittedSubmit']))
 {
-    $selected_radio = $_POST['status'];
+    $selected_radio = $_POST['submittedStatus'];
     
     // ERROR TESTING
     if($data[FeaturedType] != '')
@@ -380,20 +381,20 @@ if(isset($_POST['PublishedSubmit']))
 <form method="post" action="">
     <legend>Featured Type</legend>
     <div>
-        <input type="radio" name="status" id="featured" value="0" /><label for="featuredType">None</label><br />
-        <input type="radio" name="status" id="featured" value="1" /><label for="featuredType">Main</label><br />
-        <input type="radio" name="status" id="featured" value="2" /><label for="featuredType">EditorPick</label><br />
+        <input type="radio" name="featuredStatus" class="featuredRadio" value="0" /><label>None</label><br />
+        <input type="radio" name="featuredStatus" class="featuredRadio" value="1" /><label>Main</label><br />
+        <input type="radio" name="featuredStatus" class="featuredRadio" value="2" /><label>EditorPick</label><br />
     </div>
 
     <div>
-        <input type="submit" name="featuredTypeSubmit" id="featuredTypeSubmit" value="Submit" />
+        <input type="submit" name="featuredSubmit" id="featuredSubmit" value="Submit" />
     </div>
 </form>
 
 <?php 
-if(isset($_POST['featuredTypeSubmit']))
+if(isset($_POST['featuredSubmit']))
 {
-    $selected_radio = $_POST['status'];
+    $selected_radio = $_POST['featuredStatus'];
     
     if(($data['IsDraft'] == 1 && $data['IsSubmitted'] == 0) || $data['IsDraft'] == 1 && $data['IsSubmitted'] == 1)
     {
@@ -479,25 +480,25 @@ if(isset($_POST['featuredTypeSubmit']))
 <!-- DELETE -->            
 <form method="post" action="">
     <div>
-        <input type="radio" name="status" id="delete" value="0" /><label for="delete">DELETE ARTICLE</label><br />
-        <input type="checkbox" name="confirm" id="confirm" value="Confirm"/><label>CONFIRM DELETE</label>
+        <input type="radio" name="deleteStatus" class="deleteRadio" value="0" /><label>DELETE ARTICLE</label><br />
+        <input type="checkbox" name="deleteConfirm" class="deleteConfirm" value="Confirm"/><label>CONFIRM DELETE</label>
     </div>
 
     <div>
-        <input type="submit" name="deleteSubmit" id="deleteSubmit" value="Submit" />
+        <input type="submit" name="deleteSubmit" class="deleteSubmit" value="Submit" />
     </div>
 </form>
 
 <?php 
 if(isset($_POST['deleteSubmit']))
 {
-    if(!isset($_POST['confirm']))
+    if(!isset($_POST['deleteConfirm']))
     {
         echo "PLEASE CONFIRM DELETION OF ARTICLE";
     }
     else 
     {
-        $selected_radio = $_POST['status'];
+        $selected_radio = $_POST['deleteStatus'];
     
         $query = "DELETE FROM Article WHERE ArticleID = ?";
         
@@ -529,7 +530,7 @@ if(isset($_POST['deleteSubmit']))
 
         // Refresh
         echo "Article successfully deleted - Redirect to articleManagement still needs to be implemented";
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        echo '<meta http-equiv="refresh" content="1; url=/articleManagement.php">';
         exit;
     }
 } ?>
