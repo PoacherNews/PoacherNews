@@ -26,7 +26,7 @@
                                 <div class=\"username-content\">
                                     <p>Logged in as <b>{$_SESSION['username']}</b></p>
                                     <hr>
-                                    <a href=\"/profile.php\">Your Profile</a>
+                                    <a href=\"/profile.php?Username=".$_SESSION['username']."\">Your Profile</a>
                                     <a href=\"/help.php\">Help</a>
                                     <a href=\"/settings.php\">Settings</a>
                                     <a href=\"/logout.php\">Log Out</a>
