@@ -1,4 +1,6 @@
 <?php
+// Redirect deletion of article to articleManagement.php
+
 include 'loginCheck.php';
 // quit if not an admin or not logged in
 if (!$loggedin || !($_SESSION['usertype'] == 'A'))
@@ -378,9 +380,9 @@ if(isset($_POST['PublishedSubmit']))
 <form method="post" action="">
     <legend>Featured Type</legend>
     <div>
-        <input type="radio" name="status" id="error" value="0" /><label for="featuredType">None</label><br />
-        <input type="radio" name="status" id="error" value="1" /><label for="featuredType">Main</label><br />
-        <input type="radio" name="status" id="error" value="2" /><label for="featuredType">EditorPick</label><br />
+        <input type="radio" name="status" id="featured" value="0" /><label for="featuredType">None</label><br />
+        <input type="radio" name="status" id="featured" value="1" /><label for="featuredType">Main</label><br />
+        <input type="radio" name="status" id="featured" value="2" /><label for="featuredType">EditorPick</label><br />
     </div>
 
     <div>
@@ -424,7 +426,7 @@ if(isset($_POST['featuredTypeSubmit']))
             $result = $db->query($sql);
             if($result->num_rows != 0)
             {
-                echo "main article exists";
+                echo "Error. Main article is already set.";
                 exit;
             }
             else {
@@ -471,6 +473,67 @@ if(isset($_POST['featuredTypeSubmit']))
         $stmt->close();
     }
 }?>
+<br>
+
+<h2>Delete</h2>
+<!-- DELETE -->            
+<form method="post" action="">
+    <div>
+        <input type="radio" name="status" id="delete" value="0" /><label for="delete">DELETE ARTICLE</label><br />
+        <input type="checkbox" name="confirm" id="confirm" value="Confirm"/><label>CONFIRM DELETE</label>
+    </div>
+
+    <div>
+        <input type="submit" name="deleteSubmit" id="deleteSubmit" value="Submit" />
+    </div>
+</form>
+
+<?php 
+if(isset($_POST['deleteSubmit']))
+{
+    if(!isset($_POST['confirm']))
+    {
+        echo "PLEASE CONFIRM DELETION OF ARTICLE";
+    }
+    else 
+    {
+        $selected_radio = $_POST['status'];
+    
+        $query = "DELETE FROM Article WHERE ArticleID = ?";
+        
+        //include 'util/db.php';
+        // prepare statement
+        $stmt = $db->stmt_init();
+        if (!$stmt->prepare($query))
+        {
+            echo "Error preparing statement: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        // bind username
+        if (!$stmt->bind_param('i', $data['ArticleID']))
+        {
+            echo "Error binding parameters: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        // query database
+        if (!$stmt->execute())
+        {
+            echo "Error executing query: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        // done
+        $stmt->close();
+
+        // Refresh
+        echo "Article successfully deleted - Redirect to articleManagement still needs to be implemented";
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit;
+    }
+} ?>
+
             
         </main>
         </div>
