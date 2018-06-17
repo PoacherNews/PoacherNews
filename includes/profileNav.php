@@ -1,11 +1,24 @@
 <?php
-// set $username to $_SESSION['username'] if blank
-$username == $_GET['Username'];
+	// set $username to $_SESSION['username'] if blank
+	$username == $_GET['Username'];
 
-if($username == '')
-{
-	$username = $_SESSION['username'];
-}
+	if($username == '')
+	{
+		$username = $_SESSION['username'];
+	}
+
+	// retrive usertype of $username
+	include 'util/db.php';
+    // Check connection
+    if ($db->connect_error)
+    {
+	   die("Connection failed: " . $db->connect_error);
+    }
+    
+    $sql = "SELECT * FROM User WHERE Username = '".$username."'";
+    $result = $db->query($sql);
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    $usertype = $row['Usertype'];   
 ?>
 
 <ul>
@@ -31,13 +44,15 @@ if($username == '')
     </li>
     
     <!-- Editor Tools -->
+    <?php if($usertype == 'W' || $usertype == 'A') { ?>
     <li <?php if($current == 'editorHistory') {echo 'class="current"';} ?>>
     <?php
     echo "<a href='/editorHistory.php?Username=".$username."'>";
     echo "Editor History</a>";
     ?>
     </li>
-    
+    <?php } ?>
+
     <?php if($_SESSION['usertype'] == 'W' || $_SESSION['usertype'] == 'A') { ?>
     <li <?php if($current == 'editorPage') {echo 'class="current"';} ?>><a href="/editorpage.php">Editor Page</a></li>
     <?php } ?>
