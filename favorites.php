@@ -1,15 +1,16 @@
 <?php
+include 'util/userUtils.php';
 include 'util/loginCheck.php';
 $username = $_GET['Username'];
-// quit if not an admin or not logged in
-if (!$loggedin)
-{
-    header("HTTP/1.1 403 Forbidden", true, 403);
-    echo "You must be logged in.";
-    echo '<meta http-equiv="refresh" content="1; url=/index.php">';
-    exit;
-}
+    
+include 'util/db.php';
+    
+$sql = "SELECT * FROM User WHERE Username = '".$username."'";
+$result = $db->query($sql);
+$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+$userid = $row['UserID'];  
 
+/*
 function display_table($db, $query, $tablename)
 {
     // execute query
@@ -42,7 +43,9 @@ function display_table($db, $query, $tablename)
     echo "</tbody>\n</table>\n";
     $result->free();
 }
+*/
 
+/*
 // displays Users as a table
 function list_favorites()
 {
@@ -59,13 +62,15 @@ function list_favorites()
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $userid = $row['UserID'];    
     // query Users
-    $query = "SELECT Headline FROM Article JOIN Favorite ON Favorite.UserID = Article.UserID WHERE Favorite.UserID = '".$userid."'";
+    $query = "SELECT Favorite.ArticleID FROM Favorite LEFT JOIN Article ON Article.UserID = Favorite.UserID WHERE Favorite.UserID = '".$userid."'";
     echo $query;
     // display
     display_table($db, $query, "Favorites");
     // done
 }
+*/
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -108,11 +113,26 @@ function list_favorites()
         
         <div class="display">
         <h1>Favorites</h1> 
-        <?php
-            echo "unfinished. Action to favorite articles must be implemented first.";
-            echo '<br>';
-            list_favorites();
-        ?>
+		
+		<?php
+ 		$favorites = getUserFavorites($userid, null, $db);
+    	if($favorites === null) {
+                print "<div class=\"columnError\">No favorites yet.</div>";
+                return;
+        }
+             
+ 		foreach($favorites as $article) {
+        print "
+        <article>
+			<div class=\"thumbnailSecondary\">
+				<a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['Image']}\" width=\"150\" height=\"100\"></a>
+					</div>
+                    <div class=\"textSecondary\">
+                            <h2 class=\"secHeadlineSecondary\"><a href=\"article.php?articleid={$article['ArticleID']}\">{$article['Headline']}</a></h2>
+                        	<p>".substr($article['Body'], 0, 75)."...</p>                  
+                    </div>
+        </article>"; }   
+		?>
         </div>
         
         <?php include 'includes/footer.html'; ?>
