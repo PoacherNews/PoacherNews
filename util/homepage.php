@@ -51,7 +51,7 @@ if(!empty($_GET)) {
         print(json_encode(getEditorPicks($db)));
         return;
     } else if($_GET['request'] === "secondaryarticles") {
-        $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND PublishDate >= DATE(NOW()) - INTERVAL 7 DAY LIMIT ".$secondaryResultCap.";";
+        $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 ORDER BY PublishDate LIMIT ".$secondaryResultCap.";";
     } else {
         throwError(1, "Invalid or empty GET request.", null);
     }
