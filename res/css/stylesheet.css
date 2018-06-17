@@ -1107,3 +1107,13 @@ p.abtPar {
 body {
     font-family: Helvetica, Arial, sans-serif;
 }
+
+.continue-reading {
+    display: block;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    font-family: Arial,Helvetica,sans-serif;
+    color: #83A8F0;
+    font-size: 17px;
+}

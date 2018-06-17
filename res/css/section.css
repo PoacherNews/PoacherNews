@@ -2,12 +2,20 @@ body {
     height: 100%;
     margin: 0;
     overflow-x:scroll;
-    font-family: Helvetica, Arial, sans-serif;
 }    
         
 a {
     color: black;
     text-decoration: none;
+}
+
+.columnError {
+    font-size: 20px;
+    color: grey;
+    font-style: italic;
+    text-align: center;
+    margin-top: 25%;
+    padding: 5%;
 }
 
 .hidden {
