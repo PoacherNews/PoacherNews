@@ -27,6 +27,23 @@ function getAuthorByID($id, $db) {
     return mysqli_fetch_assoc($result);
 }
 
+function getSectionArticles($category, $limit=NULL, $offset=NULL, $db) {
+    /* Returns an array of articles in a provided category. Optionally can limit results and can optionally use a date offset to prune any articles more recent than a provided timestamp.
+       `offset` must be provided in the format 'YYY-MM-DD HH:MM:SS'.
+    */
+    $sql = "SELECT * FROM Article WHERE IsDraft = 0 AND IsSubmitted = 1 AND Category = '{$category}' ";
+    if(!is_null($offset)) {
+        $sql .= "AND PublishDate > '{$offset}' ";
+    }
+    $sql .= "ORDER BY PublishDate DESC ";
+    if(!is_null($limit)) {
+        $sql .= "LIMIT {$limit}";
+    }
+    
+    $result = mysqli_query($db, $sql);
+    return mysqliToArray($result);
+}
+
 function getRelatedArticles($category, $excludeId, $db) {
 	/* Returns an array of MYSQL results.
 	   Intended for display in the three-column "Further Reading" section of the article page.

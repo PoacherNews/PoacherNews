@@ -7,6 +7,7 @@
     }
     include('util/db.php');
     include('util/articleUtils.php');
+    include('util/userUtils.php');
 ?>
 <!-- TODO: 
 Fix css (Resizing issues / min-width)
@@ -87,8 +88,8 @@ Fix css (Resizing issues / min-width)
         <div class="secColumnPrimary">
             <div id="articleList">
             <script>
-                $.getJSON("util/sectionUtil.php", {
-                    'Category' : "<?php echo $_GET['Category'] ?>",
+                $.getJSON("util/sectionHandler.php", {
+                    'category' : "<?php echo $_GET['Category'] ?>",
                 }).done(function(data) {
                     $.each(data, function(i, row) {
                         // $("#secondary-section").children().remove('.loader');
@@ -128,11 +129,11 @@ Fix css (Resizing issues / min-width)
         
 
 
-        <!-- containerSecondary Head -->
-        <section class="secSecondary">
+    <!-- containerSecondary Head -->
+    <section class="secSecondary">
         <div class="containerSecondary">
         <div class="secRowSecondary">
-        <div class="secBorderSecondary"></div>
+            <div class="secBorderSecondary"></div>
             <div class="secColumnLeftSecondary">
                 <h1 class="secCategorySecondary">Editor's Picks</h1>
                 <?php
@@ -149,12 +150,15 @@ Fix css (Resizing issues / min-width)
                         </article>";
                     }
                 ?>
-              </div>
-        <div class="secBorderSecondary"></div>
+            </div>
+            <div class="secBorderSecondary"></div>
             <div class="secColumnMiddleSecondary">
                 <h1 class="secCategorySecondary">Trending</h1>
                 <?php
                     $trending = getTrendingArticles(3, $db);
+                    if($trending === null) {
+                        print "<div class=\"columnError\">No trending articles to show.</div>";
+                    }
                     foreach($trending as $article) {
                         print "<article>
                             <div class=\"thumbnailSecondary\">
@@ -168,33 +172,39 @@ Fix css (Resizing issues / min-width)
                     }
                 ?>
             </div>
-        <div class="secBorderSecondary"></div>
+            <div class="secBorderSecondary"></div>
             <div class="secColumnRightSecondary">
-                <h1 class="secCategorySecondary">User Favorites</h1>   
-                <article>
-                    <div class="thumbnailSecondary">
-                        <img src="" width="120" height="100">
-                    </div>
-                    <div class="textSecondary">
-                        <h2 class="secHeadlineSecondary"><a href="">(Headline Placeholder)</a></h2>
-                        <p>(Filler Text Filler Text Filler Text)</p>                    
-                    </div>
-                </article>
-                <article>
-                    <div class="thumbnailSecondary">
-                        <img src="" width="120" height="100">
-                    </div>
-                    <div class="textSecondary">
-                        <h2 class="secHeadlineSecondary"><a href="">(Headline Placeholder)</a></h2>
-                        <p>(Filler Text Filler Text Filler Text)</p>                    
-                    </div>
-                </article>
+                <h1 class="secCategorySecondary">User Favorites</h1>
+                <?php
+                    if(!isset($_SESSION['loggedin'])) {
+                        print "<div class=\"columnError\">Log in to see your favorites.</div>";
+                        return;
+                    } else {
+                        $favorites = getUserFavorites($_SESSION['userid'], 3, $db);
+                        if($favorites === null) {
+                            print "<div class=\"columnError\">No favorites yet.</div>";
+                            return;
+                        }
+                        foreach($favorites as $article) {
+                            print "<article>
+                                <div class=\"thumbnailSecondary\">
+                                    <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['Image']}\" width=\"150\" height=\"100\"></a>
+                                </div>
+                                <div class=\"textSecondary\">
+                                    <h2 class=\"secHeadlineSecondary\"><a href=\"article.php?articleid={$article['ArticleID']}\">{$article['Headline']}</a></h2>
+                                    <p>".substr($article['Body'], 0, 75)."...</p>                  
+                                </div>
+                            </article>";
+                        }
+                    }
+                ?> 
             </div>
-        <div class="secBorderSecondary"></div>
+            <div class="secBorderSecondary"></div>
         </div>
-    </div>
+        </div>
     </section>
-        <!-- containerSecondary Tail -->      
+    <!-- containerSecondary Tail -->
+
     <?php include('includes/footer.html'); ?>
-    </body>
+</body>
 </html>
