@@ -63,7 +63,6 @@ session_start(); ?>
                         </span>
                         <script>
                             $("#favorite").click(function() {
-                                console.log("favorite"); //DEBUG
                                 $.get('util/articleHandler.php', {
                                     'request' : "favorite",
                                     'aid' : $("#aid").text(),
