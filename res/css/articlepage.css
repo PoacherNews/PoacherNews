@@ -10,6 +10,11 @@
 	margin: auto 0px auto 0px;
 }
 
+.articleColumns a {
+	color: #83A8F0;
+	text-decoration: none;
+}
+
 .articleColumns > #articleColumn {
 	flex: 1;
 	display: flex;
@@ -45,9 +50,9 @@
 	padding-left: 10px;
 }
 
-.threeColumnSection .articleBody > h1 {
+.threeColumnSection .articleBody h1 > a {
     font-size: 30px;
-    font-family: "Helvetica Neue",Helvetica,sans-serif;
+    color: #414141;
     font-weight: normal;
     margin: 0px auto;
 }
@@ -111,4 +116,9 @@
 	max-height: 400px;
 	width: auto;
 	height: auto;
+}
+
+#favorite, #unfavorite {
+	cursor: pointer;
+	color: #83A8F0;
 }

@@ -33,12 +33,8 @@ function getRelatedArticles($category, $excludeId, $db) {
 	*/
 	$sql = "SELECT ArticleId,Headline,Body FROM Article WHERE IsSubmitted = 1 AND ArticleId != {$excludeId} AND Category = '{$category}' ORDER BY PublishDate DESC LIMIT 6;";
 	$result = mysqli_query($db, $sql);
-	
-	$data = array();
-    while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) { // Put each returned row into a PHP array
-        $data[] = $row;
-    }
-    return $data;
+
+    return mysqliToArray($result);
 }
 
 function getEditorPickIDs($db) {
@@ -55,7 +51,7 @@ function getEditorPickIDs($db) {
 
 function getEditorPicks($db) {
     $editorPicks = getEditorPickIDs($db);
-    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND ArticleID = {$editorPicks[0]} ";
+    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ArticleID = {$editorPicks[0]} ";
     foreach(array_slice($editorPicks, 1) as &$val) { // Gather results for all other specified editor picks
         $sql .= "OR ArticleID = {$val} ";
     }
@@ -88,8 +84,8 @@ function getMainArticle($db) {
 
 function getTrendingArticles($limit, $db) {
     /* Returns an array of trending articles. */
-    $trendingDaySpan = 14;
-    $trendingViewThreshold = 20;
+    $trendingDaySpan = 25;
+    $trendingViewThreshold = 0;
 
     $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ArticleId != ".getMainArticleID($db)." ";
     foreach(getEditorPickIDs($db) as &$val) {

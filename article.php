@@ -14,13 +14,13 @@ session_start(); ?>
     </head>
     <body>
         <?php 
-            include 'includes/header.php';
-            include 'includes/nav.php';
+            include('includes/header.php');
+            include('includes/nav.php');
             include('util/db.php');
             include('util/articleUtils.php');
         ?>
 
-        <?php 
+        <?php
             date_default_timezone_set('America/Chicago');
             $articleData = getArticleByID($_GET['articleid'], $db);
             if(!$articleData) {
@@ -35,14 +35,52 @@ session_start(); ?>
         <div class="articleColumns">
             <section id="articleColumn">
                 <span class="articleDetails">
+                    <span style="display: none" id="aid"><?php print $articleData['ArticleID'] ?></span> <!-- Hidden field to track article ID -->
                     <h1><?php print $articleData['Headline'] ?></h1>
-                    <p> <!-- TODO: Link this to the author's page (or other articles by them? -->
+                    <p> <!-- TODO: Link this to the author's profile -->
                         <?php
                             $authorData = getAuthorByID($articleData['UserID'], $db);
-                            print "Written by {$authorData['FirstName']} {$authorData['LastName']}";
+                            print "Written by <a href=\"\">{$authorData['FirstName']} {$authorData['LastName']}</a>";
                         ?>
                     </p>
-                    <p>Published on <?php print date(DATE_RFC850, strtotime($articleData['PublishDate']))." &mdash; ".$articleData['Views']." Views"; ?></p>
+                    <p id="pubDate">Published on <?php print date("l, F j Y g:i a", strtotime($articleData['PublishDate']))?></p>
+                    <p id="pubDetails">
+                        <?php print "<a href=\"section.php?Category={$articleData['Category']}\">{$articleData['Category']}</a>" ?>
+                        &mdash; <?php print "{$articleData['Views']}" ?> Views
+                        <span style="float: right">
+                            <?php
+                                if(!isset($_SESSION['loggedin'])) {
+                                    print "<a href=\"login.php\">Log in</a> to favorite articles";
+                                } else {
+                                    include('util/userUtils.php');
+                                    if(isFavorite($_SESSION['userid'], $articleData['ArticleID'], $db)) { // If it's favorited
+                                        print "<span id=\"unfavorite\">Unfavorite</span>";
+                                    } else { // If it hasn't been favorited
+                                        print "<span id=\"favorite\">Favorite</span>";
+                                    }
+                                }
+                            ?>
+                        </span>
+                        <script>
+                            $("#favorite").click(function() {
+                                console.log("favorite"); //DEBUG
+                                $.get('util/articleHandler.php', {
+                                    'request' : "favorite",
+                                    'aid' : $("#aid").text(),
+                                }).done(function(data) {
+                                    location.reload();
+                                });
+                            });
+                            $("#unfavorite").click(function() {
+                                $.get('util/articleHandler.php', {
+                                    'request' : "unfavorite",
+                                    'aid' : $("#aid").text(),
+                                }).done(function(data) {
+                                    location.reload();
+                                });
+                            });
+                         </script>
+                    </p>
                 </span>
                 <div class="articleImage">
                     <img src="<?php print $articleData['Image'] ?>"/>
