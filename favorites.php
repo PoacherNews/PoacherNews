@@ -1,5 +1,6 @@
 <?php
 include 'util/loginCheck.php';
+$username = $_GET['Username'];
 // quit if not an admin or not logged in
 if (!$loggedin)
 {
@@ -82,7 +83,9 @@ function list_favorites()
             </div>
             
             <div class="info">
-                (User Information)
+                <?php 
+                	echo "<h3>$username</h3>";
+                ?>            
             </div>
         </div>
         

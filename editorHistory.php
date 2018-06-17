@@ -2,6 +2,8 @@
 // Redirect draft links to editorPage
 
 include 'util/loginCheck.php';
+$username = $_GET['Username'];
+
 // quit if not an admin or not logged in
 if (!$loggedin || !($_SESSION['usertype'] == 'W' || $_SESSION['usertype'] == 'A'))
 {
@@ -119,7 +121,9 @@ function list_approved()
             </div>
             
             <div class="info">
-                (User Information)
+                <?php 
+                	echo "<h3>$username</h3>";
+                ?>
             </div>
         </div>
         
