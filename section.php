@@ -158,17 +158,18 @@ Fix css (Resizing issues / min-width)
                     $trending = getTrendingArticles(3, $db);
                     if($trending === null) {
                         print "<div class=\"columnError\">No trending articles to show.</div>";
-                    }
-                    foreach($trending as $article) {
-                        print "<article>
-                            <div class=\"thumbnailSecondary\">
-                                <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['Image']}\" width=\"150\" height=\"100\"></a>
-                            </div>
-                            <div class=\"textSecondary\">
-                                <h2 class=\"secHeadlineSecondary\"><a href=\"article.php?articleid={$article['ArticleID']}\">{$article['Headline']}</a></h2>
-                                <p>".substr($article['Body'], 0, 75)."...</p>
-                            </div>
-                        </article>";
+                    } else {
+                        foreach($trending as $article) {
+                            print "<article>
+                                <div class=\"thumbnailSecondary\">
+                                    <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['Image']}\" width=\"150\" height=\"100\"></a>
+                                </div>
+                                <div class=\"textSecondary\">
+                                    <h2 class=\"secHeadlineSecondary\"><a href=\"article.php?articleid={$article['ArticleID']}\">{$article['Headline']}</a></h2>
+                                    <p>".substr($article['Body'], 0, 75)."...</p>
+                                </div>
+                            </article>";
+                        }
                     }
                 ?>
             </div>
@@ -178,7 +179,6 @@ Fix css (Resizing issues / min-width)
                 <?php
                     if(!isset($_SESSION['loggedin'])) {
                         print "<div class=\"columnError\">Log in to see your favorites.</div>";
-                        return;
                     } else {
                         $favorites = getUserFavorites($_SESSION['userid'], 3, $db);
                         if($favorites === null) {
