@@ -58,7 +58,9 @@ function display_table($db, $query, $tablename)
                 {
                     echo '<td>';
                     if ($key == 'Headline') 
-                    echo "<a href='util/editArticle.php?Headline=$r'>";
+                    {
+                        echo "<a href='util/editArticle.php?Headline=".htmlspecialchars($r, ENT_QUOTES)."'>";
+                    }
                     echo $r;
                     if ($key == 'Headline')
                     echo '</a>';
