@@ -132,7 +132,7 @@ function list_approved()
         
         <div class="display">
         <?php
-        if(strtolower($username) == strtolower($_SESSION['username']))
+        if((strtolower($username) == strtolower($_SESSION['username'])) || $_SESSION['usertype'] == 'A')
         {
         	echo "<h1>Drafts</h1>";
 			echo list_drafts();
