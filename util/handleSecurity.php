@@ -160,6 +160,36 @@ function handle_password()
     $newPassword = $db->real_escape_string($newPassword);
     $confirmNewPassword = $db->real_escape_string($confirmNewPassword);
     
+// password restrictions
+    // minimum length
+    if(!preg_match('/^.{6,}+$/', $newPassword))
+    {
+        $errorPassword = "Password must be at least 6 characters";
+        include '../security.php';
+        exit;
+    }
+    // uppercase letter
+    if(!preg_match('/[A-Z]/', $newPassword))
+    {
+        $errorPassword = "Password must contain an uppercase letter";
+        include '../security.php';
+        exit;
+    }
+    // lowercase letter
+    if(!preg_match('/[a-z]/', $newPassword))
+    {
+        $errorPassword = "Password must contain a lowercase letter";
+        include '../security.php';
+        exit;
+    }
+    // number
+    if(!preg_match('/[0-9]/', $newPassword))
+    {
+        $errorPassword = "Password must contain a number letter";
+        include '../security.php';
+        exit;
+    }
+    
     $sql = "SELECT * FROM User WHERE Username = '".$_SESSION['username']."'";
     $result = $db->query($sql);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
