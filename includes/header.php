@@ -26,8 +26,13 @@
                                 <div class=\"username-content\">
                                     <p>Logged in as <b>{$_SESSION['username']}</b></p>
                                     <hr>
-                                    <a href=\"/profile.php?Username=".$_SESSION['username']."\">Your Profile</a>
-                                    <a href=\"/help.php\">Help</a>
+                                    <a href=\"/profile.php?Username=".$_SESSION['username']."\">Your Profile</a>";
+                                    if($_SESSION['usertype'] == 'W' || $_SESSION['usertype'] == 'A')
+                                    {
+                                    	print "<a href=\"/tools.php\">Tools</a>";
+    								}
+                    print "
+                    				<a href=\"/help.php\">Help</a>
                                     <a href=\"/settings.php\">Settings</a>
                                     <a href=\"/logout.php\">Log Out</a>
                                 </div>
