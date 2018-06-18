@@ -16,7 +16,6 @@ if (!$loggedin || ($_SESSION['usertype'] == 'U'))
         <link rel="stylesheet" href="res/css/profile.css">
         <link rel="stylesheet" href="res/css/profileNav.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
     </head>
     <body>
         <?php
@@ -24,20 +23,10 @@ if (!$loggedin || ($_SESSION['usertype'] == 'U'))
             include 'includes/nav.php';
         ?>
         
-        <div class="user">
-            <div class="picture">
-                (Profile Picture)
-            </div>
-            
-            <div class="info">
-                (User Information)
-            </div>
-        </div>
-        
         <div class="nav">
             <?php
                 $current = 'editorPage';
-                include 'includes/profileNav.php';
+                include 'includes/toolsNav.php';
             ?>
         </div>
         

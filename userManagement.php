@@ -94,20 +94,10 @@ table, th, td {
             include 'includes/nav.php';
         ?>
         
-        <div class="user">
-            <div class="picture">
-                (Profile Picture)
-            </div>
-            
-            <div class="info">
-                (User Information)
-            </div>
-        </div>
-        
         <div class="nav">
             <?php
                 $current = 'manageUsers';
-                include 'includes/profileNav.php';
+                include 'includes/toolsNav.php';
             ?>
         </div>
         
