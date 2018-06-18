@@ -1,15 +1,16 @@
 <?php
+session_start();
 
 // TODO:
-// LOGIN LINKING
-// login check redirect
-// session login / redirect upon createUser success
+// whitespaces check
+// case sensitivity check
+// send email upon account creation?
 //
-// FEATURES
-// username restrictions
-// password restrictions
-// mail()
-
+// SECURTIY -
+// https://www.dreamhost.com/blog/php-security-user-validation-sanitization/
+// https://stackoverflow.com/questions/134099/are-pdo-prepared-statements-sufficient-to-prevent-sql-injection
+// https://stackoverflow.com/questions/5741187/sql-injection-that-gets-around-mysql-real-escape-string?rq=1
+ 
 // don't load page if they're logged in
 /*
 include '../login/loginCheck.php';
@@ -19,16 +20,16 @@ if ($loggedIn)
     exit;
 }
 */
-
+ 
 // Check to see if the user has already logged in
 if(empty($_SESSION['loggedin'])) {
-    $loggedIn = false;
+    $loggedin = false;
 } else { // The user is already logged in, so send them back to the index
     print "You are already logged in."; //DEBUG
     echo '<meta http-equiv="refresh" content="0; url=/index.php">';
     exit;
 }
-
+ 
 //echo "at the top";
 $action = empty($_POST['action']) ? '' : $_POST['action'];
 //echo $action;
@@ -36,11 +37,11 @@ if ($action == 'make_new')
 {
     handle_create();
 } 
-else 
+else
 {
     new_form();
 }
-
+ 
 function new_form()
 {
     //$username = "";
@@ -48,7 +49,7 @@ function new_form()
     include '../createUser.php';
     exit;
 }
-
+ 
 function handle_create() 
 {
     // get all vars from form
@@ -59,7 +60,7 @@ function handle_create()
     $username = empty($_POST['username']) ? '' : $_POST['username'];
     $password = empty($_POST['password']) ? '' : $_POST['password'];
     $password_confirm = empty($_POST['password_confirm']) ? '' : $_POST['password_confirm'];
-
+ 
     // empty fields not allowed
     if (empty($firstname) || empty($lastname) || empty($email) || empty($email_confirm) || empty($username) || empty($password) || empty($password_confirm))
     {
@@ -67,15 +68,15 @@ function handle_create()
         include '../createUser.php';
         exit;
     }
-
+ 
     // connection to database
     include 'db.php';
     // Check connection
     if ($db->connect_error)
     {
-	   die("Connection failed: " . $db->connect_error);
+       die("Connection failed: " . $db->connect_error);
     }
-    
+     
     // http://php.net/manual/en/mysqli.real-escape-string.php
     $firstname = $db->real_escape_string($firstname);
     $lastname = $db->real_escape_string($lastname);
@@ -84,10 +85,60 @@ function handle_create()
     $username = $db->real_escape_string($username);
     $password = $db->real_escape_string($password);
     $password_confirm = $db->real_escape_string($password_confirm);
-    
+ 
+// terms of agreement   
+if(!isset($_POST['checkbox']))
+{
+    $error = "Please confirm Terms of Agreement";
+    include '../createUser.php';
+    exit;
+}    
+     
+// username restrictions
+// prevent special characters?
+    // minimum length
+    if(!preg_match('/^.{4,}+$/', $username))
+    {
+        $error = "Username must be at least 4 characters";
+        include '../createUser.php';
+        exit;
+    }
+     
+// password restrictions
+    // minimum length
+    if(!preg_match('/^.{6,}+$/', $password))
+    {
+        $error = "Password must be at least 6 characters";
+        include '../createUser.php';
+        exit;
+    }
+    // uppercase letter
+    if(!preg_match('/[A-Z]/', $password))
+    {
+        $error = "Password must contain an uppercase letter";
+        include '../createUser.php';
+        exit;
+    }
+    // lowercase letter
+    if(!preg_match('/[a-z]/', $password))
+    {
+        $error = "Password must contain a lowercase letter";
+        include '../createUser.php';
+        exit;
+    }
+    // number
+    if(!preg_match('/[0-9]/', $password))
+    {
+        $error = "Password must contain a number letter";
+        include '../createUser.php';
+        exit;
+    }
+     
+// !!REVIEW!!
+// https://stackoverflow.com/questions/401656/secure-hash-and-salt-for-php-passwords?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa   
     // hash given password
     $password_hashed = password_hash($password, PASSWORD_DEFAULT);
-    
+     
     // passwords must match
     if (!password_verify($password_confirm, $password_hashed))
     {
@@ -95,13 +146,13 @@ function handle_create()
         include '../createUser.php';
         exit;
     }
-    
+     
     // destroy unhashed passwords
     unset($password);
     unset($_POST['password']);
     unset($password_confirm);
     unset($_POST['password_confirm']);
-
+ 
     // emails must match
     if ($email != $email_confirm)
     {
@@ -109,7 +160,7 @@ function handle_create()
         include '../createUser.php';
         exit;
     }
-
+ 
     // email validation
     if (!filter_var($email, FILTER_VALIDATE_EMAIL))
     {
@@ -117,7 +168,7 @@ function handle_create()
         include '../createUser.php';
         exit;
     }
-
+ 
     // Build query username
     //$query = "SELECT * FROM Users WHERE Username = '$username'";
     // build statement
@@ -128,7 +179,7 @@ function handle_create()
         print_r($stmt->error_list);
         exit;
     }
-
+ 
     // bind parameters
     if (!$stmt->bind_param('s', $username))
     {
@@ -136,14 +187,14 @@ function handle_create()
         print_r($stmt->error_list);
         exit;
     }
-    
+     
     // Run the query
     //$result = $mysqli->query($query);
     // execute statement
     $stmt->execute();
     // get result
     $result = $stmt->get_result();
-    
+     
     // fail if username is already in database
     if ($result->num_rows != 0)
     {
@@ -151,7 +202,7 @@ function handle_create()
         include '../createUser.php';
         exit;
     }
-
+ 
     // Build query email
     if (!$stmt->prepare("SELECT Email FROM User WHERE Email=?"))
     {
@@ -159,7 +210,7 @@ function handle_create()
         print_r($stmt->error_list);
         exit;
     }
-
+ 
     // bind parameters
     if (!$stmt->bind_param('s', $email))
     {
@@ -167,14 +218,14 @@ function handle_create()
         print_r($stmt->error_list);
         exit;
     }
-
+ 
     // Run the query
     //$result = $mysqli->query($query);
     // execute statement
     $stmt->execute();
     // get result
     $result = $stmt->get_result();
-
+ 
     // fail if email is already in database
     if ($result->num_rows != 0)
     {
@@ -182,14 +233,14 @@ function handle_create()
         include '../createUser.php';
         exit;
     }
-    
+     
     // close result and statement
     $result->close();
     $stmt->close();
-    
+     
     // build new statement to insert new user in Users table
     $stmt_users = $db->stmt_init();
-
+ 
     // prepare
     if (!$stmt_users->prepare("INSERT INTO User (UserID, FirstName, LastName, Email, Username, Password) VALUES (?,?,?,?,?,?)"))
     {
@@ -205,7 +256,7 @@ function handle_create()
         exit;
     }
     //print_r($result);
-    
+     
     // execute statement
     if (!$stmt_users->execute())
     {
@@ -213,22 +264,18 @@ function handle_create()
         echo nl2br(print_r($stmt_users->error_list, true), false);
         exit;
     }
-        
-/*
-    // log in the user and makeLog
-    $_SESSION['name'] = $username;
+ 
+    // Set session variables
     $_SESSION['loggedin'] = true;
+    $_SESSION['userid'] = $userid;
     $_SESSION['firstname'] = $firstname;
     $_SESSION['lastname'] = $lastname;
-
-//  Log Table?        
-//  makeLog("CreateUser");
-*/
-
+    $_SESSION['email'] = $email;
+    $_SESSION['username'] = $username;
+    $_SESSION['usertype'] = 'U';
+   
     // createUser success
-    $error = "Account created with Username '$username'.";
-    // Redirect page for createUser success
-//    include '../createUser.php';
-    header("Location: ../login.php");
+    // Redirect to index
+    header("Location: ../index.php");
 }
 ?>
