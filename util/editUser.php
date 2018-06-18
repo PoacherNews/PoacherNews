@@ -83,22 +83,12 @@ if (!isset($data) || !$data)
 //include $_SERVER['DOCUMENT_ROOT'].'/sprint3/includes/header.php';
 	    	include '../includes/header.php';
             include '../includes/nav.php';
-        ?>
-        
-        <div class="user">
-            <div class="picture">
-                (Profile Picture)
-            </div>
-            
-            <div class="info">
-                (User Information)
-            </div>
-        </div>
+        ?>    
         
         <div class="nav">
             <?php
                 $current = 'manageUsers';
-                include '../includes/profileNav.php';
+                include '../includes/toolsNav.php';
             ?>
         </div>
         
@@ -134,9 +124,6 @@ if (!isset($data) || !$data)
             <h2>User Options</h2>
 
 <?php 
-
-?>
-<?php 
 if ($data['Usertype'] == 'U' || $data['Usertype'] == 'W') { ?>
 <form method="post" action="">
 
@@ -158,11 +145,6 @@ if ($data['Usertype'] == 'U' || $data['Usertype'] == 'W') { ?>
 if($data['Usertype'] == 'A') { 
 echo "<br>You must have persmissions to edit this user";
  } ?>
-
-<form action="../userManagement.php">
-        <input type="submit" value="User Management" />
-</form>
-
 
 <?php 
 if(isset($_POST['submit'])){ 
