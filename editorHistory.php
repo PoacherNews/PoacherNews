@@ -1,17 +1,7 @@
 <?php
+// TODO:
 // Redirect draft links to editorPage
-
 include 'util/loginCheck.php';
-$username = $_GET['Username'];
-
-// quit if not an admin or not logged in
-if (!$loggedin || !($_SESSION['usertype'] == 'W' || $_SESSION['usertype'] == 'A'))
-{
-    header("HTTP/1.1 403 Forbidden", true, 403);
-    echo "You must be an editor or administrator.";
-    echo '<meta http-equiv="refresh" content="1; url=/index.php">';
-    exit;
-}
 
 function display_table($db, $query, $tablename)
 {
@@ -105,27 +95,17 @@ function list_approved()
 
     <body>
         <?php 
-    		include 'util/loginCheck.php';
-            if (!$loggedin)
+	    	include 'includes/header.php';
+            include 'includes/nav.php';
+            include 'includes/profileHeader.php';
+        
+            // Redirect to index for editorHistory?Username= on usertype U
+            if($usertype == 'U')
             {
                 echo '<meta http-equiv="refresh" content="0; url=index.php">';
                 exit;
             }
-	    	include 'includes/header.php';
-            include 'includes/nav.php';
         ?>
-        
-        <div class="user">
-            <div class="picture">
-                (Profile Picture)
-            </div>
-            
-            <div class="info">
-                <?php 
-                	echo "<h3>$username</h3>";
-                ?>
-            </div>
-        </div>
         
         <div class="nav">
             <?php

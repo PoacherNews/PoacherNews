@@ -1,26 +1,10 @@
 <?php
     include 'util/loginCheck.php';
-    include 'util/userUtils.php';
-
-    $username = $_GET['Username'];
-
-    include 'util/db.php';
-    // Check connection
-    if ($db->connect_error)
-    {
-	   die("Connection failed: " . $db->connect_error);
-    }
-
-    $sql = "SELECT * FROM User WHERE Username = '".$username."'";
-    $result = $db->query($sql);
-    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-    $userid = $row['UserID'];  
 ?>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Profile | Comments</title>
         <?php include 'includes/globalHead.html' ?>
         <link rel="stylesheet" href="res/css/profile.css">
         <link rel="stylesheet" href="res/css/profileNav.css">
@@ -30,19 +14,8 @@
         <?php
             include 'includes/header.php';
             include 'includes/nav.php';
+            include 'includes/profileHeader.php';
         ?>
-        
-        <div class="user">
-            <div class="picture">
-                (Profile Picture)
-            </div>
-            
-            <div class="info">
-                <?php 
-                	echo "<h3>$username</h3>";
-                ?>
-            </div>
-        </div>
         
         <div class="nav">
             <?php
@@ -56,13 +29,11 @@
     <?php
   		$comments = getUserComments($userid, null, $db);
  		$commentArticles = getUserCommentArticles($userid, null, $db);
-
     	if($comments === null) 
         {
                 print "<div class=\"columnError\">No comments yet.</div>";
                 return;
         }
-
         // Sort comments by DESC
         foreach ($comments as $key => $r) {
             $sort[$key] = strtotime($r['CommentDate']);
