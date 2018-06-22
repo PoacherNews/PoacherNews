@@ -1,9 +1,13 @@
 <?php
-
+// TODO:
+// Add error for empty field when submitting - also do the same for editArticle.php
+// Review results ->num_rows. Only an error given for testUser2
 // Changing Users/Writers to Admins permissions
 // Changing Admins permissions
 
 include 'loginCheck.php';
+include 'userUtils.php';
+
 // quit if not an admin or not logged in
 if (!$loggedin || !($_SESSION['usertype'] == 'A'))
 {
@@ -27,7 +31,7 @@ function getUserData($db)
 //    require_once ('util/db.php');
     // prepare statement
     $stmt = $db->stmt_init();
-    if (!$stmt->prepare("SELECT UserID, FirstName, LastName, Email, Username, Usertype FROM User WHERE Username =?"))
+    if (!$stmt->prepare("SELECT User.UserID, FirstName, LastName, Email, Username, Usertype, commentText FROM User LEFT JOIN Comment ON User.UserID = Comment.UserID WHERE Username =?"))
     {
         echo "Error preparing statement: <br>";
         echo nl2br(print_r($stmt->error_list, true), false);
@@ -54,11 +58,13 @@ function getUserData($db)
         echo nl2br(print_r($stmt->error_list, true), false);
         return;
     }
+    /*
     if ($result->num_rows != 1)
     {
-        echo "Username incorrect. ";
+        echo "Username incorrect.";
         return false;
     }
+    */
     $row = $result->fetch_assoc();
     $result->free();
     $stmt->close();
@@ -78,6 +84,7 @@ if (!isset($data) || !$data)
         <link rel="stylesheet" href="../res/css/profileNav.css">
         <title><?php echo $data['Username']; ?> | Edit User</title>
     </head>
+    
     <body>
         <?php
 //include $_SERVER['DOCUMENT_ROOT'].'/sprint3/includes/header.php';
@@ -108,6 +115,7 @@ if (!isset($data) || !$data)
                         <th>Email</th>
                         <th>Username</th>
                         <th>Usertype</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -181,6 +189,74 @@ if (!$stmt->execute())
 $stmt->close();
 $db->close();
 } ?>
+            
+<h2>Comments</h2>
+<?php
+    $comments = getUserComments($data['UserID'], null, $db);
+
+    	if($comments === null) 
+        {
+                print "<div class=\"columnError\">No comments yet.</div>";
+                return;
+        }
+            
+        // Sort comments by DESC
+        foreach ($comments as $key => $r) {
+            $sort[$key] = strtotime($r['CommentDate']);
+        }
+        array_multisort($sort, SORT_DESC, $comments);
+            
+        foreach ($comments as $key => $r) 
+        {
+            print "<p>{$r['commentText']}</p>";
+        ?>
+<form method="post" action="">
+<div>
+<input type="radio" name="delete" class="deleteComment" value="1" /><label for="delete">Delete</label><br />
+</div>
+
+<div>
+<input type="submit" name="deleteSubmit[<?php echo $r['CommentID']; ?>]" id="submit" value="Submit" />
+</div>
+</form>
+         
+<?php
+if(isset($_POST['deleteSubmit'][''.$r['CommentID'].''])){ 
+$selected_radio = $_POST['delete'];
+$query = "DELETE FROM Comment WHERE commentText = '".$r['commentText']."' AND UserID = ?";
+
+// Refresh
+echo "<meta http-equiv='refresh' content='0'>";
+
+//include 'util/db.php';
+// prepare statement
+$stmt = $db->stmt_init();
+if (!$stmt->prepare($query))
+{
+    echo "Error preparing statement: <br>";
+    echo nl2br(print_r($stmt->error_list, true), false);
+    return;
+}
+// bind username
+if (!$stmt->bind_param('s', $data['UserID']))
+{
+    echo "Error binding parameters: <br>";
+    echo nl2br(print_r($stmt->error_list, true), false);
+    return;
+}
+// query database
+if (!$stmt->execute())
+{
+    echo "Error executing query: <br>";
+    echo nl2br(print_r($stmt->error_list, true), false);
+    return;
+}
+// done
+$stmt->close();
+$db->close();
+}
+    }
+?>
 
         </main>
         </div>
