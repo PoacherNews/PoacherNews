@@ -61,6 +61,58 @@
             print "<p>{$r['commentText']} -&nbsp;";
             print date("l, F j Y g:i a", strtotime($r['CommentDate']));
             print "</p>";
+    ?>
+    <?php
+        if((strtolower($username) == strtolower($_SESSION['username'])) || $_SESSION['usertype'] == 'A')
+        {?>
+            <form method="post" action="">
+<div>
+<input type="radio" name="delete" class="deleteComment" value="1" /><label for="delete">Delete</label><br />
+</div>
+
+<div>
+<input type="submit" name="deleteSubmit[<?php echo $r['CommentID']; ?>]" id="submit" value="Submit" />
+</div>
+</form>
+
+<?php
+if(isset($_POST['deleteSubmit'][''.$r['CommentID'].''])){ 
+$selected_radio = $_POST['delete'];
+    
+include 'util/db.php';
+
+$query = "DELETE FROM Comment WHERE commentText = '".$r['commentText']."' AND UserID = ?";
+
+// Refresh
+echo "<meta http-equiv='refresh' content='0'>";
+
+// prepare statement
+$stmt = $db->stmt_init();
+if (!$stmt->prepare($query))
+{
+    echo "Error preparing statement: <br>";
+    echo nl2br(print_r($stmt->error_list, true), false);
+    return;
+}
+// bind username
+if (!$stmt->bind_param('s', $_SESSION['userid']))
+{
+    echo "Error binding parameters: <br>";
+    echo nl2br(print_r($stmt->error_list, true), false);
+    return;
+}
+// query database
+if (!$stmt->execute())
+{
+    echo "Error executing query: <br>";
+    echo nl2br(print_r($stmt->error_list, true), false);
+    return;
+}
+// done
+$stmt->close();
+$db->close();
+}            
+        }
         }
     ?>
         </div>
