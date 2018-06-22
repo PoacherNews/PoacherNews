@@ -56,7 +56,16 @@
 		}
 	}
 // COMMENTS
-	function getCommentIDs($uid, $db) {
+	function getCommentUserIDs($uid, $db) {
+		$sql = "SELECT UserID FROM Comment WHERE UserId = {$uid};";
+		$result = mysqli_query($db, $sql);
+	    $data = array();
+	    while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) { // Put each returned row into a PHP array
+	        $data[] = $row['UserID'];
+	    }
+	    return $data;
+	}
+	function getCommentArticleIDs($uid, $db) {
 		$sql = "SELECT ArticleID FROM Comment WHERE UserId = {$uid};";
 		$result = mysqli_query($db, $sql);
 	    $data = array();
@@ -67,7 +76,7 @@
 	}
 	function getUserCommentArticles($uid, $limit=NULL, $db) {
 		/* Returns a `limit` length array of a provided user's favorite articles. */
-		$comments = getCommentIDs($uid, $db);
+		$comments = getCommentArticleIDs($uid, $db);
 	    $sql = "SELECT * FROM Article WHERE ArticleID = {$comments[0]} ";
 	    foreach(array_slice($comments, 1) as &$val) { // Gather results for all other specified editor picks
 	        $sql .= "OR ArticleID = {$val} ";
@@ -83,10 +92,10 @@
 	}
 	function getUserComments($uid, $limit=NULL, $db) {
 		/* Returns a `limit` length array of a provided user's favorite articles. */
-		$comments = getCommentIDs($uid, $db);
-	    $sql = "SELECT * FROM Comment WHERE ArticleID = {$comments[0]} ";
+		$comments = getCommentUserIDs($uid, $db);
+	    $sql = "SELECT * FROM Comment WHERE UserID = {$uid} ";
 	    foreach(array_slice($comments, 1) as &$val) { // Gather results for all other specified editor picks
-	        $sql .= "OR ArticleID = {$val} ";
+	        $sql .= "OR UserID = {$val} ";
 	    }
             if(!is_null($limit)) {
 	        $sql .= "LIMIT {$limit};";
