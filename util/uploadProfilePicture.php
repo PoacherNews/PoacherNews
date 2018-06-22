@@ -3,7 +3,14 @@
 // Preview / Crop / Resize img
 include 'loginCheck.php';
 
-$target_dir = "/home/ec2-user/public_html/res/img/";
+$target_dir = "/home/ec2-user/public_html/res/img/profilePictures/".$_SESSION['username']."/";
+
+if (!file_exists("/home/ec2-user/public_html/res/img/profilePictures/".$_SESSION['username']."")) {
+    mkdir("/home/ec2-user/public_html/res/img/profilePictures/".$_SESSION['username']."", 0777, true);
+}
+
+chmod($target_dir, 0777);
+
 $target_file = $target_dir . basename($_FILES["profilePicture"]["name"]);
 $Filename=basename( $_FILES["profilePicture"]["name"]);
 $uploadOk = 1;
