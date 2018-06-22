@@ -32,9 +32,9 @@
 <div class="user">
     <div class="picture">
 <?php
-    if($profilepicture != '')
+    if($profilepicture != null)
     {
-        echo "<img src='../res/img/".$profilepicture."'>";
+        echo "<img src='../res/img/profilePictures/".$_SESSION['username']."/".$profilepicture."'>";
     }
     else 
     {
