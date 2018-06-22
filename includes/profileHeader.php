@@ -34,7 +34,7 @@
 <?php
     if($profilepicture != null)
     {
-        echo "<img src='../res/img/profilePictures/".$_SESSION['username']."/".$profilepicture."'>";
+        echo "<img src='../res/img/profilePictures/".$username."/".$profilepicture."'>";
     }
     else 
     {
