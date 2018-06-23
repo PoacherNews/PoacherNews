@@ -1,0 +1,247 @@
+/*Article Details*/
+.em-row, .em-left, .em-mid, .em-right {
+	display: flex;
+}
+
+.em-row {
+	flex-direction: row;
+	height: 100%;
+	text-align: center;
+}
+
+.em-left, .em-mid, .em-right {
+	flex-direction: column;
+	width: 33.33%;
+}
+
+.em-col {
+	float: left;
+	margin: auto 50px auto 50px;
+	overflow: hidden;
+}
+
+.em-col > input[type="text"], input[list="category"] {
+	margin: auto auto 10px auto;
+    padding: 5px 10px 5px; 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+	min-width: 200px;
+	margin: auto 10px 10px 10px;
+    font-size: 16px;
+}
+
+.em-col > #submit-button, #save-button, #verify-submit, #cancel-submit {
+	margin: 20px 0px 0px 0px;
+    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+    height: 25px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 2px 5px 6px 5px;
+    border: 1px solid black;
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+#verify-submit {
+	background-color: springgreen;
+}
+
+#cancel-submit {
+	background-color: red;
+}
+
+#verify-submit:hover, #cancel-submit:hover {
+	opacity: 0.6;
+}
+
+
+/*Text Editor, Editor Menu, Editor Menu Bar*/
+.text-editor, .editor-menu, .editor-menubar {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    align-self: center;
+    display: inline-block;
+    border-bottom: none;
+    font-size: 14px;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+#preview {
+    border: none;
+    cursor: pointer;
+    float: right;
+}
+
+.preview:hover {
+    background-color: lightgrey;
+}
+
+.preview:focus, #submit-button:focus, #save-button:focus, #verify-submit:focus, #cancel-submit:focus {
+    outline: none;
+}
+
+.editor-menu {
+    border-bottom: 1px solid black;
+}
+
+.editor-menubar{
+    background-color: #fff;
+}
+
+ul {
+	background-color: ghostwhite;
+    list-style-type: none;
+    height: 100%;
+}
+
+.editor-menubar > li {
+    background-color: #fff;
+    list-style-type:none;
+	padding: 10px;
+	height: 100%;
+	
+}
+
+li button {
+    border: none;
+    padding: 10px 12px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+
+li button:focus {
+    outline: none;
+}
+
+li #font-family, #font-size, #line-spacing {
+    border: none;
+    padding: 10px 12px;
+    color: black;
+    display: inline-block;
+    font-size: 14px;
+    opacity: 0.5;
+	cursor: default;
+}
+
+
+li:hover button {
+    background-color: lightgrey;
+}
+
+.fa {
+    padding: 10px;
+    font-size: 25px;
+    width: 15px;
+    text-align: center;
+    text-decoration: none;
+    margin: 5px 10px 10px 10px;
+    border-radius: 50%;
+}
+
+.text-editor {
+    border: 1px solid black;
+	line-height: 115%;
+    width: 50%;
+    padding: 5% 10% 5% 10%;
+    min-height: 500px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.25);
+	font-family: Helvetica;
+	font-size: 13pt;
+}
+
+.text-editor:focus {
+    outline: none;
+}
+
+.text-editor > a {
+	color: black;
+	text-decoration: none;
+	border-bottom: 2px solid #83A8F0;
+}
+
+.text-editor > a:hover {
+	color: #83A8F0;
+}
+
+#insert-link {
+	position: absolute;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.25);
+    border: 1px solid black;
+    text-align: center;
+	max-width: 200px;
+    z-index: 900;
+	min-height: 100px;
+    background-color: orange;
+	border-radius: 4px;
+	overflow: hidden;
+	display: none;
+}
+
+
+
+#insert-link > input[name="text"], input[name="link"] {
+	margin: 10px 5px 10px 5px;
+	font-size: 10pt;
+}
+
+#insert-link > input[type="button"] {
+	margin-bottom: 15px;
+}
+
+.link-row, .menubar-row {
+	display: flex;
+	flex-direction: row;
+}
+
+.menubar-row {
+	align-content: center;
+	justify-content: center;
+}
+
+
+.submit {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 100px; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4);
+}
+
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+}
+
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
