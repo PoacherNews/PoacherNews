@@ -36,12 +36,21 @@ function display_table($db, $query, $tablename)
         echo "<tr>\n";
         foreach ($row as $key => $r)
         {
+            if($key == 'UserID')
+            {
+                $userid = $r;
+            }
+            
             echo '<td>';
             if ($key == 'Username')
-                echo "<a href='util/editUser.php?Username=$r'>";
+            {
+                echo "<a href='util/editUser.php?UserID=$userid'>";
+            }
             echo $r;
             if ($key == 'Username')
+            {
                 echo '</a>';
+            }
             echo '</td>';
         }	
         echo "</tr>\n";

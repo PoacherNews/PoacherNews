@@ -50,6 +50,11 @@ function display_table($db, $query, $tablename)
         echo "<tr>\n";
         foreach ($row as $key => $r)
         {
+            if($key == 'ArticleID')
+            {
+                $articleid = $r;
+            }
+            
             if($key != 'IsDraft')
             {
                 if($key != 'IsSubmitted')
@@ -57,11 +62,13 @@ function display_table($db, $query, $tablename)
                     echo '<td>';
                     if ($key == 'Headline') 
                     {
-                        echo "<a href='util/editArticle.php?Headline=".htmlspecialchars($r, ENT_QUOTES)."'>";
+                        echo "<a href='util/editArticle.php?ArticleID=$articleid'>";
                     }
                     echo $r;
                     if ($key == 'Headline')
-                    echo '</a>';
+                    {
+                        echo '</a>';
+                    }
                     echo '</td>'; 
                 }
             }
