@@ -96,8 +96,20 @@
 
             <div>
                 <h2>Delete Account</h2>
-                <form>
-                    <input type="button" name="deleteAccount" value="Delete Account">
+                <form action="/util/handleSecurity.php" method="POST">
+                    
+                <input type="hidden" name="action" value="deleteAccount">   
+
+                <?php
+	            if (isset($errorDeleteAccount)) 
+                {
+                    echo "<p>$errorDeleteAccount</p>\n";
+                }
+                ?>   
+                    
+                    <input type="submit" name="deleteAccount" value="Delete Account">
+                    <input type="checkbox" name="deleteConfirm" class="deleteConfirm" value="Confirm"/><label>CONFIRM DELETE</label>
+
                 </form>
             </div>            
 
