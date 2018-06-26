@@ -18,6 +18,13 @@ Fix css (Resizing issues / min-width)
    <?php include 'includes/globalHead.html' ?>
    <link rel="stylesheet" href="res/css/section.css">
    <script>
+        function serializeDate(date) {
+            // Will convert a date to YYYY-MM-DD HH:MM:SS format.
+            $d = new Date(date);
+            $tmp = $d.getFullYear()+"-"+($d.getMonth()+1)+"-"+$d.getDate()+" "+$d.getHours()+":"+$d.getMinutes()+":"+$d.getSeconds();
+            console.log($tmp);
+            return $tmp;
+        }
         function createStackedArticle(rowData) {
             /* Makes an article DOM object and populates elements for page display.
                Accepts a JSON formatted string object for parsing.
@@ -37,9 +44,10 @@ Fix css (Resizing issues / min-width)
                 'text' : "Continue Reading"
             });
             var $article = $("<article/>");
-            $article.append($("<div/>", {
-                'class' : "publishDate hidden",
-                'text': rowData['PublishDate']
+
+            $article.append($("<span/>", {
+                'class' : "publishDate", /* TODO: Add hidden class */
+                'text': serializeDate(rowData['PublishDate'])
             }));
             var $thumbnail = $("<div/>", {
                 'class' : "stacked-thumbnail"
@@ -106,15 +114,15 @@ Fix css (Resizing issues / min-width)
                 };
                 $(".showMore").click(function() {
                     console.log("Clicked"); //DEBUG
-                    getLastPublishDate();
+                    //console.log(getLastPublishDate());
                     $.getJSON("util/sectionUtil.php", {
-                        'offset' : getLastPublishDate(),
+                        //'offset' : getLastPublishDate(),
                         'Category' : "<?php echo $_GET['Category'] ?>",
-                    }).done(function(data) {
+                    }).done(function(data) { /*
                         $.each(data, function(i, row) {
                             // $("#secondary-section").children().remove('.loader');
                             $("#articleList").append(createStackedArticle(row));
-                        });
+                        }); */
                     });
                 });
             </script>
