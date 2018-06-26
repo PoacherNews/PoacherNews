@@ -31,7 +31,7 @@ function getUserData($db)
 //    require_once ('util/db.php');
     // prepare statement
     $stmt = $db->stmt_init();
-    if (!$stmt->prepare("SELECT User.UserID, FirstName, LastName, Email, Username, Usertype, commentText FROM User LEFT JOIN Comment ON User.UserID = Comment.UserID WHERE Username =?"))
+    if (!$stmt->prepare("SELECT User.UserID, FirstName, LastName, Email, Username, Usertype, CommentText FROM User LEFT JOIN Comment ON User.UserID = Comment.UserID WHERE Username =?"))
     {
         echo "Error preparing statement: <br>";
         echo nl2br(print_r($stmt->error_list, true), false);
@@ -208,7 +208,9 @@ $db->close();
             
         foreach ($comments as $key => $r) 
         {
-            print "<p>{$r['commentText']}</p>";
+            if($r['CommentText'] != NULL)
+            {
+                print "<p>{$r['CommentText']}</p>";
         ?>
 <form method="post" action="">
 <div>
@@ -223,7 +225,7 @@ $db->close();
 <?php
 if(isset($_POST['deleteSubmit'][''.$r['CommentID'].''])){ 
 $selected_radio = $_POST['delete'];
-$query = "DELETE FROM Comment WHERE commentText = '".$r['commentText']."' AND UserID = ?";
+$query = "UPDATE Comment SET CommentText = NULL WHERE CommentText = '".$r['CommentText']."' AND UserID = ?";
 
 // Refresh
 echo "<meta http-equiv='refresh' content='0'>";
@@ -255,6 +257,7 @@ if (!$stmt->execute())
 $stmt->close();
 $db->close();
 }
+    }
     }
 ?>
 
