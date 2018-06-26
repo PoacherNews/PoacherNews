@@ -1,7 +1,6 @@
 <?php
 // TODO:
 // Add error for empty field when submitting - also do the same for editArticle.php
-// Review results ->num_rows. Only an error given for testUser2
 // Changing Users/Writers to Admins permissions
 // Changing Admins permissions
 
@@ -21,7 +20,7 @@ include_once ('db.php');
 
 function getUserData($db)
 {
-    if (!isset($_GET['Username']))
+    if (!isset($_GET['UserID']))
     {
         echo "Error: No user specified. ";
         return;
@@ -31,14 +30,14 @@ function getUserData($db)
 //    require_once ('util/db.php');
     // prepare statement
     $stmt = $db->stmt_init();
-    if (!$stmt->prepare("SELECT User.UserID, FirstName, LastName, Email, Username, Usertype, CommentText FROM User LEFT JOIN Comment ON User.UserID = Comment.UserID WHERE Username =?"))
+    if (!$stmt->prepare("SELECT User.UserID, FirstName, LastName, Email, Username, Usertype, CommentText FROM User LEFT JOIN Comment ON User.UserID = Comment.UserID WHERE User.UserID =?"))
     {
         echo "Error preparing statement: <br>";
         echo nl2br(print_r($stmt->error_list, true), false);
         return;
     }
     // bind parameters
-    if (!$stmt->bind_param('s', $_GET['Username']))
+    if (!$stmt->bind_param('i', $_GET['UserID']))
     {
         echo "Error binding parameters: <br>";
         echo nl2br(print_r($stmt->error_list, true), false);
@@ -73,7 +72,7 @@ function getUserData($db)
 // get user data as an array
 $data = getUserData($db);
 if (!isset($data) || !$data)
-    die("Username incorrect or database error.");
+    die("UserID incorrect or database error.");
 ?>
 <!DOCTYPE html>
 <html lang="en">
