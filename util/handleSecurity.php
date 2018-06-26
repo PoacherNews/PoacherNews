@@ -12,6 +12,10 @@ else if ($action == 'updatePassword')
 {
     handle_password();
 }
+else if ($action == 'deleteAccount')
+{
+    handle_deleteAccount();
+}
 else
 {
     new_form();
@@ -20,7 +24,9 @@ else
 function new_form()
 {
     //$username = "";
-    $error = "";
+    $errorEmail = "";
+    $errorPassword = "";
+    $errorDeleteAccount = "";
     include '../security.php';
     exit;
 }
@@ -254,5 +260,61 @@ function handle_password()
     //    include '../createUser.php';
     include '../security.php';    
 
+}
+
+function handle_deleteAccount()
+{
+    if(!isset($_POST['deleteConfirm']))
+    {
+        $errorDeleteAccount = "PLEASE CONFIRM DELETION OF ACCOUNT";
+        include '../security.php';
+        exit;
+    }
+    else 
+    {
+        // connection to database
+        include 'db.php';
+        // Check connection
+        if ($db->connect_error)
+        {
+           die("Connection failed: " . $db->connect_error);
+        }
+
+        // build new statement to insert new user in Users table
+        $stmt = $db->stmt_init();
+        // prepare
+        if (!$stmt->prepare("DELETE FROM User WHERE UserID = ?"))
+        {
+            echo "Error preparing INSERT statement: \n";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            exit;
+        }
+        // bind parameters to new statement
+        if (!$stmt->bind_param('i', $_SESSION['userid']))
+        {
+            echo "Error binding parameters to INSERT: \n";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            exit;
+        }
+        //print_r($result);
+
+        // execute statement
+        if (!$stmt->execute())
+        {
+            echo "Error INSERTing: \n";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            exit;
+        }
+
+        // $_SESSION UPDATE
+        unset($_SESSION);
+        session_destroy();
+
+        // delete account success
+        $errorDeleteAccount = "Account successfully deleted";
+        // Redirect page for delete account success
+        //    include '../createUser.php';
+        include '../login.php';    
+    }
 }
 ?>
