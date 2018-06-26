@@ -16,7 +16,7 @@ include_once ('db.php');
 
 function getArticleData($db)
 {
-    if (!isset($_GET['Headline']))
+    if (!isset($_GET['ArticleID']))
     {
         echo "Error: No headline specified.";
         return;
@@ -26,14 +26,14 @@ function getArticleData($db)
 	// require_once ('util/db.php');
     // prepare statement
     $stmt = $db->stmt_init();
-    if (!$stmt->prepare("SELECT Article.ArticleID, Headline, Category, IsDraft, IsSubmitted, FeaturedType FROM Article LEFT JOIN Featured ON Article.ArticleID = Featured.ArticleID WHERE Headline =?"))
+    if (!$stmt->prepare("SELECT Article.ArticleID, Headline, Category, IsDraft, IsSubmitted, FeaturedType FROM Article LEFT JOIN Featured ON Article.ArticleID = Featured.ArticleID WHERE Article.ArticleID =?"))
     {
         echo "Error preparing statement: <br>";
         echo nl2br(print_r($stmt->error_list, true), false);
         return;
     }
     // bind parameters
-    if (!$stmt->bind_param('s', $_GET['Headline']))
+    if (!$stmt->bind_param('s', $_GET['ArticleID']))
     {
         echo "Error binding parameters: <br>";
         echo nl2br(print_r($stmt->error_list, true), false);
@@ -84,20 +84,10 @@ if (!isset($data) || !$data)
             //include '../includes/footer.html';
         ?>
         
-        <div class="user">
-            <div class="picture">
-                (Profile Picture)
-            </div>
-            
-            <div class="info">
-                (User Information)
-            </div>
-        </div>
-        
         <div class="nav">
             <?php
                 $current = 'manageArticles';
-                include '../includes/profileNav.php';
+                include '../includes/toolsNav.php';
             ?>
         </div>
         
@@ -126,7 +116,7 @@ if (!isset($data) || !$data)
                         <td><?php echo $data['IsDraft']; ?></td>
                         <td><?php echo $data['IsSubmitted']; ?></td>
                         <td><?php 
-                            if($data['FeaturedType'] == '')
+                            if($data['FeaturedType'] == null)
                             {
                                 echo "None";
                             }
@@ -408,7 +398,7 @@ if(isset($_POST['featuredSubmit']))
             $query = "DELETE FROM Featured WHERE ArticleID = ?";
         }
         // MAIN
-        if($selected_radio == 1 && $data['FeaturedType'] == '')
+        if($selected_radio == 1 && $data['FeaturedType'] == null)
         {
             $sql = "SELECT * FROM Featured WHERE FeaturedType = 'Main'";
             $result = $db->query($sql);
@@ -435,7 +425,7 @@ if(isset($_POST['featuredSubmit']))
             }
         }
         // EdITOR PICK
-        if($selected_radio == 2 && $data['FeaturedType'] == '')
+        if($selected_radio == 2 && $data['FeaturedType'] == null)
         {
             $query = "INSERT INTO Featured (FeaturedType, ArticleID) VALUES ('EditorPick', ?)";
         }

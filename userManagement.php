@@ -36,12 +36,21 @@ function display_table($db, $query, $tablename)
         echo "<tr>\n";
         foreach ($row as $key => $r)
         {
+            if($key == 'UserID')
+            {
+                $userid = $r;
+            }
+            
             echo '<td>';
             if ($key == 'Username')
-                echo "<a href='util/editUser.php?Username=$r'>";
+            {
+                echo "<a href='util/editUser.php?UserID=$userid'>";
+            }
             echo $r;
             if ($key == 'Username')
+            {
                 echo '</a>';
+            }
             echo '</td>';
         }	
         echo "</tr>\n";
@@ -94,20 +103,10 @@ table, th, td {
             include 'includes/nav.php';
         ?>
         
-        <div class="user">
-            <div class="picture">
-                (Profile Picture)
-            </div>
-            
-            <div class="info">
-                (User Information)
-            </div>
-        </div>
-        
         <div class="nav">
             <?php
                 $current = 'manageUsers';
-                include 'includes/profileNav.php';
+                include 'includes/toolsNav.php';
             ?>
         </div>
         

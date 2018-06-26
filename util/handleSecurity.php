@@ -12,6 +12,10 @@ else if ($action == 'updatePassword')
 {
     handle_password();
 }
+else if ($action == 'deleteAccount')
+{
+    handle_deleteAccount();
+}
 else
 {
     new_form();
@@ -20,7 +24,9 @@ else
 function new_form()
 {
     //$username = "";
-    $error = "";
+    $errorEmail = "";
+    $errorPassword = "";
+    $errorDeleteAccount = "";
     include '../security.php';
     exit;
 }
@@ -160,6 +166,36 @@ function handle_password()
     $newPassword = $db->real_escape_string($newPassword);
     $confirmNewPassword = $db->real_escape_string($confirmNewPassword);
     
+// password restrictions
+    // minimum length
+    if(!preg_match('/^.{6,}+$/', $newPassword))
+    {
+        $errorPassword = "Password must be at least 6 characters";
+        include '../security.php';
+        exit;
+    }
+    // uppercase letter
+    if(!preg_match('/[A-Z]/', $newPassword))
+    {
+        $errorPassword = "Password must contain an uppercase letter";
+        include '../security.php';
+        exit;
+    }
+    // lowercase letter
+    if(!preg_match('/[a-z]/', $newPassword))
+    {
+        $errorPassword = "Password must contain a lowercase letter";
+        include '../security.php';
+        exit;
+    }
+    // number
+    if(!preg_match('/[0-9]/', $newPassword))
+    {
+        $errorPassword = "Password must contain a number letter";
+        include '../security.php';
+        exit;
+    }
+    
     $sql = "SELECT * FROM User WHERE Username = '".$_SESSION['username']."'";
     $result = $db->query($sql);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
@@ -224,5 +260,61 @@ function handle_password()
     //    include '../createUser.php';
     include '../security.php';    
 
+}
+
+function handle_deleteAccount()
+{
+    if(!isset($_POST['deleteConfirm']))
+    {
+        $errorDeleteAccount = "PLEASE CONFIRM DELETION OF ACCOUNT";
+        include '../security.php';
+        exit;
+    }
+    else 
+    {
+        // connection to database
+        include 'db.php';
+        // Check connection
+        if ($db->connect_error)
+        {
+           die("Connection failed: " . $db->connect_error);
+        }
+
+        // build new statement to insert new user in Users table
+        $stmt = $db->stmt_init();
+        // prepare
+        if (!$stmt->prepare("DELETE FROM User WHERE UserID = ?"))
+        {
+            echo "Error preparing INSERT statement: \n";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            exit;
+        }
+        // bind parameters to new statement
+        if (!$stmt->bind_param('i', $_SESSION['userid']))
+        {
+            echo "Error binding parameters to INSERT: \n";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            exit;
+        }
+        //print_r($result);
+
+        // execute statement
+        if (!$stmt->execute())
+        {
+            echo "Error INSERTing: \n";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            exit;
+        }
+
+        // $_SESSION UPDATE
+        unset($_SESSION);
+        session_destroy();
+
+        // delete account success
+        $errorDeleteAccount = "Account successfully deleted";
+        // Redirect page for delete account success
+        //    include '../createUser.php';
+        include '../login.php';    
+    }
 }
 ?>

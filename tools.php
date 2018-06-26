@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Tools</title>
         <?php include 'includes/globalHead.html' ?>
         <link rel="stylesheet" href="res/css/profile.css">
         <link rel="stylesheet" href="res/css/profileNav.css">
@@ -14,13 +15,11 @@
         <?php
             include 'includes/header.php';
             include 'includes/nav.php';
-            include 'includes/profileHeader.php';
         ?>
         
         <div class="nav">
             <?php
-                $current = 'overview';
-                include 'includes/profileNav.php';
+                include 'includes/toolsNav.php';
             ?>
         </div>
         
