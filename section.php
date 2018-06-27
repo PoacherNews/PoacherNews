@@ -8,10 +8,9 @@
     include('util/db.php');
     include('util/articleUtils.php');
     include('util/userUtils.php');
+
+    $threeColLimit = 3; // Defined limit to the length of the lists in the 3-column sections
 ?>
-<!-- TODO: 
-Fix css (Resizing issues / min-width)
--->
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,10 +44,6 @@ Fix css (Resizing issues / min-width)
             });
             var $article = $("<article/>");
 
-            $article.append($("<span/>", {
-                'class' : "publishDate", /* TODO: Add hidden class */
-                'text': serializeDate(rowData['PublishDate'])
-            }));
             var $thumbnail = $("<div/>", {
                 'class' : "stacked-thumbnail"
             });
@@ -95,38 +90,41 @@ Fix css (Resizing issues / min-width)
         <div class="secBorderPrimary"></div>
         <div class="secColumnPrimary">
             <div id="articleList">
-            <script>
-                $.getJSON("util/sectionHandler.php", {
-                    'category' : "<?php echo $_GET['Category'] ?>",
-                }).done(function(data) {
-                    $.each(data, function(i, row) {
-                        // $("#secondary-section").children().remove('.loader');
-                        $("#articleList").append(createStackedArticle(row));
+                <script>
+                    $.getJSON("util/sectionHandler.php", {
+                        'category' : "<?php echo $_GET['Category'] ?>",
+                    }).done(function(data) {
+                        $.each(data, function(i, row) {
+                            $("#articleList").children().remove('.loader');
+                            $("#articleList").append(createStackedArticle(row));
+                        });
                     });
-                });
-            </script>
+                </script>
+                <div class="loader"></div>
             </div>
             <div class="showMore">Show More</div>
             <script>
-                function getLastPublishDate() {
-                    var $lastArticle = $("#articleList").children("article");
-                    return $lastArticle.children(".publishDate").text();
-                };
+                $(".showMore").data('offset', 1); // Initial offset of 1
                 $(".showMore").click(function() {
                     console.log("Clicked"); //DEBUG
-                    //console.log(getLastPublishDate());
-                    $.getJSON("util/sectionUtil.php", {
-                        //'offset' : getLastPublishDate(),
-                        'Category' : "<?php echo $_GET['Category'] ?>",
-                    }).done(function(data) { /*
+                    console.log("Offset:");
+                    console.log($(this).data('offset'));
+                    
+                    $.getJSON("util/sectionHandler.php", {
+                        'category' : "<?php echo $_GET['Category'] ?>",
+                        'offset' : $(this).data('offset'),
+                    }).done(function(data) {
                         $.each(data, function(i, row) {
-                            // $("#secondary-section").children().remove('.loader');
-                            $("#articleList").append(createStackedArticle(row));
-                        }); */
+                            $("#articleList").append(createStackedArticle(row));                          
+                        });
+                        $('.showMore').data('offset', $('.showMore').data('offset') + 1); // Increase offset so we get new records next time we're clicked
+                        $('html, body').animate({ // Scroll the page to the newly loaded articles
+                                scrollTop: ($('#articleList article:nth-last-child(3)').offset().top - 100) // -100 to account for nav bar space
+                        }, 500);
                     });
+                    
                 });
             </script>
-            <!-- <div class="loader"></div> -->
         </div>
 
         <div class="secBorderPrimary"></div>
@@ -145,7 +143,7 @@ Fix css (Resizing issues / min-width)
             <div class="secColumnLeftSecondary">
                 <h1 class="secCategorySecondary">Editor's Picks</h1>
                 <?php
-                    $picks = getEditorPicks($db);
+                    $picks = getEditorPicks($_GET['Category'], $threeColLimit, $db);
                     foreach($picks as $article) {
                         print "<article>
                             <div class=\"thumbnailSecondary\">
@@ -163,9 +161,9 @@ Fix css (Resizing issues / min-width)
             <div class="secColumnMiddleSecondary">
                 <h1 class="secCategorySecondary">Trending</h1>
                 <?php
-                    $trending = getTrendingArticles(3, $db);
+                    $trending = getTrendingArticles($_GET['Category'], $threeColLimit, $db);
                     if($trending === null) {
-                        print "<div class=\"columnError\">No trending articles to show.</div>";
+                        print "<div class=\"columnError\">No trending articles in this section.</div>";
                     } else {
                         foreach($trending as $article) {
                             print "<article>
@@ -188,9 +186,9 @@ Fix css (Resizing issues / min-width)
                     if(!isset($_SESSION['loggedin'])) {
                         print "<div class=\"columnError\">Log in to see your favorites.</div>";
                     } else {
-                        $favorites = getUserFavorites($_SESSION['userid'], 3, $db);
+                        $favorites = getUserFavorites($_SESSION['userid'], $_GET['Category'], $threeColLimit, $db);
                         if($favorites === null) {
-                            print "<div class=\"columnError\">No favorites yet.</div>";
+                            print "<div class=\"columnError\">No favorites in this section.</div>";
                             return;
                         }
                         foreach($favorites as $article) {

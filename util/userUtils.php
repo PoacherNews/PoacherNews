@@ -23,15 +23,21 @@
 	    }
 	    return $data;
 	}
-	function getUserFavorites($uid, $limit=NULL, $db) {
-		/* Returns a `limit` length array of a provided user's favorite articles. */
+	function getUserFavorites($uid, $category=NULL, $limit=NULL, $db) {
+		/* Returns a `limit` length array of a provided user's favorite articles.
+		   If `category` is provided, will return an array of favorites from only the provided section name. */
 		$favorites = getFavoriteIDs($uid, $db);
-	    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ArticleID = {$favorites[0]} ";
+	    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0";
+	    if(!is_null($category)) {
+	    	$sql .= " AND Category = '{$category}'";
+	    }
+
+	    $sql .= " AND ArticleID = {$favorites[0]}";
 	    foreach(array_slice($favorites, 1) as &$val) { // Gather results for all other specified editor picks
-	        $sql .= "OR ArticleID = {$val} ";
+	        $sql .= " OR ArticleID = {$val}";
 	    }
             if(!is_null($limit)) {
-	        $sql .= "LIMIT {$limit};";
+	        $sql .= " LIMIT {$limit};";
 	    }
 	    $result = mysqli_query($db, $sql);
 	    if(!$result || mysqli_num_rows($result) == 0) {
@@ -39,7 +45,9 @@
 	    }
 	    return mysqliToArray($result);
 	}
+
 	function addToFavorites($uid, $aid, $db) {
+		/* Adds a favorite record for a user of provided userID for article of provided articleID. */
 		$sql = "INSERT INTO Favorite VALUES($uid, $aid);";
 		if(mysqli_query($db, $sql)) {
 			return TRUE; // Success
