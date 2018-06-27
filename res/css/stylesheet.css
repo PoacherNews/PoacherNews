@@ -360,17 +360,17 @@ footer {
     margin-bottom: 0;
 }
 
-.fa {
+.fab {
     padding: 10px;
     font-size: 25px;
-    width: 15px;
+    width: 27px;
     text-align: center;
     text-decoration: none;
     margin: 5px 10px 10px 10px;
     border-radius: 50%;
 }
 
-.fa-facebook {
+.fa-facebook, .fa-twitter, .fa-youtube, .fa-instagram {
     background: black;
     color: white;
 }
@@ -378,30 +378,12 @@ footer {
 .fa-facebook:hover {
     background: #3b5998;
 }
-
-.fa-twitter {
-    background: black;
-    color: white;
-}
-
 .fa-twitter:hover {
     background: #00aced;
 }
-
-.fa-youtube {
-    background: black;
-    color: white;
-}
-
 .fa-youtube:hover {
     background: #bb0000;
 }
-
-.fa-instagram {
-    background: black;
-    color: white;
-}
-
 .fa-instagram:hover {
     background: #f09433; 
     background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
@@ -434,6 +416,7 @@ footer {
 p.ftCpyright {
     font-size: 14px;
     color: black;
+    padding: 5px;
 }
 
 
@@ -1105,6 +1088,11 @@ p.abtPar {
 /* Globals (CS) */
 body {
     font-family: Helvetica, Arial, sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: #83A8F0;
 }
 
 .continue-reading {
