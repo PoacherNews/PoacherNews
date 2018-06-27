@@ -2,30 +2,37 @@
 // TODO:
 // Error check for blank bio
 // Change profile picture
+    include 'util/db.php';
     include 'util/userUtils.php';
 
-    $username = $_GET['Username'];
-
     // connection to database
-    include 'util/db.php';
     // Check connection
     if ($db->connect_error)
     {
 	   die("Connection failed: " . $db->connect_error);
     }
-        
-    $sql = "SELECT * FROM User WHERE Username = '".$username."'";
-    $result = $db->query($sql);
-    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-    $profilepicture = $row['ProfilePicture'];
-    $bio = $row['Bio'];
-    $userid = $row['UserID'];
-    $usertype = $row['Usertype']; 
+    $userData = getUserById($_GET['uid'], $db);
+    
+    // Disabled and replaced by Colin, 6/26
+    // $sql = "SELECT * FROM User WHERE Username = '".$username."'";
+    // $result = $db->query($sql);
+    // $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    // $profilepicture = $row['ProfilePicture'];
+    // $bio = $row['Bio'];
+    // $userid = $row['UserID'];
+    // $usertype = $row['Usertype']; 
+
+    $username = $userData['Username'];
+    $profilepicture = $userData['ProfilePicture'];
+    $bio = $userData['Bio'];
+    $userid = $userData['UserID'];
+    $usertype = $userData['Usertype'];
+
 
     // Redirect to index if blank Username or profile does not exist
-    if($username == NULL || $result->num_rows != 1)
+    if($username === NULL)
     {
-        //echo "Error. User: $username does not exist";
+        // echo "Error. UserID: {$_GET['uid']} does not exist";
         echo '<meta http-equiv="refresh" content="0; url=index.php">';
         exit;
     }
