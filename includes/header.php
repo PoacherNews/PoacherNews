@@ -21,7 +21,7 @@
        <!-- </div> -->
         <!-- <div id="hdrrt"> -->
             <?php
-                if($_SESSION['loggedin']) {
+                if(!empty($_SESSION['loggedin']) && $_SESSION['loggedin']) {
                     print "<span class=\"username\">{$_SESSION['username']}
                                 <div class=\"username-content\">
                                     <p>Logged in as <b>{$_SESSION['username']}</b></p>
