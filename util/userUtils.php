@@ -8,6 +8,17 @@
 		    return $data;
 		}
 	}
+
+	function getUserById($uid, $db) {
+		/* Returns an associated array for a user with provided matching userID.
+		   Will return all columns other than the user's hashed password. */
+		$sql = "SELECT UserID,FirstName,LastName,Email,Username,Usertype,ProfilePicture,Bio,TimeZone FROM User WHERE UserID = {$uid};";
+		$result = mysqli_query($db, $sql);
+	    if(mysqli_num_rows($result) == 0) {
+	        return null;
+	    }
+	    return mysqli_fetch_assoc($result);
+	}
 	function isFavorite($uid, $aid, $db) {
 		/* Returns TRUE if article of provided article ID is a favorite of user of provided user ID, otherwise returns FALSE. */
 		$sql = "SELECT * FROM Favorite WHERE ArticleID = {$aid} AND UserID = {$uid};";

@@ -116,7 +116,7 @@ function getTrendingArticles($category=NULL, $limit, $db) {
     if(!is_null($category)) {
         $sql .= " AND Category = '{$category}'";
     }
-    
+
     foreach(getEditorPickIDs($db) as &$val) {
         $sql .= " AND ArticleID != ".$val." ";
     }
@@ -133,6 +133,13 @@ function getTrendingArticles($category=NULL, $limit, $db) {
 function increaseViewCount($id, $db) {
     $sql = "UPDATE Article SET Views = Views + 1 WHERE ArticleId = {$id};";
     $db->query($sql);
+}
+
+function getNumFavorites($aid, $db) {
+    /* Returns an integer value representing the number of favorites an article given by a provided ArticleID has. */
+    $sql = "SELECT * FROM Favorite WHERE ArticleID = {$aid}";
+    $result = mysqli_query($db, $sql);
+    return mysqli_num_rows($result);
 }
 
 ?>

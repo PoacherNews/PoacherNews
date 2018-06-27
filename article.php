@@ -18,20 +18,30 @@ session_start(); ?>
             include('includes/nav.php');
             include('util/db.php');
             include('util/articleUtils.php');
-        ?>
 
-        <?php
             date_default_timezone_set('America/Chicago');
             $articleData = getArticleByID($_GET['articleid'], $db);
             if(!$articleData) {
                 redirectHome();
             }
-            if($articleData['IsSubmitted'] == 0 && $_SESSION['usertype'] != "A") { // Only allow admins to view unPublished articles
-                redirectHome();
+            $isAuthor = ($articleData['UserID'] == $_SESSION['userid'] ? TRUE : FALSE);
+            $isAdmin = ($_SESSION['usertype'] == "A" ? TRUE : FALSE);
+            $isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
+            $isPending = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 1 ? TRUE : FALSE);
+
+            if($isDraft || $isPending) {
+                if(!($isAuthor || $isAdmin)) { // Allow admins and the article's author to view drafts and their own pending articles
+                    redirectHome();
+                }
+            } else { // Article is published, so increase view count
+                increaseViewCount($articleData['ArticleID'], $db);
             }
             
-            increaseViewCount($articleData['ArticleID'], $db);
+            if($isDraft) { print "<div id=\"infoBanner\">DRAFT</div>"; }
+            if($isPending) { print "<div id=\"infoBanner\">PENDING APPROVAL</div>"; }
         ?>
+
+        
         <div class="articleColumns">
             <section id="articleColumn">
                 <span class="articleDetails">
@@ -40,23 +50,29 @@ session_start(); ?>
                     <p> <!-- TODO: Link this to the author's profile -->
                         <?php
                             $authorData = getAuthorByID($articleData['UserID'], $db);
-                            print "Written by <a href=\"\">{$authorData['FirstName']} {$authorData['LastName']}</a>";
+                            print "Written by <a href=\"/profile.php?uid={$articleData['UserID']}\">{$authorData['FirstName']} {$authorData['LastName']}</a>";
                         ?>
                     </p>
                     <p id="pubDate">Published on <?php print date("l, F j Y g:i a", strtotime($articleData['PublishDate']))?></p>
                     <p id="pubDetails">
                         <?php print "<a href=\"section.php?Category={$articleData['Category']}\">{$articleData['Category']}</a>" ?>
-                        &mdash; <?php print "{$articleData['Views']}" ?> Views
-                        <span style="float: right">
+                        &mdash;
+                        <?php print "{$articleData['Views']} ".($articleData['Views'] === 1 ? "View" : "Views") ?>,
+                        <?php
+                            $numFaves = getNumFavorites($articleData['ArticleID'], $db);
+                            print "{$numFaves} ".($numFaves === 1 ? "Favorite" : "Favorites");
+                        ?>
+                        <span class="rightIcons"">
+
                             <?php
                                 if(!isset($_SESSION['loggedin'])) {
                                     print "<a href=\"login.php\">Log in</a> to favorite articles";
                                 } else {
                                     include('util/userUtils.php');
                                     if(isFavorite($_SESSION['userid'], $articleData['ArticleID'], $db)) { // If it's favorited
-                                        print "<span id=\"unfavorite\">Unfavorite</span>";
+                                        print '<i id="unfavorite" title="Click to Unfavorite" class="fas fa-heart"></i>';
                                     } else { // If it hasn't been favorited
-                                        print "<span id=\"favorite\">Favorite</span>";
+                                        print '<i id="favorite" title="Click to Favorite" class="far fa-heart"></i>';
                                     }
                                 }
                             ?>
