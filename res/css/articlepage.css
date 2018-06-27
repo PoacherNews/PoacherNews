@@ -1,4 +1,3 @@
-
 .articleColumns {
 	margin: 0px 5% 0px 5%;
 	display: flex;
@@ -118,7 +117,20 @@
 	height: auto;
 }
 
-#favorite, #unfavorite {
+#infoBanner {
+	margin: 25px;
+	padding: 10px;
+	text-align: center;
+	font-weight: bold;
+	font-size: 2.5em;
+	color: white;
+	background-color: #D44F33;
+}
+
+#pubDetails > .rightIcons {
+	float: right;
+	font-size: 20px;
+}
+#pubDetails > .rightIcons > i {
 	cursor: pointer;
-	color: #83A8F0;
 }
