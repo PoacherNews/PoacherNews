@@ -252,14 +252,26 @@ a.hdrA {
     width: 120px;
 	max-width: 120px;
 	min-width: 120px;
-    height: 25px;
+    height: 30px;
+    min-height: 30px;
 	text-align: center;
-    padding: 0px 5px 6px 5px;
     border: 1px solid black;
     border-radius: 15px;
 	position: relative;
     overflow: hidden;
-    
+}
+.srcIcn:hover {
+    background: linear-gradient(-140deg, #83A8F0 0%, #BDD4E7 50%, #8693AB 75%);
+    color: white;
+    cursor: pointer;
+}
+
+.srcIcn * {
+    padding-top: 7px;
+}
+
+.srcIcn > a {
+    color: black;
 }
 
 .srcIcn .fa {
@@ -267,12 +279,6 @@ a.hdrA {
     text-decoration: none;
     margin: 0px 0px 0px 0px;
 	
-}
-
-.srcIcn:hover {
-    background: linear-gradient(-140deg, #83A8F0 0%, #BDD4E7 50%, #8693AB 75%);
-    color: white;
-    cursor: pointer;
 }
 
 .fa:hover, .fa-search:hover {
