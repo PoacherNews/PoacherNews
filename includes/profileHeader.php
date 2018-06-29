@@ -6,7 +6,6 @@
 // Change / Remove profile picture
     include 'util/db.php';
     include 'util/userUtils.php';
-
     // connection to database
     // Check connection
     if ($db->connect_error)
@@ -23,14 +22,11 @@
     // $bio = $row['Bio'];
     // $userid = $row['UserID'];
     // $usertype = $row['Usertype']; 
-
     $username = $userData['Username'];
     $profilepicture = $userData['ProfilePicture'];
     $bio = $userData['Bio'];
     $userid = $userData['UserID'];
     $usertype = $userData['Usertype'];
-
-
     // Redirect to index if blank Username or profile does not exist
     if($username === NULL)
     {
@@ -44,12 +40,10 @@
 .add_button, .edit_button2{
 	width: 70px;
 }
-
 .save_button, .cancel_button, .edit_button {
 	display: none;
 	width: 70px;
 }
-
 .bioContainer {
     display: none;
 }
@@ -58,7 +52,6 @@
 	width: 200px;
 	height: 70px;
 }
-
 </style>
 
 <div class="user">
@@ -70,12 +63,11 @@
         }
         else 
         {
+            echo "<img src='../res/img/defaultAvatar.png'>";
+
             echo "(Profile Picture)";
             if($userid == $_SESSION['userid'])
             {
-		// default img
-		echo "<img src='../res/img/defaultAvatar.png'>";
-
     ?>
                 <form action="../util/uploadProfilePicture.php" method="post" enctype="multipart/form-data">
                     Select image to upload:
@@ -102,10 +94,14 @@
                 <textarea name="text" id="text_id" style="resize:vertical;display:none"><?php echo $bio ?></textarea>
                 <button type="button" name="save" class="save_button">Save</button>
             </form>
-                
-            <button type="button" class="edit_button2">Edit</button>
-            <button type="button" class="cancel_button">Cancel</button>
-            
+            <?php
+            if($userid == $_SESSION['userid'])
+            {
+            ?>
+                <button type="button" class="edit_button2">Edit</button>
+                <button type="button" class="cancel_button">Cancel</button>
+            <?php
+            } ?>
             <script>
                 $(".edit_button2").click(function(){$(".bioContainer2").toggle(), $("#text_id").toggle(), $(".edit_button2").hide(), $(".save_button").show(), $(".cancel_button").show()})
                 $(".cancel_button").click(function(){$(".bioContainer2").toggle(), $("#text_id").toggle(), $(".edit_button2").show(), $(".save_button").hide(), $(".cancel_button").hide()})
@@ -123,7 +119,6 @@
                         var bio = $('textarea#text_id').val();
                         // Test JQuery var
                         //$(".bioContainer").text(bio);
-
                         $.ajax({
                             type: 'POST',
                             url: '../util/handleBio.php',
@@ -165,7 +160,6 @@
                     $(".add_button").click(function(){$("#text_id").toggle(), $(".add_button").hide(), $(".save_button").show(), $(".cancel_button").show()})
                     $(".cancel_button").click(function(){$("#text_id").toggle(), $(".add_button").show(), $(".save_button").hide(), $(".cancel_button").hide()})
                     $(".edit_button").click(function(){$(".bioContainer").toggle(), $("#text_id").toggle(), $(".edit_button").hide(), $(".save_button").show(), $(".cancel_button").show()})
-
                     $(document).ready(function()
                     {
                         $(".save_button").click(function()
@@ -180,7 +174,6 @@
                             var bio = $('textarea#text_id').val();
                             // Test JQuery var
                             //$(".bioContainer").text(bio);
-
                             $.ajax({
                                 type: 'POST',
                                 url: '../util/handleBio.php',
