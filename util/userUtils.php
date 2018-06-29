@@ -125,4 +125,26 @@
 	    }
 	    return mysqliToArray($result);
 	}
+	function postComment($aid, $content, $replyTo=NULL, $db) {
+		if(empty($_SESSION['userid'])) { // Prevent posting comments when not logged in.
+			// return;	
+			$_SESSION['userid'] = 13; //DEBUG
+		}
+		if(is_null($replyTo)) {
+			$replyTo = "NULL"; // Convert to string NULL for the query.
+		}
+		$sql = "INSERT INTO Comment (ReplyToID, UserID, ArticleID, CommentText) VALUES ({$replyTo}, {$_SESSION['userid']}, {$aid}, '{$content}')";
+		$query = $db->query($sql);
+		if(!$query) { 
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+	/* TODO: Change to getRootComments and getReplies functions */
+	function getArticleComments($aid, $db) {
+		/* Returns an array of comments from an article with articleID specified with `aid`. */
+		$sql = "SELECT * FROM Comment WHERE ArticleID = {$aid} ORDER BY CommentDate DESC";
+		return mysqliToArray(mysqli_query($db, $sql));
+	}
 ?>

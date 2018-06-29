@@ -3,7 +3,12 @@ session_start();
 include('db.php');
 include('userUtils.php');
 
-if(!empty($_GET)) {
+// $_SERVER['REQUEST_METHOD'] = 'POST';
+// $_POST['aid'] = 3;
+// $_SESSION['uid'] = 13;
+// $_POST['content'] = "manual test";
+
+if($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET)) {
 	if($_GET['request'] == "favorite") {
 		if(empty($_GET['aid'])) { // Article ID not provided
 			exit;
@@ -42,6 +47,16 @@ if(!empty($_GET)) {
 	} else {
 		exit;
 	}
+} else if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
+	if(empty($_POST['aid']) || empty($_POST['content'])) { // Exit if not all required elements are included in POST
+		exit;
+	}
+	if(empty($_POST['replyTo'])) {
+		$replyTo = NULL;
+	}
+	print(postComment($_POST['aid'], $_POST['content'], $replyTo, $db));
 }
+
+
 
 ?>

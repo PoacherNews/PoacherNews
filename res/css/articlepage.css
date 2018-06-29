@@ -81,15 +81,75 @@
 	font-weight: bold;
 }
 
-#further-reading {
+#further-reading, #commentSection {
 	margin: 0px 5% 0px 5%;
 }
 
-#further-reading > h1 {
+#further-reading > h1, #commentSection > h1 {
 	margin: 10px auto 0px auto;
     font-size: 30px;
     color: #414141;
-    font-family: Arial,Helvetica,sans-serif;
+}
+
+#commentSection > .comment {
+	display: flex;
+	flex-direction: row;
+	margin: 10px auto 10px 5px;
+	padding-left: 3px;
+	border-left: 1px solid grey;
+}
+
+#commentSection > .comment > .commentText {
+	order: 2;
+}
+
+.comment > img {
+	order: 1;
+	margin: 5px;
+	padding-right: 5px;
+	display: block;
+	max-height: 50px;
+	max-width: 50px;
+}
+.comment > .commentText > p {
+	margin: 3px auto 3px auto;
+}
+.comment > .commentText > .commentLinks {
+	font-size: 14px;
+	color: grey;
+}
+.commentLinks > * {
+	cursor: pointer;
+}
+.commentTitle > .commentAuthor {
+	font-weight: bold;
+}
+.commentTitle > .commentAuthor > .username {
+	font-weight: normal;
+	font-style: italic;
+}
+.commentTitle > .commentDate {
+	color: grey;
+}
+
+#commentForm > * {
+	margin: 5px 5px auto 0px;
+}
+#commentForm > textarea {
+	display: block;
+	font-family: inherit;
+	min-width: 50%;
+	min-height: 100px;
+}
+#commentForm > #errorMessage {
+	display: none; /* Hidden by default */
+	max-width: 50%;
+	border: 2px solid #D44F33;
+	background-color: #FF8383;
+	color: white;
+	font-weight: bold;
+	font-size: 17px;
+	padding: 10px;
 }
 
 .articleDetails > h1 {

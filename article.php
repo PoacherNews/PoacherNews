@@ -63,7 +63,6 @@ session_start(); ?>
                             print "{$numFaves} ".($numFaves === 1 ? "Favorite" : "Favorites");
                         ?>
                         <span class="rightIcons"">
-
                             <?php
                                 if(!isset($_SESSION['loggedin'])) {
                                     print "<a href=\"login.php\">Log in</a> to favorite articles";
@@ -109,6 +108,53 @@ session_start(); ?>
                 <div class="ad"><p>AD</p></div>
                 <div class="ad"><p>AD</p></div>
             </section>
+        </div>
+        <div id="commentSection">
+            <h1>Comments</h1>
+            <hr/>
+            <?php
+                foreach(getArticleComments($articleData['ArticleID'], $db) as $comment) {
+                    $user = getUserById($comment['UserID'], $db);
+                    print '<div class="comment" id="comment-'.$comment['CommentID'].'">
+                                <img src="/res/img/'.$user['ProfilePicture'].'"/>
+                                <div class="commentText">
+                                    <div class="commentTitle">
+                                        <span class="commentAuthor">'.$user['FirstName'].' '.$user['LastName'].' <a class="username" href="/profile.php?uid='.$user['UserID'].'">('.$user['Username'].')</a></span> <span class="commentDate">'.date("l, F j Y g:i a", strtotime($comment['CommentDate'])).'</span>
+                                    </div>
+                                    <p class="commentBody">'.nl2br($comment['CommentText']).'</p>
+                                    <div class="commentLinks">
+                                        <a class="commentReplyLink" id="'.$comment['CommentID'].'">Reply</a> &dash; <a href="#comment-'.$comment['CommentID'].'">Link</a>
+                                    </div>
+                                </div>
+                            </div>';
+                }
+            ?>
+            <h2>Leave a comment</h2>
+            <form id="commentForm">
+                <textarea id="commentBody" placeholder="Enter a comment" required></textarea>
+                <input type="button" id="commentClearButton" value="Clear"/>
+                <input type="submit" id="commentSubmitButton" value="Submit"/>
+                <div id="errorMessage">An error occured. Please try again later.</div>
+            </form>
+            <script>
+                $("#commentClearButton").click(function() {
+                    $("#commentBody").val('');
+                });
+                $("#commentForm").submit(function(event) {
+                    $.post("util/articleHandler.php", {
+                        aid : $("#aid").text(),
+                        content : $("#commentBody").val() ,
+                        //TODO: Figure out how to determine if it should pass a replyTo or not.
+                    }).done(function(data) {
+                        if(data) { // Success. Refresh page to display new comment.
+                            location.reload();
+                        } else { // An error occured, display an error message.
+                            $("#errorMessage").show();
+                        }
+                    });
+                    return false; // Prevent page reload.
+                });
+            </script>
         </div>
         <div id="further-reading">
             <h1>Further reading</h1>
