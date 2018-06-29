@@ -57,13 +57,13 @@
 <div class="user">
     <div class="picture">
     <?php
-        if($profilepicture != null)
+        if($profilepicture != 'defaultAvatar.png')
         {
             echo "<img src='../res/img/profilePictures/".$username."/".$profilepicture."'>";
         }
         else 
         {
-            echo "<img src='../res/img/defaultAvatar.png'>";
+            echo "<img src='../res/img/".$profilepicture."'>";
 
             echo "(Profile Picture)";
             if($userid == $_SESSION['userid'])
