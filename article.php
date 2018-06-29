@@ -1,12 +1,14 @@
 <?php 
-ob_start();
-session_start(); ?>
-<!DOCTYPE html>
-<?php 
+    ob_start();
+    session_start(); 
+    include('util/db.php');
+    include('util/articleUtils.php');
+    include('util/userUtils.php');
     function redirectHome() {
         header('Location: index.php');
     }
 ?>
+<!DOCTYPE html>
 <html>
     <head>
 	<?php include 'includes/globalHead.html' ?>
@@ -16,16 +18,19 @@ session_start(); ?>
         <?php 
             include('includes/header.php');
             include('includes/nav.php');
-            include('util/db.php');
-            include('util/articleUtils.php');
-
+            
             date_default_timezone_set('America/Chicago');
             $articleData = getArticleByID($_GET['articleid'], $db);
             if(!$articleData) {
                 redirectHome();
             }
-            $isAuthor = ($articleData['UserID'] == $_SESSION['userid'] ? TRUE : FALSE);
-            $isAdmin = ($_SESSION['usertype'] == "A" ? TRUE : FALSE);
+            if(!isset($_SESSION) || empty($_SESSION)) {
+                $isAuthor = FALSE;
+                $isAdmin = FALSE;
+            } else {
+                $isAuthor = ($articleData['UserID'] == $_SESSION['userid'] ? TRUE : FALSE);
+                $isAdmin = ($_SESSION['usertype'] == "A" ? TRUE : FALSE);
+            }
             $isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
             $isPending = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 1 ? TRUE : FALSE);
 
@@ -67,7 +72,6 @@ session_start(); ?>
                                 if(!isset($_SESSION['loggedin'])) {
                                     print "<a href=\"login.php\">Log in</a> to favorite articles";
                                 } else {
-                                    include('util/userUtils.php');
                                     if(isFavorite($_SESSION['userid'], $articleData['ArticleID'], $db)) { // If it's favorited
                                         print '<i id="unfavorite" title="Click to Unfavorite" class="fas fa-heart"></i>';
                                     } else { // If it hasn't been favorited
