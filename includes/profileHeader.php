@@ -73,6 +73,9 @@
             echo "(Profile Picture)";
             if($userid == $_SESSION['userid'])
             {
+		// default img
+		echo "<img src='../res/img/defaultAvatar.png'>";
+
     ?>
                 <form action="../util/uploadProfilePicture.php" method="post" enctype="multipart/form-data">
                     Select image to upload:
