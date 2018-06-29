@@ -113,7 +113,11 @@ session_start(); ?>
             <h1>Comments</h1>
             <hr/>
             <?php
-                foreach(getArticleComments($articleData['ArticleID'], $db) as $comment) {
+                $articleComments = getArticleComments($articleData['ArticleID'], $db);
+                if(!$articleComments) {
+                    print '<div id="noCommentsMessage">No comments yet.</div>';
+                } else {
+                foreach($articleComments as $comment) {
                     $user = getUserById($comment['UserID'], $db);
                     print '<div class="comment" id="comment-'.$comment['CommentID'].'">
                                 <img src="/res/img/'.$user['ProfilePicture'].'"/>
@@ -127,6 +131,7 @@ session_start(); ?>
                                     </div>
                                 </div>
                             </div>';
+                }
                 }
             ?>
             <h2>Leave a comment</h2>
@@ -152,7 +157,7 @@ session_start(); ?>
                             $("#errorMessage").show();
                         }
                     });
-                    return false; // Prevent page reload.
+                    return false; // Prevent default page reload.
                 });
             </script>
         </div>

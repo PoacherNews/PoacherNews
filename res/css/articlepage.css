@@ -91,6 +91,14 @@
     color: #414141;
 }
 
+#commentSection > #noCommentsMessage {
+	font-size: 25px;
+	font-weight: bold;
+	text-align: center;
+	font-style: italic;
+	color: grey;
+}
+
 #commentSection > .comment {
 	display: flex;
 	flex-direction: row;
