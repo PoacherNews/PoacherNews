@@ -1,7 +1,6 @@
 <?php
 // TODO:
 // Add error for empty field when submitting - also do the same for editArticle.php
-// Review results ->num_rows. Only an error given for testUser2
 // Changing Users/Writers to Admins permissions
 // Changing Admins permissions
 
@@ -21,7 +20,7 @@ include_once ('db.php');
 
 function getUserData($db)
 {
-    if (!isset($_GET['Username']))
+    if (!isset($_GET['UserID']))
     {
         echo "Error: No user specified. ";
         return;
@@ -31,14 +30,14 @@ function getUserData($db)
 //    require_once ('util/db.php');
     // prepare statement
     $stmt = $db->stmt_init();
-    if (!$stmt->prepare("SELECT User.UserID, FirstName, LastName, Email, Username, Usertype, commentText FROM User LEFT JOIN Comment ON User.UserID = Comment.UserID WHERE Username =?"))
+    if (!$stmt->prepare("SELECT User.UserID, FirstName, LastName, Email, Username, Usertype, CommentText FROM User LEFT JOIN Comment ON User.UserID = Comment.UserID WHERE User.UserID =?"))
     {
         echo "Error preparing statement: <br>";
         echo nl2br(print_r($stmt->error_list, true), false);
         return;
     }
     // bind parameters
-    if (!$stmt->bind_param('s', $_GET['Username']))
+    if (!$stmt->bind_param('i', $_GET['UserID']))
     {
         echo "Error binding parameters: <br>";
         echo nl2br(print_r($stmt->error_list, true), false);
@@ -73,7 +72,7 @@ function getUserData($db)
 // get user data as an array
 $data = getUserData($db);
 if (!isset($data) || !$data)
-    die("Username incorrect or database error.");
+    die("UserID incorrect or database error.");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,7 +101,7 @@ if (!isset($data) || !$data)
         <div class="display">
         <main>
             <h1>Edit User &#8216;<?php
-                echo "<a href='/profile.php?Username={$data['Username']}'>"; 
+                echo "<a href='/profile.php?uid={$data['UserID']}'>"; 
 				echo $data['Username'];
 				echo "</a>"; ?>&#8217;</h1>
 
@@ -208,7 +207,9 @@ $db->close();
             
         foreach ($comments as $key => $r) 
         {
-            print "<p>{$r['commentText']}</p>";
+            if($r['CommentText'] != NULL)
+            {
+                print "<p>{$r['CommentText']}</p>";
         ?>
 <form method="post" action="">
 <div>
@@ -223,7 +224,7 @@ $db->close();
 <?php
 if(isset($_POST['deleteSubmit'][''.$r['CommentID'].''])){ 
 $selected_radio = $_POST['delete'];
-$query = "DELETE FROM Comment WHERE commentText = '".$r['commentText']."' AND UserID = ?";
+$query = "UPDATE Comment SET CommentText = NULL WHERE CommentText = '".$r['CommentText']."' AND UserID = ?";
 
 // Refresh
 echo "<meta http-equiv='refresh' content='0'>";
@@ -255,6 +256,7 @@ if (!$stmt->execute())
 $stmt->close();
 $db->close();
 }
+    }
     }
 ?>
 

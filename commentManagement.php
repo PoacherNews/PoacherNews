@@ -26,7 +26,13 @@ function display_table($db, $query, $tablename)
     echo "<tr>\n";
     foreach ($fields as $field)
     {
-        echo "<th>$field->name</th>";
+        if($field->name != 'UserID')
+        {
+            if($field->name != 'ArticleID')
+            {
+                echo "<th>$field->name</th>";
+            }
+        }
     }
     echo "<tr>\n";
     echo "</thead>\n<tbody>\n";
@@ -40,18 +46,35 @@ function display_table($db, $query, $tablename)
             {
                 $userid = $r;
             }
+            if($key == 'ArticleID')
+            {
+                $articleid = $r;
+            }
             
-            echo '<td>';
-            if ($key == 'Username')
+            if($key != 'UserID' && $key != 'ArticleID')
             {
-                echo "<a href='util/editUser.php?UserID=$userid'>";
+                echo '<td>';
+                if ($key == 'Username')
+                {
+                    echo "<a href='util/editUser.php?UserID=$userid'>";
+                }
+                if ($key == 'Headline')
+                {
+                    echo "<a href='util/editArticle.php?ArticleID=$articleid'>";
+                }
+                    echo $r;
+                
+                if($key == 'CommentText' && $r == null)
+                {
+                    echo "[deleted]";
+                }
+                
+                if ($key == 'Username' || $key == 'Headline')
+                {
+                    echo '</a>';
+                }
+                echo '</td>';
             }
-            echo $r;
-            if ($key == 'Username')
-            {
-                echo '</a>';
-            }
-            echo '</td>';
         }	
         echo "</tr>\n";
     }
@@ -61,13 +84,13 @@ function display_table($db, $query, $tablename)
 }
 
 // displays Users as a table
-function list_users()
+function list_comments()
 {
     include 'util/db.php';
     // query Users
-    $query = "SELECT UserID, FirstName, LastName, Email, Username, Usertype FROM User";
+    $query = "SELECT CommentID, ReplyToID, Comment.ArticleID, Headline, Comment.UserID, Username, CommentText, CommentDate FROM Comment LEFT JOIN User ON Comment.UserID = User.UserID LEFT JOIN Article ON Comment.ArticleID = Article.ArticleID";
     // display
-    display_table($db, $query, "Users");
+    display_table($db, $query, "Comments");
     // done
     $db->close();
 }
@@ -105,16 +128,16 @@ table, th, td {
         
         <div class="nav">
             <?php
-                $current = 'manageUsers';
+                $current = 'manageComments';
                 include 'includes/toolsNav.php';
             ?>
         </div>
         
         <div class="display">
         <main>
-            <h1>Manage Users</h1>
+            <h1>Manage Comments</h1>
             <div>
-                <?php list_users(); ?>
+                <?php list_comments(); ?>
             </div>
         </main>
         </div>

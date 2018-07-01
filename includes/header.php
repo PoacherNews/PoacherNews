@@ -21,12 +21,12 @@
        <!-- </div> -->
         <!-- <div id="hdrrt"> -->
             <?php
-                if($_SESSION['loggedin']) {
+                if(!empty($_SESSION['loggedin']) && $_SESSION['loggedin']) {
                     print "<span class=\"username\">{$_SESSION['username']}
                                 <div class=\"username-content\">
                                     <p>Logged in as <b>{$_SESSION['username']}</b></p>
                                     <hr>
-                                    <a href=\"/profile.php?Username=".$_SESSION['username']."\">Your Profile</a>";
+                                    <a href=\"/profile.php?uid=".$_SESSION['userid']."\">Your Profile</a>";
                                     if($_SESSION['usertype'] == 'W' || $_SESSION['usertype'] == 'A')
                                     {
                                     	print "<a href=\"/tools.php\">Tools</a>";
@@ -40,7 +40,7 @@
                 } else {
                     print "<span onclick=\"clickLgnLink()\" class=\"lgnLink\">Have an account? <b>Log In<i class=\"fa fa-caret-down\"></i></b> 
                                 <div class=\"lgnDrpdwn-content\">
-                                    <p>Login in here!</p>
+                                    <p>Log in here!</p>
                                     <form action=\"/util/handleLogin.php\" method=\"POST\">
                                         <input type=\"text\" id=\"username\" name=\"username\"
                                         placeholder=\"Username\"><br>

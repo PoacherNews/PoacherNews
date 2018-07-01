@@ -42,25 +42,27 @@
             
         foreach ($comments as $key => $r) 
         {
-            foreach($commentArticles as $article) 
+            if($r['CommentText'] != NULL)
             {
-                if($article['ArticleID'] == $r['ArticleID']) 
+                foreach($commentArticles as $article) 
                 {
-                    print "
-                        <article>
-                            <div class=\"thumbnailSecondary\">
-				                <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['Image']}\" width=\"150\" height=\"100\"></a>
-                            </div>
-                            <div class=\"textSecondary\">
-                                <h2 class=\"secHeadlineSecondary\"><a href=\"article.php?articleid={$article['ArticleID']}\">{$article['Headline']}</a></h2>
-                                <p>".substr($article['Body'], 0, 75)."...</p> 
-                            </div>                
-                        </article>"; 
-                }                
-            }
-            print "<p>{$r['commentText']} -&nbsp;";
-            print date("l, F j Y g:i a", strtotime($r['CommentDate']));
-            print "</p>";
+                    if($article['ArticleID'] == $r['ArticleID']) 
+                    {
+                        print "
+                            <article>
+                                <div class=\"thumbnailSecondary\">
+                                    <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['Image']}\" width=\"150\" height=\"100\"></a>
+                                </div>
+                                <div class=\"textSecondary\">
+                                    <h2 class=\"secHeadlineSecondary\"><a href=\"article.php?articleid={$article['ArticleID']}\">{$article['Headline']}</a></h2>
+                                    <p>".substr($article['Body'], 0, 75)."...</p> 
+                                </div>                
+                            </article>"; 
+                    }                
+                }
+                print "<p>{$r['CommentText']} -&nbsp;";
+                print date("l, F j Y g:i a", strtotime($r['CommentDate']));
+                print "</p>";
     ?>
     <?php
         if((strtolower($username) == strtolower($_SESSION['username'])) || $_SESSION['usertype'] == 'A')
@@ -81,7 +83,7 @@ $selected_radio = $_POST['delete'];
     
 include 'util/db.php';
 
-$query = "DELETE FROM Comment WHERE commentText = '".$r['commentText']."' AND UserID = ?";
+$query = "UPDATE Comment SET CommentText = NULL WHERE CommentText = '".$r['CommentText']."' AND UserID = ?";
 
 // Refresh
 echo "<meta http-equiv='refresh' content='0'>";
@@ -112,6 +114,7 @@ if (!$stmt->execute())
 $stmt->close();
 $db->close();
 }            
+        }
         }
         }
     ?>

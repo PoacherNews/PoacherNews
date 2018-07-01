@@ -13,10 +13,10 @@ Returns:
 include("db.php");
 include("articleUtils.php");
 
-// Rules for trending article results
+// Rules for number of articles in respective sections
 $trendingResultCap = 3;
-// Rules for secondary stacked article results
-$secondaryResultCap = 4;
+$editorPickCap = $trendingResultCap;
+$secondaryResultCap = 5;
 
 if(isset($argv[1])) { // Allow local testing without an HTTP GET
     $_GET['request'] = $argv[1];
@@ -42,13 +42,13 @@ function throwError($errorId, $errorString, $sqlQuery) {
 
 if(!empty($_GET)) {
     if($_GET['request'] === "trending") {
-        print(json_encode(getTrendingArticles($trendingResultCap, $db)));
+        print(json_encode(getTrendingArticles(NULL, $trendingResultCap, $db)));
         return;
     } else if($_GET['request'] === "main") {
         print(json_encode(getMainArticle($db)));
         return;
     } else if($_GET['request'] === "editorpicks") {
-        print(json_encode(getEditorPicks($db)));
+        print(json_encode(getEditorPicks(NULL, $editorPickCap, $db)));
         return;
     } else if($_GET['request'] === "secondaryarticles") {
         $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 ORDER BY PublishDate LIMIT ".$secondaryResultCap.";";

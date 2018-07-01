@@ -28,7 +28,7 @@
         <h1>Favorites</h1> 
 		
 		<?php
- 		$favorites = getUserFavorites($userid, null, $db);
+ 		$favorites = getUserFavorites($userid, null, null, $db);
     	if($favorites === null) {
                 print "<div class=\"columnError\">No favorites yet.</div>";
                 return;

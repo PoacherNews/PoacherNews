@@ -8,5 +8,7 @@
     <?php if($_SESSION['usertype'] == 'A') { ?>
     <li <?php if($current == 'manageUsers'){echo 'class="current"';} ?>><a href="/userManagement.php">Manage Users</a></li>
     <li <?php if($current == 'manageArticles'){echo 'class="current"';} ?>><a href="/articleManagement.php">Manage Articles</a></li>
+    <li <?php if($current == 'manageComments'){echo 'class="current"';} ?>><a href="/commentManagement.php">Manage Comments</a></li>
+
     <?php } ?>
 </ul>

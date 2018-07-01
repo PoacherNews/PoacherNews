@@ -23,23 +23,20 @@ function getArticleByID($id, $db) {
 function getAuthorByID($id, $db) {
     /* Returns an associative array representation of the MYSQL result for the author of the provided id. */
     $sql = "SELECT * FROM User WHERE UserID = {$id};";
-    $result = mysqli_query($db, $sql);
-    return mysqli_fetch_assoc($result);
+    return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
 function getSectionArticles($category, $limit=NULL, $offset=NULL, $db) {
-    /* Returns an array of articles in a provided category. Optionally can limit results and can optionally use a date offset to prune any articles more recent than a provided timestamp.
-       `offset` must be provided in the format 'YYY-MM-DD HH:MM:SS'.
+    /* Returns an array of articles in a provided category.
+       Optionally can provide only a provided limit of articles, and/or optionally return articles from after a given offset.
     */
     $sql = "SELECT * FROM Article WHERE IsDraft = 0 AND IsSubmitted = 1 AND Category = '{$category}' ";
-    if(!is_null($offset)) {
-        $sql .= "AND PublishDate > '{$offset}' ";
-    }
-    $sql .= "ORDER BY PublishDate DESC ";
     if(!is_null($limit)) {
         $sql .= "LIMIT {$limit}";
     }
-    
+    if(!is_null($offset)) {
+        $sql .= " OFFSET {$offset}";
+    }
     $result = mysqli_query($db, $sql);
     return mysqliToArray($result);
 }
@@ -66,13 +63,23 @@ function getEditorPickIDs($db) {
     return $data;
 }
 
-function getEditorPicks($db) {
+function getEditorPicks($category=NULL, $limit=NULL, $db) {
+    /* Returns an array of editor picks, optionally from a provided section in `category`.
+       If `limit` is specified, it will return an array of that size. */
     $editorPicks = getEditorPickIDs($db);
-    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ArticleID = {$editorPicks[0]} ";
+    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0";
+    if(!is_null($category)) {
+        $sql .= " AND Category = '{$category}'";
+    }
+
+    $sql .= " AND ArticleID = {$editorPicks[0]} ";
     foreach(array_slice($editorPicks, 1) as &$val) { // Gather results for all other specified editor picks
         $sql .= "OR ArticleID = {$val} ";
     }
-    $sql .= ";";
+
+    if(!is_null($limit)) {
+        $sql .= "LIMIT {$limit}";
+    }
 
     $result = mysqli_query($db, $sql);
     if(!$result || mysqli_num_rows($result) == 0) {
@@ -99,14 +106,19 @@ function getMainArticle($db) {
     return $data;
 }
 
-function getTrendingArticles($limit, $db) {
-    /* Returns an array of trending articles. */
+function getTrendingArticles($category=NULL, $limit, $db) {
+    /* Returns a `limit` length array of trending articles.
+       If `category` is specified, it will return trending articles only from the provided section. */
     $trendingDaySpan = 25;
     $trendingViewThreshold = 0;
 
-    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ArticleId != ".getMainArticleID($db)." ";
+    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ArticleId != ".getMainArticleID($db);
+    if(!is_null($category)) {
+        $sql .= " AND Category = '{$category}'";
+    }
+
     foreach(getEditorPickIDs($db) as &$val) {
-        $sql .= "AND ArticleID != ".$val." ";
+        $sql .= " AND ArticleID != ".$val." ";
     }
     $sql .= "AND PublishDate >= DATE(NOW()) - INTERVAL ".$trendingDaySpan." DAY AND Views > ".$trendingViewThreshold." ";
     $sql .= "LIMIT ".$limit.";";
@@ -121,6 +133,13 @@ function getTrendingArticles($limit, $db) {
 function increaseViewCount($id, $db) {
     $sql = "UPDATE Article SET Views = Views + 1 WHERE ArticleId = {$id};";
     $db->query($sql);
+}
+
+function getNumFavorites($aid, $db) {
+    /* Returns an integer value representing the number of favorites an article given by a provided ArticleID has. */
+    $sql = "SELECT * FROM Favorite WHERE ArticleID = {$aid}";
+    $result = mysqli_query($db, $sql);
+    return mysqli_num_rows($result);
 }
 
 ?>

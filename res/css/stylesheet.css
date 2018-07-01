@@ -248,19 +248,30 @@ a.hdrA {
 }
 
 .srcIcn{
-	margin: 7px 0px 0px 20%;
+	margin: 6px 0px 0px 10px;
     width: 120px;
 	max-width: 120px;
 	min-width: 120px;
-    height: 25px;
+    height: 30px;
+    min-height: 30px;
 	text-align: center;
-	font-family: Arial, Helvetica, sans-serif;
-    padding: 0px 5px 6px 5px;
     border: 1px solid black;
     border-radius: 15px;
 	position: relative;
     overflow: hidden;
-    
+}
+.srcIcn:hover {
+    background: linear-gradient(-140deg, #83A8F0 0%, #BDD4E7 50%, #8693AB 75%);
+    color: white;
+    cursor: pointer;
+}
+
+.srcIcn * {
+    padding-top: 7px;
+}
+
+.srcIcn > a {
+    color: black;
 }
 
 .srcIcn .fa {
@@ -268,12 +279,6 @@ a.hdrA {
     text-decoration: none;
     margin: 0px 0px 0px 0px;
 	
-}
-
-.srcIcn:hover {
-    background: linear-gradient(-140deg, #83A8F0 0%, #BDD4E7 50%, #8693AB 75%);
-    color: white;
-    cursor: pointer;
 }
 
 .fa:hover, .fa-search:hover {
@@ -361,17 +366,17 @@ footer {
     margin-bottom: 0;
 }
 
-.fa {
+.fab {
     padding: 10px;
     font-size: 25px;
-    width: 15px;
+    width: 27px;
     text-align: center;
     text-decoration: none;
     margin: 5px 10px 10px 10px;
     border-radius: 50%;
 }
 
-.fa-facebook {
+.fa-facebook, .fa-twitter, .fa-youtube, .fa-instagram {
     background: black;
     color: white;
 }
@@ -379,30 +384,12 @@ footer {
 .fa-facebook:hover {
     background: #3b5998;
 }
-
-.fa-twitter {
-    background: black;
-    color: white;
-}
-
 .fa-twitter:hover {
     background: #00aced;
 }
-
-.fa-youtube {
-    background: black;
-    color: white;
-}
-
 .fa-youtube:hover {
     background: #bb0000;
 }
-
-.fa-instagram {
-    background: black;
-    color: white;
-}
-
 .fa-instagram:hover {
     background: #f09433; 
     background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
@@ -435,6 +422,7 @@ footer {
 p.ftCpyright {
     font-size: 14px;
     color: black;
+    padding: 5px;
 }
 
 
@@ -1108,6 +1096,11 @@ body {
     font-family: Helvetica, Arial, sans-serif;
 }
 
+a {
+    text-decoration: none;
+    color: #83A8F0;
+}
+
 .continue-reading {
     display: block;
     width: 100%;
@@ -1116,4 +1109,18 @@ body {
     font-family: Arial,Helvetica,sans-serif;
     color: #83A8F0;
     font-size: 17px;
+}
+
+.loader {
+    margin: 10% auto;
+    border: 10px solid #f3f3f3; /* Light grey */
+    border-top: 10px solid black;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

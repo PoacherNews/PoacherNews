@@ -43,10 +43,8 @@ a {
     display: inline-flex;
     word-wrap: break-word;
     border-bottom: 2px solid #3d9be9;
-    padding-left: 50px;
-    padding-bottom: 30px;
-    margin-left: 100px;
-    margin-right: 100px;
+    padding: 20px;
+    margin: auto 100px auto 100px;
 }
 
 .secColumnPrimary article > .stacked-text {
@@ -93,7 +91,8 @@ a {
 .showMore {
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 17px;
+    font-size: 20px;
+    font-weight: bold;
     margin: 10px;
     color: #83A8F0;
     cursor: pointer;

@@ -47,17 +47,17 @@ function display_table($db, $query, $tablename)
 // displays Users as a table
 function list_drafts()
 {
-	$username = $_GET['Username'];
+	$userid = $_GET['uid'];
     include 'util/db.php';
     // query Users
-    if($username != null)
+    if($userid != null)
     {
-        $query = "SELECT ArticleID, Headline, Username FROM Article JOIN User ON Article.UserID = User.UserID WHERE (IsDraft=1 AND IsSubmitted=0) AND User.Username = '".$username."'";
+        $query = "SELECT ArticleID, Headline FROM Article JOIN User ON Article.UserID = User.UserID WHERE (IsDraft=1 AND IsSubmitted=0) AND Article.UserID = '".$userid."'";
     }
     else
     {
-        $userid = $_SESSION['userid'];
-        $query = "SELECT ArticleID, Headline FROM Article JOIN User ON Article.UserID = User.UserID WHERE (IsDraft=1 AND IsSubmitted=0) AND Article.UserID = '$userid'";
+        $username = $_SESSION['username'];
+        $query = "SELECT ArticleID, Headline FROM Article JOIN User ON Article.UserID = User.UserID WHERE (IsDraft=1 AND IsSubmitted=0) AND User.Username = '".$username."'";
     }
     //  AND Article.UserID = '$username'
     // display
@@ -67,17 +67,17 @@ function list_drafts()
 
 function list_pending()
 {
-	$username = $_GET['Username'];
+	$userid = $_GET['uid'];
     include 'util/db.php';
     // query Users
-    if($username != null)
+    if($userid != null)
     {
-        $query = "SELECT ArticleID, Headline FROM Article JOIN User ON User.UserID = Article.UserID WHERE (IsDraft=1 AND IsSubmitted=1) AND User.Username = '".$username."'";
+        $query = "SELECT ArticleID, Headline FROM Article JOIN User ON User.UserID = Article.UserID WHERE (IsDraft=1 AND IsSubmitted=1) AND Article.UserID = '$userid'";
     }
     else
     {
-        $userid = $_SESSION['userid'];
-        $query = "SELECT ArticleID, Headline FROM Article JOIN User ON Article.UserID = User.UserID WHERE (IsDraft=1 AND IsSubmitted=1) AND Article.UserID = '$userid'";
+        $username = $_SESSION['username'];
+        $query = "SELECT ArticleID, Headline FROM Article JOIN User ON Article.UserID = User.UserID WHERE (IsDraft=1 AND IsSubmitted=1) AND User.Username = '".$username."'";
     }
     //  AND Article.UserID = '$username'
     // display
@@ -87,17 +87,17 @@ function list_pending()
 
 function list_approved()
 {
-	$username = $_GET['Username'];
+	$userid = $_GET['uid'];
     include 'util/db.php';
     // query Users
-    if($username != null)
+    if($userid != null)
     {
-        $query = "SELECT ArticleID, Headline FROM Article INNER JOIN User ON User.UserID = Article.UserID WHERE (IsDraft=0 AND IsSubmitted=1) AND User.Username = '".$username."'";
+        $query = "SELECT ArticleID, Headline FROM Article JOIN User ON User.UserID = Article.UserID WHERE (IsDraft=0 AND IsSubmitted=1) AND Article.UserID = '".$userid."'";
     }
     else
     {
-        $userid = $_SESSION['userid'];
-        $query = "SELECT ArticleID, Headline FROM Article JOIN User ON Article.UserID = User.UserID WHERE (IsDraft=0 AND IsSubmitted=1) AND Article.UserID = '$userid'";
+        $username = $_SESSION['username'];
+        $query = "SELECT ArticleID, Headline FROM Article JOIN User ON Article.UserID = User.UserID WHERE (IsDraft=0 AND IsSubmitted=1) AND User.Username = '".$username."'";
     }
     //  AND Article.UserID = '$username'
     // display
@@ -119,11 +119,11 @@ function list_approved()
 
     <body>
         <?php 
-            $username = $_GET['Username'];
+            $userid = $_GET['uid'];
 
 	    	include 'includes/header.php';
             include 'includes/nav.php';
-            if($username != null)
+            if($userid != null)
             {
                 include 'includes/profileHeader.php';
             }
@@ -137,7 +137,7 @@ function list_approved()
         
         <div class="nav">
             <?php
-            if($username != null)
+            if($userid != null)
             {
                 $current = 'editorHistoryProfile';
                 include 'includes/profileNav.php';
@@ -152,9 +152,9 @@ function list_approved()
         
         <div class="display">
         <?php
-        if($username != null)
+        if($userid != null)
         {
-            if((strtolower($username) == strtolower($_SESSION['username'])) || $_SESSION['usertype'] == 'A')
+            if(($userid == $_SESSION['userid']) || $_SESSION['usertype'] == 'A')
             {
                 echo "<h1>Drafts</h1>";
                 echo list_drafts();

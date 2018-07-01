@@ -47,7 +47,8 @@ section {
     flex-direction: column;
     border-left: 1px solid #3d9be9;
     border-right: 1px solid #3d9be9;
-    margin-bottom: 50px;
+    margin: 0px auto 50px auto;
+    min-width: 500px;
 }
 
 #secondary-section article {
