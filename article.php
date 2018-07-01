@@ -1,7 +1,7 @@
 <?php 
     ob_start();
     session_start(); 
-    include_once('util/db.php');
+    include('util/db.php');
     include('util/articleUtils.php');
     include('util/userUtils.php');
     function redirectHome() {
@@ -52,7 +52,7 @@
                 <span class="articleDetails">
                     <span style="display: none" id="aid"><?php print $articleData['ArticleID'] ?></span> <!-- Hidden field to track article ID -->
                     <h1><?php print $articleData['Headline'] ?></h1>
-                    <p> <!-- TODO: Link this to the author's profile -->
+                    <p>
                         <?php
                             $authorData = getAuthorByID($articleData['UserID'], $db);
                             print "Written by <a href=\"/profile.php?uid={$articleData['UserID']}\">{$authorData['FirstName']} {$authorData['LastName']}</a>";
@@ -68,9 +68,71 @@
                             print "{$numFaves} ".($numFaves === 1 ? "Favorite" : "Favorites");
                         ?>
                         <span class="rightIcons"">
+                            <span id="rating">
+                            <?php
+                                function displayStars($val) {
+                                    if($val < 0 || $val > 5) {
+                                        return;
+                                    }
+                                    for($i=1; $i <= floor($val); $i++) {
+                                        print '<i starNum="'.$i.'" id="fullStar" title="Click to rate '.$i.' star'.($i > 1 ? "s" : "").'" class="fas fa-star"></i>';
+                                    }
+                                    if(!(floor($val) == $val)) {
+                                        if($val - floor($val) >= 0.5) {
+                                            print '<i starNum="'.ceil($val).'" id="halfStar"  title="Click to rate '.ceil($val).' stars" class="fas fa-star-half-alt"></i>';
+                                        } else { 
+                                            print '<i starNum="'.$i.'" id="emptyStar"  title="Click to rate '.$i.' stars" class="far fa-star"></i>';
+                                        }
+                                    }
+                                    for($i=ceil($val)+1; $i<=5; $i++) {
+                                        print '<i starNum="'.$i.'" id="emptyStar"  title="Click to rate '.$i.' stars" class="far fa-star"></i>';
+                                    }
+                                }
+                                $articleRating = getRatingByID($_GET['articleid'], $db);
+                                if(isset($_SESSION['loggedin']) && !is_null(getArticleUserRating($_SESSION['userid'], $_GET['articleid'], $db))) {
+                                    displayStars(getArticleUserRating($_SESSION['userid'], $_GET['articleid'], $db));
+                                } else {
+                                    displayStars($articleRating);
+                                }
+                                print number_format((float)$articleRating, 2, '.', '').'/5';                       
+                            ?>
+                            <script>
+                                function restoreStar($elem) {
+                                    if($elem.is("#halfStar")) {
+                                        $elem.attr("class", "fas fa-star-half-alt");
+                                    } else if($elem.is("#emptyStar")) {
+                                        $elem.attr("class", "far fa-star");
+                                    } else {
+                                        $elem.attr("class", "fas fa-star");
+                                    }
+                                    $elem.css("color", "inherit");
+                                }
+                                $("#rating .fa-star,.fa-star-half-alt").hover(function() { 
+                                    $(this).css("color", "gold");
+                                    $(this).attr("class", "fas fa-star");
+                                    $(this).prevAll().css("color", "gold");
+                                    $(this).prevAll().attr("class", "fas fa-star");
+                                }, function() {
+                                    restoreStar($(this));
+                                    $(this).prevAll().each(function() {
+                                        restoreStar($(this));
+                                    });
+                                });
+                                $("#rating .fa-star,.fa-star-half-alt").click(function() {
+                                    $.get('util/articleHandler.php', {
+                                        'request' : 'rate',
+                                        'aid' : $("#aid").text(),
+                                        'score' : $(this).attr('starNum')
+                                    }).done(function(data) {
+                                        location.reload();
+                                    });
+                                });
+                            </script>
+                            </span>
                             <?php
                                 if(!isset($_SESSION['loggedin'])) {
-                                    print "<a href=\"login.php\">Log in</a> to favorite articles";
+                                    // TODO: Display this error only after they try to rate or favorite while not logged in
+                                    print "<a href=\"login.php\">Log in</a> to favorite and rate articles";
                                 } else {
                                     if(isFavorite($_SESSION['userid'], $articleData['ArticleID'], $db)) { // If it's favorited
                                         print '<i id="unfavorite" title="Click to Unfavorite" class="fas fa-heart"></i>';

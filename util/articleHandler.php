@@ -27,10 +27,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET)) {
 		}
 		exit;
 	} else if($_GET['request'] == "unfavorite") {
-		if(empty($_GET['aid'])) { // Article ID not provided
-			exit;
-		}
-		if(empty($_SESSION['userid'])) { // User is trying to unfavorite an article while not logged in
+		if(empty($_GET['aid']) || empty($_SESSION['userid'])) { // Article ID not provided or not logged in
 			exit;
 		}
 		if(!isFavorite($_SESSION['userid'], $_GET['aid'], $db)) { // User is trying to unfavorite an article they haven't favorited
@@ -42,7 +39,16 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET)) {
 		} else {
 			print "Error";
 		}
-
+		exit;
+	} else if($_GET['request'] == "rate") {
+		if(empty($_GET['score']) || empty($_SESSION['userid'])) {
+			exit;
+		}
+		if(rateArticle($_SESSION['userid'], $_GET['aid'], $_GET['score'], $db)) {
+			print "Success";
+		} else {
+			print "Error";
+		}
 		exit;
 	} else {
 		exit;

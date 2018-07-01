@@ -23,6 +23,9 @@
 		/* Returns TRUE if article of provided article ID is a favorite of user of provided user ID, otherwise returns FALSE. */
 		$sql = "SELECT * FROM Favorite WHERE ArticleID = {$aid} AND UserID = {$uid};";
 		$result = mysqli_query($db, $sql);
+		if(!$result) { 
+			return FALSE;
+		}
 		return mysqli_num_rows($result) > 0;
 	}
 	function getFavoriteIDs($uid, $db) {
@@ -68,6 +71,24 @@
 	}
 	function removeFromFavorites($uid, $aid, $db) {
 		$sql = "DELETE FROM Favorite WHERE UserID = {$uid} AND ArticleID = {$aid};";
+		if(mysqli_query($db, $sql)) {
+			return TRUE; // Success
+		} else {
+			return mysqli_error($db);
+		}
+	}
+	function getArticleUserRating($uid, $aid, $db) {
+		$sql = "SELECT Score FROM Rating WHERE USERID = {$uid} AND ArticleID = {$aid}";
+		$query = mysqli_query($db, $sql);
+		if(!$query) {
+			return NULL;
+		}
+		$result = mysqli_fetch_array($query);
+    	return $result['Score'];
+	}
+	function rateArticle($uid, $aid, $score, $db) {
+		// Will insert a new rating score for the provided user to the provided article if none exists, or will update an existing score otherwise.
+		$sql = "INSERT INTO Rating (UserID, ArticleID, Score) VALUES ({$uid}, {$aid}, {$score}) ON DUPLICATE KEY UPDATE Score={$score}";
 		if(mysqli_query($db, $sql)) {
 			return TRUE; // Success
 		} else {

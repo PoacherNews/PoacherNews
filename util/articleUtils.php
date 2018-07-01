@@ -142,4 +142,10 @@ function getNumFavorites($aid, $db) {
     return mysqli_num_rows($result);
 }
 
+function getRatingByID($aid, $db) {
+    $sql = "SELECT AVG(Score) FROM Rating WHERE ArticleID = {$aid}";
+    $result = mysqli_fetch_array(mysqli_query($db, $sql));
+    return $result['AVG(Score)'];
+}
+
 ?>
