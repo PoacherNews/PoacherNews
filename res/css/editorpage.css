@@ -5,8 +5,6 @@
 
 .em-row {
 	flex-direction: row;
-	height: 100%;
-	text-align: center;
 }
 
 .em-left, .em-mid, .em-right {
@@ -18,9 +16,10 @@
 	float: left;
 	margin: auto 50px auto 50px;
 	overflow: hidden;
+    text-align: center;
 }
 
-.em-col > input[type="text"], input[list="category"] {
+.em-col > input[type="text"], #category-title {
 	margin: auto auto 10px auto;
     padding: 5px 10px 5px; 10px;
     border: 1px solid #ccc;
@@ -30,7 +29,7 @@
     font-size: 16px;
 }
 
-.em-col > #submit-button, #save-button, #verify-submit, #cancel-submit {
+.em-col > #submit-button, #save-button, #verify-submit, #cancel-submit, #cancel-override {
 	margin: 20px 0px 0px 0px;
     width: 120px;
     max-width: 120px;
@@ -51,64 +50,62 @@
 	background-color: springgreen;
 }
 
-#cancel-submit {
+#cancel-submit, #cancel-override {
 	background-color: red;
 }
 
-#verify-submit:hover, #cancel-submit:hover {
+#verify-submit:hover, #cancel-submit:hover, #cancel-override:hover {
 	opacity: 0.6;
 }
 
 
 /*Text Editor, Editor Menu, Editor Menu Bar*/
-.text-editor, .editor-menu, .editor-menubar {
+.editor-menu {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+}
+.text-editor {
     display: flex;
     flex-direction: column;
-    width: 80%;
-    align-self: center;
     display: inline-block;
     border-bottom: none;
+    min-width: 80%;
+    max-width: 80%;
     font-size: 14px;
     font-family: Helvetica, Arial, sans-serif;
 }
 
-#preview {
-    border: none;
-    cursor: pointer;
-    float: right;
+.editor-menubar {
+    display: inline-block;
+    border-bottom: none;
+    font-size: 14px;
+    font-family: Helvetica, Arial, sans-serif;
+    text-align: center;
+    padding-left: 0%;
 }
 
-.preview:hover {
-    background-color: lightgrey;
-}
-
-.preview:focus, #submit-button:focus, #save-button:focus, #verify-submit:focus, #cancel-submit:focus {
+#submit-button:focus, #save-button:focus, #verify-submit:focus, #cancel-submit:focus, #cancel-override:focus {
     outline: none;
 }
 
-.editor-menu {
+.emb-row {
     border-bottom: 1px solid black;
 }
 
-.editor-menubar{
+.editor-menubar > li{
     background-color: #fff;
-}
-
-ul {
-	background-color: ghostwhite;
     list-style-type: none;
-    height: 100%;
+    padding: 10px;
 }
 
-.editor-menubar > li {
-    background-color: #fff;
-    list-style-type:none;
-	padding: 10px;
-	height: 100%;
-	
+.emb-row {
+    display: flex;
+    flex-direction: row;
 }
 
-li button {
+li input[type="button"] {
     border: none;
     padding: 10px 12px;
     background-color: white;
@@ -117,9 +114,10 @@ li button {
     display: inline-block;
     font-family: Helvetica, Arial, sans-serif;
     font-size: 14px;
+   
 }
 
-li button:focus {
+li input[type="button"]:focus {
     outline: none;
 }
 
@@ -134,7 +132,7 @@ li #font-family, #font-size, #line-spacing {
 }
 
 
-li:hover button {
+li:hover input[type="button"] {
     background-color: lightgrey;
 }
 
@@ -151,12 +149,15 @@ li:hover button {
 .text-editor {
     border: 1px solid black;
 	line-height: 115%;
-    width: 50%;
+    width: 80%;
     padding: 5% 10% 5% 10%;
-    min-height: 500px;
+    min-height: 800px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.25);
 	font-family: Helvetica;
 	font-size: 13pt;
+    resize: none;
+    overflow: auto;
+    -ms-overflow-style: none;
 }
 
 .text-editor:focus {
@@ -181,7 +182,7 @@ li:hover button {
 	max-width: 200px;
     z-index: 900;
 	min-height: 100px;
-    background-color: orange;
+    background-color: #1864F7;
 	border-radius: 4px;
 	overflow: hidden;
 	display: none;
@@ -194,8 +195,10 @@ li:hover button {
 	font-size: 10pt;
 }
 
-#insert-link > input[type="button"] {
+#set-link {
 	margin-bottom: 15px;
+    background-color: #fff;
+    opacity: 0.5;
 }
 
 .link-row, .menubar-row {
@@ -209,7 +212,7 @@ li:hover button {
 }
 
 
-.submit {
+.submit, .override {
     display: none; 
     position: fixed; 
     z-index: 1; 
@@ -224,7 +227,7 @@ li:hover button {
 }
 
 
-.modal-content {
+.modal-content, .override-content {
     background-color: #fefefe;
     margin: auto;
     padding: 20px;
