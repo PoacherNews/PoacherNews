@@ -53,8 +53,9 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET)) {
 	}
 	if(empty($_POST['replyTo'])) {
 		$replyTo = NULL;
-	}
-	print(postComment($_POST['aid'], $_POST['content'], $replyTo, $db));
+	} else { $replyTo = $_POST['replyTo']; }
+
+	print(postComment($_POST['aid'], $_SESSION['userid'], $_POST['content'], $replyTo, $db));
 }
 
 

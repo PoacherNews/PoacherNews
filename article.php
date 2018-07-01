@@ -1,7 +1,7 @@
 <?php 
     ob_start();
     session_start(); 
-    include('util/db.php');
+    include_once('util/db.php');
     include('util/articleUtils.php');
     include('util/userUtils.php');
     function redirectHome() {
@@ -117,13 +117,10 @@
             <h1>Comments</h1>
             <hr/>
             <?php
-                $articleComments = getArticleComments($articleData['ArticleID'], $db);
-                if(!$articleComments) {
-                    print '<div id="noCommentsMessage">No comments yet.</div>';
-                } else {
-                foreach($articleComments as $comment) {
+                function drawComment($comment, $indent, $db) {
+                    $indentMultiplier = 60; // Amount to indent each nested reply set in pixels.
                     $user = getUserById($comment['UserID'], $db);
-                    print '<div class="comment" id="comment-'.$comment['CommentID'].'">
+                    return '<div class="comment" id="comment-'.$comment['CommentID'].'" style="margin-left: '.($indent * $indentMultiplier).'px">
                                 <img src="/res/img/'.$user['ProfilePicture'].'"/>
                                 <div class="commentText">
                                     <div class="commentTitle">
@@ -136,24 +133,60 @@
                                 </div>
                             </div>';
                 }
+                function getReplies($cid, $indentLevel, $db) {
+                    $replies = getCommentReplies($_GET['articleid'], $cid, $db);
+                    if(!empty($replies)) {
+                        // post replies call this function iteratively
+                        foreach($replies as $i=>$reply) {
+                            print(drawComment($reply, $indentLevel+1, $db));
+                            getReplies($reply['CommentID'], $indentLevel+1, $db);
+                        }
+                    }
+                }
+                $articleComments = getArticleRootComments($articleData['ArticleID'], $db);
+                if(!$articleComments) {
+                    print '<div id="noCommentsMessage">No comments yet.</div>';
+                } else {
+                foreach($articleComments as $comment) {
+                    print(drawComment($comment, 0, $db));
+                    getReplies($comment['CommentID'], 0, $db);
+                }
+                }
+                if(!($isDraft || $isPending)) { // Only display a comment form if the article is published
+                    print '<h2 id="commentFormHeader">Leave a comment</h2>
+                        <form id="commentForm">
+                            <textarea id="commentBody" placeholder="Enter a comment" required></textarea>
+                            <input type="hidden" id="commentReplyToId"/>
+                            <input type="button" id="commentClearButton" value="Clear"/>
+                            <input type="button" id="commentResetButton" value="Reset"/>
+                            <input type="submit" id="commentSubmitButton" value="Submit"/>
+                            <div id="errorMessage">An error occured. Please try again later.</div>
+                        </form>';
                 }
             ?>
-            <h2>Leave a comment</h2>
-            <form id="commentForm">
-                <textarea id="commentBody" placeholder="Enter a comment" required></textarea>
-                <input type="button" id="commentClearButton" value="Clear"/>
-                <input type="submit" id="commentSubmitButton" value="Submit"/>
-                <div id="errorMessage">An error occured. Please try again later.</div>
-            </form>
             <script>
                 $("#commentClearButton").click(function() {
+                    // Clears any text in the comment textarea field.
                     $("#commentBody").val('');
+                });
+                $("#commentResetButton").click(function() {
+                    // Clears text in the comment textarea and also resets the form if it's set to be a reply
+                    $("#commentBody").val('');
+                    $("#commentFormHeader").text("Leave a comment");
+                    $("#commentReplyToId").val('');
+                });
+                $(".commentReplyLink").click(function() {
+                    $("#commentReplyToId").val($(this).attr('id'));
+                    $("#commentFormHeader").text("Reply to "+$("#comment-"+$(this).attr('id')).find(".commentAuthor").text()); // Inform user that they're replying to a user
+                    $('html, body').animate({ // Scroll the page to the reply form
+                                scrollTop: ($('#commentFormHeader').offset().top - 100) // -100 to account for nav bar space
+                    }, 500);
                 });
                 $("#commentForm").submit(function(event) {
                     $.post("util/articleHandler.php", {
                         aid : $("#aid").text(),
-                        content : $("#commentBody").val() ,
-                        //TODO: Figure out how to determine if it should pass a replyTo or not.
+                        content : $("#commentBody").val(),
+                        replyTo : $("#commentReplyToId").val()
                     }).done(function(data) {
                         if(data) { // Success. Refresh page to display new comment.
                             location.reload();

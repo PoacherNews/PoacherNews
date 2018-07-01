@@ -125,15 +125,11 @@
 	    }
 	    return mysqliToArray($result);
 	}
-	function postComment($aid, $content, $replyTo=NULL, $db) {
-		if(empty($_SESSION['userid'])) { // Prevent posting comments when not logged in.
-			// return;	
-			$_SESSION['userid'] = 13; //DEBUG
-		}
+	function postComment($aid, $uid, $content, $replyTo=NULL, $db) {
 		if(is_null($replyTo)) {
 			$replyTo = "NULL"; // Convert to string NULL for the query.
 		}
-		$sql = "INSERT INTO Comment (ReplyToID, UserID, ArticleID, CommentText) VALUES ({$replyTo}, {$_SESSION['userid']}, {$aid}, '{$content}')";
+		$sql = "INSERT INTO Comment (ReplyToID, UserID, ArticleID, CommentText) VALUES ({$replyTo}, {$uid}, {$aid}, '{$content}')";
 		$query = $db->query($sql);
 		if(!$query) { 
 			return FALSE;
@@ -141,10 +137,13 @@
 		return TRUE;
 	}
 
-	/* TODO: Change to getRootComments and getReplies functions */
-	function getArticleComments($aid, $db) {
+	function getArticleRootComments($aid, $db) {
 		/* Returns an array of comments from an article with articleID specified with `aid`. */
-		$sql = "SELECT * FROM Comment WHERE ArticleID = {$aid} ORDER BY CommentDate DESC";
+		$sql = "SELECT * FROM Comment WHERE ArticleID = {$aid} AND ReplyToID IS NULL ORDER BY CommentDate DESC";
+		return mysqliToArray(mysqli_query($db, $sql));
+	}
+	function getCommentReplies($aid, $cid, $db) {
+		$sql = "SELECT * FROM Comment WHERE ArticleID = {$aid} AND ReplyToID = {$cid}";
 		return mysqliToArray(mysqli_query($db, $sql));
 	}
 ?>
