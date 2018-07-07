@@ -37,8 +37,16 @@
                     <div class="emb-row">
                         <div class="em-col">
                             <p>Article Details</p>
-                            <input type="text" id="article-title" placeholder="Article Title" name="title">
-                            <br>
+                            <?php
+                                if(isset($_POST['draft'])) {
+                                    print "<input type=\"text\" id=\"article-title\" placeholder=\"Article Title\" name=\"title\" value=\"{$_POST['title']}\"";
+                                    
+                                } else {
+                                    print "<input type=\"text\" id=\"article-title\" placeholder=\"Article Title\" name=\"title\">";
+                                    
+                                }
+                            print "<br>";
+                            ?>
                             <select name="category" id="category-title">
                                 <option value="Politics">Politics</option>
                                 <option value="Sports">Sports</option>
@@ -99,24 +107,27 @@
                                 </div>
                             </li>
                             <li><div id="line-spacing" contenteditable="false">1.15</div></li>
-                            <!--
-                            <li><input type="button" onclick="hideMenu()" id="hidemenu-caret" value="^"></li>
-                            -->
                         </ul>
                     </div>
-                    <div class="text-editor" contenteditable="true"></div>
+                    <div class="text-editor" contenteditable="true"><?php 
+                            if(isset($_POST['draft'])) {
+                                print($_POST['body']);
+                            }
+                    ?></div>
 				</form>
 			</div>
         </div>
     </body>
 	<script>
-        //Getting text from div and sending it post method
+        //Getting text from div and sending it post method on submission
         $(document).ready(function(){
            $("#action-form").on("submit", function () {
                 var hvalue = $('.text-editor').text();
                 $(this).append("<input type='hidden' name='body' value=' " + hvalue + " '/>");
             });
         });
+		
+		
 		// Keeps the cursor in the rich text editor
         /*
 		var textFocus;
@@ -150,7 +161,7 @@
             checkInputFile();
             if($('.text-editor').text().length > 0) {
                $('.override').show();
-            }
+            }	
         }
         
 		// Get the modal
@@ -230,20 +241,17 @@
 		// When the user clicks, open the submit modal
 		function submitBtn() {
 			var submitBtn = document.getElementById("submit-button");
-			var articleTitle = document.getElementById("article-title").value;
-			var categoryTitle = document.getElementById("category-title").value;
-			if(articleTitle.length == 0) {
-				document.write('Invalid requirements.');
-				//articleTitle.style.borderColor = "red";
-			} else if(categoryTitle.length == 0) {
-				// STILL NEED TO FIX
-				if(categoryTitle !== "Politics" || categoryTitle !== "Entertainment" || categoryTitle !== "Sports" ||
-				   categoryTitle !== "Local" || categoryTitle !== "Video" || categoryTitle !== "Opinion") {
-					document.write('Invalid requirements.');
-				}
+			var articleTitle = document.getElementById("article-title");
+			var uploadDocument = document.getElementById("upload-document");
+			
+			if(articleTitle.value.length == 0) {
+				articleTitle.style.border = "2px solid red";
+				articleTitle.placeholder = "Invalid requirements";
 			} else {
 				modal.style.display = "block";
 			}
+			
+			
 		}
 
 		/* ************************** Text Formatting ************************** */

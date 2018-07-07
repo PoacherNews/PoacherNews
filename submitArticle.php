@@ -1,4 +1,5 @@
 <?php
+  //header("Location: ../editorHistory.php");
   session_start();
   $action = empty($_POST['action']) ? '' : $_POST['action'];
   $submit = empty($_POST['submit']) ? '' : $_POST['submit'];
@@ -28,21 +29,23 @@
   if(isset($action)){
       if($submit == "Yes") { // If the user wants to submit
           submitArticle();
-          //relocate();
+          // relocate
       } else if($save == "Save") { // If the user wants to save
           saveArticle();
-          //relocate();
+          // relocate
       }
   } else {
     relocate(); //Go back to editorHistory.php
   }
+
   
 
   function submitArticle() {
       $title = empty($_POST['title']) ? '' : $_POST['title'];
       $category = empty($_POST['category']) ? '' : $_POST['category'];
       //Will take either file upload or contents from div
-      $body = empty($_POST['body']) ? readTextFile() : $_POST['body']; //TODO
+      $body = empty($_POST['body']) ? '' : $_POST['body']; //TODO
+	  // $body = readTextFile();
       $authorid = getAuthorID();
       $is_draft = 1; // true
       $is_submitted = 1; // true
@@ -68,16 +71,16 @@
             exit;
       }
       
-      echo "Article: " . $title . " submitted successfully";
+      echo "Article: " . $title . " submitted successfully.";
   } //End of submitArticle
 
   function saveArticle() { //TODO: $views = 0
       $title = empty($_POST['title']) ? '' : $_POST['title'];
       $category = empty($_POST['category']) ? '' : $_POST['category'];
-      //$body = empty($_POST['body']) ? '' : $_POST['body'];
+      $body = empty($_POST['body']) ? '' : $_POST['body'];
       $authorid = getAuthorID();
       //$filepath = uploadImage();
-      $body = readTextFile();
+      // $body = readTextFile();
       $is_draft = 1; // true
       $is_submitted = 0; // false
       $db = dbConnect();
@@ -102,15 +105,15 @@
             exit;
         }
       }
-      echo "Article: " . $title . " submitted successfully";
+      echo "Article: " . $title . " saved successfully.";
   } //End of saveArticle
 
   function readTextFile() {
     if (isset( $_FILES['document'])) {
-    // Upload .docx, .doc, .txt
-    $app_docx = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-    $app_doc = "application/msword";
-    $text_plain = "text/plain";
+        // Upload .docx, .doc, .txt
+        $app_docx = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        $app_doc = "application/msword";
+        $text_plain = "text/plain";
         switch($_FILES['document']['type']) {
 			case $app_docx: //TODO: Single/Double quotes needed to be changed; Parsing links
                 $source_file = $_FILES['document']['tmp_name'];
@@ -333,8 +336,7 @@
   } // End of getAuthorID
 
   function relocate() {
-    $error = "";
-    header("Location: /editorHistory.php");
-    exit;
-  } 
+        header("Location: /editorHistory.php");
+        exit;
+  }
 ?>

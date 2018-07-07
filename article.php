@@ -66,6 +66,15 @@
                         <?php
                             $numFaves = getNumFavorites($articleData['ArticleID'], $db);
                             print "{$numFaves} ".($numFaves === 1 ? "Favorite" : "Favorites");
+                            
+                             if($isDraft) { // Create link back to editorpage with the text in correct format
+                                 print "<form action=\"editorpage.php?articleid=                          {$articleData['ArticleID']}\" method=\"post\">
+                                            <input type=\"submit\" id=\"edit-draft\" name=\"draft\" value=\"Edit\">
+                                            <input type=\"hidden\" name=\"title\" value=\"{$articleData['Headline']}\">
+                                            <input type=\"hidden\" name=\"body\" value=\"{$articleData['Body']}\">
+                                        </form>";
+                             }
+                            
                         ?>
                         <span class="rightIcons"">
                             <span id="rating">
