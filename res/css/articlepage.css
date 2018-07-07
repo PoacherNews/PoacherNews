@@ -99,7 +99,7 @@
     color: #414141;
 }
 
-#commentSection > #noCommentsMessage {
+#commentSection > #commentsMessage {
 	font-size: 25px;
 	font-weight: bold;
 	text-align: center;
@@ -148,16 +148,34 @@
 	color: grey;
 }
 
+.replyForm {
+	margin: inherit;
+	padding-top: 15px;
+	font-family: inherit;
+	display: none;
+}
+.replyForm > textarea {
+	min-height: 55px;
+	min-width: 500px;
+	font-family: inherit;
+	resize: none;
+	display: block;
+}
+.replyForm > input {
+	margin: 5px 5px auto auto;
+}
+
 #commentForm > * {
 	margin: 5px 5px auto 0px;
 }
 #commentForm > textarea {
 	display: block;
 	font-family: inherit;
-	min-width: 50%;
-	min-height: 100px;
+	min-width: 35%;
+	min-height: 75px;
 }
-#commentForm > #errorMessage {
+
+.errorMessage {
 	display: none; /* Hidden by default */
 	max-width: 50%;
 	border: 2px solid #D44F33;
@@ -166,6 +184,7 @@
 	font-weight: bold;
 	font-size: 17px;
 	padding: 10px;
+	margin-top: 5px;
 }
 
 .articleDetails > h1 {

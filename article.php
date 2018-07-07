@@ -64,6 +64,7 @@
                         &mdash;
                         <?php print "{$articleData['Views']} ".($articleData['Views'] === 1 ? "View" : "Views") ?>,
                         <?php
+<<<<<<< HEAD
                             $numFaves = getNumFavorites($articleData['ArticleID'], $db);
                             print "{$numFaves} ".($numFaves === 1 ? "Favorite" : "Favorites");
                             
@@ -75,9 +76,12 @@
                                         </form>";
                              }
                             
+=======
+                            $articleRating = getRatingByID($_GET['articleid'], $db);
+                            print "Rated ".number_format((float)$articleRating, 2, '.', '')."/5 stars";
+>>>>>>> ad14ab36acae92125154170c3054043884cc5755
                         ?>
                         <span class="rightIcons"">
-                            <span id="rating">
                             <?php
                                 function displayStars($val) {
                                     if($val < 0 || $val > 5) {
@@ -96,62 +100,70 @@
                                     for($i=ceil($val)+1; $i<=5; $i++) {
                                         print '<i starNum="'.$i.'" id="emptyStar"  title="Click to rate '.$i.' stars" class="far fa-star"></i>';
                                     }
-                                }
-                                $articleRating = getRatingByID($_GET['articleid'], $db);
-                                if(isset($_SESSION['loggedin']) && !is_null(getArticleUserRating($_SESSION['userid'], $_GET['articleid'], $db))) {
-                                    displayStars(getArticleUserRating($_SESSION['userid'], $_GET['articleid'], $db));
-                                } else {
-                                    displayStars($articleRating);
-                                }
-                                print number_format((float)$articleRating, 2, '.', '').'/5';                       
-                            ?>
-                            <script>
-                                function restoreStar($elem) {
-                                    if($elem.is("#halfStar")) {
-                                        $elem.attr("class", "fas fa-star-half-alt");
-                                    } else if($elem.is("#emptyStar")) {
-                                        $elem.attr("class", "far fa-star");
-                                    } else {
-                                        $elem.attr("class", "fas fa-star");
-                                    }
-                                    $elem.css("color", "inherit");
-                                }
-                                $("#rating .fa-star,.fa-star-half-alt").hover(function() { 
-                                    $(this).css("color", "gold");
-                                    $(this).attr("class", "fas fa-star");
-                                    $(this).prevAll().css("color", "gold");
-                                    $(this).prevAll().attr("class", "fas fa-star");
-                                }, function() {
-                                    restoreStar($(this));
-                                    $(this).prevAll().each(function() {
-                                        restoreStar($(this));
-                                    });
-                                });
-                                $("#rating .fa-star,.fa-star-half-alt").click(function() {
-                                    $.get('util/articleHandler.php', {
-                                        'request' : 'rate',
-                                        'aid' : $("#aid").text(),
-                                        'score' : $(this).attr('starNum')
-                                    }).done(function(data) {
-                                        location.reload();
-                                    });
-                                });
-                            </script>
-                            </span>
-                            <?php
+                                } 
+
                                 if(!isset($_SESSION['loggedin'])) {
-                                    // TODO: Display this error only after they try to rate or favorite while not logged in
                                     print "<a href=\"login.php\">Log in</a> to favorite and rate articles";
+                                } else if($isDraft || $isPending) {
+                                    print "<span>Rating and favorites disabled until article is published.</span>";
                                 } else {
+                                    print '<span id="rating">';
+                                       displayStars(getArticleUserRating($_SESSION['userid'], $_GET['articleid'], $db));
+                                    print '</span>';
                                     if(isFavorite($_SESSION['userid'], $articleData['ArticleID'], $db)) { // If it's favorited
-                                        print '<i id="unfavorite" title="Click to Unfavorite" class="fas fa-heart"></i>';
+                                        print ' <i id="unfavorite" title="Click to Unfavorite" class="fas fa-heart"></i>';
                                     } else { // If it hasn't been favorited
-                                        print '<i id="favorite" title="Click to Favorite" class="far fa-heart"></i>';
+                                        print ' <i id="favorite" title="Click to Favorite" class="far fa-heart"></i>';
                                     }
                                 }
                             ?>
                         </span>
                         <script>
+                            // Rating functionality
+                            function restoreStar($elem) {
+                                if($elem.is("#halfStar")) {
+                                    $elem.attr("class", "fas fa-star-half-alt");
+                                } else if($elem.is("#emptyStar")) {
+                                    $elem.attr("class", "far fa-star");
+                                } else {
+                                    $elem.attr("class", "fas fa-star");
+                                }
+                                $elem.css("color", "inherit");
+                            }
+                            $("#rating .fa-star,.fa-star-half-alt").hover(function() { 
+                                $(this).css("color", "gold");
+                                $(this).attr("class", "fas fa-star");
+                                $(this).prevAll().css("color", "gold");
+                                $(this).prevAll().attr("class", "fas fa-star");
+                            }, function() {
+                                restoreStar($(this));
+                                $(this).prevAll().each(function() {
+                                    restoreStar($(this));
+                                });
+                            });
+                            $("#rating .fa-star,.fa-star-half-alt").click(function() {
+                                $.get('util/articleHandler.php', {
+                                    'request' : 'rate',
+                                    'aid' : $("#aid").text(),
+                                    'score' : $(this).attr('starNum')
+                                }).done(function(data) {
+                                    location.reload();
+                                });
+                            });
+
+                            // Favorite icon functionality
+                            $("#unfavorite").hover(function() {
+                                $(this).css("color", "red");
+                            }, function() {
+                                $(this).css("color", "inherit");
+                            });
+                            $("#favorite").hover(function() {
+                                $(this).css("color", "red");
+                                $(this).attr("class", "fas fa-heart");
+                            }, function() {
+                                $(this).css("color", "inherit");
+                                $(this).attr("class", "far fa-heart")
+                            })
                             $("#favorite").click(function() {
                                 $.get('util/articleHandler.php', {
                                     'request' : "favorite",
@@ -188,10 +200,30 @@
             <h1>Comments</h1>
             <hr/>
             <?php
+                if(!($isDraft || $isPending)) { // Only display a comment form if the article is published
+                    if(!isset($_SESSION['loggedin'])) {
+                        print '<div id="commentsMessage">Please log in to comment.</div>';
+                    } else {
+                        print '<form id="commentForm">
+                                <textarea id="commentBody" placeholder="Add a comment..." required></textarea>
+                                <input type="button" id="commentClearButton" value="Clear"/>
+                                <input type="submit" id="commentSubmitButton" value="Submit"/>
+                                <div class="errorMessage">An error occured. Please try again later.</div>
+                            </form>';
+                    }
+                }
                 function drawComment($comment, $indent, $db) {
                     $indentMultiplier = 60; // Amount to indent each nested reply set in pixels.
                     $user = getUserById($comment['UserID'], $db);
-                    return '<div class="comment" id="comment-'.$comment['CommentID'].'" style="margin-left: '.($indent * $indentMultiplier).'px">
+                    $replyFormHtml = '<form class="replyForm">
+                                        <textarea name="content" class="replyBody" placeholder="Add a reply..." required></textarea>
+                                        <input type="hidden" name="replyTo" value="'.$comment['CommentID'].'"/>
+                                        <input type="hidden" name="aid" value="'.$_GET['articleid'].'"/>
+                                        <input type="button" class="replyCancel" value="Cancel"/>
+                                        <input type="submit" id="commentSubmitButton" value="Submit"/>
+                                        <div class="errorMessage">An error occured. Please try again later.</div>
+                                    </form>';
+                    $commentHtml = '<div class="comment" id="comment-'.$comment['CommentID'].' cid="'.$comment['CommentID'].'" style="margin-left: '.($indent * $indentMultiplier).'px">
                                 <img src="/res/img/'.$user['ProfilePicture'].'"/>
                                 <div class="commentText">
                                     <div class="commentTitle">
@@ -201,8 +233,10 @@
                                     <div class="commentLinks">
                                         <a class="commentReplyLink" id="'.$comment['CommentID'].'">Reply</a> &dash; <a href="#comment-'.$comment['CommentID'].'">Link</a>
                                     </div>
+                                    '.(isset($_SESSION['loggedin']) ? $replyFormHtml : '').'
                                 </div>
                             </div>';
+                    return $commentHtml;
                 }
                 function getReplies($cid, $indentLevel, $db) {
                     $replies = getCommentReplies($_GET['articleid'], $cid, $db);
@@ -214,25 +248,18 @@
                         }
                     }
                 }
-                $articleComments = getArticleRootComments($articleData['ArticleID'], $db);
-                if(!$articleComments) {
-                    print '<div id="noCommentsMessage">No comments yet.</div>';
+                if($isDraft || $isPending) {
+                    print '<div id="commentsMessage">Comments disabled until article is published.</div>';
                 } else {
-                foreach($articleComments as $comment) {
-                    print(drawComment($comment, 0, $db));
-                    getReplies($comment['CommentID'], 0, $db);
-                }
-                }
-                if(!($isDraft || $isPending)) { // Only display a comment form if the article is published
-                    print '<h2 id="commentFormHeader">Leave a comment</h2>
-                        <form id="commentForm">
-                            <textarea id="commentBody" placeholder="Enter a comment" required></textarea>
-                            <input type="hidden" id="commentReplyToId"/>
-                            <input type="button" id="commentClearButton" value="Clear"/>
-                            <input type="button" id="commentResetButton" value="Reset"/>
-                            <input type="submit" id="commentSubmitButton" value="Submit"/>
-                            <div id="errorMessage">An error occured. Please try again later.</div>
-                        </form>';
+                    $articleComments = getArticleRootComments($articleData['ArticleID'], $db);
+                    if(!$articleComments) {
+                        print '<div id="commentsMessage">No comments yet.</div>';
+                    } else {
+                        foreach($articleComments as $comment) {
+                            print(drawComment($comment, 0, $db));
+                            getReplies($comment['CommentID'], 0, $db);
+                        }
+                    }
                 }
             ?>
             <script>
@@ -240,30 +267,31 @@
                     // Clears any text in the comment textarea field.
                     $("#commentBody").val('');
                 });
-                $("#commentResetButton").click(function() {
-                    // Clears text in the comment textarea and also resets the form if it's set to be a reply
-                    $("#commentBody").val('');
-                    $("#commentFormHeader").text("Leave a comment");
-                    $("#commentReplyToId").val('');
+                $(".replyCancel").click(function() {
+                    $(this).closest('.replyForm').slideUp();
                 });
                 $(".commentReplyLink").click(function() {
-                    $("#commentReplyToId").val($(this).attr('id'));
-                    $("#commentFormHeader").text("Reply to "+$("#comment-"+$(this).attr('id')).find(".commentAuthor").text()); // Inform user that they're replying to a user
-                    $('html, body').animate({ // Scroll the page to the reply form
-                                scrollTop: ($('#commentFormHeader').offset().top - 100) // -100 to account for nav bar space
-                    }, 500);
+                    $(this).parent().siblings('.replyForm').slideToggle();
+                });
+                $(".replyForm").submit(function(event) {
+                    $.post("util/articleHandler.php", $(this).serialize())
+                        .done(function(data) {
+                            location.reload();
+                        }).fail(function(data) {
+                            $(".replyForm .errorMessage").show();
+                        });
+                    
+                    return false; // Prevent default page reload.
                 });
                 $("#commentForm").submit(function(event) {
                     $.post("util/articleHandler.php", {
                         aid : $("#aid").text(),
                         content : $("#commentBody").val(),
-                        replyTo : $("#commentReplyToId").val()
+                        replyTo : null
                     }).done(function(data) {
-                        if(data) { // Success. Refresh page to display new comment.
-                            location.reload();
-                        } else { // An error occured, display an error message.
-                            $("#errorMessage").show();
-                        }
+                        location.reload();
+                    }).fail(function(data) {
+                        $("#commentForm .errorMessage").show();
                     });
                     return false; // Prevent default page reload.
                 });

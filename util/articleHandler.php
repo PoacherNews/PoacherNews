@@ -55,11 +55,12 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET)) {
 	}
 } else if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 	if(empty($_POST['aid']) || empty($_POST['content'])) { // Exit if not all required elements are included in POST
-		exit;
+		http_response_code(400);
 	}
-	if(empty($_POST['replyTo'])) {
-		$replyTo = NULL;
-	} else { $replyTo = $_POST['replyTo']; }
+	if(empty($_SESSION['loggedin']) || !isset($_SESSION['loggedin'])) {
+		http_response_code(400);
+	}
+	$replyTo = empty($_POST['replyTo']) ? NULL : $_POST['replyTo'];
 
 	print(postComment($_POST['aid'], $_SESSION['userid'], $_POST['content'], $replyTo, $db));
 }
