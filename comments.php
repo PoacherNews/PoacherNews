@@ -51,7 +51,7 @@
                         print "
                             <article>
                                 <div class=\"thumbnailSecondary\">
-                                    <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['Image']}\" width=\"150\" height=\"100\"></a>
+                                    <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['ArticleImage']}\" width=\"150\" height=\"100\"></a>
                                 </div>
                                 <div class=\"textSecondary\">
                                     <h2 class=\"secHeadlineSecondary\"><a href=\"article.php?articleid={$article['ArticleID']}\">{$article['Headline']}</a></h2>
