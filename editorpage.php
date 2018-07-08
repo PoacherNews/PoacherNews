@@ -1,5 +1,8 @@
 <?php
     include 'util/loginCheck.php';
+    include('util/articleUtils.php');
+    include('util/userUtils.php');
+    include('util/db.php');
     if (!$loggedin || ($_SESSION['usertype'] == 'U')) {
         header("HTTP/1.1 403 Forbidden", true, 403);
         echo "You must be an administrator. Redirecting in 1 second...";
@@ -22,9 +25,11 @@
         <?php
             include 'includes/header.php';
             include 'includes/nav.php';
-            include('util/articleUtils.php');
-            include('util/userUtils.php');
-            include('util/db.php');
+            $articleData = getArticleByID($_GET['articleid'], $db);
+            $articleID = $articleData['ArticleID'];
+            if($articleID == NULL) {
+                echo '<meta http-equiv="refresh" content="0; url=/index.php">';
+            }
         ?>
         
         <div class="nav">
@@ -35,7 +40,19 @@
         </div>
         <div class="editor-menu">
 			<div class="em-row">
+                <?php 
+                if(isset($_POST['draft'])) {
+                    $isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
+                    if($isDraft) {
+                        print "<form id=\"action-form\" action=\"/submitArticle.php?articleid={$articleData['ArticleID']}\" method=\"post\" enctype=\"multipart/form-data\">";
+                    } 
+                } else {
+                        print "<form id=\"action-form\" action=\"/submitArticle.php\" method=\"post\" enctype=\"multipart/form-data\">";
+                    }
+                ?>
+                <!--
 				<form id="action-form" action="/submitArticle.php" method="post" enctype="multipart/form-data">
+                -->
                     <input type="hidden" name="action">
                     <div class="emb-row">
                         <div class="em-col">
@@ -113,7 +130,7 @@
                     <div class="text-editor" contenteditable="true"><?php 
                             if(isset($_POST['draft'])) {
                                 print($_POST['body']);
-                                //$articleData = getArticleByID($_GET['articleid'], $db);
+                                $articleData = getArticleByID($_GET['articleid'], $db);
                                 //print $articleData['ArticleID'];
                             }
                     ?></div>
