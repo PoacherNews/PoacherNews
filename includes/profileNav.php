@@ -13,10 +13,10 @@
     ?>
     </li>
     
-    <li <?php if($current == 'favorites'){echo 'class="current"';} ?>>
+    <li <?php if($current == 'bookmarks'){echo 'class="current"';} ?>>
     <?php
-    echo "<a href='/favorites.php?uid=".$userid."'>";
-    echo "Favorites</a>";
+    echo "<a href='/bookmarks.php?uid=".$userid."'>";
+    echo "Bookmarks</a>";
     ?>
     </li>
     

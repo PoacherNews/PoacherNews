@@ -64,8 +64,8 @@
                         &mdash;
                         <?php print "{$articleData['Views']} ".($articleData['Views'] === 1 ? "View" : "Views") ?>,
                         <?php
-                            $numFaves = getNumFavorites($articleData['ArticleID'], $db);
-                            print "{$numFaves} ".($numFaves === 1 ? "Favorite" : "Favorites");
+                            $numFaves = getNumBookmarks($articleData['ArticleID'], $db);
+                            print "{$numFaves} ".($numFaves === 1 ? "Bookmark" : "Bookmarks");
                             
                              if($isDraft) { // Create link back to editorpage with the text in correct format
                                  print "<form action=\"editorpage.php?articleid={$articleData['ArticleID']}\" method=\"post\">
@@ -100,17 +100,17 @@
                                 } 
 
                                 if(!isset($_SESSION['loggedin'])) {
-                                    print "<a href=\"login.php\">Log in</a> to favorite and rate articles";
+                                    print "<a href=\"login.php\">Log in</a> to bookmark and rate articles";
                                 } else if($isDraft || $isPending) {
-                                    print "<span>Rating and favorites disabled until article is published.</span>";
+                                    print "<span>Rating and bookmarks disabled until article is published.</span>";
                                 } else {
                                     print '<span id="rating">';
                                        displayStars(getArticleUserRating($_SESSION['userid'], $_GET['articleid'], $db));
                                     print '</span>';
-                                    if(isFavorite($_SESSION['userid'], $articleData['ArticleID'], $db)) { // If it's favorited
-                                        print ' <i id="unfavorite" title="Click to Unfavorite" class="fas fa-heart"></i>';
-                                    } else { // If it hasn't been favorited
-                                        print ' <i id="favorite" title="Click to Favorite" class="far fa-heart"></i>';
+                                    if(isBookmark($_SESSION['userid'], $articleData['ArticleID'], $db)) { // If it's bookmarkd
+                                        print ' <i id="unbookmark" title="Click to Unbookmark" class="fas fa-heart"></i>';
+                                    } else { // If it hasn't been bookmarkd
+                                        print ' <i id="bookmark" title="Click to Bookmark" class="far fa-heart"></i>';
                                     }
                                 }
                             ?>
@@ -148,30 +148,30 @@
                                 });
                             });
 
-                            // Favorite icon functionality
-                            $("#unfavorite").hover(function() {
+                            // Bookmark icon functionality
+                            $("#unbookmark").hover(function() {
                                 $(this).css("color", "red");
                             }, function() {
                                 $(this).css("color", "inherit");
                             });
-                            $("#favorite").hover(function() {
+                            $("#bookmark").hover(function() {
                                 $(this).css("color", "red");
                                 $(this).attr("class", "fas fa-heart");
                             }, function() {
                                 $(this).css("color", "inherit");
                                 $(this).attr("class", "far fa-heart")
                             })
-                            $("#favorite").click(function() {
+                            $("#bookmark").click(function() {
                                 $.get('util/articleHandler.php', {
-                                    'request' : "favorite",
+                                    'request' : "bookmark",
                                     'aid' : $("#aid").text(),
                                 }).done(function(data) {
                                     location.reload();
                                 });
                             });
-                            $("#unfavorite").click(function() {
+                            $("#unbookmark").click(function() {
                                 $.get('util/articleHandler.php', {
-                                    'request' : "unfavorite",
+                                    'request' : "unbookmark",
                                     'aid' : $("#aid").text(),
                                 }).done(function(data) {
                                     location.reload();
@@ -181,7 +181,7 @@
                     </p>
                 </span>
                 <div class="articleImage">
-                    <img src="<?php print $articleData['Image'] ?>"/>
+                    <img src="<?php print $articleData['ArticleImage'] ?>"/>
                 </div>
                 <div class="articleBody">
                     <p><?php print nl2br($articleData['Body']); ?></p>

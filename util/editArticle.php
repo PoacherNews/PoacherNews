@@ -18,7 +18,7 @@ function getArticleData($db)
 {
     if (!isset($_GET['ArticleID']))
     {
-        echo "Error: No headline specified.";
+        echo "Error: No ArticleID specified.";
         return;
     }
  
@@ -55,7 +55,7 @@ function getArticleData($db)
     }
     if ($result->num_rows != 1)
     {
-        echo "Headline incorrect.";
+        echo "ArticleID incorrect.";
         return false;
     }
     $row = $result->fetch_assoc();
@@ -66,7 +66,7 @@ function getArticleData($db)
 // get user data as an array
 $data = getArticleData($db);
 if (!isset($data) || !$data)
-    die("Headline incorrect or database error.");
+    die("ArticleID incorrect or database error.");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -151,24 +151,24 @@ if(isset($_POST['errorSubmit']))
     // SET ERROR
     if($selected_radio == 0)
     {
-        $query = "UPDATE Article SET IsDraft = 0, IsSubmitted = 0 WHERE Headline = ?";
+        $query = "UPDATE Article SET IsDraft = 0, IsSubmitted = 0 WHERE ArticleID = ?";
     }
     // Refactor  ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 0) statements together
     // Add error message
     // ERROR TO DRAFT
     else if($selected_radio == 1 && ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 0))
     {
-        $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 0 WHERE Headline = ?";
+        $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 0 WHERE ArticleID = ?";
     }
     // ERROR TO PENDING
     else if($selected_radio == 2 && ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 0))
     {
-        $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 1 WHERE Headline = ?";
+        $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 1 WHERE ArticleID = ?";
     }
     // ERROR TO APPROVED
     else if($selected_radio == 3 && ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 0))
     {
-        $query = "UPDATE Article SET IsDraft = 0, IsSubmitted = 1 WHERE Headline = ?";
+        $query = "UPDATE Article SET IsDraft = 0, IsSubmitted = 1 WHERE ArticleID = ?";
     }
     
     // Refresh
@@ -183,7 +183,7 @@ if(isset($_POST['errorSubmit']))
         return;
     }
     // bind username
-    if (!$stmt->bind_param('s', $data['Headline']))
+    if (!$stmt->bind_param('s', $data['ArticleID']))
     {
         echo "Error binding parameters: <br>";
         echo nl2br(print_r($stmt->error_list, true), false);
@@ -246,17 +246,17 @@ if(isset($_POST['draftSubmit']))
             // DRAFT TO PENDING
             if($selected_radio == 0 && ($data['IsDraft'] == 1 && $data['IsPublish'] == 0))
             {
-                $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 1 WHERE Headline = ?";
+                $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 1 WHERE ArticleID = ?";
             }
             // PENDING TO DRAFT
             else if($selected_radio == 1 && ($data['IsDraft'] == 1 &&   $data['IsSubmitted'] == 1))
             {
-                $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 0 WHERE Headline = ?";
+                $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 0 WHERE ArticleID = ?";
             }
             // APPROVED TO DRAFT
             else if($selected_radio == 2 && ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 1))
             {
-                $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 0 WHERE Headline = ?";
+                $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 0 WHERE ArticleID = ?";
             }
     
             // Refresh
@@ -271,7 +271,7 @@ if(isset($_POST['draftSubmit']))
                 return;
             }
             // bind username
-            if (!$stmt->bind_param('s', $data['Headline']))
+            if (!$stmt->bind_param('s', $data['ArticleID']))
             {
                 echo "Error binding parameters: <br>";
                 echo nl2br(print_r($stmt->error_list, true), false);
@@ -328,12 +328,12 @@ if(isset($_POST['submittedSubmit']))
         //APPROVED TO PENDING
         if($selected_radio == 0 && ($data['IsDraft'] == 0 && $data['IsSubmitted'] == 1))
         {
-            $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 1 WHERE Headline = ?";
+            $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 1 WHERE ArticleID = ?";
         }
         //PENDING TO APPROVED
         else if($selected_radio == 1 && ($data['IsDraft'] == 1 && $data['IsSubmitted'] == 1))
         {
-            $query = "UPDATE Article SET IsDraft = 0, IsSubmitted = 1 WHERE Headline = ?";
+            $query = "UPDATE Article SET IsDraft = 0, IsSubmitted = 1 WHERE ArticleID = ?";
         }
         // Refresh
         echo "<meta http-equiv='refresh' content='0'>";
@@ -347,7 +347,7 @@ if(isset($_POST['submittedSubmit']))
             return;
         }
         // bind username
-        if (!$stmt->bind_param('s', $data['Headline']))
+        if (!$stmt->bind_param('s', $data['ArticleID']))
         {
             echo "Error binding parameters: <br>";
             echo nl2br(print_r($stmt->error_list, true), false);

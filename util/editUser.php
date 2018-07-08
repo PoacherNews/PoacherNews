@@ -156,7 +156,7 @@ echo "<br>You must have persmissions to edit this user";
 <?php 
 if(isset($_POST['submit'])){ 
 $selected_radio = $_POST['role'];
-$query = "UPDATE User SET Usertype = '".$selected_radio."' WHERE Username = ?";
+$query = "UPDATE User SET Usertype = '".$selected_radio."' WHERE UserID = ?";
 
 // Refresh
 echo "<meta http-equiv='refresh' content='0'>";
@@ -171,7 +171,7 @@ if (!$stmt->prepare($query))
     return;
 }
 // bind username
-if (!$stmt->bind_param('s', $data['Username']))
+if (!$stmt->bind_param('s', $data['UserID']))
 {
     echo "Error binding parameters: <br>";
     echo nl2br(print_r($stmt->error_list, true), false);

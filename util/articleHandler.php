@@ -9,14 +9,14 @@ include('userUtils.php');
 // $_POST['content'] = "manual test";
 
 if($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET)) {
-	if($_GET['request'] == "favorite") {
+	if($_GET['request'] == "bookmark") {
 		if(empty($_GET['aid'])) { // Article ID not provided
 			exit;
 		}
-		if(empty($_SESSION['userid'])) { // User is trying to favorite an article while not logged in
+		if(empty($_SESSION['userid'])) { // User is trying to bookmark an article while not logged in
 			exit;
 		}
-		if(isFavorite($_SESSION['userid'], $_GET['aid'], $db)) { // User is trying to favorite an article they already favorited
+		if(isFavorite($_SESSION['userid'], $_GET['aid'], $db)) { // User is trying to bookmark an article they already bookmarkd
 			exit;
 		}
 		
@@ -26,11 +26,11 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET)) {
 			print "Error";
 		}
 		exit;
-	} else if($_GET['request'] == "unfavorite") {
+	} else if($_GET['request'] == "unbookmark") {
 		if(empty($_GET['aid']) || empty($_SESSION['userid'])) { // Article ID not provided or not logged in
 			exit;
 		}
-		if(!isFavorite($_SESSION['userid'], $_GET['aid'], $db)) { // User is trying to unfavorite an article they haven't favorited
+		if(!isFavorite($_SESSION['userid'], $_GET['aid'], $db)) { // User is trying to unbookmark an article they haven't bookmarkd
 			exit;
 		}
 

@@ -33,7 +33,7 @@
                     'href' : "article.php?articleid="+rowData['ArticleID'],
                 });
                 $imageWrap.append($("<img/>", {
-                    'src' : rowData['Image'],
+                    'src' : rowData['ArticleImage'],
                     'width' : "600",
                     'height' : "430"
                 }));
@@ -78,7 +78,7 @@
                     'class' : "stacked-thumbnail"
                 });
                 $imageWrap.append($("<img/>", {
-                    'src' : rowData['Image'],
+                    'src' : rowData['ArticleImage'],
                     'height' : "217",
                     'width' : "325",
                 }));
