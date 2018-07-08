@@ -52,7 +52,7 @@
             });
             
             $thumbnail.append($("<img/>", {
-                'src' : rowData['Image'],
+                'src' : rowData['ArticleImage'],
                 'height' : "217",
                 'width' : "325",
             }));
@@ -147,7 +147,7 @@
                     foreach($picks as $article) {
                         print "<article>
                             <div class=\"thumbnailSecondary\">
-                                <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['Image']}\" width=\"150\" height=\"100\"></a>
+                                <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['ArticleImage']}\" width=\"150\" height=\"100\"></a>
                             </div>
                             <div class=\"textSecondary\">
                                 <h2 class=\"secHeadlineSecondary\"><a href=\"article.php?articleid={$article['ArticleID']}\">{$article['Headline']}</a></h2>
@@ -168,7 +168,7 @@
                         foreach($trending as $article) {
                             print "<article>
                                 <div class=\"thumbnailSecondary\">
-                                    <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['Image']}\" width=\"150\" height=\"100\"></a>
+                                    <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['ArticleImage']}\" width=\"150\" height=\"100\"></a>
                                 </div>
                                 <div class=\"textSecondary\">
                                     <h2 class=\"secHeadlineSecondary\"><a href=\"article.php?articleid={$article['ArticleID']}\">{$article['Headline']}</a></h2>
@@ -181,20 +181,20 @@
             </div>
             <div class="secBorderSecondary"></div>
             <div class="secColumnRightSecondary">
-                <h1 class="secCategorySecondary">User Favorites</h1>
+                <h1 class="secCategorySecondary">User Bookmarks</h1>
                 <?php
                     if(!isset($_SESSION['loggedin'])) {
-                        print "<div class=\"columnError\">Log in to see your favorites.</div>";
+                        print "<div class=\"columnError\">Log in to see your bookmarks.</div>";
                     } else {
-                        $favorites = getUserFavorites($_SESSION['userid'], $_GET['Category'], $threeColLimit, $db);
-                        if($favorites === null) {
-                            print "<div class=\"columnError\">No favorites in this section.</div>";
+                        $bookmarks = getUserBookmarks($_SESSION['userid'], $_GET['Category'], $threeColLimit, $db);
+                        if($bookmarks === null) {
+                            print "<div class=\"columnError\">No bookmarks in this section.</div>";
                             return;
                         }
-                        foreach($favorites as $article) {
+                        foreach($bookmarks as $article) {
                             print "<article>
                                 <div class=\"thumbnailSecondary\">
-                                    <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['Image']}\" width=\"150\" height=\"100\"></a>
+                                    <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['ArticleImage']}\" width=\"150\" height=\"100\"></a>
                                 </div>
                                 <div class=\"textSecondary\">
                                     <h2 class=\"secHeadlineSecondary\"><a href=\"article.php?articleid={$article['ArticleID']}\">{$article['Headline']}</a></h2>

@@ -19,26 +19,26 @@
         
         <div class="nav">
             <?php
-                $current = 'favorites';
+                $current = 'bookmarks';
                 include 'includes/profileNav.php';
             ?>
         </div>
         
         <div class="display">
-        <h1>Favorites</h1> 
+        <h1>Bookmarks</h1> 
 		
 		<?php
- 		$favorites = getUserFavorites($userid, null, null, $db);
-    	if($favorites === null) {
-                print "<div class=\"columnError\">No favorites yet.</div>";
+ 		$bookmarks = getUserBookmarks($userid, null, null, $db);
+    	if($bookmarks === null) {
+                print "<div class=\"columnError\">No bookmarks yet.</div>";
                 return;
         }
              
- 		foreach($favorites as $article) {
+ 		foreach($bookmarks as $article) {
         print "
         <article>
 			<div class=\"thumbnailSecondary\">
-				<a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['Image']}\" width=\"150\" height=\"100\"></a>
+				<a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['ArticleImage']}\" width=\"150\" height=\"100\"></a>
 					</div>
                     <div class=\"textSecondary\">
                             <h2 class=\"secHeadlineSecondary\"><a href=\"article.php?articleid={$article['ArticleID']}\">{$article['Headline']}</a></h2>

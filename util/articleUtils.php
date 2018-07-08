@@ -135,9 +135,9 @@ function increaseViewCount($id, $db) {
     $db->query($sql);
 }
 
-function getNumFavorites($aid, $db) {
-    /* Returns an integer value representing the number of favorites an article given by a provided ArticleID has. */
-    $sql = "SELECT * FROM Favorite WHERE ArticleID = {$aid}";
+function getNumBookmarks($aid, $db) {
+    /* Returns an integer value representing the number of bookmarks an article given by a provided ArticleID has. */
+    $sql = "SELECT * FROM Bookmark WHERE ArticleID = {$aid}";
     $result = mysqli_query($db, $sql);
     return mysqli_num_rows($result);
 }

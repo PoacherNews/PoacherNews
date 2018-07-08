@@ -64,6 +64,17 @@
                         &mdash;
                         <?php print "{$articleData['Views']} ".($articleData['Views'] === 1 ? "View" : "Views") ?>,
                         <?php
+                            $numFaves = getNumBookmarks($articleData['ArticleID'], $db);
+                            print "{$numFaves} ".($numFaves === 1 ? "Bookmark" : "Bookmarks");
+                            
+                             if($isDraft) { // Create link back to editorpage with the text in correct format
+                                 print "<form action=\"editorpage.php?articleid={$articleData['ArticleID']}\" method=\"post\">
+                                            <input type=\"submit\" id=\"edit-draft\" name=\"draft\" value=\"Edit\">
+                                            <input type=\"hidden\" name=\"title\" value=\"{$articleData['Headline']}\">
+                                            <input type=\"hidden\" name=\"body\" value=\"{$articleData['Body']}\">
+                                        </form>";
+                             }
+                            
                             $articleRating = getRatingByID($_GET['articleid'], $db);
                             print "Rated ".number_format((float)$articleRating, 2, '.', '')."/5 stars";
                         ?>
@@ -89,9 +100,9 @@
                                 } 
 
                                 if(!isset($_SESSION['loggedin'])) {
-                                    print "<a href=\"login.php\">Log in</a> to favorite and rate articles";
+                                    print "<a href=\"login.php\">Log in</a> to bookmark and rate articles";
                                 } else if($isDraft || $isPending) {
-                                    print "<span>Rating and favorites disabled until article is published.</span>";
+                                    print "<span>Rating and bookmarks disabled until article is published.</span>";
                                 } else {
                                     print '<span id="rating">';
                                        displayStars(getArticleUserRating($_SESSION['userid'], $_GET['articleid'], $db));
@@ -138,10 +149,24 @@
                             });
 
                             // Bookmark icon functionality
+<<<<<<< HEAD
                             $("#bookmark").hover(function() {
                                 $(this).attr("class", "fas fa-bookmark");
                             }, function() {
                                 $(this).attr("class", "far fa-bookmark")
+=======
+                            $("#unbookmark").hover(function() {
+                                $(this).css("color", "red");
+                            }, function() {
+                                $(this).css("color", "inherit");
+                            });
+                            $("#bookmark").hover(function() {
+                                $(this).css("color", "red");
+                                $(this).attr("class", "fas fa-heart");
+                            }, function() {
+                                $(this).css("color", "inherit");
+                                $(this).attr("class", "far fa-heart")
+>>>>>>> 77e7db253d8ef0228c9467db40bee3bbf272d681
                             })
                             $("#bookmark").click(function() {
                                 $.get('util/articleHandler.php', {

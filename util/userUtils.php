@@ -20,7 +20,7 @@
 	    return mysqli_fetch_assoc($result);
 	}
 	function isBookmark($uid, $aid, $db) {
-		/* Returns TRUE if article of provided article ID is a favorite of user of provided user ID, otherwise returns FALSE. */
+		/* Returns TRUE if article of provided article ID is a bookmark of user of provided user ID, otherwise returns FALSE. */
 		$sql = "SELECT * FROM Bookmark WHERE ArticleID = {$aid} AND UserID = {$uid};";
 		$result = mysqli_query($db, $sql);
 		if(!$result) { 
@@ -28,8 +28,8 @@
 		}
 		return mysqli_num_rows($result) > 0;
 	}
-	function getFavoriteIDs($uid, $db) {
-		$sql = "SELECT ArticleID FROM Favorite WHERE UserId = {$uid};";
+	function getBookmarkIDs($uid, $db) {
+		$sql = "SELECT ArticleID FROM Bookmark WHERE UserId = {$uid};";
 		$result = mysqli_query($db, $sql);
 	    $data = array();
 	    while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) { // Put each returned row into a PHP array
@@ -37,17 +37,17 @@
 	    }
 	    return $data;
 	}
-	function getUserFavorites($uid, $category=NULL, $limit=NULL, $db) {
-		/* Returns a `limit` length array of a provided user's favorite articles.
-		   If `category` is provided, will return an array of favorites from only the provided section name. */
-		$favorites = getFavoriteIDs($uid, $db);
+	function getUserBookmarks($uid, $category=NULL, $limit=NULL, $db) {
+		/* Returns a `limit` length array of a provided user's bookmark articles.
+		   If `category` is provided, will return an array of bookmarks from only the provided section name. */
+		$bookmarks = getBookmarkIDs($uid, $db);
 	    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0";
 	    if(!is_null($category)) {
 	    	$sql .= " AND Category = '{$category}'";
 	    }
 
-	    $sql .= " AND ArticleID = {$favorites[0]}";
-	    foreach(array_slice($favorites, 1) as &$val) { // Gather results for all other specified editor picks
+	    $sql .= " AND ArticleID = {$bookmarks[0]}";
+	    foreach(array_slice($bookmarks, 1) as &$val) { // Gather results for all other specified editor picks
 	        $sql .= " OR ArticleID = {$val}";
 	    }
             if(!is_null($limit)) {
@@ -61,7 +61,7 @@
 	}
 
 	function addBookmark($uid, $aid, $db) {
-		/* Adds a favorite record for a user of provided userID for article of provided articleID. */
+		/* Adds a bookmark record for a user of provided userID for article of provided articleID. */
 		$sql = "INSERT INTO Bookmark VALUES({$uid}, {$aid});";
 		if(mysqli_query($db, $sql)) {
 			return TRUE; // Success
@@ -69,8 +69,8 @@
 			return mysqli_error($db);
 		}
 	}
-	function removeFromFavorites($uid, $aid, $db) {
-		$sql = "DELETE FROM Favorite WHERE UserID = {$uid} AND ArticleID = {$aid};";
+	function removeFromBookmarks($uid, $aid, $db) {
+		$sql = "DELETE FROM Bookmark WHERE UserID = {$uid} AND ArticleID = {$aid};";
 		if(mysqli_query($db, $sql)) {
 			return TRUE; // Success
 		} else {
@@ -115,7 +115,7 @@
 	    return $data;
 	}
 	function getUserCommentArticles($uid, $limit=NULL, $db) {
-		/* Returns a `limit` length array of a provided user's favorite articles. */
+		/* Returns a `limit` length array of a provided user's bookmark articles. */
 		$comments = getCommentArticleIDs($uid, $db);
 	    $sql = "SELECT * FROM Article WHERE ArticleID = {$comments[0]} ";
 	    foreach(array_slice($comments, 1) as &$val) { // Gather results for all other specified editor picks
@@ -131,7 +131,7 @@
 	    return mysqliToArray($result);
 	}
 	function getUserComments($uid, $limit=NULL, $db) {
-		/* Returns a `limit` length array of a provided user's favorite articles. */
+		/* Returns a `limit` length array of a provided user's bookmark articles. */
 		$comments = getCommentUserIDs($uid, $db);
 	    $sql = "SELECT * FROM Comment WHERE UserID = {$uid} ";
 	    foreach(array_slice($comments, 1) as &$val) { // Gather results for all other specified editor picks

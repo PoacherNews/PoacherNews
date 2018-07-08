@@ -1,6 +1,8 @@
+DROP TABLE IF EXISTS ArticleTag;
+DROP TABLE IF EXISTS Tag;
 DROP TABLE IF EXISTS Featured;
 DROP TABLE IF EXISTS Rating;
-DROP TABLE IF EXISTS Favorite;
+DROP TABLE IF EXISTS Bookmark;
 DROP TABLE IF EXISTS Comment;
 DROP TABLE IF EXISTS Article;
 DROP TABLE IF EXISTS User;
@@ -13,58 +15,77 @@ CREATE TABLE User (
     Username VARCHAR(50),
     Usertype VARCHAR(50) DEFAULT 'U',
     Password VARCHAR(255),
+    ProfilePicture VARCHAR(500) DEFAULT 'defaultAvatar.png',
+    Bio VARCHAR(200) DEFAULT NULL,
+    TimeZone ENUM('HAST', 'AKST', 'PST', 'MST', 'CST', 'EST'),
     CONSTRAINT PKUser PRIMARY KEY (UserID)
 );
 
 CREATE TABLE Article (
     ArticleID INT AUTO_INCREMENT,
-    UserID INT NULL,
+    UserID INT DEFAULT NULL,
     Headline VARCHAR(255),
     Body VARCHAR(10000),
     Category VARCHAR(50),
     PublishDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Views MEDIUMINT(9),
-    Image VARCHAR(500) DEFAULT 'https://i.imgur.com/U469uHI.jpg',
+    Views MEDIUMINT(9) DEFAULT 0,
+    ArticleImage VARCHAR(500) DEFAULT 'https://i.imgur.com/U469uHI.jpg',
     ArticleRating DOUBLE DEFAULT 0,
+    CommentsEnabled BOOLEAN DEFAULT true,
     IsDraft BOOLEAN DEFAULT true,
     IsSubmitted BOOLEAN DEFAULT false,
-    FOREIGN KEY (UserID) REFERENCES User (UserID),
+    FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE SET NULL,
     CONSTRAINT PKArticle PRIMARY KEY (ArticleID)
 );
 
 CREATE TABLE Comment (
-    CommentID INT,
-    UserID INT,
-    ArticleID INT,
+    CommentID INT AUTO_INCREMENT,
+    ReplyToID INT DEFAULT NULL,
+    UserID INT DEFAULT NULL,
+    ArticleID INT DEFAULT NULL,
     CommentDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (UserID) REFERENCES User (UserID),
-    FOREIGN KEY (ArticleID) REFERENCES Article (ArticleID),
+    CommentText VARCHAR(8000),
+    Edited BOOLEAN DEFAULT false,
+    FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE SET NULL,
+    FOREIGN KEY (ArticleID) REFERENCES Article (ArticleID) ON DELETE CASCADE,
     CONSTRAINT PKComment PRIMARY KEY (CommentID)
 
 );
 
-CREATE TABLE Favorite (
-    UserID INT,
-    ArticleID INT,
-    FOREIGN KEY (UserID) REFERENCES User (UserID),
-    FOREIGN KEY (ArticleID) REFERENCES Article (ArticleID),
-    CONSTRAINT PKFavorite PRIMARY KEY (UserID, ArticleID)
+CREATE TABLE Bookmark (
+    UserID INT DEFAULT NULL,
+    ArticleID INT DEFAULT NULL,
+    FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE CASCADE,
+    FOREIGN KEY (ArticleID) REFERENCES Article (ArticleID) ON DELETE CASCADE,
+    CONSTRAINT PKBookmark PRIMARY KEY (UserID, ArticleID)
 );
 
 CREATE TABLE Rating (
-    RatingID INT,
-    UserID INT,
-    ArticleID INT,
-    RatingDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Score DOUBLE,
-    FOREIGN KEY (UserID) REFERENCES User (UserID),
-    FOREIGN KEY (ArticleID) REFERENCES Article (ArticleID),
-    CONSTRAINT PKRating PRIMARY KEY (RatingID)
+    UserID INT DEFAULT NULL,
+    ArticleID INT DEFAULT NULL,
+    Score DOUBLE DEFAULT NULL,
+    FOREIGN KEY (UserID) REFERENCES User (UserID) ON DELETE SET NULL,
+    FOREIGN KEY (ArticleID) REFERENCES Article (ArticleID) ON DELETE CASCADE,
+    CONSTRAINT idx UNIQUE KEY (UserID, ArticleID)
 );
 
 CREATE TABLE Featured (
+    FeaturedID INT AUTO_INCREMENT,
     FeaturedType ENUM('EditorPick', 'Main'),
-    ArticleID INT,
-    FOREIGN KEY (ArticleID) REFERENCES Article (ArticleID),
-    CONSTRAINT PKFeatured PRIMARY KEY (FeaturedType)
+    ArticleID INT DEFAULT NULL,
+    FOREIGN KEY (ArticleID) REFERENCES Article (ArticleID) ON DELETE CASCADE,
+    CONSTRAINT PKFeatured PRIMARY KEY (FeaturedID)
+);
+
+CREATE TABLE Tag (
+    TagID INT AUTO_INCREMENT,
+    TagName VARCHAR(50),
+    CONSTRAINT PKTag PRIMARY KEY (TagID)
+);
+
+CREATE TABLE ArticleTag (
+    ArticleID INT DEFAULT NULL,
+    TagID INT DEFAULT NULL,
+    FOREIGN KEY (ArticleID) REFERENCES Article (ArticleID) ON DELETE CASCADE,
+    FOREIGN KEY (TagID) REFERENCES Tag (TagID) ON DELETE CASCADE
 );

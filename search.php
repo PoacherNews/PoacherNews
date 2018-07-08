@@ -58,7 +58,7 @@
 							$query = htmlspecialchars($query); 
 							$query = mysqli_real_escape_string($db, $query);
 
-							$raw_results = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`Image` LIKE '%".$query."%'))";
+							$raw_results = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%'))";
 							$test = mysqli_query($db, $raw_results);
 							echo "<div class='search-content'>";
 
@@ -67,7 +67,7 @@
 									print   "<div class='flexRow'>
 												<div class='imgFlex'>
 													<a href=\"article.php?articleid={$results['ArticleID']}\">
-														<img src=".$results['Image']." class='image' height='120' width='140'>
+														<img src=".$results['ArticleImage']." class='image' height='120' width='140'>
 													</a>
 												</div>
 												<div class='spanFlex'>
@@ -89,14 +89,14 @@
                     } else {
                         switch($sort) {
                             case "Relevancy":
-                                $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`Image` LIKE '%".$query."%')) ORDER BY PublishDate DESC") or die(mysql_error());
+                                $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY PublishDate DESC") or die(mysql_error());
                                 echo "<div class='search-content'>";
                                 if(mysqli_num_rows($raw_results) > 0){ 
                                     while($results = mysqli_fetch_array($raw_results)){
                                         print   "<div class='flexRow'>
                                                     <div class='imgFlex'>
                                                         <a href=\"article.php?articleid={$results['ArticleID']}\">
-                                                            <img src=".$results['Image']." class='image' height='120' width='140'>
+                                                            <img src=".$results['ArticleImage']." class='image' height='120' width='140'>
                                                         </a>
                                                     </div>
                                                     <div class='spanFlex'>
@@ -115,14 +115,14 @@
                                 break;
 
                             case "Name":
-                                $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`Image` LIKE '%".$query."%')) ORDER BY Headline ASC") or die(mysql_error());
+                                $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY Headline ASC") or die(mysql_error());
                                 echo "<div class='search-content'>";
                                 if(mysqli_num_rows($raw_results) > 0){ 
                                     while($results = mysqli_fetch_array($raw_results)){
                                         print   "<div class='flexRow'>
                                                     <div class='imgFlex'>
                                                         <a href=\"article.php?articleid={$results['ArticleID']}\">
-                                                            <img src=".$results['Image']." class='image' height='120' width='140'>
+                                                            <img src=".$results['ArticleImage']." class='image' height='120' width='140'>
                                                         </a>
                                                     </div>
                                                     <div class='spanFlex'>
@@ -140,14 +140,14 @@
                                 break;
 
                             case "Views":
-                               $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`Image` LIKE '%".$query."%')) ORDER BY Views DESC") or die(mysql_error());
+                               $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY Views DESC") or die(mysql_error());
                                 echo "<div class='search-content'>";
                                 if(mysqli_num_rows($raw_results) > 0){ 
                                     while($results = mysqli_fetch_array($raw_results)){
                                         print   "<div class='flexRow'>
                                                     <div class='imgFlex'>
                                                         <a href=\"article.php?articleid={$results['ArticleID']}\">
-                                                            <img src=".$results['Image']." class='image' height='120' width='140'>
+                                                            <img src=".$results['ArticleImage']." class='image' height='120' width='140'>
                                                         </a>
                                                     </div>
                                                     <div class='spanFlex'>

@@ -13,7 +13,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET)) {
 		if(empty($_GET['aid'])) { // Article ID not provided
 			exit;
 		}
-		if(empty($_SESSION['userid'])) { // User is trying to favorite an article while not logged in
+		if(empty($_SESSION['userid'])) { // User is trying to bookmark an article while not logged in
 			exit;
 		}
 		if(isBookmark($_SESSION['userid'], $_GET['aid'], $db)) { // User is trying to favorite an article they already favorited

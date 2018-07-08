@@ -1,5 +1,8 @@
 <?php
     include 'util/loginCheck.php';
+    include('util/articleUtils.php');
+    include('util/userUtils.php');
+    include('util/db.php');
     if (!$loggedin || ($_SESSION['usertype'] == 'U')) {
         header("HTTP/1.1 403 Forbidden", true, 403);
         echo "You must be an administrator. Redirecting in 1 second...";
@@ -13,7 +16,7 @@
     <head>
         <title>The Poacher | Editor Page</title>
         <link rel="stylesheet" href="res/css/editorpage.css">
-         <?php include 'includes/globalHead.html'?>
+        <?php include 'includes/globalHead.html'?>
         <link rel="stylesheet" href="res/css/profile.css">
         <link rel="stylesheet" href="res/css/profileNav.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -22,6 +25,11 @@
         <?php
             include 'includes/header.php';
             include 'includes/nav.php';
+            $articleData = getArticleByID($_GET['articleid'], $db);
+            $articleID = $articleData['ArticleID'];
+            if($articleID == NULL) {
+                echo '<meta http-equiv="refresh" content="0; url=/index.php">';
+            }
         ?>
         
         <div class="nav">
@@ -32,13 +40,31 @@
         </div>
         <div class="editor-menu">
 			<div class="em-row">
+                <?php 
+                if(isset($_POST['draft'])) {
+                    $isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
+                    if($isDraft) {
+                        print "<form id=\"action-form\" action=\"/submitArticle.php?articleid={$articleData['ArticleID']}\" method=\"post\" enctype=\"multipart/form-data\">";
+                    } 
+                } else {
+                        print "<form id=\"action-form\" action=\"/submitArticle.php\" method=\"post\" enctype=\"multipart/form-data\">";
+                    }
+                ?>
+                <!--
 				<form id="action-form" action="/submitArticle.php" method="post" enctype="multipart/form-data">
+                -->
                     <input type="hidden" name="action">
                     <div class="emb-row">
                         <div class="em-col">
                             <p>Article Details</p>
-                            <input type="text" id="article-title" placeholder="Article Title" name="title">
-                            <br>
+                            <?php
+                                if(isset($_POST['draft'])) {
+                                    print "<input type=\"text\" id=\"article-title\" placeholder=\"Article Title\" name=\"title\" value=\"{$_POST['title']}\"";
+                                } else {
+                                    print "<input type=\"text\" id=\"article-title\" placeholder=\"Article Title\" name=\"title\">";
+                                }
+                                print "<br>";
+                            ?>
                             <select name="category" id="category-title">
                                 <option value="Politics">Politics</option>
                                 <option value="Sports">Sports</option>
@@ -99,24 +125,29 @@
                                 </div>
                             </li>
                             <li><div id="line-spacing" contenteditable="false">1.15</div></li>
-                            <!--
-                            <li><input type="button" onclick="hideMenu()" id="hidemenu-caret" value="^"></li>
-                            -->
                         </ul>
                     </div>
-                    <div class="text-editor" contenteditable="true"></div>
+                    <div class="text-editor" contenteditable="true"><?php 
+                            if(isset($_POST['draft'])) {
+                                print($_POST['body']);
+                                $articleData = getArticleByID($_GET['articleid'], $db);
+                                //print $articleData['ArticleID'];
+                            }
+                    ?></div>
 				</form>
 			</div>
         </div>
     </body>
 	<script>
-        //Getting text from div and sending it post method
+        //Getting text from div and sending it post method on submission
         $(document).ready(function(){
            $("#action-form").on("submit", function () {
                 var hvalue = $('.text-editor').text();
                 $(this).append("<input type='hidden' name='body' value=' " + hvalue + " '/>");
             });
         });
+		
+		
 		// Keeps the cursor in the rich text editor
         /*
 		var textFocus;
@@ -150,7 +181,7 @@
             checkInputFile();
             if($('.text-editor').text().length > 0) {
                $('.override').show();
-            }
+            }	
         }
         
 		// Get the modal
@@ -230,20 +261,17 @@
 		// When the user clicks, open the submit modal
 		function submitBtn() {
 			var submitBtn = document.getElementById("submit-button");
-			var articleTitle = document.getElementById("article-title").value;
-			var categoryTitle = document.getElementById("category-title").value;
-			if(articleTitle.length == 0) {
-				document.write('Invalid requirements.');
-				//articleTitle.style.borderColor = "red";
-			} else if(categoryTitle.length == 0) {
-				// STILL NEED TO FIX
-				if(categoryTitle !== "Politics" || categoryTitle !== "Entertainment" || categoryTitle !== "Sports" ||
-				   categoryTitle !== "Local" || categoryTitle !== "Video" || categoryTitle !== "Opinion") {
-					document.write('Invalid requirements.');
-				}
+			var articleTitle = document.getElementById("article-title");
+			var uploadDocument = document.getElementById("upload-document");
+			
+			if(articleTitle.value.length == 0) {
+				articleTitle.style.border = "2px solid red";
+				articleTitle.placeholder = "Invalid requirements";
 			} else {
 				modal.style.display = "block";
 			}
+			
+			
 		}
 
 		/* ************************** Text Formatting ************************** */

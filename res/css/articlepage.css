@@ -9,9 +9,21 @@
 	margin: auto 0px auto 0px;
 }
 
-.articleColumns a {
+.articleColumns a, #edit-draft{
 	color: #83A8F0;
 	text-decoration: none;
+}
+
+#edit-draft {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 16px;
+}
+
+#edit-draft:focus {
+    outline: none;
 }
 
 .articleColumns > #articleColumn {
