@@ -96,10 +96,10 @@
                                     print '<span id="rating">';
                                        displayStars(getArticleUserRating($_SESSION['userid'], $_GET['articleid'], $db));
                                     print '</span>';
-                                    if(isFavorite($_SESSION['userid'], $articleData['ArticleID'], $db)) { // If it's favorited
-                                        print ' <i id="unfavorite" title="Click to Unfavorite" class="fas fa-heart"></i>';
+                                    if(isBookmark($_SESSION['userid'], $articleData['ArticleID'], $db)) { // If it's favorited
+                                        print ' <i id="unbookmark" title="Click to Remove Bookmark" class="fas fa-bookmark"></i>';
                                     } else { // If it hasn't been favorited
-                                        print ' <i id="favorite" title="Click to Favorite" class="far fa-heart"></i>';
+                                        print ' <i id="bookmark" title="Click to Bookmark" class="far fa-bookmark"></i>';
                                     }
                                 }
                             ?>
@@ -137,30 +137,23 @@
                                 });
                             });
 
-                            // Favorite icon functionality
-                            $("#unfavorite").hover(function() {
-                                $(this).css("color", "red");
+                            // Bookmark icon functionality
+                            $("#bookmark").hover(function() {
+                                $(this).attr("class", "fas fa-bookmark");
                             }, function() {
-                                $(this).css("color", "inherit");
-                            });
-                            $("#favorite").hover(function() {
-                                $(this).css("color", "red");
-                                $(this).attr("class", "fas fa-heart");
-                            }, function() {
-                                $(this).css("color", "inherit");
-                                $(this).attr("class", "far fa-heart")
+                                $(this).attr("class", "far fa-bookmark")
                             })
-                            $("#favorite").click(function() {
+                            $("#bookmark").click(function() {
                                 $.get('util/articleHandler.php', {
-                                    'request' : "favorite",
+                                    'request' : "bookmark",
                                     'aid' : $("#aid").text(),
                                 }).done(function(data) {
                                     location.reload();
                                 });
                             });
-                            $("#unfavorite").click(function() {
+                            $("#unbookmark").click(function() {
                                 $.get('util/articleHandler.php', {
-                                    'request' : "unfavorite",
+                                    'request' : "unbookmark",
                                     'aid' : $("#aid").text(),
                                 }).done(function(data) {
                                     location.reload();
@@ -170,7 +163,7 @@
                     </p>
                 </span>
                 <div class="articleImage">
-                    <img src="<?php print $articleData['Image'] ?>"/>
+                    <img src="<?php print $articleData['ArticleImage'] ?>"/>
                 </div>
                 <div class="articleBody">
                     <p><?php print nl2br($articleData['Body']); ?></p>

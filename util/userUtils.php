@@ -19,9 +19,9 @@
 	    }
 	    return mysqli_fetch_assoc($result);
 	}
-	function isFavorite($uid, $aid, $db) {
+	function isBookmark($uid, $aid, $db) {
 		/* Returns TRUE if article of provided article ID is a favorite of user of provided user ID, otherwise returns FALSE. */
-		$sql = "SELECT * FROM Favorite WHERE ArticleID = {$aid} AND UserID = {$uid};";
+		$sql = "SELECT * FROM Bookmark WHERE ArticleID = {$aid} AND UserID = {$uid};";
 		$result = mysqli_query($db, $sql);
 		if(!$result) { 
 			return FALSE;
@@ -60,9 +60,9 @@
 	    return mysqliToArray($result);
 	}
 
-	function addToFavorites($uid, $aid, $db) {
+	function addBookmark($uid, $aid, $db) {
 		/* Adds a favorite record for a user of provided userID for article of provided articleID. */
-		$sql = "INSERT INTO Favorite VALUES($uid, $aid);";
+		$sql = "INSERT INTO Bookmark VALUES({$uid}, {$aid});";
 		if(mysqli_query($db, $sql)) {
 			return TRUE; // Success
 		} else {
