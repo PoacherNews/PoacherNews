@@ -1,5 +1,5 @@
 <?php
-  //header("Location: ../editorHistory.php");
+  header("Location: ../editorHistory.php");
   session_start();
   $action = empty($_POST['action']) ? '' : $_POST['action'];
   $submit = empty($_POST['submit']) ? '' : $_POST['submit'];
@@ -13,17 +13,12 @@
       print "success!";
   }
   */
-    include 'util/db.php';
-    include('util/articleUtils.php');
-    include('util/userUtils.php');
-
-    $articleData = getArticleByID($_GET['articleid'], $db);
-    print $articleData['ArticleID'];
+  include('util/articleUtils.php');
+  //$articleData = getArticleByID($_GET['articleid'], $db);
 
   function dbConnect() {
     include 'util/db.php';
-    include('util/articleUtils.php');
-    include('util/userUtils.php');
+    
     // Check connection
     if ($db->connect_error)
     {
@@ -36,7 +31,6 @@
 
   
   if(isset($action)){
-      // Get articleid
       if($submit == "Yes") { // If the user wants to submit
           submitArticle();
           // relocate
@@ -62,26 +56,46 @@
 	  $views = 0; // true
       $db = dbConnect();
       $stmt = $db->stmt_init();
+      $articleData = getArticleByID($_GET['articleid'], $db);
       
-      if (!$stmt->prepare("INSERT INTO Article(UserID, Headline, Body, Category, Views, IsDraft, IsSubmitted) VALUES(?, ?, ?, ?, ?, ?, ?)")) {
-          echo "Error preparing statement: \n";
-          print_r($stmt->error_list);
-          exit;
+      // Check if the draft has an articleid or is a new submission
+      if($articleData['ArticleID']) { // The draft was saved upon edit
+          //Update the mysql
+          $sql_query = "UPDATE Article SET Headline = '".$title."', Body= '".$body."', Category = '".$category."', IsSubmitted = '".$is_submitted."' WHERE ArticleID = ? ";
+          if (!$stmt->prepare($sql_query)) {
+              echo "Error preparing statement: \n";
+              print_r($stmt->error_list);
+              exit;
+          }
+          if (!$stmt->bind_param('i', $articleData['ArticleID'])) {
+              echo "Error binding parameters: \n";
+              print_r($stmt->error_list);
+              exit;
+          }
+          if(!$stmt->execute()){
+                echo "Error Inserting: \n";
+                echo nl2br(print_r($stmt->error_list, true), false);
+                exit;
+          }
+          echo "Article: " . $title . " submitted successfully.";
+      } else { // The draft is new and was not saved upon edit
+          if (!$stmt->prepare("INSERT INTO Article(UserID, Headline, Body, Category, IsDraft, IsSubmitted) VALUES(?, ?, ?, ?, ?, ?)")) {
+              echo "Error preparing statement: \n";
+              print_r($stmt->error_list);
+              exit;
+          }
+          if (!$stmt->bind_param('isssii', $authorid, $title, $body, $category, $is_draft, $is_submitted)) {
+              echo "Error binding parameters: \n";
+              print_r($stmt->error_list);
+              exit;
+          }
+          if(!$stmt->execute()){
+                echo "Error Inserting: \n";
+                echo nl2br(print_r($stmt->error_list, true), false);
+                exit;
+          }
+          echo "Article: " . $title . " submitted successfully.";
       }
-
-      if (!$stmt->bind_param('isssiii', $authorid, $title, $body, $category, $views, $is_draft, $is_submitted)) {
-          echo "Error binding parameters: \n";
-          print_r($stmt->error_list);
-          exit;
-      }
-
-      if(!$stmt->execute()){
-            echo "Error Inserting: \n";
-            echo nl2br(print_r($stmt->error_list, true), false);
-            exit;
-      }
-      
-      echo "Article: " . $title . " submitted successfully.";
   } //End of submitArticle
 
   function saveArticle() { //TODO: $views = 0
@@ -95,25 +109,46 @@
       $is_submitted = 0; // false
       $db = dbConnect();
       $stmt = $db->stmt_init();
+      $articleData = getArticleByID($_GET['articleid'], $db);
       
       // Check if the draft has an articleid or is a new submission
-      
-      if (!$stmt->prepare("INSERT INTO Article(UserID, Headline, Body, Category, IsDraft, IsSubmitted) VALUES(?, ?, ?, ?, ?, ?)")) {
-          echo "Error preparing statement: \n";
-          print_r($stmt->error_list);
-          exit;
+      if($articleData['ArticleID']) { // The draft was saved upon edit
+          //Update the mysql
+          $sql_query = "UPDATE Article SET Headline = '".$title."', Body= '".$body."', Category = '".$category."' WHERE ArticleID = ? ";
+          if (!$stmt->prepare($sql_query)) {
+              echo "Error preparing statement: \n";
+              print_r($stmt->error_list);
+              exit;
+          }
+          if (!$stmt->bind_param('i', $articleData['ArticleID'])) {
+              echo "Error binding parameters: \n";
+              print_r($stmt->error_list);
+              exit;
+          }
+          if(!$stmt->execute()){
+                echo "Error Inserting: \n";
+                echo nl2br(print_r($stmt->error_list, true), false);
+                exit;
+          }
+          echo "Article: " . $title . " updated successfully.";
+      } else { // The draft is new and was not saved upon edit
+          if (!$stmt->prepare("INSERT INTO Article(UserID, Headline, Body, Category, IsDraft, IsSubmitted) VALUES(?, ?, ?, ?, ?, ?)")) {
+              echo "Error preparing statement: \n";
+              print_r($stmt->error_list);
+              exit;
+          }
+          if (!$stmt->bind_param('isssii', $authorid, $title, $body, $category, $is_draft, $is_submitted)) {
+              echo "Error binding parameters: \n";
+              print_r($stmt->error_list);
+              exit;
+          }
+          if(!$stmt->execute()){
+                echo "Error Inserting: \n";
+                echo nl2br(print_r($stmt->error_list, true), false);
+                exit;
+          }
+          echo "Article: " . $title . " saved successfully.";
       }
-      if (!$stmt->bind_param('isssii', $authorid, $title, $body, $category, $is_draft, $is_submitted)) {
-          echo "Error binding parameters: \n";
-          print_r($stmt->error_list);
-          exit;
-      }
-      if(!$stmt->execute()){
-            echo "Error Inserting: \n";
-            echo nl2br(print_r($stmt->error_list, true), false);
-            exit;
-      }
-      echo "Article: " . $title . " saved successfully.";
   } //End of saveArticle
 
   function readTextFile() {
@@ -280,7 +315,7 @@
       $db = dbConnect();
       $stmt = $db->stmt_init();
 
-      if(!$stmt->prepare("SELECT Image FROM Article WHERE Image=?")){
+      if(!$stmt->prepare("SELECT ArticleImage FROM Article WHERE ArticleImage=?")){
         echo "Error preparing statement: \n";
         print_r($stmt->error_list);
         exit;
