@@ -13,7 +13,7 @@
     <head>
         <title>The Poacher | Editor Page</title>
         <link rel="stylesheet" href="res/css/editorpage.css">
-         <?php include 'includes/globalHead.html'?>
+        <?php include 'includes/globalHead.html'?>
         <link rel="stylesheet" href="res/css/profile.css">
         <link rel="stylesheet" href="res/css/profileNav.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -22,6 +22,9 @@
         <?php
             include 'includes/header.php';
             include 'includes/nav.php';
+            include('util/articleUtils.php');
+            include('util/userUtils.php');
+            include('util/db.php');
         ?>
         
         <div class="nav">
@@ -40,12 +43,10 @@
                             <?php
                                 if(isset($_POST['draft'])) {
                                     print "<input type=\"text\" id=\"article-title\" placeholder=\"Article Title\" name=\"title\" value=\"{$_POST['title']}\"";
-                                    
                                 } else {
                                     print "<input type=\"text\" id=\"article-title\" placeholder=\"Article Title\" name=\"title\">";
-                                    
                                 }
-                            print "<br>";
+                                print "<br>";
                             ?>
                             <select name="category" id="category-title">
                                 <option value="Politics">Politics</option>
@@ -112,6 +113,8 @@
                     <div class="text-editor" contenteditable="true"><?php 
                             if(isset($_POST['draft'])) {
                                 print($_POST['body']);
+                                //$articleData = getArticleByID($_GET['articleid'], $db);
+                                //print $articleData['ArticleID'];
                             }
                     ?></div>
 				</form>

@@ -13,8 +13,17 @@
       print "success!";
   }
   */
+    include 'util/db.php';
+    include('util/articleUtils.php');
+    include('util/userUtils.php');
+
+    $articleData = getArticleByID($_GET['articleid'], $db);
+    print $articleData['ArticleID'];
+
   function dbConnect() {
     include 'util/db.php';
+    include('util/articleUtils.php');
+    include('util/userUtils.php');
     // Check connection
     if ($db->connect_error)
     {
@@ -27,6 +36,7 @@
 
   
   if(isset($action)){
+      // Get articleid
       if($submit == "Yes") { // If the user wants to submit
           submitArticle();
           // relocate
@@ -86,24 +96,22 @@
       $db = dbConnect();
       $stmt = $db->stmt_init();
       
-      if (!$stmt->prepare("INSERT INTO Article(UserID, Headline, Body, Category, IsDraft, IsSubmitted) VALUES(?, ?, ?, ?, ?, ?)"))
-      {
+      // Check if the draft has an articleid or is a new submission
+      
+      if (!$stmt->prepare("INSERT INTO Article(UserID, Headline, Body, Category, IsDraft, IsSubmitted) VALUES(?, ?, ?, ?, ?, ?)")) {
           echo "Error preparing statement: \n";
           print_r($stmt->error_list);
           exit;
       }
-      if (!$stmt->bind_param('isssii', $authorid, $title, $body, $category, $is_draft, $is_submitted))
-      {
+      if (!$stmt->bind_param('isssii', $authorid, $title, $body, $category, $is_draft, $is_submitted)) {
           echo "Error binding parameters: \n";
           print_r($stmt->error_list);
           exit;
       }
       if(!$stmt->execute()){
-        {
             echo "Error Inserting: \n";
             echo nl2br(print_r($stmt->error_list, true), false);
             exit;
-        }
       }
       echo "Article: " . $title . " saved successfully.";
   } //End of saveArticle

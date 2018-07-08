@@ -22,6 +22,10 @@
     font-size: 16px;
 }
 
+#edit-draft:focus {
+    outline: none;
+}
+
 .articleColumns > #articleColumn {
 	flex: 1;
 	display: flex;

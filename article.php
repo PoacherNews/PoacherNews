@@ -64,22 +64,19 @@
                         &mdash;
                         <?php print "{$articleData['Views']} ".($articleData['Views'] === 1 ? "View" : "Views") ?>,
                         <?php
-<<<<<<< HEAD
                             $numFaves = getNumFavorites($articleData['ArticleID'], $db);
                             print "{$numFaves} ".($numFaves === 1 ? "Favorite" : "Favorites");
                             
                              if($isDraft) { // Create link back to editorpage with the text in correct format
-                                 print "<form action=\"editorpage.php?articleid=                          {$articleData['ArticleID']}\" method=\"post\">
+                                 print "<form action=\"editorpage.php?articleid={$articleData['ArticleID']}\" method=\"post\">
                                             <input type=\"submit\" id=\"edit-draft\" name=\"draft\" value=\"Edit\">
                                             <input type=\"hidden\" name=\"title\" value=\"{$articleData['Headline']}\">
                                             <input type=\"hidden\" name=\"body\" value=\"{$articleData['Body']}\">
                                         </form>";
                              }
                             
-=======
                             $articleRating = getRatingByID($_GET['articleid'], $db);
                             print "Rated ".number_format((float)$articleRating, 2, '.', '')."/5 stars";
->>>>>>> ad14ab36acae92125154170c3054043884cc5755
                         ?>
                         <span class="rightIcons"">
                             <?php
