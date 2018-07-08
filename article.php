@@ -149,24 +149,10 @@
                             });
 
                             // Bookmark icon functionality
-<<<<<<< HEAD
                             $("#bookmark").hover(function() {
                                 $(this).attr("class", "fas fa-bookmark");
                             }, function() {
                                 $(this).attr("class", "far fa-bookmark")
-=======
-                            $("#unbookmark").hover(function() {
-                                $(this).css("color", "red");
-                            }, function() {
-                                $(this).css("color", "inherit");
-                            });
-                            $("#bookmark").hover(function() {
-                                $(this).css("color", "red");
-                                $(this).attr("class", "fas fa-heart");
-                            }, function() {
-                                $(this).css("color", "inherit");
-                                $(this).attr("class", "far fa-heart")
->>>>>>> 77e7db253d8ef0228c9467db40bee3bbf272d681
                             })
                             $("#bookmark").click(function() {
                                 $.get('util/articleHandler.php', {

@@ -34,7 +34,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET)) {
 			exit;
 		}
 
-		if(removeFromFavorites($_SESSION['userid'], $_GET['aid'], $db)) {
+		if(removeFromBookmarks($_SESSION['userid'], $_GET['aid'], $db)) {
 			print "Success";
 		} else {
 			print "Error";
