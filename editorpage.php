@@ -25,11 +25,18 @@
         <?php
             include 'includes/header.php';
             include 'includes/nav.php';
-            $articleData = getArticleByID($_GET['articleid'], $db);
-            $articleID = $articleData['ArticleID'];
-            if($articleID == NULL) {
-                echo '<meta http-equiv="refresh" content="0; url=/index.php">';
+        
+            if(isset($_POST['draft'])) {
+                $articleData = getArticleByID($_GET['articleid'], $db);
+            
+                if($articleData['ArticleID']) {
+                    $articleID = $articleData['ArticleID'];
+                    if($articleID == NULL) {
+                        echo '<meta http-equiv="refresh" content="0; url=/index.php">';
+                    }
+                }
             }
+            
         ?>
         
         <div class="nav">
