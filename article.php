@@ -107,10 +107,10 @@
                                     print '<span id="rating">';
                                        displayStars(getArticleUserRating($_SESSION['userid'], $_GET['articleid'], $db));
                                     print '</span>';
-                                    if(isBookmark($_SESSION['userid'], $articleData['ArticleID'], $db)) { // If it's bookmarkd
-                                        print ' <i id="unbookmark" title="Click to Unbookmark" class="fas fa-heart"></i>';
-                                    } else { // If it hasn't been bookmarkd
-                                        print ' <i id="bookmark" title="Click to Bookmark" class="far fa-heart"></i>';
+                                    if(isBookmark($_SESSION['userid'], $articleData['ArticleID'], $db)) { // If it's favorited
+                                        print ' <i id="unbookmark" title="Click to Remove Bookmark" class="fas fa-bookmark"></i>';
+                                    } else { // If it hasn't been favorited
+                                        print ' <i id="bookmark" title="Click to Bookmark" class="far fa-bookmark"></i>';
                                     }
                                 }
                             ?>
@@ -149,17 +149,10 @@
                             });
 
                             // Bookmark icon functionality
-                            $("#unbookmark").hover(function() {
-                                $(this).css("color", "red");
-                            }, function() {
-                                $(this).css("color", "inherit");
-                            });
                             $("#bookmark").hover(function() {
-                                $(this).css("color", "red");
-                                $(this).attr("class", "fas fa-heart");
+                                $(this).attr("class", "fas fa-bookmark");
                             }, function() {
-                                $(this).css("color", "inherit");
-                                $(this).attr("class", "far fa-heart")
+                                $(this).attr("class", "far fa-bookmark")
                             })
                             $("#bookmark").click(function() {
                                 $.get('util/articleHandler.php', {

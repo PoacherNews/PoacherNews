@@ -60,9 +60,9 @@
 	    return mysqliToArray($result);
 	}
 
-	function addToBookmarks($uid, $aid, $db) {
+	function addBookmark($uid, $aid, $db) {
 		/* Adds a bookmark record for a user of provided userID for article of provided articleID. */
-		$sql = "INSERT INTO Bookmark VALUES($uid, $aid);";
+		$sql = "INSERT INTO Bookmark VALUES({$uid}, {$aid});";
 		if(mysqli_query($db, $sql)) {
 			return TRUE; // Success
 		} else {

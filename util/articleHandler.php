@@ -16,11 +16,11 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET)) {
 		if(empty($_SESSION['userid'])) { // User is trying to bookmark an article while not logged in
 			exit;
 		}
-		if(isFavorite($_SESSION['userid'], $_GET['aid'], $db)) { // User is trying to bookmark an article they already bookmarkd
+		if(isBookmark($_SESSION['userid'], $_GET['aid'], $db)) { // User is trying to favorite an article they already favorited
 			exit;
 		}
 		
-		if(addToFavorites($_SESSION['userid'], $_GET['aid'], $db)) {
+		if(addBookmark($_SESSION['userid'], $_GET['aid'], $db)) {
 			print "Success";
 		} else {
 			print "Error";
@@ -30,11 +30,11 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET)) {
 		if(empty($_GET['aid']) || empty($_SESSION['userid'])) { // Article ID not provided or not logged in
 			exit;
 		}
-		if(!isFavorite($_SESSION['userid'], $_GET['aid'], $db)) { // User is trying to unbookmark an article they haven't bookmarkd
+		if(!isBookmark($_SESSION['userid'], $_GET['aid'], $db)) { // User is trying to unfavorite an article they haven't favorited
 			exit;
 		}
 
-		if(removeFromFavorites($_SESSION['userid'], $_GET['aid'], $db)) {
+		if(removeFromBookmarks($_SESSION['userid'], $_GET['aid'], $db)) {
 			print "Success";
 		} else {
 			print "Error";
