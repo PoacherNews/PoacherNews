@@ -237,7 +237,7 @@ a.hdrA {
     cursor: auto;
 }
 
-.username-content a[href="/profile.php"]:hover, a[href="/help.php"]:hover, a[href="/settings.php"]:hover, a[href="/logout.php"]:hover {
+.username-content > a:hover {
     background-color: #83A8F0;
     color: white;
 }

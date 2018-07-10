@@ -26,7 +26,7 @@ function getArticleData($db)
 	// require_once ('util/db.php');
     // prepare statement
     $stmt = $db->stmt_init();
-    if (!$stmt->prepare("SELECT Article.ArticleID, Headline, Category, IsDraft, IsSubmitted, FeaturedType FROM Article LEFT JOIN Featured ON Article.ArticleID = Featured.ArticleID WHERE Article.ArticleID =?"))
+    if (!$stmt->prepare("SELECT Article.ArticleID, Headline, Category, CommentsEnabled, IsDraft, IsSubmitted, FeaturedType FROM Article LEFT JOIN Featured ON Article.ArticleID = Featured.ArticleID WHERE Article.ArticleID =?"))
     {
         echo "Error preparing statement: <br>";
         echo nl2br(print_r($stmt->error_list, true), false);
@@ -103,6 +103,7 @@ if (!isset($data) || !$data)
                         <th>ArticleID</th>
                         <th>Headline</th>
                         <th>Category</th>
+                        <th>CommentsEnabled</th>
                         <th>IsDraft</th>
                         <th>IsSubmitted</th>
                         <th>Featured State</th>
@@ -113,6 +114,7 @@ if (!isset($data) || !$data)
                         <td><?php echo $data['ArticleID']; ?></td>
                         <td><?php echo $data['Headline']; ?></td>
                         <td><?php echo $data['Category']; ?></td>
+                        <td><?php echo $data['CommentsEnabled']; ?></td>
                         <td><?php echo $data['IsDraft']; ?></td>
                         <td><?php echo $data['IsSubmitted']; ?></td>
                         <td><?php 
@@ -310,7 +312,7 @@ if(isset($_POST['submittedSubmit']))
     $selected_radio = $_POST['submittedStatus'];
     
     // ERROR TESTING
-    if($data[FeaturedType] != '')
+    if($data['FeaturedType'] != '')
     {
         echo "Error. Featured type must be set to none to continue.";
     }
@@ -365,7 +367,69 @@ if(isset($_POST['submittedSubmit']))
     }
 } ?>
 <br>
+            
+<!-- COMMENTSENABLED -->            
+<form method="post" action="">
+    <legend>Comments</legend>
+    <div>
+        <input type="radio" name="commentStatus" class="commentRadio" value="0" /><label>Disable Comments</label><br />
+        <input type="radio" name="commentStatus" class="commentRadio" value="1" /><label>Enable Comments</label><br />
+    </div>
 
+    <div>
+        <input type="submit" name="commentSubmit" id="commentSubmit" value="Submit" />
+    </div>
+</form>
+
+<?php 
+if(isset($_POST['commentSubmit']))
+{
+    $selected_radio = $_POST['commentStatus'];
+    
+    // ERROR TESTING
+
+    //DISABLE COMMENTS
+    if($selected_radio == 0 && $data['CommentsEnabled'] == 1)
+    {
+        $query = "UPDATE Article SET CommentsEnabled = 0 WHERE ArticleID = ?";
+    }
+    //ENABLE COMMENTS
+    else if($selected_radio == 1 && $data['CommentsEnabled'] == 0)
+    {
+        $query = "UPDATE Article SET CommentsEnabled = 1 WHERE ArticleID = ?";
+    }
+    // Refresh
+    echo "<meta http-equiv='refresh' content='0'>";
+    //include 'util/db.php';
+    // prepare statement
+    $stmt = $db->stmt_init();
+    if (!$stmt->prepare($query))
+    {
+        echo "Error preparing statement: <br>";
+        echo nl2br(print_r($stmt->error_list, true), false);
+        return;
+    }
+    // bind username
+    if (!$stmt->bind_param('s', $data['ArticleID']))
+    {
+        echo "Error binding parameters: <br>";
+        echo nl2br(print_r($stmt->error_list, true), false);
+        return;
+    }
+    // query database
+    if (!$stmt->execute())
+    {
+        echo "Error executing query: <br>";
+        echo nl2br(print_r($stmt->error_list, true), false);
+        return;
+    }
+    // done
+    $stmt->close();
+}
+?>
+<br>            
+<!------------------------------------------------------------------------->
+            
 <h2>Featured State</h2>
 <!-- FeaturedTYPE -->
 <form method="post" action="">
