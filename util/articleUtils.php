@@ -1,11 +1,13 @@
 <?php
 
-function mysqliToArray($a) {
-    $data = array();
-    while($row = mysqli_fetch_array($a, MYSQLI_ASSOC)) { // Put each returned row into a PHP array
-        $data[] = $row;
-    }
-    return $data;
+if(!function_exists("mysqliToArray")) {
+        function mysqliToArray($a) {
+            $data = array();
+            while($row = mysqli_fetch_array($a, MYSQLI_ASSOC)) { // Put each returned row into a PHP array
+                $data[] = $row;
+            }
+            return $data;
+        }
 }
 
 function getArticleByID($id, $db) {

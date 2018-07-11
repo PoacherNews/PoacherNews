@@ -1,49 +1,151 @@
-        body {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .header {
-            background-color: aliceblue;
-        }
-        
-        .user {
-            display: flex;
-            flex-direction: row;
-            align-self: center;
-            width: 80%;
-            height: 170px;
-            padding-top: 10px;
-            padding-bottom: 10px;
-        }
-        
-        .picture {
-            display: flex;
-            flex-direction: column;
-            background-color: crimson;
-            height: auto;
-            width: 30%;
-        }
-        
-        .info {
-            display: flex;
-            flex-direction: column;
-            width: 70%;
-            background-color: blueviolet;
-        }
-        
-        .nav {
-            display: flex;
-            flex-direction: column;
-            align-self: center;
-            width: 80%;
-        }
-        
-        .display {
-            display: flex;
-            flex-direction: column;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            width: 80%;
-            align-self: center;
-        }
+#profileContainer {
+	display: grid;
+	grid-template-columns: 18% 350px auto 18%; /* Far left and far right values set left and right gutter widths */
+	grid-template-areas: ". left right .";
+	margin: 25px auto 25px auto;
+}
+
+#left-sidebar {
+	grid-area: left;
+	display: grid;
+	grid-template-rows: 250px 45px auto;
+	grid-template-areas: 
+		"avatar"
+		"userRealName"
+		"userName";
+}
+
+.avatar {
+	grid-area: avatar;
+	justify-self: center;
+	align-self: center;
+	max-height: 250px;
+	max-width: 250px;
+}
+
+.userRealName {
+	grid-area: userRealName;
+	justify-self: center;
+	margin-top: 15px;
+	font-size: 25px;
+}
+
+.userName {
+	grid-area: userName;
+	justify-self: center;
+	font-size: 20px;
+	color: #8693AB;
+	font-style: italic;
+}
+
+#right-sidebar {
+	grid-area: right;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 50px 125px auto;
+	grid-template-areas:
+		"userType editText"
+		"userStats userStats"
+		"profileNav profileNav";
+}
+
+.userType {
+	grid-area: userType;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.editText {
+	grid-area: editText;
+	justify-self: end;
+}
+
+.userStats {
+	grid-area: userStats;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-rows: 50px auto;
+	grid-row-gap: 10px; /* Margin between rows */
+	grid-column-gap: 5px;
+}
+
+.statsVal {
+	grid-row: 1;
+	justify-self: center;
+	align-self: center;
+	font-weight: bold;
+	font-size: 3.5em;
+}
+.statsText {
+	grid-row: 2;
+	text-align: center;
+}
+
+.profileNav {
+	grid-area: profileNav;
+	display: grid;
+	grid-template-columns: auto auto auto auto;
+	grid-template-rows: 30px auto;
+	grid-row-gap: 7px;
+}
+
+.navItem {
+	grid-row: 1;
+	align-self: center;
+	text-align: center;
+	cursor: pointer;
+	width: 95%;
+	font-size: 20px;
+}
+.navItem:hover {
+	font-weight: bold;
+}
+
+.navItem.active {
+	border-bottom: 2px solid #3d9be9;
+	font-weight: bold;
+}
+
+.navBody {
+	grid-row: 2;
+	grid-column: 1 / span 4;
+	padding-top: 15px;
+}
+
+.tabcontent {
+	display: none;
+	animation: fade 0.75s;
+}
+@keyframes fade {
+	from {opacity: 0;}
+	to {opacity: 1;}
+}
+.tabcontent.active {
+	display: block;
+}
+
+#about > .aboutSectionHeader, #history > .historySectionHeader {
+	width: 125px;
+	color: #8693AB;
+	border-bottom: 1px solid #8693AB;
+	font-style: italic;
+}
+
+ul {
+	padding: 0px;
+}
+#bookmarks li, #comments li, #history li {
+	list-style: none;
+	border-left: 2px solid #8693AB;
+	padding: 2px 0px 2px 15px;
+	margin-top: 10px;
+}
+
+.tabNotice {
+	font-size: 20px;
+	color: grey;
+	font-weight: bold;
+	text-align: center;
+	font-style: italic;
+	display: block;
+}

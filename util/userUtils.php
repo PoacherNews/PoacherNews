@@ -41,6 +41,9 @@
 		/* Returns a `limit` length array of a provided user's bookmark articles.
 		   If `category` is provided, will return an array of bookmarks from only the provided section name. */
 		$bookmarks = getBookmarkIDs($uid, $db);
+		if(empty($bookmarks) || is_null($bookmarks)) {
+			return null;
+		}
 	    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0";
 	    if(!is_null($category)) {
 	    	$sql .= " AND Category = '{$category}'";
@@ -70,6 +73,7 @@
 		}
 	}
 	function removeFromBookmarks($uid, $aid, $db) {
+		/* Removes a bookmark record for a user of provided userID for an article of provided articleID. */
 		$sql = "DELETE FROM Bookmark WHERE UserID = {$uid} AND ArticleID = {$aid};";
 		if(mysqli_query($db, $sql)) {
 			return TRUE; // Success
@@ -78,6 +82,7 @@
 		}
 	}
 	function getArticleUserRating($uid, $aid, $db) {
+		/* Returns an integer representing the score the user of given user ID gave to an article of given article ID. */
 		$sql = "SELECT Score FROM Rating WHERE USERID = {$uid} AND ArticleID = {$aid}";
 		$query = mysqli_query($db, $sql);
 		if(!$query) {
@@ -131,7 +136,7 @@
 	    return mysqliToArray($result);
 	}
 	function getUserComments($uid, $limit=NULL, $db) {
-		/* Returns a `limit` length array of a provided user's bookmark articles. */
+		/* Returns an array of comments from a user of provided user ID. Optionally can be limited to a set site if `limit` is provided. */
 		$comments = getCommentUserIDs($uid, $db);
 	    $sql = "SELECT * FROM Comment WHERE UserID = {$uid} ";
 	    foreach(array_slice($comments, 1) as &$val) { // Gather results for all other specified editor picks
@@ -159,12 +164,50 @@
 	}
 
 	function getArticleRootComments($aid, $db) {
-		/* Returns an array of comments from an article with articleID specified with `aid`. */
+		/* Returns an array of comments from an article with articleID specified with `aid` which do not reply to any comment. */
 		$sql = "SELECT * FROM Comment WHERE ArticleID = {$aid} AND ReplyToID IS NULL ORDER BY CommentDate DESC";
 		return mysqliToArray(mysqli_query($db, $sql));
 	}
 	function getCommentReplies($aid, $cid, $db) {
+		/* Returns an array of comments that reply to a comment matching the provided commentID on an article of provided articleID. */
 		$sql = "SELECT * FROM Comment WHERE ArticleID = {$aid} AND ReplyToID = {$cid}";
+		return mysqliToArray(mysqli_query($db, $sql));
+	}
+
+	/* Profile Page Functions */
+	function userExists($uid, $db) {
+		/* Returns True if a user with the provided user id exits, false otherwise. */
+		$sql = "SELECT * FROM User WHERE UserID = {$uid}";
+		$result = mysqli_query($db, $sql);
+		return mysqli_num_rows($result) > 0;
+	}
+	function getNumUserBookmarks($uid, $db) {
+		/* Returns an integer value representing the number of bookmarks for a user with provided user id. */
+		$sql = "SELECT * FROM Bookmark WHERE UserID = {$uid}";
+		$result = mysqli_query($db, $sql);
+		return mysqli_num_rows($result);
+	}
+	function getNumUserComments($uid, $db) {
+		/* Returns an integer value representing the number of comments for a user with provided user id. */
+		$sql = "SELECT * FROM Comment WHERE UserID = {$uid}";
+		$result = mysqli_query($db, $sql);
+		return mysqli_num_rows($result);
+	}
+	function getNumUserArticlesWritten($uid, $db) {
+		/* Returns an integer value representing the number of articles written for a user with provided user id. */
+		$sql = "SELECT * FROM Article WHERE UserID = {$uid}";
+		$result = mysqli_query($db, $sql);
+		return mysqli_num_rows($result);
+	}
+	function getNumUserRatings($uid, $db) {
+		/* Returns an integer value representing the number of ratings for a user with provided user id. */
+		$sql = "SELECT * FROM Rating WHERE UserID = {$uid}";
+		$result = mysqli_query($db, $sql);
+		return mysqli_num_rows($result);
+	}
+	function getArticlesByUserID($uid, $db) {
+		/* Will return an array of all articles written by a user of provided userID. */
+		$sql = "SELECT * FROM Article WHERE UserID = {$uid}";
 		return mysqliToArray(mysqli_query($db, $sql));
 	}
 ?>
