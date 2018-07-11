@@ -19,11 +19,21 @@
         
         <div class="nav">
             <?php
-                include 'includes/toolsNav.php';
+                //include 'includes/toolsNav.php';
             ?>
         </div>
         
         <div class="display">
+        </div>
+        foo
+        <div style="margin: auto auto; min-height: 1000px">
+            <ul>
+                <li><a href="/editorHistory.php">Editor History</a></li>
+                <li><a href="/editorpage.php">Editor Page</a></li>
+                <li><a href="/userManagement.php">Manage Users</a></li>
+                <li><a href="/articleManagement.php">Manage Articles</a></li>
+                <li><a href="/commentManagement.php">Manage Comments</a></li>
+            </ul>
         </div>
         
         <?php include 'includes/footer.html'; ?>
