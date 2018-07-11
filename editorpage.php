@@ -108,22 +108,20 @@
                                   </div>
                             </div>
                             <br>
-                            <input type="submit" id="save-button" value="Save" name="save">
+                            <input onclick="saveBtn()" type="submit" id="save-button" value="Save" name="save">
                         </div>
                     </div>
                     <div class="menubar-row">
                         <ul class="editor-menubar">
-                            <li><input type="button" onclick="undoIcon()" id="undo" value="Undo"></li>
-                            <li><input type="button" onclick="redoIcon()" id="redo" value="Redo"></li>
+                            <li><i onclick="undoIcon()" id="undo" class="fas fa-undo"></i></li>
+                            <li><i onclick="redoIcon()" id="redo" class="fas fa-redo"></i></li>
                             <li><div id="font-family" contenteditable="false">Helvetica</div></li>
                             <li><div id="font-size" contenteditable="false">13</div></li>
-                            <li><input type="button" onclick="boldIcon()" id="bold" value="B"></li>
-                            <li><input type="button" onclick="italicsIcon()" id="italics" value="I"></li>
-                            <li><input type="button" onclick="underlineIcon()" id="underline" value="U"></li>
-                            <li>
-                                <div class="link-row">
-                                    <input type="button" onclick="linkBox()" id="insert" value="Insert Link">
-                                </div>
+                            <li><i onclick="boldIcon()" id="bold" class="fas fa-bold"></i></li>
+                            <li><i onclick="italicsIcon()" id="italics" class="fas fa-italic"></i></li>
+                            <li><i onclick="underlineIcon()" id="underline" class="fas fa-underline"></i></li>
+                            <li><i onclick="linkBox()" id="insert" class="fas fa-link"></i>
+                                
                                 <div id="insert-link">
                                     <input id="input-text" type="text" name="text" placeholder="Insert name">
                                     <input onkeydown="enableSet()" id="input-link" type="text" name="link" placeholder="Insert Link" value="https://">
@@ -131,14 +129,11 @@
                                     <input onclick="addLink()" id="set-link" type="button" name="set" value="Set" disabled>
                                 </div>
                             </li>
-                            <li><div id="line-spacing" contenteditable="false">1.15</div></li>
                         </ul>
                     </div>
                     <div class="text-editor" contenteditable="true"><?php 
                             if(isset($_POST['draft'])) {
                                 print($_POST['body']);
-                                $articleData = getArticleByID($_GET['articleid'], $db);
-                                //print $articleData['ArticleID'];
                             }
                     ?></div>
 				</form>
@@ -153,31 +148,66 @@
                 $(this).append("<input type='hidden' name='body' value=' " + hvalue + " '/>");
             });
         });
-		
-		
-		// Keeps the cursor in the rich text editor
-        /*
-		var textFocus;
-		function focusEditor() {
-			textFocus = setInterval(function(){
-				$('.text-editor').focus();
-			});
-		}
-		*/
         
-        // Hide the menu bar (toggle)
-		function hideMenu() {
-			$('.emb-row').slideToggle(500);
-		}
-		
+        /* ************************** Rich Text Editor Functionality ************************** */
+
+		// Keep focus only on the text editor
+        $('.text-editor').focus();
+        var keepFocus = false;
+        function focusTitle() {
+            if(!keepFocus) {
+                $('.text-editor').focus();
+            }
+        }
+        // Focusing on the text editor
+        $('.text-editor').blur(function() {
+            keepFocus = false;
+            window.setTimeout(focusTitle, 100);
+        }).focus(function() {
+            keepFocus = true;
+        });
         
+        // Focusing on the article title
+        $('#article-title').blur(function() {
+            keepFocus = false;
+            window.setTimeout(focusTitle, 100);
+        }).focus(function() {
+            keepFocus = true;
+        });
+        
+        // Focusing on the category title
+        $('#category-title').blur(function() {
+            keepFocus = false;
+            window.setTimeout(focusTitle, 100);
+        }).focus(function() {
+            keepFocus = true;
+        });
+        
+         // Focusing on the input name of link
+        $('#input-text').blur(function() {
+            keepFocus = false;
+            window.setTimeout(focusTitle, 100);
+        }).focus(function() {
+            keepFocus = true;
+        });
+        
+         // Focusing on the input link
+        $('#input-link').blur(function() {
+            keepFocus = false;
+            window.setTimeout(focusTitle, 100);
+        }).focus(function() {
+            keepFocus = true;
+        });
         /* ************************** Menubar Options ************************** */
 
-		function focusTitle() {
+		var headline;
+        headline = function focusTitle() {
+            var editor = document.getElementsByClassName('text-editor');
 			clearInterval(textFocus);
 		}
 		
-		function focusCategory() {
+		var category;
+        category = function focusCategory() {
 			clearInterval(textFocus);
 		}
 	   
@@ -280,6 +310,20 @@
 			
 			
 		}
+		
+		//When the user clicks, restrictions on the save button if invalid credentials
+		function saveBtn() {
+			var saveBtn = document.getElementById('save-button');
+			var articleTitle = document.getElementById('article-title');
+			
+			if(articleTitle.value.length == 0) {
+				articleTitle.style.border = "2px solid red";
+				articleTitle.placeholder = "Invalid requirements";
+				return false;
+			} else {
+				return true;
+			}
+		}
 
 		/* ************************** Text Formatting ************************** */
 		
@@ -368,22 +412,6 @@
             document.execCommand('redo', false, null);
         }
 
-		// Allow text formatting via key commands
-		$('.text-editor').on('keydown', function(e){
-            // For bold
-			if((e.keyCode == 91 || e.keyCode == 93) && e.keyCode == 66){
-				document.execCommand('bold', true, null);
-			}
-            // For italic
-            if((e.keyCode == 91 || e.keyCode == 93) && e.keyCode == 73){
-				document.execCommand('italic', true, null);
-			}
-            // For underline
-            if((e.keyCode == 91 || e.keyCode == 93) && e.keyCode == 85){ //TODO
-				document.execCommand('underline', true, null);
-			}
-		}).css('white-space', 'pre-wrap')
-		
         /* ************************** Error Handling ************************** */
         
         
