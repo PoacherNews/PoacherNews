@@ -78,7 +78,7 @@
                             $articleRating = getRatingByID($_GET['articleid'], $db);
                             print "Rated ".number_format((float)$articleRating, 2, '.', '')."/5 stars";
                         ?>
-                        <span class="rightIcons"">
+                        <span class="rightIcons">
                             <?php
                                 function displayStars($val) {
                                     if($val < 0 || $val > 5) {
