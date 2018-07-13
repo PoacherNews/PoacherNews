@@ -1,0 +1,67 @@
+#settingsContainer {
+	display: grid;
+	grid-template-columns: 18% 225px 1fr 18%;
+	grid-template-rows: 50px auto;
+	grid-template-areas: 
+		". .   header  ."
+		". nav content .";
+	margin: 25px auto 25px auto;
+}
+
+.settingsHeader {
+	grid-area: header;
+	font-size: 35px;
+	border-bottom: 1px solid #8693AB;
+	font-weight: 550;
+}
+
+.content {
+	grid-area: content;
+	padding: 10px 0px 10px 0px;
+}
+
+.nav {
+	grid-area: nav;
+}
+
+.nav {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+.nav li {
+	padding: 8px 16px;
+	color: #8693AB;
+}
+.nav li:hover {
+	color: #212227;
+}
+
+.nav li.active {
+	color: #212227;
+	font-weight: bold;
+	border-left: 4px solid #212227;
+}
+
+.nav li a {
+	display: block;
+	color: inherit;
+}
+
+.sectionHeader {
+	margin-bottom: 10px;
+}
+.sectionHeader:not(:first-child) {
+	margin-top: 20px;
+}
+.sectionHeader h2 {
+	margin: 0;
+	padding: 0;
+	font-size: 1.4em;
+}
+.subheader {
+	font-style: italic;
+	color: #8693AB;
+}
