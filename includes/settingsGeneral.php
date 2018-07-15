@@ -28,6 +28,7 @@ textarea[name=bio] {
 }
 </style>
 <form id="general">
+    <input type="hidden" name="action" value="updateGeneral"/>
 	<div class="sectionHeader">
 		<h2>Bio</h2>
 		<span class="subheader">A short description of yourself, displayed on your profile page.</span>
@@ -61,6 +62,7 @@ textarea[name=bio] {
         </select>
     </div>
     -->
+    <div class="settingsMessage"></div>
     <input class="settingsSubmit" type="submit" value="Save changes"/>
 </form>
 <script>
@@ -74,10 +76,18 @@ textarea[name=bio] {
 		trackBioCharCount();  // If the bio is filled by page load, load the char length into the counter
 	});
 
-    // $("#general").submit(function(event) {
-    //     event.preventDefault();
-    //     console.log($(this).serialize());
-    //     // $.post("settings2.php", $("#general").serialize());
-    //     $(this).submit();
-    // })
+    $("#general").submit(function(event) {
+        $(".settingsMessage").hide();
+        event.preventDefault();
+        $.post("util/settingsHandler.php", $(this).serialize(), function(data) {
+            if(data == "Success") {
+                $(".settingsMessage").addClass("success");
+                $(".settingsMessage").text("Setings successfully saved.");
+            } else {
+                $(".settingsMessage").addClass("error");
+                $(".settingsMessage").text(data);
+            }
+            $(".settingsMessage").fadeIn();
+        });
+    })
 </script>

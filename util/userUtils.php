@@ -155,6 +155,7 @@
 		if(is_null($replyTo)) {
 			$replyTo = "NULL"; // Convert to string NULL for the query.
 		}
+		$content = mysqli_escape_string($db, $content);
 		$sql = "INSERT INTO Comment (ReplyToID, UserID, ArticleID, CommentText) VALUES ({$replyTo}, {$uid}, {$aid}, '{$content}')";
 		$query = $db->query($sql);
 		if(!$query) { 
@@ -210,4 +211,34 @@
 		$sql = "SELECT * FROM Article WHERE UserID = {$uid}";
 		return mysqliToArray(mysqli_query($db, $sql));
 	}
+
+	/* Settings Page Functions */
+	function updateBio($uid, $bio, $db) {
+		/* Updates the Bio field of a user of provided User ID. */
+		$bio = mysqli_escape_string($db, $bio);
+		$sql = "UPDATE User SET Bio = '{$bio}' WHERE UserID = {$uid}";
+		return mysqli_query($db, $sql);
+	}
+	function updateName($uid, $fname=NULL, $lname=NULL, $db) {
+		if(!is_null($fname)) {
+			$fname = mysqli_escape_string($db, $fname);
+			$sql = "UPDATE User SET FirstName = '{$fname}' WHERE UserID = {$uid}";
+			if(!mysqli_query($db, $sql)) { return false; }
+		}
+		if(!is_null($lname)) {
+			$lname = mysqli_escape_string($db, $lname);
+			$sql = "UPDATE User SET LastName = '{$lname}' WHERE UserID = {$uid}";
+			if(!mysqli_query($db, $sql)) { return false; }
+		}
+		return true;
+	}
+	function updateTimezone($uid, $tz, $db) {
+		$tz = mysqli_escape_string($db, $tz);
+		$sql = "UPDATE User SET TimeZone = '{$tz}' WHERE UserID = {$uid}";
+		if(!mysqli_query($db, $sql)) { return false; }
+		return true;
+	}
+
+	// include('db.php');
+	// print updateTimezone(13, 'HAST', $db);
 ?>

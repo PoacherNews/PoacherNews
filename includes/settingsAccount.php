@@ -46,9 +46,9 @@ input {
         <label for="currentEmail">Current Email</label>
         <input name="currentEmail" type="text" placeholder="Current Email"/>
         <label for="newEmail">New Email</label>
-        <input type="text" name="newEmail" placeholder="New Email"/>
+        <input type="text" name="newEmail" placeholder="New Email" autocomplete="off" />
         <label for="confirmEmail">Confirm Email</label>
-        <input type="text" name="confirmEmail" placeholder="Confirm Email"/>
+        <input type="text" name="confirmEmail" placeholder="Confirm Email" autocomplete="off" />
     </div>
 
     <div class="sectionHeader">
@@ -56,11 +56,11 @@ input {
     </div>
     <div id="changePassword">
         <label for="currentPassword">Current Password</label>
-        <input type="password" name="currentPassword"/>
+        <input type="password" name="currentPassword" autocomplete="off" />
         <label for="newPassword">New Password</label>
-        <input type="password" name="newPassword"/>
+        <input type="password" name="newPassword" autocomplete="off" />
         <label for="confirmPassword">Confirm New Password</label>
-        <input type="password" name="confirmPassword"/>
+        <input type="password" name="confirmPassword" autocomplete="off" />
     </div>
     <input class="settingsSubmit" type="submit" value="Save changes"/>
 

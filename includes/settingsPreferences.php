@@ -15,6 +15,7 @@
 }
 </style>
 <form id="preferences">
+    <input type="hidden" name="action" value="updatePreferences"/>
     <div class="sectionHeader">
         <h2>Language</h2>
         <span class="subheader">Your preferred language, displayed on your profile page.</span>
@@ -49,5 +50,23 @@
     </div>
     <span class="settingsNotice">This feature coming soon!</span>
 
+    <div class="settingsMessage"></div>
     <input class="settingsSubmit" type="submit" value="Save changes"/>
 </form>
+<script>
+    $("#preferences").submit(function(event) {
+        $(".settingsMessage").hide();
+        event.preventDefault();
+        $.post("util/settingsHandler.php", $(this).serialize(), function(data) {
+            console.log($(this).serialize()); //DEBUG
+            if(data == "Success") {
+                $(".settingsMessage").addClass("success");
+                $(".settingsMessage").text("Setings successfully saved.");
+            } else {
+                $(".settingsMessage").addClass("error");
+                $(".settingsMessage").text(data);
+            }
+            $(".settingsMessage").fadeIn();
+        });
+    })
+</script>
