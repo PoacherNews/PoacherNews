@@ -1,10 +1,16 @@
 <?php
-    include 'util/loginCheck.php';
+    session_start();
+    if(empty($_SESSION) || !$_SESSION['loggedin']) {
+        header('Location: index.php');
+    }
+
     if(empty($_GET['tab']) || !isset($_GET['tab'])) {
         $currentTab = "general"; // Default starting tab
     } else { $currentTab = $_GET['tab']; }
 
-    //TODO: Reject page load if not logged in
+    include('util/db.php');
+    include('util/userUtils.php');
+    $user = getUserById($_SESSION['userid'], $db);
 ?>
  
 <!DOCTYPE html>
@@ -32,13 +38,13 @@
                 <?php
                     switch($currentTab) {
                         case "general":
-                            include('includes/settingsGeneral.html');
+                            include('includes/settingsGeneral.php');
                             break;
                         case "preferences":
-                            include('includes/settingsPreferences.html');
+                            include('includes/settingsPreferences.php');
                             break;
                         case "account":
-                            include('includes/settingsAccount.html');
+                            include('includes/settingsAccount.php');
                             break;
                     }
                 ?>
@@ -48,3 +54,9 @@
         <?php include 'includes/footer.html'; ?>
     </body>
 </html>
+
+<?php
+    if($_SERVER['REQUEST_METHOD'] === "POST") {
+        print_r($_POST);
+    }
+?>

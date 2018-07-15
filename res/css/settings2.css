@@ -65,3 +65,26 @@
 	font-style: italic;
 	color: #8693AB;
 }
+
+.settingsNotice {
+	text-align: center;
+	color: #414141;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.settingsSubmit {
+	margin-top: 25px;
+	width: 110px;
+	height: 35px;
+	background-color: #BDD4E7;
+	border-color: #83A8F0;
+	border-radius: 5px;
+	font-weight: bold;
+	cursor: pointer;
+}
+.settingsSubmit:hover {
+	background-color: #83A8F0;
+	border-color: #1864F7;
+	color: white;
+}
