@@ -215,12 +215,27 @@
         // overriding text when uploading a file
         function onUploadFile() {
             // Check the input file 
+			/*
             checkInputFile();
             if($('.text-editor').text().length > 0) {
                $('.override').show();
-            }	
+            }
+			*/
+			var formData = new FormData(); 
+			formData.append('document', $('#upload-document')[0].files[0]); 
+			$.ajax({
+				url: 'readTextFile.php',
+				type: 'POST',
+				data: formData,
+				success: function (output) {
+					$('.text-editor').html(output);
+				},
+				cache: false,
+				contentType: false,
+				processData: false
+			});
         }
-        
+		
 		// Get the modal
 		var modal = document.getElementById('submit-draft');
 		
