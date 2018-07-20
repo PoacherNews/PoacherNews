@@ -28,7 +28,6 @@
         
             if(isset($_POST['draft'])) {
                 $articleData = getArticleByID($_GET['articleid'], $db);
-            
                 if($articleData['ArticleID']) {
                     $articleID = $articleData['ArticleID'];
                     if($articleID == NULL) {
@@ -426,7 +425,6 @@
         function redoIcon() {
             document.execCommand('redo', false, null);
         }
-
         /* ************************** Error Handling ************************** */
         
         

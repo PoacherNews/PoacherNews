@@ -25,7 +25,6 @@
         
         <div class="display">
         </div>
-        foo
         <div style="margin: auto auto; min-height: 1000px">
             <ul>
                 <li><a href="/editorHistory.php">Editor History</a></li>

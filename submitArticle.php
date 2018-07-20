@@ -1,27 +1,16 @@
 <?php
-  header("Location: ../editorHistory.php");
+  header("Location: ../tools.php");
   session_start();
   $action = empty($_POST['action']) ? '' : $_POST['action'];
   $submit = empty($_POST['submit']) ? '' : $_POST['submit'];
   $save = empty($_POST['save']) ? '' : $_POST['save'];
-  /*
-  if(empty($_POST['title']) || empty($_POST['category']) || file_exists(!($_FILES['image']['temp_name']))){
-    echo "error";
-    require 'editorpage.php';
-    exit;
-  } else {
-      print "success!";
-  }
-  */
+
   include('util/articleUtils.php');
-  //$articleData = getArticleByID($_GET['articleid'], $db);
 
   function dbConnect() {
     include 'util/db.php';
     
-    // Check connection
-    if ($db->connect_error)
-    {
+    if ($db->connect_error) { // Check connection
 	   die("Connection failed: " . $db->connect_error);
     }
     else{
@@ -33,22 +22,19 @@
   if(isset($action)){
       if($submit == "Yes") { // If the user wants to submit
           submitArticle();
-          // relocate
       } else if($save == "Save") { // If the user wants to save
           saveArticle();
-          // relocate
       }
   } else {
     relocate(); //Go back to editorHistory.php
   }
-
-  
 
   function submitArticle() {
       $title = empty($_POST['title']) ? '' : $_POST['title'];
       $category = empty($_POST['category']) ? '' : $_POST['category'];
       $body = empty($_POST['body']) ? '' : $_POST['body'];
       $authorid = getAuthorID();
+      // upload image
       $is_draft = 1; // true
       $is_submitted = 1; // true
 	  $views = 0; // true
@@ -58,7 +44,6 @@
       
       // Check if the draft has an articleid or is a new submission
       if($articleData['ArticleID']) { // The draft was saved upon edit
-          //Update the mysql
           $sql_query = "UPDATE Article SET Headline = '".$title."', Body= '".$body."', Category = '".$category."', IsSubmitted = '".$is_submitted."' WHERE ArticleID = ? ";
           if (!$stmt->prepare($sql_query)) {
               echo "Error preparing statement: \n";
@@ -96,15 +81,16 @@
       }
   } //End of submitArticle
 
-  function saveArticle() { //TODO: $views = 0
+  function saveArticle() {
       $title = empty($_POST['title']) ? '' : $_POST['title'];
       $category = empty($_POST['category']) ? '' : $_POST['category'];
       $body = empty($_POST['body']) ? '' : $_POST['body'];
-	  $result = htmlspecialchars($body);
       $authorid = getAuthorID();
-      //$filepath = uploadImage();
+      // upload image
+      $result = nl2br($body);
       $is_draft = 1; // true
       $is_submitted = 0; // false
+      $views = 0;
       $db = dbConnect();
       $stmt = $db->stmt_init();
       $articleData = getArticleByID($_GET['articleid'], $db);
@@ -149,69 +135,6 @@
       }
   } //End of saveArticle
 
-  function uploadImage() {
-      // Limit file size
-      if ($_FILES['image']['size'] > 10000000) {
-          throw new RuntimeException('Exceeded filesize limit.');
-      }
-
-      // Check if image is valid
-      $finfo = new finfo(FILEINFO_MIME_TYPE);
-      if (false === $ext = array_search(
-        $finfo->file($_FILES['image']['tmp_name']),
-        array(
-            //valid file extensions
-            'jpg' => 'image/jpeg',
-            'png' => 'image/png',
-            'gif' => 'image/gif',
-        ),
-        true
-      )) {
-        throw new RuntimeException('Invalid file format.');
-      }
-
-
-      $filepath = sprintf('res/img/%s.%s',
-          // Encrypt file name to avoid user selected name
-          sha1_file($_FILES['image']['tmp_name']),
-          // Use valid file extension
-          $ext
-      );
-
-      $db = dbConnect();
-      $stmt = $db->stmt_init();
-
-      if(!$stmt->prepare("SELECT ArticleImage FROM Article WHERE ArticleImage=?")){
-        echo "Error preparing statement: \n";
-        print_r($stmt->error_list);
-        exit;
-      }
-
-      if(!$stmt->bind_param('s', $filepath)){
-        echo "Error binding parameters: \n";
-        print_r($stmt->error_list);
-        exit;
-      }
-
-      $stmt->execute();
-      // get result
-      $result = $stmt->get_result();
-
-      if($result->num_rows > 0){
-        echo "File name already exists. Please choose different name";
-        exit;
-      }
-
-      // Move file form temp folder
-      if (!move_uploaded_file(
-          $_FILES['image']['tmp_name'],
-          $filepath
-      )) {
-          throw new RuntimeException('Failed to move uploaded file.');
-      }
-
-      return $filepath;
-  } // End of uploadImage
 
   function getAuthorID(){
     $username = empty($_SESSION['username']) ? 'error' : $_SESSION['username'];
@@ -230,7 +153,6 @@
       print_r($stmt->error_list);
       exit;
     }
-
     $stmt->execute();
     // get result
     $result = $stmt->get_result();

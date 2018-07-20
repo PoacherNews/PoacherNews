@@ -1,31 +1,8 @@
 <?php
 	$files = empty($_FILES['document'] ? '' : $_FILES['document']);
 
-	if (isset($files)) {
+	if(isset($files)) {
 		readTextFile();
-		/*
-		$find[] = 'â€œ';  // left side double smart quote
-		$find[] = 'â€';  // right side double smart quote
-		$find[] = 'â€˜';  // left side single smart quote
-		$find[] = 'â€™';  // right side single smart quote
-		$find[] = 'â€¦';  // elipsis
-		$find[] = 'â€”';  // em dash
-		$find[] = 'â€“';  // en dash
-
-		$replace[] = '“';
-		$replace[] = '”';
-		$replace[] = "‘";
-		$replace[] = "’";
-		$replace[] = "...";
-		$replace[] = "-";
-		$replace[] = "-";
-		
-		
-		$contents = "This is some text: ` ~ ! @ # $ % ^ & * () - _ = + [ { ] } \ | ; : â€˜ â€™ â€œ â€ , < . > / ?";
-		$contents = str_replace($find, $replace, (string)$contents);
-		print $contents;
-		*/
-		
 	} else {
 		print "File has not been selected";
 	}
@@ -39,11 +16,9 @@
 			switch($_FILES['document']['type']) {
 				case $app_docx:
 					$source_file = $_FILES['document']['tmp_name'];
-					
 					$zip = new ZipArchive; //Parse word docx by opening up zip file then display it
 					$dataFile = 'word/document.xml';
-					// Open the archive file
-					if (true === $zip->open($source_file)) {
+					if (true === $zip->open($source_file)) { // Open the archive file
 						if (($index = $zip->locateName($dataFile)) !== false) { // If true, search for the data file in archive
 							$data = $zip->getFromIndex($index);
 							$zip->close();
@@ -55,12 +30,12 @@
 							$xmldata = $dom->saveXML();
 							$contents = strip_tags($xmldata, '<w:p><w:u><w:i><w:b>'); // Strip the p, u, i, and b tags
 							$contents = preg_replace("/(<(\/?)w:(.)[^>]*>)\1*/", "<$2$3>", $contents);
-
+                            $contents = preg_replace('~<([ibu])>(?=(?:\s*<[ibu]>\s*)*?<\1>)|</([ibu])>(?=(?:\s*</[ibu]>\s*)*?</?\2>)|<p></p>~s', "", $contents);
 							$dom = new DOMDocument;
 							@$dom->loadHTML($contents, LIBXML_HTML_NOIMPLIED  | LIBXML_HTML_NODEFDTD);
 							$contents = $dom->saveHTML();
 							
-							// Get ride of weird special chars
+							// Get rid of weird special chars
 							$find = array('&acirc;&#128;&#156;', '&acirc;&#128;&#157;', '&acirc;&#128;&#152;', '&acirc;&#128;&#153;', '&acirc;&#128;&brvbar;', '&acirc;&#128;&#147;', '&acirc;&#128;&#148;');
 							$replace = array('“', '”', "‘", "’", "...", "–", "—");
 						
@@ -75,15 +50,14 @@
 					if(file_exists($source_file)) {
 						if(($fh = fopen($source_file, 'r')) !== false ) {
 							$headers = fread($fh, 0xA00);
-							$n1 = ( ord($headers[0x21C]) - 1 );// 1 = (ord(n)*1) ; Document has from 0 to 255 characters
-							$n2 = ( ( ord($headers[0x21D]) - 8 ) * 256 );// 1 = ((ord(n)-8)*256) ; Document has from 256 to 63743 characters
-							$n3 = ( ( ord($headers[0x21E]) * 256 ) * 256 );// 1 = ((ord(n)*256)*256) ; Document has from 63744 to 16775423 characters
-							$n4 = ( ( ( ord($headers[0x21F]) * 256 ) * 256 ) * 256 );// 1 = (((ord(n)*256)*256)*256) ; Document has from 16775424 to 4294965504 characters
-							$textLength = ($n1 + $n2 + $n3 + $n4);// Total length of text in the document
+							$n1 = ( ord($headers[0x21C]) - 1 );
+							$n2 = ( ( ord($headers[0x21D]) - 8 ) * 256 ); 
+							$n3 = ( ( ord($headers[0x21E]) * 256 ) * 256 );
+							$n4 = ( ( ( ord($headers[0x21F]) * 256 ) * 256 ) * 256 );
+							$textLength = ($n1 + $n2 + $n3 + $n4);
 							$extracted_plaintext = fread($fh, $textLength);
-
+                            
 							$extracted_plaintext = (strip_tags($extracted_plaintext,’‘));
-							//Including all of the characters
 							$map = array(
 										chr(0x8A) => chr(0xA9), chr(0x8C) => chr(0xA6),
 										chr(0x8D) => chr(0xAB), chr(0x8E) => chr(0xAE),
@@ -110,6 +84,7 @@
 							$result = html_entity_decode(mb_convert_encoding(strtr($extracted_plaintext, $map), 'UTF-8', 'ISO-8859-2'), ENT_QUOTES, 'UTF-8');
 
 							print nl2br($result);
+                            
 						} else {
 							return false;
 						}
@@ -121,7 +96,6 @@
 				case $text_plain:
 					$source_file = $_FILES['document']['tmp_name'];
 					$body = file_get_contents($source_file);
-					$body = (strip_tags($body,'<w:p><w:u><w:i><w:b>'));
 					$map = array(
 								chr(0x8A) => chr(0xA9), chr(0x8C) => chr(0xA6),
 								chr(0x8D) => chr(0xAB), chr(0x8E) => chr(0xAE),
@@ -148,9 +122,13 @@
 								chr(0xd3) => '&rdquo;', chr(0xd0) => '&ndash;',
 								chr(0xd1) => '&mdash;', chr(0xc9) => '&hellip;',
 							);
-					$result = html_entity_decode(mb_convert_encoding(strtr($body, $map), 'UTF-8', 'ISO-8859-1'), ENT_QUOTES, 'UTF-8');
+					$contents = html_entity_decode(mb_convert_encoding(strtr($body, $map), 'UTF-8', 'ISO-8859-1'), ENT_QUOTES, 'UTF-8');
 					
-					print nl2br($result);
+					$find = array('&acirc;&#128;&#156;', '&acirc;&#128;&#157;', '&acirc;&#128;&#152;', '&acirc;&#128;&#153;', '&acirc;&#128;&brvbar;', '&acirc;&#128;&#147;', '&acirc;&#128;&#148;');
+				    $replace = array('“', '”', "‘", "’", "...", "–", "—");
+						
+                    $result = str_replace($find, $replace, $contents);
+                    print $result;
 					break;
 
 				default:
