@@ -11,7 +11,7 @@
             if(empty($_SESSION['loggedin'])) {
                 $loggedin = false;
             } else { // The user is already logged in, so send them back to the index
-                echo "You are already logged in";
+                //echo "You are already logged in";
                 echo '<meta http-equiv="refresh" content="0; url=/index.php">';
                 exit;
             }
