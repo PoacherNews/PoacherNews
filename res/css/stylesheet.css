@@ -569,27 +569,15 @@ p.ftCpyright {
 
 .loginWrap {
     width: 400px;
-    background-color: beige;
     height: 200px;
-    border: solid 2px lightblue;
+    border: solid 2px #83A8F0;
     border-radius: 20px 0px;
     padding: 10px;
-}
-
-img.loginImg {
-    width: 140px;
-    float: right;
-    height: 190px;
-    padding: 5px;
-}
-
-h1.loginH1, label.loginLbl{
-    font-family: 'Do Hyeon', sans-serif
+    margin: 15% auto 15% auto;
 }
 
 #loginUsername, #loginPassword {
     margin: 5px;
-    border: solid 1px lightblue;
     width: 100%;
     border-radius: 5px;
     height: 20px;
@@ -597,7 +585,6 @@ h1.loginH1, label.loginLbl{
 }
 
 .loginButtons, .loginWrap, .loginRelative {
-    margin: 10px auto;
     display: flex;
 }
 
@@ -613,228 +600,20 @@ h1.loginH1, label.loginLbl{
     text-decoration: none;
     color: black;
     text-align: center;
-    background-color: lightblue;
-    font-family: 'Do Hyeon', sans-serif;
     font-size: 20px;
-    border: solid 2px black;
     margin: 5px;
     border-radius: 5px;
 }
 
-/* CONTACT */
-
-.conDivLeft {
-    border-left: 1px solid grey;
-    height: auto;
-    height: 100vh;
-    float: left;
-    margin-left: 20%;
-    margin-right: 30px;
-}
-
-.conDivRight {
-    border-right: 1px solid grey;
-    height: 100vh;
-    float: right;
-    margin-right: 20%;
-    margin-left: 30px;
-}
-
-#conTitleId {
-    text-align: center;
-    font-size: 40px;
-    text-decoration: underline;
-}
-
-.conHead1 {
-    padding-left: 20px;
-    font-family: serif;
-}
-
-.conHead2 {
-    padding-left: 20px;
-    font-family: serif;
-}
-
-.conHead3 {
-    padding-left: 20px;
-    font-family: serif;
-}
-.conVl {
-    border-left: 2px solid #83A8F0;
-    height: 15px;
-    display: inline;
-    margin: 20px;
-}
-
-.conHr {
+.loginError {
     width: 100%;
-    margin-bottom: 0%;
-    border: 1px dashed grey;
-}
-
-#conDivAds {
-    background-color: antiquewhite;
+    padding: 10px;
+    border-radius: 2px;
+    font-weight: bold;
     text-align: center;
-    font-size: 30px;
-    height: 20vh;
-}
-
-/* FEEDBACK */
-
-.fbDivLeft {
-    border-left: 1px solid grey;
-    height: auto;
-    height: 100vh;
-    float: left;
-    margin-left: 20%;
-    margin-right: 30px;
-}
-
-.fbDivRight {
-    border-right: 1px solid grey;
-    height: 100vh;
-    float: right;
-    margin-right: 20%;
-    margin-left: 30px;
-}
-
-#fbTitleId {
-    text-align: center;
-    font-size: 40px;
-    text-decoration: underline;
-}
-
-.fbDead1 {
-    padding-left: 20px;
-    font-family: serif;
-}
-
-.fbHead2 {
-    padding-left: 20px;
-    font-family: serif;
-}
-
-.fbHead3 {
-    padding-left: 20px;
-    font-family: serif;
-}
-.fbVl {
-    border-left: 2px solid #83A8F0;
-    height: 15px;
-    display: inline;
-    margin: 20px;
-}
-.fbP {
-    font-size: 20px;
-}
-.fbHr {
-    width: 100%;
-    margin-bottom: 0%;
-    border: 1px dashed grey;
-}
-
-#fbDivAds {
-    background-color: antiquewhite;
-    text-align: center;
-    font-size: 30px;
-    height: 20vh;
-}
-
-/* HELP */
-
-.helpDivLeft {
-    border-left: 1px solid grey;
-    height: auto;
-    height: 100vh;
-    float: left;
-    margin-left: 20%;
-    margin-right: 30px;
-}
-
-.helpDivRight {
-    border-right: 1px solid grey;
-    height: 100vh;
-    float: right;
-    margin-right: 20%;
-    margin-left: 30px;
-}
-
-#helpTitleId {
-    text-align: center;
-    font-size: 40px;
-    text-decoration: underline;
-}
-
-.helpHead1 {
-    padding-left: 20px;
-    font-family: serif;
-}
-
-.helpHead2 {
-    padding-left: 20px;
-    font-family: serif;
-}
-
-.helpVl {
-    border-left: 2px solid #83A8F0;
-    height: 15px;
-    display: inline;
-    margin: 20px;
-}
-
-.helpHr {
-    width: 100%;
-    margin-bottom: 0%;
-    border: 1px dashed grey;
-}
-
-#helpDivAds {
-    background-color: antiquewhite;
-    text-align: center;
-    font-size: 30px;
-    height: 20vh;
-}
-
-/* PRIVACY */
-
-.privDivLeft {
-    border-left: 1px solid grey;
-    height: auto;
-    height: 100vh;
-    float: left;
-    margin-left: 20%;
-    margin-right: 30px;
-}
-
-.privDivRight {
-    border-right: 1px solid grey;
-    height: 100vh;
-    float: right;
-    margin-right: 20%;
-    margin-left: 30px;
-}
-
-#privTitleId {
-    text-align: center;
-    font-size: 40px;
-    text-decoration: underline;
-}
-
-.privP {
-    font-size: 20px;
-}
-.privHr {
-    width: 100%;
-    margin-bottom: 0%;
-    border: 1px dashed grey;
-}
-
-#privDivAds {
-    background-color: antiquewhite;
-    text-align: center;
-    font-size: 30px;
-    height: 20vh;
+    box-shadow: 0 0 0 1px #e0b4b4 inset;
+    background-color: #fff6f6;
+    color: #9f3a38;
 }
 
 
