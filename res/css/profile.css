@@ -1,6 +1,6 @@
 #profileContainer {
 	display: grid;
-	grid-template-columns: 18% 350px auto 18%; /* Far left and far right values set left and right gutter widths */
+	grid-template-columns: 100px 350px auto 100px; /* Far left and far right values set left and right gutter widths */
 	grid-template-areas: ". left right .";
 	margin: 25px auto 25px auto;
 }
@@ -87,6 +87,7 @@
 	grid-template-columns: auto auto auto auto;
 	grid-template-rows: 30px auto;
 	grid-row-gap: 7px;
+	grid-column-gap: 7px;
 }
 
 .navItem {
@@ -125,7 +126,8 @@
 }
 
 #about > .aboutSectionHeader, #history > .historySectionHeader {
-	width: 125px;
+	min-width: 100px;
+	max-width: 300px;
 	color: #8693AB;
 	border-bottom: 1px solid #8693AB;
 	font-style: italic;
