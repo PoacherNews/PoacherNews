@@ -1,4 +1,4 @@
-<header class="header">
+<header id="mainHeader">
     <div class="hdrflxr">
         <div id="hdrlft">
 			<div class="hdrlftFlxr">
