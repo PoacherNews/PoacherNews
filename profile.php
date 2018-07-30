@@ -8,6 +8,7 @@
         header('Location: index.php');
     }
     $userDetails = getUserById($_GET['uid'], $db);
+    date_default_timezone_set('America/Chicago');
 ?>
 
 <!DOCTYPE html>
