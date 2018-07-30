@@ -17,7 +17,7 @@
         <h1 id="aboutHeader">About <span class="text-emphasis">The Poacher</span></h1>
         <h2 class="aboutSectionHeader">Who We Are</h2>        
         <p>
-            <span class="text-emphasis">The Poacher</span> is the newest, worldly acclaimed satirical website created by five lonely students at the University of Missouri. Our publication entails a plethora of newly discovered ideas that gives users (as well as writers) a voice in topics such as sports, politics, entertainment, and local news. Our goal assures a humble journey of bringing a community of people together to laugh, read, share, and comment with another.
+            <span class="text-emphasis">The Poacher</span> is the newest, worldly acclaimed satirical website created by a few students at the University of Missouri. Our publication entails a plethora of newly discovered ideas that gives users (as well as writers) a voice in topics such as sports, politics, entertainment, and local news. Our goal assures a humble journey of bringing a community of people together to laugh, read, share, and comment with another.
         </p>
         <h2 class="aboutSectionHeader">Our Content</h2>
         <p>
