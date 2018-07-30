@@ -14,16 +14,17 @@
 ?> 
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Settings | <?php print(ucfirst($currentTab)); ?></title>
-        <?php include 'includes/globalHead.html' ?>
-        <link rel="stylesheet" href="/res/css/settings.css">
-    </head>
-    <body>
-        <?php
-            include 'includes/header.php';
-            include 'includes/nav.php';
-        ?>
+<head>
+    <title>Settings | <?php print(ucfirst($currentTab)); ?></title>
+    <?php include 'includes/globalHead.html' ?>
+    <link rel="stylesheet" href="/res/css/settings.css">
+</head>
+<body>
+    <?php
+        include 'includes/header.php';
+        include 'includes/nav.php';
+    ?>
+    <div id="mainContent">
 
         <div id="settingsContainer">
             <span class="settingsHeader">Settings</span>
@@ -49,6 +50,7 @@
             </div>
         </div>
 
-        <?php include 'includes/footer.html'; ?>
-    </body>
+    </div>
+    <?php include 'includes/footer.html'; ?>
+</body>
 </html>

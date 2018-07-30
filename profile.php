@@ -13,16 +13,17 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <?php include 'includes/globalHead.html' ?>
-        <link rel="stylesheet" href="res/css/profile.css">
-    </head>
+<head>
+    <?php include 'includes/globalHead.html' ?>
+    <link rel="stylesheet" href="res/css/profile.css">
+</head>
 
-    <body>
-        <?php
-            include 'includes/header.php';
-            include 'includes/nav.php';
-        ?>
+<body>
+    <?php
+        include 'includes/header.php';
+        include 'includes/nav.php';
+    ?>
+    <div id="mainContent">
         <div id="profileContainer">
             <div id="left-sidebar">
                 <img class="avatar" src="/res/img/<?php print($userDetails['ProfilePicture']); ?>">
@@ -224,8 +225,8 @@
         
         <!--// 7/10 CS
             // Disabling the footer for now until I rebuild the site to use CSS Grid.
-            // The footer jumps around as tab size changes and it's very jarring to look at.
-        <?php include 'includes/footer.html'; ?>
-        -->
-    </body>
+            // The footer jumps around as tab size changes and it's very jarring to look at. -->
+    </div>
+    <?php include 'includes/footer.html'; ?>
+</body>
 </html>
