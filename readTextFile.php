@@ -16,7 +16,7 @@
 			switch($_FILES['document']['type']) {
 				case $app_docx:
 					$source_file = $_FILES['document']['tmp_name'];
-					$zip = new ZipArchive; //Parse word docx by opening up zip file then display it
+					$zip = new ZipArchive; // Parse word docx by opening up zip file then display it
 					$dataFile = 'word/document.xml';
 					if (true === $zip->open($source_file)) { // Open the archive file
 						if (($index = $zip->locateName($dataFile)) !== false) { // If true, search for the data file in archive
@@ -28,13 +28,13 @@
 								| LIBXML_NOERROR
 								| LIBXML_NOWARNING);
 							$xmldata = $dom->saveXML();
+                           
 							$contents = strip_tags($xmldata, '<w:p><w:u><w:i><w:b>'); // Strip the p, u, i, and b tags
 							$contents = preg_replace("/(<(\/?)w:(.)[^>]*>)\1*/", "<$2$3>", $contents);
-                            $contents = preg_replace('~<([ibu])>(?=(?:\s*<[ibu]>\s*)*?<\1>)|</([ibu])>(?=(?:\s*</[ibu]>\s*)*?</?\2>)|<p></p>~s', "", $contents);
 							$dom = new DOMDocument;
 							@$dom->loadHTML($contents, LIBXML_HTML_NOIMPLIED  | LIBXML_HTML_NODEFDTD);
-							$contents = $dom->saveHTML();
-							
+                            $contents = $dom->saveHTML();
+                            $contents = preg_replace('~<([ibu])>(?=(?:\s*<[ibu]>\s*)*?<\1>)|</([ibu])>(?=(?:\s*</[ibu]>\s*)*?</?\2>)|<p></p>~s', "", $contents);
 							// Get rid of weird special chars
 							$find = array('&acirc;&#128;&#156;', '&acirc;&#128;&#157;', '&acirc;&#128;&#152;', '&acirc;&#128;&#153;', '&acirc;&#128;&brvbar;', '&acirc;&#128;&#147;', '&acirc;&#128;&#148;');
 							$replace = array('“', '”', "‘", "’", "...", "–", "—");
@@ -128,7 +128,7 @@
 				    $replace = array('“', '”', "‘", "’", "...", "–", "—");
 						
                     $result = str_replace($find, $replace, $contents);
-                    print $result;
+                    print nl2br($result);
 					break;
 
 				default:
