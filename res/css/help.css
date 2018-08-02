@@ -1,0 +1,21 @@
+#mainContent {
+	margin: 15px 10% 15px 10%;
+	padding: 15px;
+	border-left: 1px solid #83A8F0;
+	border-right: 1px solid #83A8F0;
+}
+
+#helpHeader {
+	text-align: center;
+	font-size: 2.5rem;
+}
+
+.helpSectionHeader {
+	font-size: 1.8rem;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+li {
+	list-style: none;
+}

@@ -80,6 +80,7 @@
         include 'includes/header.php';
         include 'includes/nav.php';
     ?>
+    <div id="mainContent">
     
     <p id="secName"><?php echo $_GET['Category'] ?></p>
 
@@ -189,18 +190,18 @@
                         $bookmarks = getUserBookmarks($_SESSION['userid'], $_GET['Category'], $threeColLimit, $db);
                         if($bookmarks === null) {
                             print "<div class=\"columnError\">No bookmarks in this section.</div>";
-                            return;
-                        }
-                        foreach($bookmarks as $article) {
-                            print "<article>
-                                <div class=\"thumbnailSecondary\">
-                                    <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['ArticleImage']}\" width=\"150\" height=\"100\"></a>
-                                </div>
-                                <div class=\"textSecondary\">
-                                    <h2 class=\"secHeadlineSecondary\"><a href=\"article.php?articleid={$article['ArticleID']}\">{$article['Headline']}</a></h2>
-                                    <p>".substr($article['Body'], 0, 75)."...</p>                  
-                                </div>
-                            </article>";
+                        } else {
+                            foreach($bookmarks as $article) {
+                                print "<article>
+                                    <div class=\"thumbnailSecondary\">
+                                        <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['ArticleImage']}\" width=\"150\" height=\"100\"></a>
+                                    </div>
+                                    <div class=\"textSecondary\">
+                                        <h2 class=\"secHeadlineSecondary\"><a href=\"article.php?articleid={$article['ArticleID']}\">{$article['Headline']}</a></h2>
+                                        <p>".substr($article['Body'], 0, 75)."...</p>                  
+                                    </div>
+                                </article>";
+                            }
                         }
                     }
                 ?> 
@@ -211,6 +212,7 @@
     </section>
     <!-- containerSecondary Tail -->
 
-    <?php include('includes/footer.html'); ?>
+    </div>
+    <?php include 'includes/footer.html'; ?>
 </body>
 </html>

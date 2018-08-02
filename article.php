@@ -10,11 +10,11 @@
 ?>
 <!DOCTYPE html>
 <html>
-    <head>
+<head>
 	<?php include 'includes/globalHead.html' ?>
     <link rel="stylesheet" type="text/css" href="res/css/articlepage.css">
-    </head>
-    <body>
+</head>
+<body>
         <?php 
             include('includes/header.php');
             include('includes/nav.php');
@@ -41,12 +41,13 @@
             } else { // Article is published, so increase view count
                 increaseViewCount($articleData['ArticleID'], $db);
             }
-            
+        ?>
+
+    <div id="mainContent">
+        <?php
             if($isDraft) { print "<div id=\"infoBanner\">DRAFT</div>"; }
             if($isPending) { print "<div id=\"infoBanner\">PENDING APPROVAL</div>"; }
         ?>
-
-        
         <div class="articleColumns">
             <section id="articleColumn">
                 <span class="articleDetails">
@@ -309,6 +310,7 @@
                 }
             ?>
         </div>
-        <?php include('includes/footer.html'); ?>
-    </body>
+    </div>
+    <?php include('includes/footer.html'); ?>
+</body>
 </html>

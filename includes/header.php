@@ -1,12 +1,13 @@
-<header class="header">
+<header id="mainHeader">
     <div class="hdrflxr">
         <div id="hdrlft">
 			<div class="hdrlftFlxr">
-				<div id="drpdwn">
+				<!-- Disabled 8/1 - CS
+                <div id="drpdwn">
 					<div id="drpdwnIcon"></div>
 					<div id="drpdwnIcon"></div>
 					<div id="drpdwnIcon"></div>
-				</div>
+				</div> -->
 				<div class="srcIcn">
 					<a>Search</a>
 					<i class="fa fa-search"></i>
