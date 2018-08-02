@@ -293,11 +293,12 @@ a.hdrA {
     background: #f3f3f3;
     max-width: 100%;
     min-width: 100vh;
+    min-height: 75px;
     list-style-type: none;
     margin: 0;
     padding: 20px 0px 10px 20px;
     text-align: center;
-    opacity: 0.8;
+    opacity: 1;
     display: none;
 	font-family: Arial, Helvetica, sans-serif;
 }
@@ -528,7 +529,8 @@ p.ftCpyright {
 #navbar {
     grid-area: mainNav;
     min-height: 30px;
-	overflow: hidden;
+    height: auto;
+	/*overflow: hidden;*/
   	background-color: #f3f3f3;
 	text-align: center;
 	width: 100%;
@@ -536,7 +538,8 @@ p.ftCpyright {
 	list-style-type: none;
     margin: 0;
     padding: 10px 0px;
-	opacity: .8;
+	opacity: .95;
+    z-index: 1;
 }
 
 #navbar a {
@@ -560,6 +563,7 @@ p.ftCpyright {
   position: fixed;
   top: 0;
   width: 100%;
+  height: auto;
 }
 
     

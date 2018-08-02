@@ -5,12 +5,19 @@
 			<a href="/section.php?Category=Video">Video</a>
 			<a href="/section.php?Category=Local">Local</a>
 			<a href="/section.php?Category=Opinion">Opinion</a>
+
+            <div id="searchbar">
+                <hr>
+                <form action="/search.php" method="GET">
+                    <input type="text" name="query" placeholder="What are you looking for?">
+                </form>
+            </div>
     </div>
     <!-- Drop Down NAV -->
-    <div id="drpdwnNav">
+<!-- Disabled 8/1 - CS
+     <div id="drpdwnNav">
         <div class="drpdwnFlxr">
             <div class="drpdwnFlxc">
-                <!--TODO-->
                 <h2 class="drpdwnCont">Politics</h2>
                 <ul>
                     <li><a href="#" class="drpdwnLink">Placeholder</a></li>
@@ -19,7 +26,6 @@
                 </ul>
             </div>
             <div class="drpdwnFlxc">
-                <!--TODO-->
                 <h2 class="drpdwnCont">Sports</h2>
                 <ul>
                     <li><a href="#" class="drpdwnLink">Placeholder</a></li>
@@ -28,7 +34,6 @@
                 </ul>
             </div>
             <div class="drpdwnFlxc">
-                <!--TODO-->
                 <h2 class="drpdwnCont">Entertainment</h2>
                 <ul>
                     <li><a href="#" class="drpdwnLink">Placeholder</a></li>
@@ -40,7 +45,6 @@
 
         <div class="drpdwnFlxr">
             <div class="drpdwnFlxc">
-                <!--TODO-->
                 <h2 class="drpdwnCont">Video</h2>
                 <ul>
                     <li><a href="#" class="drpdwnLink">Placeholder</a></li>
@@ -49,7 +53,6 @@
                 </ul>
             </div>
             <div class="drpdwnFlxc">
-                <!--TODO-->
                 <h2 class="drpdwnCont">Local</h2>
                 <ul>
                     <li><a href="#" class="drpdwnLink">Placeholder</a></li>
@@ -58,7 +61,6 @@
                 </ul>
             </div>
             <div class="drpdwnFlxc">
-                <!--TODO-->
                 <h2 class="drpdwnCont">Opinion</h2>
                 <ul>
                     <li><a href="#" class="drpdwnLink">Placeholder</a></li>
@@ -67,13 +69,8 @@
                 </ul>
             </div>
         </div>
-    </div>
-    <div id="searchbar">
-        <hr>
-        <form action="/search.php" method="GET">
-            <input type="text" name="query" placeholder="What are you looking for?">
-        </form>
-    </div>
+    </div> -->
+
 
     <script>
         //DROP DOWN NAV
