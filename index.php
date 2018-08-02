@@ -34,8 +34,7 @@
             });
             $imageWrap.append($("<img/>", {
                 'src' : rowData['ArticleImage'],
-                'width' : "600",
-                'height' : "430"
+                'class': "articleImage"
             }));
             $article.append($imageWrap);
 
@@ -112,50 +111,51 @@
         include 'includes/nav.php';
     ?>
     <div class="pageContent">
-    <div class="wrapper">
-        <!-- Three column section -->
-        <section id="primary-section">
-            <div class="main-article">
-                <script>
-                    $.getJSON("util/homepage.php", {
-                        'request' : 'main'
-                    }).done(function(data) {
-                        $(".main-article").children().remove('.loader');
-                        $(".main-article").append(createColumnArticle(data));
-                    });
-                </script>
-                <div class="loader"></div>
-            </div>
-            <!-- <div class="divider left-divider"></div> -->
-            <div id="leftSidebar" class="sidebar left-sidebar">
-                <h1 class="sidebar-heading">Editor Picks</h1>
-                <script>
+        <section id="editorPicks">
+            <h1 class="sidebar-heading">Editor Picks</h1>
+            <script>
                     $.getJSON("util/homepage.php", {
                         'request' : 'editorpicks'
                     }).done(function(data) {
-                        $("#leftSidebar").children().remove('.loader');
+                        $("#editorPicks").children().remove('.loader');
                         if(!$.isArray(data)) {
                             createColumnArticle(data);
                             return;
                         } else {
                             $.each(data, function(i, row) {
-                                $("#leftSidebar").append(createColumnArticle(row));
+                                $("#editorPicks").append(createColumnArticle(row));
                             });
                         }
                     });
                 </script>
                 <div class="loader"></div>
-            </div>
-            <!-- <div class="divider right-divider"></div> -->
-            <div id="rightSidebar" class="sidebar right-sidebar">
-                <h1 class="sidebar-heading">Trending</h1>
+        </section>
+
+        <div class="divider"></div>
+
+        <section id="mainArticle">
+            <script>
+                    $.getJSON("util/homepage.php", {
+                        'request' : 'main'
+                    }).done(function(data) {
+                        $("#mainArticle").children().remove('.loader');
+                        $("#mainArticle").append(createColumnArticle(data));
+                    });
+                </script>
+                <div class="loader"></div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section id="trending">
+            <h1 class="sidebar-heading">Trending</h1>
                 <script>
                     $.getJSON("util/homepage.php", {
                         'request' : 'trending'
                     }).done(function(data) {
-                        $("#rightSidebar").children().remove('.loader');
+                        $("#trending").children().remove('.loader');
                         if(data === null) {
-                            $("#rightSidebar").append($("<div/>", {
+                            $("#trending").append($("<div/>", {
                                 'class' : "columnError",
                                 'text' : "No trending articles to show."
                             }));
@@ -167,24 +167,29 @@
                             return;
                         } else {
                             $.each(data, function(i, row) {
-                                $("#rightSidebar").append(createColumnArticle(row));
+                                $("#trending").append(createColumnArticle(row));
                             });
                         }
                     })
                 </script>
                 <div class="loader"></div>
-            </div>
         </section>
 
-        <!-- Banner ad section -->
-        <!-- <section id="hpAdvert">
-            <div class="ad">
-                <p>AD</p>
-            </div>
-        </section> -->
-        
-        <!-- Stacked article section -->
-        <section id="secondary-section">
+        <section class="bannerAd">
+            <a href="advertising.php">Advertise with us!</a>
+        </section>
+
+        <section id="stackedArticles">
+            <article>
+                 <a class="stacked-thumbnail" href="article.php?articleid=87">
+                    <img src="https://i.imgur.com/U469uHI.jpg" style="height: 217px; width: 325px;">
+                </a>
+                <div class="stacked-text">
+                    <a href="article.php?articleid=87"><h1>I am never at home on Sundays!!!!!!!</h1></a>
+                    <p>TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY ...</p>
+                    <a class="continue-reading" href="article.php?articleid=87">Continue Reading</a>
+                </div>
+            </article>
             <script>
                  $.getJSON("util/homepage.php", {
                     'request' : 'secondaryarticles'
@@ -194,15 +199,14 @@
                         return;
                     }
                     $.each(data, function(i, row) {
-                        $("#secondary-section").children().remove('.loader');
-                        $("#secondary-section").append(createStackedArticle(row));
+                        $("#stackedArticles").children().remove('.loader');
+                        $("#stackedArticles").append(createStackedArticle(row));
                     });
                 });
             </script>
             <div class="loader"></div>
         </section>
     </div>
-</div>
     <?php include('includes/footer.html'); ?>
 </body>
 </html>
