@@ -1,39 +1,161 @@
-/*Article Details*/
-.em-row, .em-left, .em-mid, .em-right {
-	display: flex;
+body {
+	font-size: 14px;
 }
 
-.em-row {
-	flex-direction: row;
-}
-
-.em-left, .em-mid, .em-right {
-	flex-direction: column;
-	width: 33.33%;
-}
-
-.em-col {
-	float: left;
-	margin: auto 50px auto 50px;
+.editor-tab {
 	overflow: hidden;
-    text-align: center;
+	border: 1px solid #ccc;
+	background-color: #f1f1f1;
 }
 
-.em-col input[type="placeholder"] {
-	color: red;
+.editor-tab > button {
+	background-color: inherit;
+	float: left;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 18px 20px;
+	transition: 0.3s;
+	font-size: 17px;
 }
 
-.em-col > input[type="text"], #category-title {
-	margin: auto auto 10px auto;
-    padding: 5px 10px 5px; 10px;
+.editor-tab > button:hover {
+	background-color: #ddd;
+}
+
+
+.editor-tab > button.active {
+	background-color: #ccc;
+}
+
+.tabcontent {
+	text-align: center;
+    display: none;
+    padding: 6px 12px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-	min-width: 200px;
-	margin: auto 10px 10px 10px;
-    font-size: 16px;
+    border-top: none;
+	border-bottom: none;
+    min-height: 800px;
+	
 }
 
-.em-col > #submit-button, #save-button, #verify-submit, #cancel-submit, #cancel-override {
+#title {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+
+#editor {
+	position: absolute;
+	align-self: center;
+	justify-content: center;
+	min-height: 800px;
+	min-width: 40%;
+	max-width: 40%;
+	font-size: 13pt;
+	padding: 5% 10%;
+	resize: none;
+	outline: none;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.25);
+    border: 1px solid black;
+	text-align: left;
+	margin: auto 15% 20px 19%;
+    line-height: 120%; /* To possibly fix later */
+	white-space: pre-wrap;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+ul {
+    font-size: 13pt;
+    margin-bottom: 0px;
+    padding-left: 0px;
+    border-top: 1px solid black;
+}
+
+ul > li {
+	display: inline-block;
+	padding: 10px 12px;
+    cursor: pointer;
+    margin: 0px 15px 0px 15px;
+}
+
+ul > li:hover {
+    background-color: #f1f1f1;
+}
+
+input {
+	font-size: 13pt;
+	padding: 10px 12px;
+	min-width: 50%;
+}
+
+#upload-document {
+    display: none;
+}
+
+#custom-file-upload {
+    cursor: pointer;
+}
+
+select {
+	font-size: 13pt;
+}
+
+.get-info {
+    min-width: 400px;
+    max-width: 400px;
+    min-height: 600px;
+    border: 1px solid black;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.25);
+    margin: auto 30% 20px 37%;
+}
+
+.get-info > label {
+    color: #83A8F0;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif; 
+    font-size: 13pt;
+}
+
+.insert-link {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 100px; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4);
+}
+
+
+.link-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+}
+
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+/* Others */
+#submit-button, #save-button, #verify-submit, #cancel-submit, #cancel-override {
 	margin: 20px 0px 0px 0px;
     width: 120px;
     max-width: 120px;
@@ -62,146 +184,9 @@
 	opacity: 0.6;
 }
 
-
-/*Text Editor, Editor Menu, Editor Menu Bar*/
-.editor-menu {
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-    justify-content: center;
-}
-
-.editor-menubar {
-    display: inline-block;
-    border-bottom: none;
-    font-size: 14px;
-    font-family: Helvetica, Arial, sans-serif;
-    text-align: center;
-    padding-left: 0%;
-}
-
 #submit-button:focus, #save-button:focus, #verify-submit:focus, #cancel-submit:focus, #cancel-override:focus {
     outline: none;
 }
-
-.emb-row {
-    border-bottom: 1px solid black;
-}
-
-.editor-menubar > li{
-    background-color: #fff;
-    list-style-type: none;
-    padding: 10px;
-}
-
-.emb-row {
-    display: flex;
-    flex-direction: row;
-}
-
-li > i {
-	border: none;
-    padding: 10px 12px;
-    background-color: white;
-    color: black;
-    cursor: pointer;
-    display: inline-block;
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 14px;
-}
-
-li:hover > i {
-	background-color: lightgrey;
-}
-
-li #font-family, #font-size {
-    border: none;
-    padding: 10px 12px;
-    color: black;
-    display: inline-block;
-    font-size: 14px;
-    opacity: 0.5;
-	cursor: default;
-}
-
-.fa {
-    padding: 10px;
-    font-size: 25px;
-    width: 15px;
-    text-align: center;
-    text-decoration: none;
-    margin: 5px 10px 10px 10px;
-    border-radius: 50%;
-}
-
-.text-editor {
-    border: 1px solid black;
-	position: absolute;
-	line-height: 120%;
-	min-width: 50%;
-	max-width: 50%;
-    padding: 5% 10% 5% 10%;
-    min-height: 800px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.25);
-	font-size: 13pt;
-    overflow: auto;
-    -ms-overflow-style: none;
-	font-family: "Helvetica", "Arial", sans-serif;
-}
-
-.text-editor:focus {
-    outline: none;
-}
-
-.text-editor > a {
-	color: black;
-	text-decoration: none;
-	border-bottom: 2px solid #83A8F0;
-}
-
-.text-editor > a:hover {
-	color: #83A8F0;
-}
-
-
-
-#insert-link {
-	position: absolute;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.25);
-    border: 1px solid black;
-    text-align: center;
-	max-width: 200px;
-    z-index: 900;
-	min-height: 100px;
-    background-color: #1864F7;
-	border-radius: 4px;
-	overflow: hidden;
-	display: none;
-}
-
-
-
-#insert-link > input[name="text"], input[name="link"] {
-	margin: 10px 5px 10px 5px;
-	font-size: 10pt;
-}
-
-#set-link {
-	margin-bottom: 15px;
-    background-color: #fff;
-    opacity: 0.5;
-}
-
-.link-row, .menubar-row {
-	display: flex;
-	flex-direction: row;
-}
-
-.menubar-row {
-	align-content: center;
-	justify-content: center;
-}
-
 
 .submit, .override {
     display: none; 
@@ -224,18 +209,4 @@ li #font-family, #font-size {
     padding: 20px;
     border: 1px solid #888;
     width: 30%;
-}
-
-.close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
 }

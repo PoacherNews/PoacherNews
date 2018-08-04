@@ -14,7 +14,7 @@
 			$app_doc = "application/msword";
 			$text_plain = "text/plain";
 			switch($_FILES['document']['type']) {
-				case $app_docx:
+				case $app_docx: // Fix line break before paragraph starts
 					$source_file = $_FILES['document']['tmp_name'];
 					$zip = new ZipArchive; // Parse word docx by opening up zip file then display it
 					$dataFile = 'word/document.xml';
@@ -58,8 +58,7 @@
 							$extracted_plaintext = fread($fh, $textLength);
                             
 							$extracted_plaintext = (strip_tags($extracted_plaintext,’‘));
-							$map = array(
-										chr(0x8A) => chr(0xA9), chr(0x8C) => chr(0xA6),
+							$map = array(chr(0x8A) => chr(0xA9), chr(0x8C) => chr(0xA6),
 										chr(0x8D) => chr(0xAB), chr(0x8E) => chr(0xAE),
 										chr(0x8F) => chr(0xAC), chr(0x9C) => chr(0xB6),
 										chr(0x9D) => chr(0xBB), chr(0xA1) => chr(0xB7),
@@ -79,8 +78,7 @@
 										chr(0xAB) => '&laquo;', chr(0xAE) => '&reg;',
 										chr(0xB1) => '&plusmn;', chr(0xB5) => '&micro;',
 										chr(0xB6) => '&para;', chr(0xB7) => '&middot;',
-										chr(0xBB) => '&raquo;',
-									);
+										chr(0xBB) => '&raquo;');
 							$result = html_entity_decode(mb_convert_encoding(strtr($extracted_plaintext, $map), 'UTF-8', 'ISO-8859-2'), ENT_QUOTES, 'UTF-8');
 
 							print nl2br($result);
@@ -132,7 +130,7 @@
 					break;
 
 				default:
-					print "";
+					print "<script language='javascript'>alert('Invalid input. Please try again');</script>";
 					break;
 			}
 		}
