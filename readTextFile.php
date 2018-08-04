@@ -28,19 +28,19 @@
 								| LIBXML_NOERROR
 								| LIBXML_NOWARNING);
 							$xmldata = $dom->saveXML();
-                           
-							$contents = strip_tags($xmldata, '<w:p><w:u><w:i><w:b>'); // Strip the p, u, i, and b tags
+                            
+							$contents = strip_tags($xmldata, '<w:p><w:u><w:i><w:b><w:r>'); // Strip the p, u, i, b, and r tags
 							$contents = preg_replace("/(<(\/?)w:(.)[^>]*>)\1*/", "<$2$3>", $contents);
 							$dom = new DOMDocument;
 							@$dom->loadHTML($contents, LIBXML_HTML_NOIMPLIED  | LIBXML_HTML_NODEFDTD);
                             $contents = $dom->saveHTML();
-                            $contents = preg_replace('~<([ibu])>(?=(?:\s*<[ibu]>\s*)*?<\1>)|</([ibu])>(?=(?:\s*</[ibu]>\s*)*?</?\2>)|<p></p>~s', "", $contents);
+                            
 							// Get rid of weird special chars
 							$find = array('&acirc;&#128;&#156;', '&acirc;&#128;&#157;', '&acirc;&#128;&#152;', '&acirc;&#128;&#153;', '&acirc;&#128;&brvbar;', '&acirc;&#128;&#147;', '&acirc;&#128;&#148;');
 							$replace = array('“', '”', "‘", "’", "...", "–", "—");
 						
 							$contents = str_replace($find, $replace, $contents);
-							print $contents;
+							print ($contents);
 						}
 					}
 					break;
@@ -93,7 +93,7 @@
 					}
 					break;
 
-				case $text_plain:
+				case $text_plain: // Good
 					$source_file = $_FILES['document']['tmp_name'];
 					$body = file_get_contents($source_file);
 					$map = array(
