@@ -3,10 +3,10 @@
 // Preview / Crop / Resize img
 include 'loginCheck.php';
 
-$target_dir = "/home/ec2-user/public_html/res/img/profilePictures/".$_SESSION['username']."/";
+$target_dir = "/home/ec2-user/public_html/res/img/profilePictures/".$_SESSION['userid']."/";
 
-if (!file_exists("/home/ec2-user/public_html/res/img/profilePictures/".$_SESSION['username']."")) {
-    mkdir("/home/ec2-user/public_html/res/img/profilePictures/".$_SESSION['username']."", 0777, true);
+if (!file_exists("/home/ec2-user/public_html/res/img/profilePictures/".$_SESSION['userid']."")) {
+    mkdir("/home/ec2-user/public_html/res/img/profilePictures/".$_SESSION['userid']."", 0777, true);
 }
 
 chmod($target_dir, 0777);

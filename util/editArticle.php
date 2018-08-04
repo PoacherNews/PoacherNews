@@ -130,17 +130,21 @@ if (!isset($data) || !$data)
                 </tbody>
             </table>
 
-<h2>Article State</h2>          
+<h2>Article State</h2>
 <!-- ERROR -->
+<?php if($data['IsDraft'] == 0 && $data['IsSubmitted'] == 0) { ?>
 <form method="post" action="">
-    <legend>Error testing</legend>
+    <legend>Error</legend>
+    
     <div>
-        <input type="radio" name="errorStatus" class="errorRadio" value="0" /><label>Set Error</label><br />
-        <input type="radio" name="errorStatus" class="errorRadio" value="1" /><label>Error to Draft</label><br />
-        <input type="radio" name="errorStatus" class="errorRadio" value="2" /><label>Error to Pending</label><br />
-        <input type="radio" name="errorStatus" class="errorRadio" value="3" /><label>Error to Approved</label><br />
+        <select name="errorStatus">
+            <option value="0">Set to Error</option>
+            <option value="1">Set to Draft</option>
+            <option value="2">Set to Pending</option>
+            <option value="3">Set to Approved</option>
+        </select>
     </div>
-
+    
     <div>
         <input type="submit" name="errorSubmit" class="errorSubmit" value="Submit" />
     </div>
@@ -149,26 +153,26 @@ if (!isset($data) || !$data)
 <?php 
 if(isset($_POST['errorSubmit']))
 {
-    $selected_radio = $_POST['errorStatus'];
+    $selected_option = $_POST['errorStatus'];
     // SET ERROR
-    if($selected_radio == 0)
+    if($selected_option == 0)
     {
         $query = "UPDATE Article SET IsDraft = 0, IsSubmitted = 0 WHERE ArticleID = ?";
     }
     // Refactor  ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 0) statements together
     // Add error message
     // ERROR TO DRAFT
-    else if($selected_radio == 1 && ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 0))
+    else if($selected_option == 1 && ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 0))
     {
         $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 0 WHERE ArticleID = ?";
     }
     // ERROR TO PENDING
-    else if($selected_radio == 2 && ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 0))
+    else if($selected_option == 2 && ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 0))
     {
         $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 1 WHERE ArticleID = ?";
     }
     // ERROR TO APPROVED
-    else if($selected_radio == 3 && ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 0))
+    else if($selected_option == 3 && ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 0))
     {
         $query = "UPDATE Article SET IsDraft = 0, IsSubmitted = 1 WHERE ArticleID = ?";
     }
@@ -201,15 +205,18 @@ if(isset($_POST['errorSubmit']))
     // done
     $stmt->close();
 }?>
-<br>
+<?php } ?>            
 
-<!-- ISDRAFT -->
+<!-- DRAFT -->
+<?php if($data['IsDraft'] == 1 && $data['IsSubmitted'] == 0) { ?>
 <form method="post" action="">
-    <legend>IsDraft</legend>
+    <legend>Draft</legend>
     <div>
-        <input type="radio" name="draftStatus" class="draftRadio" value="0" /><label>Draft to Pending</label><br />
-        <input type="radio" name="draftStatus" class="draftRadio" value="1" /><label>Pending to Draft</label><br />
-        <input type="radio" name="draftStatus" class="draftRadio" value="2" /><label>Approved to Draft</label><br />
+        <select name="draftStatus">
+            <option value="0">Set to Pending</option>
+            <option value="1">Set to Approved</option>
+        </select>    
+        <br>
         <input type="checkbox" name="draftConfirm" class="draftConfirm" value="Confirm"/><label>Confirm draft state change</label>
     </div>
 
@@ -227,7 +234,7 @@ if(isset($_POST['draftSubmit']))
     }
     else 
     {
-        $selected_radio = $_POST['draftStatus'];
+        $selected_option = $_POST['draftStatus'];
         // Fix ERROR
         // ERROR TESTING
         if($data[FeaturedType] != '')
@@ -246,19 +253,14 @@ if(isset($_POST['draftSubmit']))
         else 
         {
             // DRAFT TO PENDING
-            if($selected_radio == 0 && ($data['IsDraft'] == 1 && $data['IsPublish'] == 0))
+            if($selected_option == 0 && ($data['IsDraft'] == 1 && $data['IsPublish'] == 0))
             {
                 $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 1 WHERE ArticleID = ?";
             }
-            // PENDING TO DRAFT
-            else if($selected_radio == 1 && ($data['IsDraft'] == 1 &&   $data['IsSubmitted'] == 1))
+            // DRAFT TO APPROVED
+            else if($selected_option == 1 && ($data['IsDraft'] == 1 &&   $data['IsSubmitted'] == 1))
             {
-                $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 0 WHERE ArticleID = ?";
-            }
-            // APPROVED TO DRAFT
-            else if($selected_radio == 2 && ($data['IsDraft'] == 0 &&   $data['IsSubmitted'] == 1))
-            {
-                $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 0 WHERE ArticleID = ?";
+                $query = "UPDATE Article SET IsDraft = 0, IsSubmitted = 1 WHERE ArticleID = ?";
             }
     
             // Refresh
@@ -291,25 +293,28 @@ if(isset($_POST['draftSubmit']))
         }
     }
 }?>
-<br>
-            
-<!-- ISSUBMITTED -->            
+<?php } ?>
+
+<!-- PENDING -->
+<?php if($data['IsDraft'] == 1 && $data['IsSubmitted'] == 1) { ?>            
 <form method="post" action="">
-    <legend>IsSubmitted</legend>
+    <legend>Pending</legend>
     <div>
-        <input type="radio" name="submittedStatus" class="submittedRadio" value="0" /><label>Approved to Pending</label><br />
-        <input type="radio" name="submittedStatus" class="submittedRadio" value="1" /><label>Pending to Approved</label><br />
+        <select name="pendingStatus">
+            <option value="0">Set to Draft</option>
+            <option value="1">Set to Approved</option>
+        </select>   
     </div>
 
     <div>
-        <input type="submit" name="submittedSubmit" id="submittedSubmit" value="Submit" />
+        <input type="submit" name="pendingSubmit" id="pendingSubmit" value="Submit" />
     </div>
 </form>
 
 <?php 
-if(isset($_POST['submittedSubmit']))
+if(isset($_POST['pendingSubmit']))
 {
-    $selected_radio = $_POST['submittedStatus'];
+    $selected_option = $_POST['pendingStatus'];
     
     // ERROR TESTING
     if($data['FeaturedType'] != '')
@@ -327,13 +332,13 @@ if(isset($_POST['submittedSubmit']))
     }   
     else 
     {
-        //APPROVED TO PENDING
-        if($selected_radio == 0 && ($data['IsDraft'] == 0 && $data['IsSubmitted'] == 1))
+        //PENDING TO DRAFT
+        if($selected_option == 0 && ($data['IsDraft'] == 1 && $data['IsSubmitted'] == 1))
         {
-            $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 1 WHERE ArticleID = ?";
+            $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 0 WHERE ArticleID = ?";
         }
         //PENDING TO APPROVED
-        else if($selected_radio == 1 && ($data['IsDraft'] == 1 && $data['IsSubmitted'] == 1))
+        if($selected_option == 1 && ($data['IsDraft'] == 1 && $data['IsSubmitted'] == 1))
         {
             $query = "UPDATE Article SET IsDraft = 0, IsSubmitted = 1 WHERE ArticleID = ?";
         }
@@ -366,14 +371,96 @@ if(isset($_POST['submittedSubmit']))
         $stmt->close();
     }
 } ?>
+<?php } ?>            
+                 
+<!-- APPROVED -->
+<?php if($data['IsDraft'] == 0 && $data['IsSubmitted'] == 1) { ?>            
+<form method="post" action="">
+    <legend>Approved</legend>
+    <div>
+        <select name="approvedStatus">
+            <option value="0">Set to Draft</option>
+            <option value="1">Set to Pending</option>
+        </select>   
+    </div>
+
+    <div>
+        <input type="submit" name="approvedSubmit" id="approvedSubmit" value="Submit" />
+    </div>
+</form>
+
+<?php 
+if(isset($_POST['approvedSubmit']))
+{
+    $selected_option = $_POST['approvedStatus'];
+    
+    // ERROR TESTING
+    if($data['FeaturedType'] != '')
+    {
+        echo "Error. Featured type must be set to none to continue.";
+    }
+    else if($data['IsDraft'] == 0 && $data['IsSubmitted'] == 0)
+    {
+        echo "Error. Article is in error state. Please update to continue.";
+    }              
+    //ERROR
+    else if($data['IsDraft'] == 1 && $data['IsSubmitted'] == 0)
+    {
+        echo "Error. Article is in draft state. Please update to continue.";
+    }   
+    else 
+    {
+        //APPROVED TO DRAFT
+        if($selected_option == 0 && ($data['IsDraft'] == 0 && $data['IsSubmitted'] == 1))
+        {
+            $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 0 WHERE ArticleID = ?";
+        }
+        //APPROVED TO PENDING
+        if($selected_option == 1 && ($data['IsDraft'] == 0 && $data['IsSubmitted'] == 1))
+        {
+            $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 1 WHERE ArticleID = ?";
+        }
+        // Refresh
+        echo "<meta http-equiv='refresh' content='0'>";
+        //include 'util/db.php';
+        // prepare statement
+        $stmt = $db->stmt_init();
+        if (!$stmt->prepare($query))
+        {
+            echo "Error preparing statement: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        // bind username
+        if (!$stmt->bind_param('s', $data['ArticleID']))
+        {
+            echo "Error binding parameters: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        // query database
+        if (!$stmt->execute())
+        {
+            echo "Error executing query: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        // done
+        $stmt->close();
+    }
+} ?>
 <br>
+<?php } ?>
             
-<!-- COMMENTSENABLED -->            
+<!-- COMMENTSENABLED -->
+<?php if($data['IsDraft'] == 0 && $data['IsSubmitted'] == 1) { ?>
 <form method="post" action="">
     <legend>Comments</legend>
     <div>
-        <input type="radio" name="commentStatus" class="commentRadio" value="0" /><label>Disable Comments</label><br />
-        <input type="radio" name="commentStatus" class="commentRadio" value="1" /><label>Enable Comments</label><br />
+        <select name="commentStatus">
+            <option value="0">Disable Comments</option>
+            <option value="1">Enable Comments</option>
+        </select>   
     </div>
 
     <div>
@@ -389,12 +476,12 @@ if(isset($_POST['commentSubmit']))
     // ERROR TESTING
 
     //DISABLE COMMENTS
-    if($selected_radio == 0 && $data['CommentsEnabled'] == 1)
+    if($selected_option == 0 && $data['CommentsEnabled'] == 1)
     {
         $query = "UPDATE Article SET CommentsEnabled = 0 WHERE ArticleID = ?";
     }
     //ENABLE COMMENTS
-    else if($selected_radio == 1 && $data['CommentsEnabled'] == 0)
+    else if($selected_option == 1 && $data['CommentsEnabled'] == 0)
     {
         $query = "UPDATE Article SET CommentsEnabled = 1 WHERE ArticleID = ?";
     }
@@ -427,17 +514,21 @@ if(isset($_POST['commentSubmit']))
     $stmt->close();
 }
 ?>
-<br>            
+<?php } ?>
+            
 <!------------------------------------------------------------------------->
             
+<?php if($data['IsDraft'] == 0 && $data['IsSubmitted'] == 1) { ?>
 <h2>Featured State</h2>
-<!-- FeaturedTYPE -->
+<!-- FeaturedType -->
 <form method="post" action="">
     <legend>Featured Type</legend>
     <div>
-        <input type="radio" name="featuredStatus" class="featuredRadio" value="0" /><label>None</label><br />
-        <input type="radio" name="featuredStatus" class="featuredRadio" value="1" /><label>Main</label><br />
-        <input type="radio" name="featuredStatus" class="featuredRadio" value="2" /><label>EditorPick</label><br />
+        <select name="featuredStatus">
+            <option value="0">None</option>
+            <option value="1">Main</option>
+            <option value="2">EditorPick</option>
+        </select>   
     </div>
 
     <div>
@@ -448,7 +539,7 @@ if(isset($_POST['commentSubmit']))
 <?php 
 if(isset($_POST['featuredSubmit']))
 {
-    $selected_radio = $_POST['featuredStatus'];
+    $selected_option = $_POST['featuredStatus'];
     
     if(($data['IsDraft'] == 1 && $data['IsSubmitted'] == 0) || $data['IsDraft'] == 1 && $data['IsSubmitted'] == 1)
     {
@@ -457,12 +548,12 @@ if(isset($_POST['featuredSubmit']))
     else 
     {
         // NONE
-        if($selected_radio == 0)
+        if($selected_option == 0)
         {
             $query = "DELETE FROM Featured WHERE ArticleID = ?";
         }
         // MAIN
-        if($selected_radio == 1 && $data['FeaturedType'] == null)
+        if($selected_option == 1 && $data['FeaturedType'] == null)
         {
             $sql = "SELECT * FROM Featured WHERE FeaturedType = 'Main'";
             $result = $db->query($sql);
@@ -475,7 +566,7 @@ if(isset($_POST['featuredSubmit']))
                 $query = "INSERT INTO Featured (FeaturedType, ArticleID) VALUES ('Main', ?)";
             }
         }
-        else if($selected_radio == 1 && $data['FeaturedType'] == 'EditorPick')
+        else if($selected_option == 1 && $data['FeaturedType'] == 'EditorPick')
         {
             $sql = "SELECT * FROM Featured WHERE FeaturedType = 'Main'";
             $result = $db->query($sql);
@@ -489,11 +580,11 @@ if(isset($_POST['featuredSubmit']))
             }
         }
         // EdITOR PICK
-        if($selected_radio == 2 && $data['FeaturedType'] == null)
+        if($selected_option == 2 && $data['FeaturedType'] == null)
         {
             $query = "INSERT INTO Featured (FeaturedType, ArticleID) VALUES ('EditorPick', ?)";
         }
-        else if($selected_radio == 2 && $data['FeaturedType'] == 'Main')
+        else if($selected_option == 2 && $data['FeaturedType'] == 'Main')
         {
             $query = "UPDATE Featured SET FeaturedType = 'EditorPick' WHERE ArticleID = ?";
         }
@@ -528,7 +619,9 @@ if(isset($_POST['featuredSubmit']))
         $stmt->close();
     }
 }?>
-<br>
+<?php } ?>
+            
+<!------------------------------------------------------------------------->
 
 <h2>Delete</h2>
 <!-- DELETE -->            
