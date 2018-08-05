@@ -17,11 +17,19 @@
         <title>The Poacher | Editor Page</title>
         <link rel="stylesheet" href="res/css/editorpage.css">
         <?php include 'includes/globalHead.html'?>
-        <link rel="stylesheet" href="res/css/profile.css">
-        <link rel="stylesheet" href="res/css/profileNav.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
     <body>
+        <?php 
+	    	include 'includes/header.php';
+            include 'includes/nav.php';
+        ?>
+        
+        <div class="nav">
+            <?php
+                include 'includes/toolsNav.php';
+            ?>
+        </div>
 		<div class="editor-tab">
 			<button class="tablinks" onclick="editorTab(event, 'article')"><i class="fas fa-pencil-alt"></i></button>
 			<button class="tablinks" onclick="editorTab(event, 'picture')"><i class="fas fa-camera"></i></button>
@@ -49,7 +57,6 @@
                     } else {
                         print "<input type=\"text\" id=\"title\" placeholder=\"Title\" name=\"title\">";
                     }
-                    print "<br>";
                 ?>
                 <select name="category" id="category">
                     <option value="Politics">Politics</option>
@@ -60,11 +67,11 @@
                     <option value="Opinion">Opinion</option>
                 </select>
                 <ul>
-                    <li onclick="setUndo()"><i class="fas fa-undo-alt" id="undo"></i></li>
-                    <li onclick="setRedo()"><i class="fas fa-redo-alt" id="redo"></i></li>
-                    <li onclick="setBold()"><i id="bold" class="fas fa-bold"></i></li>
-                    <li onclick="setItalic()"><i id="italic" class="fas fa-italic"></i></li>
-                    <li onclick="setUnderline()"><i id="underline" class="fas fa-underline"></i></li>
+                    <li onclick="setUndo()" id="undo"><i class="fas fa-undo-alt"></i></li>
+                    <li onclick="setRedo()" id="redo"><i class="fas fa-redo-alt"></i></li>
+                    <li onclick="setBold()" id="bold"><i class="fas fa-bold"></i></li>
+                    <li onclick="setItalic()" id="italic"><i class="fas fa-italic"></i></li>
+                    <li onclick="setUnderline()" id="underline"><i class="fas fa-underline"></i></li>
                     <li onclick="linkBox()"><i id="insert" class="fas fa-link"></i></li>
                     <div id="link-modal" class="insert-link">
                         <div class="link-content">
@@ -420,7 +427,7 @@
 				type: 'POST',
 				data: formData,
 				success: function (output) {
-					$('.text-editor').html(output);
+					$('#editor').html(output);
 				},
 				cache: false,
 				contentType: false,
