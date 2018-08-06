@@ -27,6 +27,46 @@ textarea[name=bio] {
     font-weight: 600;
 }
 </style>
+<!-- ADDED BY BRUCE -->
+    <div class="sectionHeader">
+		<h2>Profile Picture</h2>
+		<span class="subheader">Image representation of yourself, displayed on your profile page.</span>
+	</div>
+    <div id="profilePicture">
+        <!--
+                        <div class="editor-image">
+                    <input id="imgInp" type='file' onchange="readURL(this);"/>
+                    <div id="picture-content">
+                        <img id="image" src="#" alt="Image" width="650" height="434"/>
+                    </div>
+                </div>
+        -->
+    <?php
+        if($user['ProfilePicture'] != 'defaultAvatar.png')
+        {
+            echo "<img id='profilePic' src='../res/img/profilePictures/".$user['UserID']."/".$user['ProfilePicture']."'>";
+        }
+        else 
+        {
+            echo "<img id='profilePic' src='../res/img/".$user['ProfilePicture']."'>";
+            echo "<br>";
+        }
+    ?>
+    <?php
+        if($user['UserID'] == $_SESSION['userid'])
+            {
+    ?>
+                <form id="upload" method="post" enctype="multipart/form-data">
+                    Select image to upload:
+                    <input id="imgInp" onchange="readURL(this);" type="file" name="profilePicture" class="profilePicture">
+                    <input class="settingsSubmit" type="submit" value="Save Profile Picture" name="submit">
+                </form>
+        <?php
+            }
+        ?>
+    </div>
+<!-- -->
+
 <form id="general">
     <input type="hidden" name="action" value="updateGeneral"/>
 	<div class="sectionHeader">
@@ -90,4 +130,42 @@ textarea[name=bio] {
             $(".settingsMessage").fadeIn();
         });
     })
+    
+/* ADDED BY BRUCE */
+                 $("form#upload").submit(function(event){   
+                      var formData = new FormData($(this)[0]);
+                      $.ajax({
+                        url: 'util/uploadProfilePicture.php',
+                        type: 'POST',
+                        data: formData,
+                        async: false,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (returndata) {
+                            //$("#comment-list-box").append(returndata);
+
+                        $("form#upload")[0].reset();
+                        //$("#loaderIcon").hide();   
+                        },
+                        error:function (){}                 
+                      });
+                    });   
+    
+    function readURL(input) { // Reads in a picture and displays it
+        var imgInp = document.getElementById('imgInp').value;
+        if(!(imgInp.length == 0)) { // Display image
+            if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#profilePic').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+            }
+        } else { // Remove image
+            $('#profilePic').attr('src', '');
+        }
+    }
+    $("#imgInp").change(function(){readURL(this);});
+/* */
 </script>
