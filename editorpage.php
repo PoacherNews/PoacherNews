@@ -24,7 +24,6 @@
 	    	include 'includes/header.php';
             include 'includes/nav.php';
         ?>
-        
         <div class="nav">
             <?php
                 include 'includes/toolsNav.php';
@@ -43,7 +42,7 @@
                 } 
             } else {
                     print "<form id=\"action-form\" action=\"/submitArticle.php\" method=\"post\" enctype=\"multipart/form-data\">";
-                }
+            }
         ?>
         <!--
         <form id="action-form" action="/submitArticle.php" method="post" enctype="multipart/form-data">
@@ -98,11 +97,7 @@
                         </div>
                     </li>
                 </ul>
-                <div id="editor" contenteditable="true" spellcheck="true"><?php 
-                                if(isset($_POST['draft'])) {
-                                    print($_POST['body']);
-                                }
-                        ?></div>
+                <div id="editor" contenteditable="true"><?php if(isset($_POST['draft'])) {print($_POST['body']);}?></div>
             </div>
 
             <div id="picture" class="tabcontent">
@@ -197,46 +192,51 @@
 /******************************* TEXT FORMATTING *******************************/
             function setUndo() {
                 document.execCommand('undo', true, null);
+                var editor = document.getElementById('editor');
                 setEndOfContenteditable(editor);
             }
             
             function setRedo() {
                 document.execCommand('redo', true, null);
+                var editor = document.getElementById('editor');
                 setEndOfContenteditable(editor);
             }
             
             function setBold() {
-			document.execCommand('bold', true, null);
-			var state = document.queryCommandState('bold');
-			if(state == true) {
-				bold.style.backgroundColor = "lightgrey";
-			} else {
-				bold.style.backgroundColor = "#fff";
-			}
-		}
+                document.execCommand('bold', false, null);
+                var state = document.queryCommandState('bold');
+                if(state == true) {
+                    bold.style.backgroundColor = "lightgrey";
+                } else {
+                    bold.style.backgroundColor = "#fff";
+                }
+                var editor = document.getElementById('editor');
+                //setEndOfContenteditable(editor);
+                getCaretPosition();
+            }
 
-		// Italicize the text
-		function setItalic() {
-			document.execCommand('italic', true, null);
-			var state = document.queryCommandState('italic');
-			if(state == true) {
-				italics.style.backgroundColor = "lightgrey";
-			} else {
-				italics.style.backgroundColor = "#fff";
-			}
-		}
-		
-		// Underline the text
-		function setUnderline() {
-			document.execCommand('underline', true, null);
-			var state = document.queryCommandState('underline');
-			if(state == true) {
-				underline.style.backgroundColor = "lightgrey";
-			} else {
-				underline.style.backgroundColor = "#fff";
-			}
-		}
-            
+            // Italicize the text
+            function setItalic() {
+                document.execCommand('italic', true, null);
+                var state = document.queryCommandState('italic');
+                if(state == true) {
+                    italics.style.backgroundColor = "lightgrey";
+                } else {
+                    italics.style.backgroundColor = "#fff";
+                }
+            }
+
+            // Underline the text
+            function setUnderline() {
+                document.execCommand('underline', true, null);
+                var state = document.queryCommandState('underline');
+                if(state == true) {
+                    underline.style.backgroundColor = "lightgrey";
+                } else {
+                    underline.style.backgroundColor = "#fff";
+                }
+            }
+
             function setEndOfContenteditable(contentEditableElement) {
                 var range, selection;
                 contentEditableElement.focus();
@@ -254,6 +254,27 @@
                     range.collapse(false);
                     range.select();
                 }
+            }
+            
+            function getCaretPosition() {
+                if (window.getSelection && window.getSelection().getRangeAt) {
+                var range = window.getSelection().getRangeAt(0);
+                var selectedObj = window.getSelection();
+                var rangeCount = 0;
+                var childNodes = selectedObj.anchorNode.parentNode.childNodes;
+                for (var i = 0; i < childNodes.length; i++) {
+                    if (childNodes[i] == selectedObj.anchorNode) {
+                        break;
+                    }
+                    if (childNodes[i].outerHTML)
+                        rangeCount += childNodes[i].outerHTML.length;
+                    else if (childNodes[i].nodeType == 3) {
+                        rangeCount += childNodes[i].textContent.length;                       
+                    }
+                }
+                return range.startOffset + rangeCount;
+            }
+                return -1;
             }
             var linkModal = document.getElementById('link-modal');
 			
@@ -311,130 +332,104 @@
                 document.execCommand('insertHTML', false, text);
             });
 /******************************* Testing *******************************/
-        // When the user clicks, open the submit modal
-		function submitBtn() {
-			var submitBtn = document.getElementById("submit-button");
-			var articleTitle = document.getElementById("title");
-			var uploadDocument = document.getElementById("upload-document");
-			
-			if(articleTitle.value.length == 0) {
-				articleTitle.style.border = "2px solid red";
-				articleTitle.placeholder = "Invalid requirements";
-			} else {
-				modal.style.display = "block";
-			}
-			
-			
-		}
-		
-		//When the user clicks, restrictions on the save button if invalid credentials
-		function saveBtn() {
-			var saveBtn = document.getElementById('save-button');
-			var articleTitle = document.getElementById('title');
-			
-			if(articleTitle.value.length == 0) {
-				articleTitle.style.border = "2px solid red";
-				articleTitle.placeholder = "Invalid requirements";
-				return false;
-			} else {
-				return true;
-			}
-		}
+            function submitBtn() {
+                var submitBtn = document.getElementById("submit-button");
+                var articleTitle = document.getElementById("title");
+                var uploadDocument = document.getElementById("upload-document");
+
+                if(articleTitle.value.length == 0) {
+                    articleTitle.style.border = "2px solid red";
+                    articleTitle.placeholder = "Invalid requirements";
+                } else {
+                    modal.style.display = "block";
+                }
+            }
             
-        var modal = document.getElementById('submit-draft');
+		
+            function saveBtn() {
+                var saveBtn = document.getElementById('save-button');
+                var articleTitle = document.getElementById('title');
+
+                if(articleTitle.value.length == 0) {
+                    articleTitle.style.border = "2px solid red";
+                    articleTitle.placeholder = "Invalid requirements";
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+            
+            var modal = document.getElementById('submit-draft');
 		
             // Cancels the submission of the article (No) button
             function cancel() {
                 // var cancelSubmit = document.getElementById("cancel-submit"); 
                 modal.style.display = "none";
-
             }
         
             window.onclick = function(event) { // Close link via 'blur'-ing
                 if (event.target == linkModal) {
                     linkModal.style.display = "none";
                 }
-                
                 if (event.target == modal) {
                     modal.style.display = "none";
                 }
                 if (event.target == override) {
+                    var override = document.getElementById('override-draft');
                     override.style.display = "none";
-                    // Remove the file path
-                    clearInputFile();
-                    // Check the input file 
-                    checkInputFile();
                 }
             }
             
-        var override = document.getElementById('override-draft');
-        
-        function checkInputFile() {
-            var editor = document.getElementsByClassName('text-editor');
-                if(document.getElementById('upload-document').value.length == 0) {
-                    editor[0].contentEditable = "true";
-                    editor[0].style.opacity = "1";
+            function exitModal() {
+                var span = document.getElementsByClassName("close")[0];
+                modal.style.display = "none";
+            }
+/******************************* FILE UPLOADING *******************************/
+            function onUploadFile() {
+                if($('#editor').text().length > 0) {
+                   $('.override').show();
                 } else {
-                    editor[0].contentEditable = "false";
-                    editor[0].style.opacity = "0.5";
+                    uploadFile(); // Upload file if the override is approved
                 }
-        }
-        
-        // Canceling the override and erasing the file upload
-        function cancelOverride() {
-            override.style.display = "none";
-            // Remove the file path
-            clearInputFile();
-            // Check the input file 
-            checkInputFile();
-        }
-        
-        // Approving the override and disabling the rich text editor
-        function approveOverride() {
-            override.style.display = "none";
-            var editor = document.getElementsByClassName('text-editor');
-            editor[0].innerHTML = '';
-            editor[0].contentEditable = "false";
-        }
-        
-        // When the user clicks on (x), close the modal
-	 	function exitModal() {
-			var span = document.getElementsByClassName("close")[0];
-			modal.style.display = "none";
-		}
-        
-        function exitOverride() {
-            var span = document.getElementsByClassName("close")[0];
-            override.style.display = "none";
-            // Remove the file path
-            clearInputFile();
-            // Check the input file 
-            checkInputFile();
-        }
-            
-        function onUploadFile() {
-            // Check the input file 
-			/*
-            checkInputFile();
-            if($('.text-editor').text().length > 0) {
-               $('.override').show();
             }
-			*/
-			var formData = new FormData(); 
-			formData.append('document', $('#upload-document')[0].files[0]); 
-			$.ajax({
-				url: 'readTextFile.php',
-				type: 'POST',
-				data: formData,
-				success: function (output) {
-					$('#editor').html(output);
-				},
-				cache: false,
-				contentType: false,
-				processData: false
-			});
-        }
-            
+
+            function uploadFile() {
+                var formData = new FormData(); 
+                formData.append('document', $('#upload-document')[0].files[0]); 
+                $.ajax({
+                    url: 'readTextFile.php',
+                    type: 'POST',
+                    data: formData,
+                    success: function (output) {
+                        $('#editor').html(output);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+
+            function cancelOverride() {
+                var override = document.getElementById('override-draft');
+                override.style.display = "none";
+                var uploadDoc = document.getElementById('upload-document').value;
+                uploadDoc.length = 0;
+            }
+
+            function approveOverride() {
+                var override = document.getElementById('override-draft');
+                override.style.display = "none";
+                uploadFile(); // Upload file if the override is approved
+            }
+
+            function exitOverride() {
+                var span = document.getElementsByClassName("close")[0];
+                var override = document.getElementById('override-draft');
+                override.style.display = "none";
+                var uploadDoc = document.getElementById('upload-document').value;
+                uploadDoc.length = 0;
+            }
+
 		</script>
 	</body>
 </html>

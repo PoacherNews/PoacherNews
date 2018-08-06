@@ -44,7 +44,7 @@
       
       // Check if the draft has an articleid or is a new submission
       if($articleData['ArticleID']) { // The draft was saved upon edit
-          $sql_query = "UPDATE Article SET Headline = '".$title."', Body= '".$body."', Category = '".$category."', IsSubmitted = '".$is_submitted."' WHERE ArticleID = ? ";
+          $sql_query = "UPDATE Article SET Headline = '".$title."', Body= '".$body."', Category = '".$category."', IsSubmitted = '".$is_submitted."' WHERE ArticleID = ?";
           if (!$stmt->prepare($sql_query)) {
               echo "Error preparing statement: \n";
               print_r($stmt->error_list);
@@ -87,7 +87,6 @@
       $body = empty($_POST['body']) ? '' : $_POST['body'];
       $authorid = getAuthorID();
       // upload image
-      $result = nl2br($body);
       $is_draft = 1; // true
       $is_submitted = 0; // false
       $views = 0;
@@ -98,7 +97,7 @@
       // Check if the draft has an articleid or is a new submission
       if($articleData['ArticleID']) { // The draft was saved upon edit
           //Update the mysql
-          $sql_query = "UPDATE Article SET Headline = '".$title."', Body= '".$result."', Category = '".$category."' WHERE ArticleID = ? ";
+          $sql_query = "UPDATE Article SET Headline = '".$title."', Body= '".$body."', Category = '".$category."' WHERE ArticleID = ? ";
           if (!$stmt->prepare($sql_query)) {
               echo "Error preparing statement: \n";
               print_r($stmt->error_list);
