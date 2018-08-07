@@ -39,7 +39,7 @@
                                 </div>
                         </span>";
                 } else {
-                    print "<span onclick=\"clickLgnLink()\" class=\"lgnLink\">Have an account? <b>Log In<i class=\"fa fa-caret-down\"></i></b> 
+                    print "<span class=\"lgnLink\">Have an account? <b>Log In<i class=\"fa fa-caret-down\"></i></b> 
                                 <div class=\"lgnDrpdwn-content\">
                                     <p>Log in here!</p>
                                     <form action=\"/util/handleLogin.php\" method=\"POST\">
