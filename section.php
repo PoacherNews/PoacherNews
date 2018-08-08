@@ -28,15 +28,11 @@
             /* Makes an article DOM object and populates elements for page display.
                Accepts a JSON formatted string object for parsing.
             */                
-            if($.isArray(rowData)) { // In case this is an encapsulated JSON object
+            if($.isArray(rowData)) { // This is an encapsulated JSON object
                 rowData = rowData[0];
             }
-            if(rowData.hasOwnProperty('errorId')) {
-                logError(rowData);
-                return;
-            }
+
             var $previewCharLimit = 400;
-            
             var $continueReading = $("<a/>", {
                 'class' : "continue-reading",
                 'href' : "article.php?articleid="+rowData['ArticleID'],
@@ -44,18 +40,22 @@
             });
             var $article = $("<article/>");
 
+            $imageWrap = $("<a/>", {
+                'href' : "article.php?articleid="+rowData['ArticleID'],
+            });
             var $thumbnail = $("<div/>", {
                 'class' : "stacked-thumbnail"
             });
-            var $text = $("<div/>", {
-                'class' : 'stacked-text'
-            });
-            
-            $thumbnail.append($("<img/>", {
+            $imageWrap.append($("<img/>", {
                 'src' : rowData['ArticleImage'],
                 'height' : "217",
                 'width' : "325",
             }));
+            $thumbnail.append($imageWrap);
+            var $text = $("<div/>", {
+                'class' : 'stacked-text'
+            });
+            
             var $headerWrap = $("<a/>", {
                 'href' : "article.php?articleid="+rowData['ArticleID']
             });
@@ -90,7 +90,7 @@
     <div class="secRowPrimary">
         <div class="secBorderPrimary"></div>
         <div class="secColumnPrimary">
-            <div id="articleList">
+            <div id="articleList" class="stackedArticles">
                 <script>
                     $.getJSON("util/sectionHandler.php", {
                         'category' : "<?php echo $_GET['Category'] ?>",

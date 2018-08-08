@@ -69,35 +69,11 @@ p { word-wrap: break-word; }
     font-weight: bold;
 }
 
-#stackedArticles {
+#secondaryarticles {
     grid-area: stackedArticles;
     border-left: 1px solid #3d9be9;
     border-right: 1px solid #3d9be9;
     margin: 50px auto 50px auto;
-}
-
-#stackedArticles > article {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    width: 80%;
-    margin: 15px auto 15px auto;
-}
-#stackedArticles > article:not(:last-child) {
-    border-bottom: 2px solid #3d9be9;
-}
-
-#stackedArticles .stacked-text {
-    margin-left: 15px;
-}
-#stackedArticles .stacked-text h1 {
-    font-size: 30px;
-    color: #414141;
-    margin: 5px auto 0px auto;
-}
-
-.stacked-thumbnail {
-    min-width: 315px;
-    display: inline;
 }
 
 .articleImage {
