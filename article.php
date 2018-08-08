@@ -80,7 +80,8 @@
                                             <input type=\"hidden\" name=\"body\" value=\"{$articleData['Body']}\">
                                         </form>";
                              }
-                            
+                        ?>, 
+                        <?php
                             $articleRating = getRatingByID($_GET['articleid'], $db);
                             print "Rated ".number_format((float)$articleRating, 2, '.', '')."/5 stars";
                         ?>
