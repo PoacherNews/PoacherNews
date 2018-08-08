@@ -48,7 +48,7 @@ if(!empty($_GET)) {
         print(json_encode(getMainArticle($db)));
         return;
     } else if($_GET['request'] === "editorpicks") {
-        print(json_encode(getEditorPicks(NULL, $editorPickCap, $db)));
+        print(json_encode(array_reverse(getEditorPicks(NULL, $editorPickCap, $db))));
         return;
     } else if($_GET['request'] === "secondaryarticles") {
         $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 ORDER BY PublishDate LIMIT ".$secondaryResultCap.";";
