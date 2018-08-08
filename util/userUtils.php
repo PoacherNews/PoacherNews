@@ -27,6 +27,23 @@
 			return $result['Password'];
 		}
 	}
+	function verifyValidPassword($password) {
+		/* Will return TRUE if the provided password meets site security requirements, otherwise will return a specific error string. */
+		if(!preg_match('/^.{6,}+$/', $password)) {
+        	return "Password must be at least 6 characters.";
+        }
+        if(!preg_match('/[A-Z]/', $password)) {
+        	return "Password must contain at least one uppercase letter.";
+    	}
+    	if(!preg_match('/[a-z]/', $password)) {
+        	return "Password must contain at least one lowercase letter.";
+    	}
+    	if(!preg_match('/[0-9]/', $password)) {
+        	return "Password must contain at least one number.";
+    	}
+
+    	return TRUE;
+    }
 	function isBookmark($uid, $aid, $db) {
 		/* Returns TRUE if article of provided article ID is a bookmark of user of provided user ID, otherwise returns FALSE. */
 		$sql = "SELECT * FROM Bookmark WHERE ArticleID = {$aid} AND UserID = {$uid};";
@@ -228,6 +245,7 @@
 		return mysqli_query($db, $sql);
 	}
 	function updateName($uid, $fname=NULL, $lname=NULL, $db) {
+		/* Updates the first or last name, if provided, of user matching provided User ID. */
 		if(!is_null($fname)) {
 			$fname = htmlspecialchars(mysqli_escape_string($db, $fname), ENT_QUOTES);
 			$sql = "UPDATE User SET FirstName = '{$fname}' WHERE UserID = {$uid}";
@@ -241,37 +259,28 @@
 		return true;
 	}
 	function updateTimezone($uid, $tz, $db) {
+		/* Updates the Timezone field of a user of provided User ID. */
 		$tz = mysqli_escape_string($db, $tz);
 		$sql = "UPDATE User SET TimeZone = '{$tz}' WHERE UserID = {$uid}";
 		if(!mysqli_query($db, $sql)) { return false; }
 		return true;
 	}
-	function verifyValidPassword($password) {
-		/* Will return TRUE if the provided password meets site security requirements, otherwise will return a specific error string. */
-		if(!preg_match('/^.{6,}+$/', $password)) {
-        	return "Password must be at least 6 characters.";
-        }
-        if(!preg_match('/[A-Z]/', $password)) {
-        	return "Password must contain at least one uppercase letter.";
-    	}
-    	if(!preg_match('/[a-z]/', $password)) {
-        	return "Password must contain at least one lowercase letter.";
-    	}
-    	if(!preg_match('/[0-9]/', $password)) {
-        	return "Password must contain at least one number.";
-    	}
-
-    	return TRUE;
-    }
     function updateUserPassword($uid, $password, $db) {
+		/* Updates the Password field of a user of provided User ID. */
     	$sql = "UPDATE User SET Password = '{$password}' WHERE UserID = {$uid}";
     	if(!mysqli_query($db, $sql)) { return false; }
 		return true;
     }
-
-    // print_r(verifyValidPassword("Abcdef1"));
-
-	// include('db.php');
-	// print getHashedPassword(2 , $db);
-	// print updateTimezone(13, 'HAST', $db);
+    function updateEmail($uid, $email, $db) {
+		/* Updates the Email field of a user of provided User ID. */
+    	$sql = "UPDATE User SET Email = '{$email}' WHERE UserID = {$uid}";
+    	if(!mysqli_query($db, $sql)) { return false; }
+		return true;
+    }
+    function deleteUser($uid, $db) {
+    	/* Removes user of matching user ID from the database. */
+    	$sql = "DELETE FROM User WHERE UserID = {$uid}";
+    	if(!mysqli_query($db, $sql)) { return false; }
+		return true;
+    }
 ?>

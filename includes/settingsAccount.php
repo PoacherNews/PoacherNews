@@ -45,7 +45,7 @@ input {
     </div>
     <div id="changeEmail">
         <label for="currentEmail">Current Email</label>
-        <input name="currentEmail" type="text" placeholder="Current Email"/>
+        <input name="currentEmail" type="text" value="<?php print($_SESSION['email']); ?>" disabled/>
         <label for="newEmail">New Email</label>
         <input type="text" name="newEmail" placeholder="New Email" autocomplete="off" />
         <label for="confirmEmail">Confirm Email</label>
@@ -64,41 +64,65 @@ input {
         <input type="password" name="confirmPassword" autocomplete="off" />
     </div>
 
-    <div class="settingsMessage"></div>
+    <div id="saveMessage" class="settingsMessage error"></div>
     <input class="settingsSubmit" type="submit" value="Save changes"/>
 </form>
 <br>
-<form id="deleteAccount" value="deleteAccount">
+<form id="deleteAccount">
+    <input type="hidden" name="action" value="deleteAccount"/>
     <div class="sectionHeader">
         <h2>Delete Account</h2>
         <span class="subheader">Will remove your profile and bookmarks from the site permanently. Comments and articles you've written will no longer be tied to your account.</span>
     </div>
     <div id="deleteAccount">
-        <input id="deleteAccountButton" type="button" value="DELETE ACCOUNT"/>
+        <input id="deleteAccountButton" type="submit" value="DELETE ACCOUNT"/>
         <input type="checkbox" name="deleteConfirm"/>
         <label for="deleteConfirm">Confirm account deletion (this <span style="font-weight:bold">cannot</span> be undone!)</label>
     </div>
+    <div id="deleteError" class="settingsMessage"></div>
 </form>
 <script>
     $("#account").submit(function(event) {
-        $(".settingsMessage").hide();
-        $(".settingsMessage").removeClass("error");
+        $("#saveMessage").hide();
+        $("#saveMessage").removeClass("error");
         event.preventDefault();
         $.post("util/settingsHandler.php", $(this).serialize(), function(data) {
             /* NOTE - TODO: The current password here is sent over plaintext in a POST. This should instead be verified with a challenge type auth.
                See https://stackoverflow.com/questions/9934189/securely-send-a-plain-text-password
             */
             if(data == "Success") {
-                $(".settingsMessage").addClass("success");
-                $(".settingsMessage").text("Setings successfully saved.");
+                $("#saveMessage").addClass("success");
+                $("#saveMessage").text("Setings successfully saved.");
+                // Reset password fields after saving
                 $("[name=currentPassword]").val('');
                 $("[name=newPassword]").val('');
-                $("[name=confirmPassword]").val('');
+                // Reset/update email fields after saving
+                $("[name=currentEmail]").val($("[name=newEmail]").val());
+                $("[name=newEmail]").val('');
+                $("[name=confirmEmail]").val('');
             } else {
-                $(".settingsMessage").addClass("error");
-                $(".settingsMessage").text(data);
+                $("#saveMessage").addClass("error");
+                $("#saveMessage").text(data);
             }
-            $(".settingsMessage").fadeIn();
+            $("#saveMessage").fadeIn();
         });
-    })
+    });
+    $("#deleteAccount").submit(function(event) {
+        $("#deleteError").hide();
+        $("#deleteError").text('');
+        $("#deleteError").removeClass("error");
+        event.preventDefault();
+        $.post("util/settingsHandler.php", $(this).serialize(), function(data) {
+            if(data != "Success") {
+                $("#deleteError").addClass("error");
+                $("#deleteError").text(data);
+                $("#deleteError").fadeIn();
+            } else {
+                $("#deleteError").addClass("success");
+                $("#deleteError").text("Account successfully deleted. You will be redirected momentarily..");
+                $("#deleteError").fadeIn();
+                setTimeout(function() { location.reload(); }, 2000); // Refresh after 2 seconds
+            }
+        });
+    });
 </script>
