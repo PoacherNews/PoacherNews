@@ -15,6 +15,7 @@
 		   Will return all columns other than the user's hashed password. */
 		$sql = "SELECT UserID,FirstName,LastName,Email,Username,Usertype,ProfilePicture,Bio,TimeZone FROM User WHERE UserID = {$uid};";
 		$result = mysqli_query($db, $sql);
+		if(!$result) { return null; }
 	    if(mysqli_num_rows($result) == 0) {
 	        return null;
 	    }
