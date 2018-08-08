@@ -50,7 +50,15 @@
     	}
     	return TRUE;
     }
-
+    function getUserTimezone($uid, $db) {
+    	/* Returns a user of provided userID's timezone, if one is set. */
+    	$sql = "SELECT Timezone FROM User WHERE UserID = {$uid}";
+    	$result = mysqli_fetch_array(mysqli_query($db, $sql));
+		if($result) {
+			return $result['Timezone'];
+		}
+		return NULL;
+    }
 
 // BOOKMARKING FUNCTIONS
 	function isBookmark($uid, $aid, $db) {

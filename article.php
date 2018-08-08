@@ -19,7 +19,12 @@
             include('includes/header.php');
             include('includes/nav.php');
             
-            date_default_timezone_set('America/Chicago');
+            if(isset($_SESSION) && getUserTimezone($_SESSION['userid'], $db) != NULL) {
+                date_default_timezone_set(getUserTimezone($_SESSION['userid'], $db));
+            } else {
+                date_default_timezone_set('US/CENTRAL');
+            }
+
             $articleData = getArticleByID($_GET['articleid'], $db);
             if(!$articleData) {
                 redirectHome();

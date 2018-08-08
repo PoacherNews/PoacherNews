@@ -8,7 +8,11 @@
         header('Location: index.php');
     }
     $userDetails = getUserById($_GET['uid'], $db);
-    date_default_timezone_set('America/Chicago');
+    if(getUserTimezone($_SESSION['userid'], $db) != NULL) {
+        date_default_timezone_set(getUserTimezone($_SESSION['userid'], $db));
+    } else {
+        date_default_timezone_set('US/CENTRAL');
+    }
 ?>
 
 <!DOCTYPE html>
