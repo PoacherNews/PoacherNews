@@ -12,7 +12,6 @@ if(!session_start()) {
 if(empty($_SESSION['loggedin'])) {
     $loggedIn = false;
 } else { // The user is already logged in, so send them back to the index
-    print "You are already logged in."; //DEBUG
     echo '<meta http-equiv="refresh" content="0; url=/index.php">';
     exit;
 }
@@ -49,7 +48,7 @@ function handle_login() {
     }
     // http://php.net/manual/en/mysqli.real-escape-string.php
     $username = $db->real_escape_string($username);
-    $password = $db->real_escape_string($password);
+    // $password = $db->real_escape_string($password);
 
     // Build query: "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
     // Prepare statement
@@ -76,7 +75,7 @@ function handle_login() {
     // Fail if username doesn't match
     if ($result->num_rows != 1)
     {
-        $error = "Username does not exist<br>";
+        $error = "Username does not exist.";
         //print $error; //DEBUG
         include '../login.php';
         exit;
@@ -91,7 +90,7 @@ function handle_login() {
 
     if (!password_verify($password, $row['Password']))
     {
-        $error = "Password does not match // ";
+        $error = "Incorrect password.";
        // print $error; //DEBUG
        // print "provided pass: ".$password."<br>";
         include '../login.php';

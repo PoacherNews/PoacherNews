@@ -43,6 +43,50 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 			}
 			print "Success";
 			break;
+		case "updateAccount":
+			if(!empty($_POST['currentEmail'])) {
+				// Check if other fields are filled
+			}
+
+			// Password change functionality
+			if(!empty($_POST['newPassword']) || !empty($_POST['confirmPassword'])) { // Make sure if any password change fields are set, that the current password field is set
+				if(empty($_POST['currentPassword'])) {
+					print("Please fill out all password fields");
+					break;
+				}
+			}
+			if(!empty($_POST['currentPassword'])) { 
+				if(empty($_POST['newPassword']) || empty($_POST['confirmPassword'])) { // Make sure that if the new password field is set, the other password fields are set
+					print("Please fill out all password fields.");
+					break;
+				}
+				if(!password_verify($_POST['currentPassword'], getHashedPassword($_SESSION['userid'], $db))) {
+					print("Current password is incorrect.");
+					break;
+				}
+				if(strcmp($_POST['newPassword'], $_POST['confirmPassword']) != 0) {
+					print("Passwords do not match.");
+					break;
+				}
+				if(password_verify($_POST['newPassword'], getHashedPassword($_SESSION['userid'], $db))) {
+					print("New password must be different than your current password.");
+					break;
+				}
+				$verifyResult = verifyValidPassword($_POST['newPassword']);
+    			if(!($verifyResult === TRUE)) { // If not TRUE, verifyResult will hold a specific error string.
+    				print($verifyResult);
+    				break;
+    			}
+
+				$newPassword = password_hash($_POST['newPassword'], PASSWORD_DEFAULT);
+				if(!updateUserPassword($_SESSION['userid'], $newPassword, $db)) {
+					print("Failed to update password.");
+					break;
+				}
+			}
+
+			print "Success";
+			break;
 	}
 }
 

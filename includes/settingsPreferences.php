@@ -16,11 +16,6 @@
 </style>
 <form id="preferences">
     <input type="hidden" name="action" value="updatePreferences"/>
-    <div class="sectionHeader">
-        <h2>Language</h2>
-        <span class="subheader">Your preferred language, displayed on your profile page.</span>
-    </div>
-    <span class="settingsNotice">This feature coming soon!</span>
 
     <div class="sectionHeader">
         <h2>Date Format</h2>
@@ -56,6 +51,7 @@
 <script>
     $("#preferences").submit(function(event) {
         $(".settingsMessage").hide();
+        $(".settingsMessage").removeClass("error");
         event.preventDefault();
         $.post("util/settingsHandler.php", $(this).serialize(), function(data) {
             console.log($(this).serialize()); //DEBUG

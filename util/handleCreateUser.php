@@ -105,31 +105,11 @@ if(!isset($_POST['checkbox']))
     }
      
 // password restrictions
-    // minimum length
-    if(!preg_match('/^.{6,}+$/', $password))
-    {
-        $error = "Password must be at least 6 characters";
-        include '../createUser.php';
-        exit;
-    }
-    // uppercase letter
-    if(!preg_match('/[A-Z]/', $password))
-    {
-        $error = "Password must contain an uppercase letter";
-        include '../createUser.php';
-        exit;
-    }
-    // lowercase letter
-    if(!preg_match('/[a-z]/', $password))
-    {
-        $error = "Password must contain a lowercase letter";
-        include '../createUser.php';
-        exit;
-    }
-    // number
-    if(!preg_match('/[0-9]/', $password))
-    {
-        $error = "Password must contain a number letter";
+    // Changed to use userUtil function by CS - 8/7
+    include('userUtils.php');
+    $verifyResult = verifyValidPassword($password);
+    if(!($verifyResult === TRUE)) { // If not TRUE, verifyResult will hold a specific error string.
+        $error = $verifyResult;
         include '../createUser.php';
         exit;
     }

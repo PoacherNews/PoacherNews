@@ -118,6 +118,7 @@ textarea[name=bio] {
 
     $("#general").submit(function(event) {
         $(".settingsMessage").hide();
+        $(".settingsMessage").removeClass("error");
         event.preventDefault();
         $.post("util/settingsHandler.php", $(this).serialize(), function(data) {
             if(data == "Success") {

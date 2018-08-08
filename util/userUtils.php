@@ -19,6 +19,14 @@
 	    }
 	    return mysqli_fetch_assoc($result);
 	}
+	function getHashedPassword($uid, $db) {
+		/* Returns the hashed password from the user of provided user ID. */
+		$sql = "SELECT Password FROM User WHERE UserID = {$uid}";
+		$result = mysqli_fetch_array(mysqli_query($db, $sql));
+		if($result) {
+			return $result['Password'];
+		}
+	}
 	function isBookmark($uid, $aid, $db) {
 		/* Returns TRUE if article of provided article ID is a bookmark of user of provided user ID, otherwise returns FALSE. */
 		$sql = "SELECT * FROM Bookmark WHERE ArticleID = {$aid} AND UserID = {$uid};";
@@ -155,7 +163,7 @@
 		if(is_null($replyTo)) {
 			$replyTo = "NULL"; // Convert to string NULL for the query.
 		}
-		$content = mysqli_escape_string($db, $content);
+		$content = htmlspecialchars(mysqli_escape_string($db, $content), ENT_QUOTES);
 		$sql = "INSERT INTO Comment (ReplyToID, UserID, ArticleID, CommentText) VALUES ({$replyTo}, {$uid}, {$aid}, '{$content}')";
 		$query = $db->query($sql);
 		if(!$query) { 
@@ -215,18 +223,18 @@
 	/* Settings Page Functions */
 	function updateBio($uid, $bio, $db) {
 		/* Updates the Bio field of a user of provided User ID. */
-		$bio = mysqli_escape_string($db, $bio);
+		$bio = htmlspecialchars(mysqli_escape_string($db, $bio), ENT_QUOTES);
 		$sql = "UPDATE User SET Bio = '{$bio}' WHERE UserID = {$uid}";
 		return mysqli_query($db, $sql);
 	}
 	function updateName($uid, $fname=NULL, $lname=NULL, $db) {
 		if(!is_null($fname)) {
-			$fname = mysqli_escape_string($db, $fname);
+			$fname = htmlspecialchars(mysqli_escape_string($db, $fname), ENT_QUOTES);
 			$sql = "UPDATE User SET FirstName = '{$fname}' WHERE UserID = {$uid}";
 			if(!mysqli_query($db, $sql)) { return false; }
 		}
 		if(!is_null($lname)) {
-			$lname = mysqli_escape_string($db, $lname);
+			$lname = htmlspecialchars(mysqli_escape_string($db, $lname), ENT_QUOTES);
 			$sql = "UPDATE User SET LastName = '{$lname}' WHERE UserID = {$uid}";
 			if(!mysqli_query($db, $sql)) { return false; }
 		}
@@ -238,7 +246,32 @@
 		if(!mysqli_query($db, $sql)) { return false; }
 		return true;
 	}
+	function verifyValidPassword($password) {
+		/* Will return TRUE if the provided password meets site security requirements, otherwise will return a specific error string. */
+		if(!preg_match('/^.{6,}+$/', $password)) {
+        	return "Password must be at least 6 characters.";
+        }
+        if(!preg_match('/[A-Z]/', $password)) {
+        	return "Password must contain at least one uppercase letter.";
+    	}
+    	if(!preg_match('/[a-z]/', $password)) {
+        	return "Password must contain at least one lowercase letter.";
+    	}
+    	if(!preg_match('/[0-9]/', $password)) {
+        	return "Password must contain at least one number.";
+    	}
+
+    	return TRUE;
+    }
+    function updateUserPassword($uid, $password, $db) {
+    	$sql = "UPDATE User SET Password = '{$password}' WHERE UserID = {$uid}";
+    	if(!mysqli_query($db, $sql)) { return false; }
+		return true;
+    }
+
+    // print_r(verifyValidPassword("Abcdef1"));
 
 	// include('db.php');
+	// print getHashedPassword(2 , $db);
 	// print updateTimezone(13, 'HAST', $db);
 ?>
