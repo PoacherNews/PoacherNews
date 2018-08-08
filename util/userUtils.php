@@ -187,20 +187,18 @@
 	}
 	function getUserComments($uid, $limit=NULL, $db) {
 		/* Returns an array of comments from a user of provided userID. Optionally can be limited to a set size if `limit` is provided. */
-		$comments = getCommentUserIDs($uid, $db);
-	    $sql = "SELECT * FROM Comment WHERE UserID = {$uid} ";
-	    foreach(array_slice($comments, 1) as &$val) {
-	        $sql .= "OR UserID = {$val} ";
+	    $sql = "SELECT * FROM Comment WHERE UserID = {$uid}";
+        if(!is_null($limit)) {
+	        $sql .= "LIMIT {$limit}";
 	    }
-            if(!is_null($limit)) {
-	        $sql .= "LIMIT {$limit};";
-	    }
+	    $sql .= " ORDER BY CommentDate DESC";
 	    $result = mysqli_query($db, $sql);
 	    if(!$result || mysqli_num_rows($result) == 0) {
 	        return null;
 	    }
 	    return mysqliToArray($result);
 	}
+
 	function postComment($aid, $uid, $content, $replyTo=NULL, $db) {
 		/* Posts a comment into the database of provided content to an article of provided articleID. */
 		if(is_null($replyTo)) {
