@@ -35,7 +35,7 @@
 		}
 	}
 	function verifyValidPassword($password) {
-		/* Will return TRUE if the provided password meets site security requirements, otherwise will return a specific error string. */
+		/* Will return TRUE if the provided string meets site security requirements, otherwise will return a specific error string. */
 		if(!preg_match('/^.{6,}+$/', $password)) {
         	return "Password must be at least 6 characters.";
         }
@@ -48,7 +48,6 @@
     	if(!preg_match('/[0-9]/', $password)) {
         	return "Password must contain at least one number.";
     	}
-
     	return TRUE;
     }
 

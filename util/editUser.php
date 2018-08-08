@@ -90,16 +90,16 @@ if (!isset($data) || !$data)
 	    	include '../includes/header.php';
             include '../includes/nav.php';
         ?>    
+
+        <div class="pageContent">
+
+            <div class="nav">
+                <?php
+                    $current = 'manageUsers';
+                    include '../includes/toolsNav.php';
+                ?>
+            </div>
         
-        <div class="nav">
-            <?php
-                $current = 'manageUsers';
-                include '../includes/toolsNav.php';
-            ?>
-        </div>
-        
-        <div class="display">
-        <main>
             <h1>Edit User &#8216;<?php
                 echo "<a href='/profile.php?uid={$data['UserID']}'>"; 
 				echo $data['Username'];
@@ -260,7 +260,6 @@ $db->close();
     }
 ?>
 
-        </main>
         </div>
         
         <?php include '../includes/footer.html'; ?>
