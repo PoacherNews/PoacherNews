@@ -534,7 +534,7 @@ p.ftCpyright {
   	background-color: #f3f3f3;
 	text-align: center;
 	width: 100%;
-	min-width: 100vh;
+	/*min-width: 100vh;*/
 	list-style-type: none;
     margin: 0;
     padding: 10px 0px;
@@ -550,7 +550,6 @@ p.ftCpyright {
   	text-decoration: none;
   	font-size: 17px;
 	font-family: sans-serif;
-	margin-right: auto auto auto auto;
 	width: 101px;
 }
 

@@ -23,7 +23,7 @@
         <!-- <div id="hdrrt"> -->
             <?php
                 if(!empty($_SESSION['loggedin']) && $_SESSION['loggedin']) {
-                    print "<span class=\"username\">{$_SESSION['username']}
+                    print "<span class=\"username\">{$_SESSION['username']} <i class=\"fa fa-caret-down\"></i>
                                 <div class=\"username-content\">
                                     <p>Logged in as <b>{$_SESSION['username']}</b></p>
                                     <hr>
