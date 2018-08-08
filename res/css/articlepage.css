@@ -50,7 +50,8 @@
 
 .articleBody {
 	color: #414141;
-    font-family: Arial,Helvetica,sans-serif;
+	width: 80%;
+	word-wrap: break-word;
 }
 
 .threeColumnSection > article {

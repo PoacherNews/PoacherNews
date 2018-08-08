@@ -183,9 +183,7 @@
                 <div class="articleImage">
                     <img src="<?php print $articleData['ArticleImage'] ?>"/>
                 </div>
-                <div class="articleBody">
-                    <p><?php print nl2br($articleData['Body']); ?></p>
-                </div>
+                <p class="articleBody"><?php print nl2br($articleData['Body']); ?></p>
             </section>
             <section id="articleAdColumn">
                 <div class="ad"><p>AD</p></div>
