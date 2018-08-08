@@ -646,6 +646,9 @@ a {
 .text-emphasis {
     font-style: italic;
 }
+.smalltext {
+    font-size: 13px;
+}
 
 .pageContent {
     grid-area: pageContent;

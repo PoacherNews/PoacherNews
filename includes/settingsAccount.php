@@ -6,7 +6,7 @@ input {
 #changeEmail, #changePassword {
     display: grid;
     grid-template-columns: 150px 300px;
-    grid-template-rows: 20px 20px 20px;
+    grid-template-rows: auto auto auto;
     grid-row-gap: 5px;
 }
 #changePassword {
@@ -59,7 +59,15 @@ input {
         <label for="currentPassword">Current Password</label>
         <input type="password" name="currentPassword" autocomplete="off" />
         <label for="newPassword">New Password</label>
-        <input type="password" name="newPassword" autocomplete="off" />
+        <input type="password" name="newPassword" autocomplete="off" >
+        <style>
+            .passwordInfo {
+                grid-column: 1 / span 2;
+                font-style: italic;
+                color: grey;
+            }
+        </style>
+        <span class="smalltext passwordInfo">Must be at least six characters, with at least one uppercase and one lowercase letter, and with at least one number.</span>
         <label for="confirmPassword">Confirm New Password</label>
         <input type="password" name="confirmPassword" autocomplete="off" />
     </div>
