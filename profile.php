@@ -72,6 +72,10 @@
                                 <p><?php
                                     print(is_null($userDetails['Bio']) ? "No bio set yet." : $userDetails['Bio']);
                                 ?></p>
+                            <div class="aboutSectionHeader">Location</div> <!-- 7/10 Location Support not yet implemented in site -->
+                                 <p><?php
+                                     print(is_null($userDetails['Location']) ? "No location set yet." : $userDetails['Location']);
+                                 ?></p>
                             <div class="aboutSectionHeader">Time Zone</div>
                                 <p><?php
                                     switch($userDetails['TimeZone']) {
@@ -98,10 +102,6 @@
                                             break;
                                     }
                                 ?></p>
-                            <div class="aboutSectionHeader">Language</div> <!-- 7/10 Language Support not yet implemented in site -->
-                                <p><?php
-                                    print(is_null($userDetails['Language']) ? "English" : $userDetails['Language']);
-                                ?></p> 
                         </div>
                         <div id="bookmarks" class="tabcontent">
                             <ul>
