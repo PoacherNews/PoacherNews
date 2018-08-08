@@ -198,9 +198,9 @@
             <hr/>
             <?php
                 if(!($isDraft || $isPending)) { // Only display a comment form if the article is published
-                    if(!isset($_SESSION['loggedin'])) {
+                    if(!isset($_SESSION['loggedin']) && $articleData['CommentsEnabled'] == TRUE) {
                         print '<div id="commentsMessage">Please log in to comment.</div>';
-                    } else {
+                    } else if($articleData['CommentsEnabled'] == TRUE) {
                         print '<form id="commentForm">
                                 <textarea id="commentBody" placeholder="Add a comment..." required></textarea>
                                 <input type="button" id="commentClearButton" value="Clear"/>
@@ -226,9 +226,12 @@
                                     <div class="commentTitle">
                                         <span class="commentAuthor">'.$user['FirstName'].' '.$user['LastName'].' <a class="username" href="/profile.php?uid='.$user['UserID'].'">('.$user['Username'].')</a></span> <span class="commentDate">'.date("l, F j Y g:i a", strtotime($comment['CommentDate'])).'</span>
                                     </div>
-                                    <p class="commentBody">'.nl2br($comment['CommentText']).'</p>
+                                    <p class="commentBody">'.(is_null($comment['CommentText']) ? '<span class="deletedComment">Comment deleted.</span>' : nl2br($comment['CommentText'])).'</p>
                                     <div class="commentLinks">
-                                        <a class="commentReplyLink" id="'.$comment['CommentID'].'">Reply</a> &dash; <a href="#comment-'.$comment['CommentID'].'">Link</a>
+                                        <a class="commentReplyLink" id="'.$comment['CommentID'].'">Reply</a>
+                                        &dash;
+                                        <a href="#comment-'.$comment['CommentID'].'">Link</a>
+                                        '.($comment['Edited'] == TRUE ? '(edited)' : '').'
                                     </div>
                                     '.(isset($_SESSION['loggedin']) ? $replyFormHtml : '').'
                                 </div>
@@ -247,6 +250,8 @@
                 }
                 if($isDraft || $isPending) {
                     print '<div id="commentsMessage">Comments disabled until article is published.</div>';
+                } else if($articleData['CommentsEnabled'] == FALSE) {
+                    print '<div id="commentsMessage">Comments have been disabled for this article.</div>';
                 } else {
                     $articleComments = getArticleRootComments($articleData['ArticleID'], $db);
                     if(!$articleComments) {

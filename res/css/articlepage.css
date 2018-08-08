@@ -233,3 +233,8 @@
 #pubDetails > .rightIcons i {
 	cursor: pointer;
 }
+
+.deletedComment {
+	color: grey;
+	font-style: italic;
+}
