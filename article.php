@@ -220,13 +220,24 @@
                                         <input type="submit" id="commentSubmitButton" value="Submit"/>
                                         <div class="errorMessage">An error occured. Please try again later.</div>
                                     </form>';
-                    $commentHtml = '<div class="comment" id="comment-'.$comment['CommentID'].' cid="'.$comment['CommentID'].'" style="margin-left: '.($indent * $indentMultiplier).'px">
-                                <img src="/res/img/'.$user['ProfilePicture'].'"/>
-                                <div class="commentText">
+
+                    $displayName = $user['FirstName'].' '.$user['LastName']; // First and last name by default
+                    $userLink = '<a class="username" href="/profile.php?uid='.$user['UserID'].'">('.$user['Username'].')</a>';
+                    if(is_null($comment['UserID'])) { // Determine if the account or the comment was deleted.
+                        $commentBody = '<span class="deletedComment">Account deleted.</span>';
+                    } else if(is_null($comment['CommentText'])) {
+                        $commentBody = '<span class="deletedComment">Comment deleted.</span>';
+                    } else {
+                        $commentBody = nl2br($comment['CommentText']);
+                    }
+                    $commentHtml =
+                        '<div class="comment" id="comment-'.$comment['CommentID'].' cid="'.$comment['CommentID'].'" style="margin-left: '.($indent * $indentMultiplier).'px">'.
+                            (is_null($comment['UserID']) ? '<span style="padding: 7px"></span>' : '<img src="/res/img/'.$user['ProfilePicture'].'"/>')
+                            .'<div class="commentText">
                                     <div class="commentTitle">
-                                        <span class="commentAuthor">'.$user['FirstName'].' '.$user['LastName'].' <a class="username" href="/profile.php?uid='.$user['UserID'].'">('.$user['Username'].')</a></span> <span class="commentDate">'.date("l, F j Y g:i a", strtotime($comment['CommentDate'])).'</span>
+                                        <span class="commentAuthor">'.(is_null($comment['UserID']) ? 'Deleted Account' : $displayName).' '.(is_null($comment['UserID']) ? '' : $userLink).'</span> <span class="commentDate">'.date("l, F j Y g:i a", strtotime($comment['CommentDate'])).'</span>
                                     </div>
-                                    <p class="commentBody">'.(is_null($comment['CommentText']) ? '<span class="deletedComment">Comment deleted.</span>' : nl2br($comment['CommentText'])).'</p>
+                                    <p class="commentBody">'.$commentBody.'</p>
                                     <div class="commentLinks">
                                         <a class="commentReplyLink" id="'.$comment['CommentID'].'">Reply</a>
                                         &dash;
