@@ -528,35 +528,33 @@ p.ftCpyright {
 /* Navigation Bar */
 #navbar {
     grid-area: mainNav;
-    min-height: 30px;
-    height: auto;
-	/*overflow: hidden;*/
+    width: 100%;
   	background-color: #f3f3f3;
 	text-align: center;
-	width: 100%;
-	/*min-width: 100vh;*/
 	list-style-type: none;
-    margin: 0;
-    padding: 10px 0px;
 	opacity: .95;
     z-index: 1;
 }
 
+#navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#navbar li {
+    display: inline;
+}
+
 #navbar a {
-  	display: inline;
-  	color: black;
-  	text-align: center;
-  	padding: 14px 16px;
-  	text-decoration: none;
-  	font-size: 17px;
-	font-family: sans-serif;
-	width: 101px;
+    display: inline-block;
+    padding: 10px;
+    color: inherit;
 }
-
 #navbar a:hover {
-  background-color: #ddd;
+    background-color: #ddd;
+    color: black;
 }
-
 
 .sticky {
   position: fixed;

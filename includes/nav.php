@@ -1,10 +1,12 @@
     <div id="navbar">
-			<a href="/section.php?Category=Politics">Politics</a>
-			<a href="/section.php?Category=Sports">Sports</a>
-			<a href="/section.php?Category=Entertainment">Entertainment</a>
-			<a href="/section.php?Category=Video">Video</a>
-			<a href="/section.php?Category=Local">Local</a>
-			<a href="/section.php?Category=Opinion">Opinion</a>
+        <ul>
+			<li><a href="/section.php?Category=Politics">Politics</a></li>
+			<li><a href="/section.php?Category=Sports">Sports</a></li>
+			<li><a href="/section.php?Category=Entertainment">Entertainment</a></li>
+			<li><a href="/section.php?Category=Video">Video</a></li>
+			<li><a href="/section.php?Category=Local">Local</a></li>
+			<li><a href="/section.php?Category=Opinion">Opinion</a></li>
+        </ul>
 
             <div id="searchbar">
                 <hr>
