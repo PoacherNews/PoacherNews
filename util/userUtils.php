@@ -240,7 +240,7 @@
 	}
 	function getNumUserArticlesWritten($uid, $db) {
 		/* Returns an integer value representing the number of articles written for a user with provided user id. */
-		$sql = "SELECT * FROM Article WHERE UserID = {$uid}";
+		$sql = "SELECT * FROM Article WHERE UserID = {$uid} AND IsDraft = 0 AND IsSubmitted = 1";
 		$result = mysqli_query($db, $sql);
 		return mysqli_num_rows($result);
 	}
