@@ -140,51 +140,40 @@ function list_articles()
     
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <?php include 'includes/globalHead.html' ?>
-        <link rel="stylesheet" href="res/css/profile.css">
-        <link rel="stylesheet" href="res/css/profileNav.css">
-    </head>
+<head>
+    <?php include 'includes/globalHead.html' ?>
+    <link rel="stylesheet" href="res/css/profile.css">
+    <link rel="stylesheet" href="res/css/profileNav.css">
+</head>
+<body>
+    <style>
+        h1 {
+            text-align: center;
+        }
 
-<style>
-h1 {
-	text-align: center;
-}
+        table {
+            margin: 0px auto;
+            border-collapse:collapse;
+        }
 
-table {
-	margin-left:20px;
-	margin-right:20px;
-	border-collapse:collapse;
-}
-
-table, th, td {
-	border: 1px solid black;
-}
-    
-</style>
-
-    <body>
-        <?php 
-	    	include 'includes/header.php';
-            include 'includes/nav.php';
-        ?>
-        
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <?php 
+    	include 'includes/header.php';
+        include 'includes/nav.php';
+    ?>
+    <div class="pageContent">
         <div class="nav">
             <?php
                 $current = 'manageArticles';
                 include 'includes/toolsNav.php';
             ?>
         </div>
-        
-        <div class="display">
-        <main>
-            <h1>Manage Articles</h1>
-            <div>
-				<?php list_articles(); ?>
-            </div>
-        </main>
-        </div>
-        
-        <?php include 'includes/footer.html'; ?>
-    </body>
+        <h1>Manage Articles</h1>
+		<?php list_articles(); ?>
+    </div>
+    <?php include 'includes/footer.html'; ?>
+</body>
 </html>
