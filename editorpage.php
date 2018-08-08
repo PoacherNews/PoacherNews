@@ -363,7 +363,6 @@
 		
             // Cancels the submission of the article (No) button
             function cancel() {
-                // var cancelSubmit = document.getElementById("cancel-submit"); 
                 modal.style.display = "none";
             }
         
