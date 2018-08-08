@@ -140,7 +140,7 @@
                                 });
                             });
                             $("#rating .fa-star,.fa-star-half-alt").click(function() {
-                                $.get('util/articleHandler.php', {
+                                $.post('util/articleHandler.php', {
                                     'request' : 'rate',
                                     'aid' : $("#aid").text(),
                                     'score' : $(this).attr('starNum')
@@ -156,7 +156,7 @@
                                 $(this).attr("class", "far fa-bookmark")
                             })
                             $("#bookmark").click(function() {
-                                $.get('util/articleHandler.php', {
+                                $.post('util/articleHandler.php', {
                                     'request' : "bookmark",
                                     'aid' : $("#aid").text(),
                                 }).done(function(data) {
@@ -164,7 +164,7 @@
                                 });
                             });
                             $("#unbookmark").click(function() {
-                                $.get('util/articleHandler.php', {
+                                $.post('util/articleHandler.php', {
                                     'request' : "unbookmark",
                                     'aid' : $("#aid").text(),
                                 }).done(function(data) {
