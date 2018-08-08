@@ -144,7 +144,7 @@
             <div class="secColumnLeftSecondary">
                 <h1 class="secCategorySecondary">Editor's Picks</h1>
                 <?php
-                    $picks = getEditorPicks($_GET['Category'], $threeColLimit, $db);
+                    $picks = array_slice(getEditorPicks($_GET['Category'], NULL, $db), 0, $threeColLimit);
                     foreach($picks as $article) {
                         print "<article>
                             <div class=\"thumbnailSecondary\">

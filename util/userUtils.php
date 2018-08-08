@@ -69,16 +69,19 @@
 		if(empty($bookmarks) || is_null($bookmarks)) {
 			return null;
 		}
-	    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0";
-	    if(!is_null($category)) {
-	    	$sql .= " AND Category = '{$category}'";
-	    }
+	    $sql = "SELECT * FROM (SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0";
+	    
 
 	    $sql .= " AND ArticleID = {$bookmarks[0]}";
 	    foreach(array_slice($bookmarks, 1) as &$val) { // Gather results for all other specified editor picks
 	        $sql .= " OR ArticleID = {$val}";
 	    }
-            if(!is_null($limit)) {
+	    $sql .= ") AS A";
+	    if(!is_null($category)) {
+	    	$sql .= " WHERE Category = '{$category}'";
+	    }
+
+        if(!is_null($limit)) {
 	        $sql .= " LIMIT {$limit};";
 	    }
 	    $result = mysqli_query($db, $sql);
