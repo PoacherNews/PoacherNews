@@ -48,7 +48,7 @@
             }
         ?>
 
-    <div id="mainContent">
+    <div class="pageContent">
         <?php
             if($isDraft) { print "<div id=\"infoBanner\">DRAFT</div>"; }
             if($isPending) { print "<div id=\"infoBanner\">PENDING APPROVAL</div>"; }
