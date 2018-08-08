@@ -53,9 +53,12 @@ function getRelatedArticles($category, $excludeId, $db) {
     return mysqliToArray($result);
 }
 
-function getEditorPickIDs($db) {
+function getEditorPickIDs($limit=NULL, $db) {
     /* Returns an array of article IDs that are labled as 'EditorPick'. */
-    $sql = "SELECT ArticleID FROM Featured WHERE FeaturedType = 'EditorPick';";
+    $sql = "SELECT * FROM Featured WHERE FeaturedType='EditorPick' ORDER BY FeaturedID DESC";
+    if(!is_null($limit)) {
+        $sql .= " LIMIT {$limit}";
+    }
     $result = mysqli_query($db, $sql);
 
     $data = array();
@@ -68,19 +71,15 @@ function getEditorPickIDs($db) {
 function getEditorPicks($category=NULL, $limit=NULL, $db) {
     /* Returns an array of editor picks, optionally from a provided section in `category`.
        If `limit` is specified, it will return an array of that size. */
-    $editorPicks = getEditorPickIDs($db);
-    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0";
-    if(!is_null($category)) {
-        $sql .= " AND Category = '{$category}'";
-    }
-
+    $editorPicks = getEditorPickIDs($limit, $db);
+    $sql = "SELECT * FROM (SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0";
     $sql .= " AND ArticleID = {$editorPicks[0]} ";
     foreach(array_slice($editorPicks, 1) as &$val) { // Gather results for all other specified editor picks
         $sql .= "OR ArticleID = {$val} ";
     }
-
-    if(!is_null($limit)) {
-        $sql .= "LIMIT {$limit}";
+    $sql .= ") AS A";
+    if(!is_null($category)) {
+        $sql .= " WHERE Category = '{$category}'";
     }
 
     $result = mysqli_query($db, $sql);
@@ -114,16 +113,20 @@ function getTrendingArticles($category=NULL, $limit, $db) {
     $trendingDaySpan = 25;
     $trendingViewThreshold = 0;
 
-    $sql = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ArticleId != ".getMainArticleID($db);
-    if(!is_null($category)) {
-        $sql .= " AND Category = '{$category}'";
-    }
+    $sql = "SELECT * FROM (SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ArticleId != ".getMainArticleID($db);
+    
 
-    foreach(getEditorPickIDs($db) as &$val) {
+    foreach(getEditorPickIDs(NULL, $db) as &$val) {
         $sql .= " AND ArticleID != ".$val." ";
     }
     $sql .= "AND PublishDate >= DATE(NOW()) - INTERVAL ".$trendingDaySpan." DAY AND Views > ".$trendingViewThreshold." ";
-    $sql .= "LIMIT ".$limit.";";
+    $sql .= ") AS A";
+
+    if(!is_null($category)) {
+        $sql .= " WHERE Category = '{$category}'";
+    }
+    
+    $sql .= " LIMIT ".$limit.";";
 
     $result = mysqli_query($db, $sql);
     if(!$result || mysqli_num_rows($result) == 0) {

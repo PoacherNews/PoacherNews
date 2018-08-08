@@ -84,15 +84,14 @@ if (!isset($data) || !$data)
             //include '../includes/footer.html';
         ?>
         
-        <div class="nav">
-            <?php
-                $current = 'manageArticles';
-                include '../includes/toolsNav.php';
-            ?>
-        </div>
-        
-        <div class="display">
-        <main>
+        <div class="pageContent">
+            <div class="nav">
+                <?php
+                    $current = 'manageArticles';
+                    include '../includes/toolsNav.php';
+                ?>
+            </div>
+
             <h1>Edit Article &#8216;<?php
             	echo "<a href='/article.php?articleid={$data['ArticleID']}'>"; 
 				echo $data['Headline'];

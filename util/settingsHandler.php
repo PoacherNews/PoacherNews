@@ -43,6 +43,102 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 			}
 			print "Success";
 			break;
+		case "updateAccount":
+			// User pressed save without requesting any changes
+			if(empty($_POST['currentPassword']) && empty($_POST['newEmail'])) {
+				print("Please fill out any fields you wish to update.");
+				break;
+			}
+			// User tried to save either a new password or email without entering their current one
+			if(!empty($_POST['newPassword']) || !empty($_POST['confirmPassword'])) {
+				if(empty($_POST['currentPassword'])) {
+					print("Please fill out all password fields");
+					break;
+				}
+			}
+
+			// Email change functionality
+			if(!empty($_POST['newEmail'])) {
+				if(empty($_POST['confirmEmail'])) {
+					print("Please fill out all email fields.");
+					break;
+				}
+				// Disabled this check, as form field for current email is marked as disabled, so not sent in the POST request.
+				// if(strcmp($_POST['currentEmail'], $_SESSION['email']) != 0) {
+				// 	print("Current email is incorrect.");
+				// 	break;
+				// }
+				if (!filter_var($_POST['newEmail'], FILTER_VALIDATE_EMAIL)) {
+					print("Please enter a valid email address.");
+					break;
+				}
+				if(strcmp($_POST['newEmail'], $_POST['confirmEmail']) != 0) {
+					print("New emails do not match.");
+					break;
+				}
+
+				if(!updateEmail($_SESSION['userid'], $_POST['newEmail'], $db)) {
+					print("Failed to update email.");
+					break;
+				}
+				$_SESSION['email'] = $_POST['newEmail']; // Update session so changes take effect without them having to log out and back in
+			}
+
+			// Password change functionality
+			
+			if(!empty($_POST['currentPassword'])) { 
+				if(empty($_POST['newPassword']) || empty($_POST['confirmPassword'])) { // Make sure that if the new password field is set, the other password fields are set
+					print("Please fill out all password fields.");
+					break;
+				}
+				if(!password_verify($_POST['currentPassword'], getHashedPassword($_SESSION['userid'], $db))) {
+					print("Current password is incorrect.");
+					break;
+				}
+				if(strcmp($_POST['newPassword'], $_POST['confirmPassword']) != 0) {
+					print("Passwords do not match.");
+					break;
+				}
+				if(password_verify($_POST['newPassword'], getHashedPassword($_SESSION['userid'], $db))) {
+					print("New password must be different than your current password.");
+					break;
+				}
+				$verifyResult = verifyValidPassword($_POST['newPassword']);
+    			if(!($verifyResult === TRUE)) { // If not TRUE, verifyResult will hold a specific error string.
+    				print($verifyResult);
+    				break;
+    			}
+
+				$newPassword = password_hash($_POST['newPassword'], PASSWORD_DEFAULT);
+				if(!updateUserPassword($_SESSION['userid'], $newPassword, $db)) {
+					print("Failed to update password.");
+					break;
+				}
+			}
+
+			print "Success";
+			break;
+		case "deleteAccount":
+		// print_r($_POST);
+			if(empty($_POST['deleteConfirm'])) {
+				print("You must confirm account deletion.");
+				break;
+			}
+			if(!($_POST['deleteConfirm'] === "on")) {
+				print("You must confirm account deletion");
+				break;
+			}
+			if(!deleteUser($_SESSION['userid'], $db)) {
+				print("Failed to delete user. Please contact the site administrator.");
+				break;
+			}
+
+			// Delete their account
+			unset($_SESSION);
+        	session_destroy();
+			print("Success");
+			// header('Location: login.php');
+			break;
 	}
 }
 

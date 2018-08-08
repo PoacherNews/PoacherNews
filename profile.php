@@ -8,7 +8,11 @@
         header('Location: index.php');
     }
     $userDetails = getUserById($_GET['uid'], $db);
-    date_default_timezone_set('America/Chicago');
+    if(getUserTimezone($_SESSION['userid'], $db) != NULL) {
+        date_default_timezone_set(getUserTimezone($_SESSION['userid'], $db));
+    } else {
+        date_default_timezone_set('US/CENTRAL');
+    }
 ?>
 
 <!DOCTYPE html>
@@ -73,9 +77,9 @@
                                     print(is_null($userDetails['Bio']) ? "No bio set yet." : $userDetails['Bio']);
                                 ?></p>
                             <div class="aboutSectionHeader">Location</div> <!-- 7/10 Location Support not yet implemented in site -->
-                                <p><?php
-                                    print(is_null($userDetails['Location']) ? "No location set yet." : $userDetails['Location']);
-                                ?></p>
+                                 <p><?php
+                                     print(is_null($userDetails['Location']) ? "No location set yet." : $userDetails['Location']);
+                                 ?></p>
                             <div class="aboutSectionHeader">Time Zone</div>
                                 <p><?php
                                     switch($userDetails['TimeZone']) {
@@ -102,10 +106,6 @@
                                             break;
                                     }
                                 ?></p>
-                            <div class="aboutSectionHeader">Language</div> <!-- 7/10 Language Support not yet implemented in site -->
-                                <p><?php
-                                    print(is_null($userDetails['Language']) ? "English" : $userDetails['Language']);
-                                ?></p> 
                         </div>
                         <div id="bookmarks" class="tabcontent">
                             <ul>

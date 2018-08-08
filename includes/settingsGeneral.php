@@ -10,9 +10,6 @@ textarea[name=bio] {
 	font-family: inherit;
 	margin-top: 5px;
 }
-.bioTextCounter {
-	font-size: 13px;
-}
 
 #displayNameInputs, #locationInputs {
     display: grid;
@@ -74,7 +71,7 @@ textarea[name=bio] {
 		<span class="subheader">A short description of yourself, displayed on your profile page.</span>
 	</div>
 	<textarea id="bio" name="bio" rows="5" cols="5" maxlength="<?php echo $bioMaxLength; ?>" placeholder="Enter a bio here"><?php if(!is_null($user['Bio'])) { print($user['Bio']); } ?></textarea>
-	<div class="bioTextCounter">0/<?php echo $bioMaxLength; ?> characters</div>
+	<div class="smalltext" id="bioTextCounter">0/<?php echo $bioMaxLength; ?> characters</div>
 
 	<div class="sectionHeader">
 		<h2>Display Name</h2>
@@ -91,17 +88,17 @@ textarea[name=bio] {
 		<h2>Location</h2>
 		<span class="subheader">Will be displayed on your profile page.</span>
 	</div>
-    <span class="settingsNotice">This feature coming soon!</span>
-    <!-- Disabled until location columns are added to user database. 7/14 -CS
+    <!-- Disabled until location columns are added to user database. 7/14 -CS -->
 	<div id="locationInputs">
         <label for="city">City</label>
-        <input name="city" type="text" placeholder="City"/>
+        <input name="city" type="text" placeholder="City" disabled/>
         <label for="state">State</label>
-        <select name="state">
+        <select name="state" disabled>
             <?php include('includes/stateOptions.html'); ?>
         </select>
     </div>
-    -->
+    <span class="settingsNotice">This feature coming soon!</span>
+   
     <div class="settingsMessage"></div>
     <input class="settingsSubmit" type="submit" value="Save changes"/>
 </form>
@@ -109,7 +106,7 @@ textarea[name=bio] {
 	function trackBioCharCount() {
 		$max = <?php echo $bioMaxLength; ?>;
 		$len = $("#bio").val().length;
-		$(".bioTextCounter").text($len+"/"+$max+" characters");
+		$("#bioTextCounter").text($len+"/"+$max+" characters");
 	}
 	$("#bio").keyup(trackBioCharCount);
 	$(document).ready(function() {
@@ -118,6 +115,7 @@ textarea[name=bio] {
 
     $("#general").submit(function(event) {
         $(".settingsMessage").hide();
+        $(".settingsMessage").removeClass("error");
         event.preventDefault();
         $.post("util/settingsHandler.php", $(this).serialize(), function(data) {
             if(data == "Success") {

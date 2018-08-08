@@ -19,7 +19,12 @@
             include('includes/header.php');
             include('includes/nav.php');
             
-            date_default_timezone_set('America/Chicago');
+            if(isset($_SESSION) && getUserTimezone($_SESSION['userid'], $db) != NULL) {
+                date_default_timezone_set(getUserTimezone($_SESSION['userid'], $db));
+            } else {
+                date_default_timezone_set('US/CENTRAL');
+            }
+
             $articleData = getArticleByID($_GET['articleid'], $db);
             if(!$articleData) {
                 redirectHome();
@@ -43,7 +48,7 @@
             }
         ?>
 
-    <div id="mainContent">
+    <div class="pageContent">
         <?php
             if($isDraft) { print "<div id=\"infoBanner\">DRAFT</div>"; }
             if($isPending) { print "<div id=\"infoBanner\">PENDING APPROVAL</div>"; }
@@ -75,7 +80,8 @@
                                             <input type=\"hidden\" name=\"body\" value=\"{$articleData['Body']}\">
                                         </form>";
                              }
-                            
+                        ?>, 
+                        <?php
                             $articleRating = getRatingByID($_GET['articleid'], $db);
                             print "Rated ".number_format((float)$articleRating, 2, '.', '')."/5 stars";
                         ?>
@@ -140,7 +146,7 @@
                                 });
                             });
                             $("#rating .fa-star,.fa-star-half-alt").click(function() {
-                                $.get('util/articleHandler.php', {
+                                $.post('util/articleHandler.php', {
                                     'request' : 'rate',
                                     'aid' : $("#aid").text(),
                                     'score' : $(this).attr('starNum')
@@ -156,7 +162,7 @@
                                 $(this).attr("class", "far fa-bookmark")
                             })
                             $("#bookmark").click(function() {
-                                $.get('util/articleHandler.php', {
+                                $.post('util/articleHandler.php', {
                                     'request' : "bookmark",
                                     'aid' : $("#aid").text(),
                                 }).done(function(data) {
@@ -164,7 +170,7 @@
                                 });
                             });
                             $("#unbookmark").click(function() {
-                                $.get('util/articleHandler.php', {
+                                $.post('util/articleHandler.php', {
                                     'request' : "unbookmark",
                                     'aid' : $("#aid").text(),
                                 }).done(function(data) {
