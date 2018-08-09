@@ -1,10 +1,9 @@
-# 4320 Final Project: The Poacher News
-For our project, we created an online news site built in PHP. Our planning and development was supported by and managed through the SCRUM development process.  Our SCRUM environment was [Axosoft](https://axosoft.com/).
+# The Poacher News
+Code repository for The Poacher News, an online news publication built in PHP. We support our development with [Axosoft](https://axosoft.com/).
 
 Team members:
   * Bruce Phommaly
   * Colin Stevens
-  * Kirtis Orendorff
   * Matthew Barber
   * Roland Oruche
 
