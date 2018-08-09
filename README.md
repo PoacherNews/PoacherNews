@@ -8,6 +8,6 @@ Team members:
   * Roland Oruche
 
 ### Links
- * [EC2 site](http://ec2-52-202-88-40.compute-1.amazonaws.com)
+ * [EC2 site](http://ec2-18-204-160-145.compute-1.amazonaws.com)
  * [Live site](http://poachernews.com)
  * [Axosoft](https://pochernews.axosoft.com/)
