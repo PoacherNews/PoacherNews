@@ -20,7 +20,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
     <body>
-        <?php 
+        <?php
 	    	include 'includes/header.php';
             include 'includes/nav.php';
         ?>
@@ -30,7 +30,7 @@
             ?>
         </div>
 		<div class="editor-tab">
-			<button class="tablinks" onclick="editorTab(event, 'article')"><i class="fas fa-pencil-alt"></i></button>
+			<button class="tablinks" onclick="editorTab(event, 'article');editorFocus();"><i class="fas fa-pencil-alt"></i></button>
 			<button class="tablinks" onclick="editorTab(event, 'picture')"><i class="fas fa-camera"></i></button>
 			<button class="tablinks" onclick="editorTab(event, 'save');getInfo();"><i class="fas fa-save"></i></button>
 		</div>
@@ -68,33 +68,33 @@
                 <ul>
                     <li onclick="setUndo()" id="undo"><i class="fas fa-undo-alt"></i></li>
                     <li onclick="setRedo()" id="redo"><i class="fas fa-redo-alt"></i></li>
-                    <li onclick="setBold()" id="bold"><i class="fas fa-bold"></i></li>
-                    <li onclick="setItalic()" id="italic"><i class="fas fa-italic"></i></li>
-                    <li onclick="setUnderline()" id="underline"><i class="fas fa-underline"></i></li>
+                    <li id="boldLbl" onclick="setBold()">
+						<label onclick="setBold()" for="bold"><i class="fas fa-bold"></i></label>
+						<input id="bold" type="button"/>
+					</li>
+                    <li id="italicLbl" onclick="setItalic()">
+						<label onclick="setItalic()" for="italic"><i class="fas fa-italic"></i></label>
+						<input id="italic" type="button"/>
+					</li>
+					<li id="underlineLbl" onclick="setUnderline()">
+						<label onclick="setUnderline()" for="underline"><i class="fas fa-underline"></i></label>
+						<input id="underline" type="button"/>
+					</li>
                     <li onclick="linkBox()"><i id="insert" class="fas fa-link"></i></li>
                     <div id="link-modal" class="insert-link">
                         <div class="link-content">
                             <span onclick="exitLink()" class="close">&times;</span>
                             <span>Hyperlink</span><br>
-                            <input type="text" id="input-text" placeholder="Text"><br>
-                            <input type="text" id="input-link" placeholder="Paste a link" onkeydown="enableSetBtn()"><br>
-                            <button id="set-link" onclick="addLink()">Set Link</button>
+                            <input type="text" id="input-text" placeholder="Text">
+                            <input type="text" id="input-link" placeholder="Paste a link">
+                            <input type="button" id="set-link" onclick="addLink()" value="Set Link"/>
                         </div>
                     </div>
                     <li>
                         <label for="upload-document" id="custom-file-upload">
-                            <i class="fas fa-file-upload"></i>
+                            <i class="fas fa-cloud-upload-alt"></i> Upload File
                         </label>
-                        <input onchange="onUploadFile()" id="upload-document" type="file" name="document">
-                        <div id="override-draft" class="override">
-                            <!-- Override draft-->
-                            <div class="override-content">
-                                <span onclick="exitOverride()" class="close">&times;</span>
-                                <p>Would you like to override the content?</p>
-                                <input onclick="approveOverride()" type="button" id="verify-submit" value="Yes">
-                                <input onclick="cancelOverride()" type="button" id="cancel-override" value="No">
-                            </div>
-                        </div>
+                        <input onchange="uploadFile()" id="upload-document" type="file" name="document">
                     </li>
                 </ul>
                 <div id="editor" contenteditable="true"><?php if(isset($_POST['draft'])) {print($_POST['body']);}?></div>
@@ -137,7 +137,7 @@
                 </div>
             </div>
 		</form>
-		<script>
+		<script type="text/javascript">
 /******************************* TABS *******************************/
             function loadArticle() {
                 document.getElementById('article').style.display = "block";
@@ -190,99 +190,52 @@
             }
             
 /******************************* TEXT FORMATTING *******************************/
+			setInterval(function () {
+                var boldLbl, italicLbl, underlineLbl;
+                var idName = ['boldLbl', 'italicLbl', 'underlineLbl'];
+                var varName = [bold, italic, underline];
+                var formatType = ['bold', 'italic', 'underline']; 
+                checkFormat(idName, varName, formatType);
+            }, 100);
+            
+            function checkFormat(id, variable, format) {
+                for(var i = 0; i < id.length; i++) {
+                    variable[i] = document.getElementById(id[i]);
+                    if(document.queryCommandState(format[i]) == true) {
+                        variable[i].style.backgroundColor = "lightgrey";
+                    } else {
+                        variable[i].style.backgroundColor = "#fff";
+                    }
+                }
+            }
+            
             function setUndo() {
-                document.execCommand('undo', true, null);
-                var editor = document.getElementById('editor');
-                setEndOfContenteditable(editor);
+                document.execCommand("Undo", false, null);
             }
-            
             function setRedo() {
-                document.execCommand('redo', true, null);
-                var editor = document.getElementById('editor');
-                setEndOfContenteditable(editor);
+                document.execCommand("Redo", false, null);
             }
-            
             function setBold() {
-                document.execCommand('bold', false, null);
-                var state = document.queryCommandState('bold');
-                if(state == true) {
-                    bold.style.backgroundColor = "lightgrey";
-                } else {
-                    bold.style.backgroundColor = "#fff";
-                }
-                var editor = document.getElementById('editor');
-                //setEndOfContenteditable(editor);
-                getCaretPosition();
-            }
-
-            // Italicize the text
+				document.execCommand("Bold", false, null);
+			}
             function setItalic() {
-                document.execCommand('italic', true, null);
-                var state = document.queryCommandState('italic');
-                if(state == true) {
-                    italics.style.backgroundColor = "lightgrey";
-                } else {
-                    italics.style.backgroundColor = "#fff";
-                }
-            }
-
-            // Underline the text
-            function setUnderline() {
-                document.execCommand('underline', true, null);
-                var state = document.queryCommandState('underline');
-                if(state == true) {
-                    underline.style.backgroundColor = "lightgrey";
-                } else {
-                    underline.style.backgroundColor = "#fff";
-                }
-            }
-
-            function setEndOfContenteditable(contentEditableElement) {
-                var range, selection;
-                contentEditableElement.focus();
-                if(document.createRange) { // Firefox, Chrome, Opera, Safari, IE 9+
-                    range = document.createRange();
-                    range.selectNodeContents(contentEditableElement);
-                    range.collapse(false);
-                    selection = window.getSelection();
-                    selection.removeAllRanges();
-                    selection.addRange(range);
-                }
-                else if(document.selection) { // IE 8 and lower
-                    range = document.body.createTextRange();
-                    range.moveToElementText(contentEditableElement);
-                    range.collapse(false);
-                    range.select();
-                }
-            }
+				document.execCommand("Italic", false, null);
+			}
+			function setUnderline() {
+				document.execCommand("Underline", false, null);
+			}
             
-            function getCaretPosition() {
-                if (window.getSelection && window.getSelection().getRangeAt) {
-                var range = window.getSelection().getRangeAt(0);
-                var selectedObj = window.getSelection();
-                var rangeCount = 0;
-                var childNodes = selectedObj.anchorNode.parentNode.childNodes;
-                for (var i = 0; i < childNodes.length; i++) {
-                    if (childNodes[i] == selectedObj.anchorNode) {
-                        break;
-                    }
-                    if (childNodes[i].outerHTML)
-                        rangeCount += childNodes[i].outerHTML.length;
-                    else if (childNodes[i].nodeType == 3) {
-                        rangeCount += childNodes[i].textContent.length;                       
-                    }
-                }
-                return range.startOffset + rangeCount;
-            }
-                return -1;
-            }
             var linkModal = document.getElementById('link-modal');
 			
 			function linkBox() { // When the user clicks, open up the link box
 				linkModal.style.display = "block";
-                resetLink();
+                document.getElementById('input-text').value = '';
+				document.getElementById('input-link').value = '';
+                document.getElementById('set-link').disabled = true;
 			}
+			
 			function addLink() { // Add the link to the rich text editor with valid requiremnents
+                /*
 				var texteditor = document.getElementById('editor');
 				var a = document.createElement('a');
 				var inputText = document.getElementById('input-text').value;
@@ -300,14 +253,29 @@
 					texteditor.appendChild(a);
 					linkModal.style.display = "none";
 				}
-                setEndOfContenteditable(texteditor);
+                */
+                
+                var inputText = document.getElementById('input-text').value;
+                var inputLink = document.getElementById('input-link').value;
+                var editor = document.getElementById('editor');
+                inputText = inputText.replace(/^\s+|\s+$/g, '');
+                if(inputText.length == 0) {
+                    editor.focus();
+                    document.execCommand('createLink', false, inputLink);
+                    linkModal.style.display = "none";
+                } else {
+                    editor.focus();
+                    var result = inputText.link(inputLink);
+                    document.execCommand('createLink', false, result);
+                    linkModal.style.display = "none";
+                }
 			}
-            /* TODO: inlcude window function for linkModal (onblur)*/
-            function exitLink() { // Close the link via exit button
+            
+            function exitLink() {// Close the link via exit button
                 var span = document.getElementsByClassName("close")[0];
                 linkModal.style.display = "none";
             }
-            function enableSetBtn() { // Valid configurations to set the link in editor
+            setInterval(function () {// Valid configurations to set the link in editor
                 var inputLink = document.getElementById('input-link').value;
                 var setLink = document.getElementById('set-link');
                 inputLink = inputLink.replace(/^\s+|\s+$/g, '');
@@ -318,20 +286,33 @@
                     document.getElementById('set-link').disabled = false;
                     document.getElementById('set-link').style.opacity = "1";
                 }
-            }
-            function resetLink() { // Reset default inputs when user opens/closes hyperlink tab
-                document.getElementById('input-text').value = '';
-				document.getElementById('input-link').value = '';
-                document.getElementById('set-link').disabled = true;
-            }
-            
+            }, 100);
  /******************************* EDITIOR COMPATIBILITY *******************************/
             document.getElementById('editor').addEventListener('paste', function(event) { // All pasted text converted to default font
                 event.preventDefault();
                 var text = event.clipboardData.getData('text/plain');
                 document.execCommand('insertHTML', false, text);
             });
-/******************************* Testing *******************************/
+            $(function() {
+                $('#editor').focus();
+            });
+            
+            function editorFocus() {
+                var editor = document.getElementById('editor');
+                editor.focus();
+            }
+            /*
+            $('#editor').blur(function () {
+                $(this).focus();
+            })
+            
+            $('#title').blur(function () {
+                $('#title').focus();
+            })
+            */
+/******************************* SUBMISSION *******************************/
+            var modal = document.getElementById('submit-draft');
+            
             function submitBtn() {
                 var submitBtn = document.getElementById("submit-button");
                 var articleTitle = document.getElementById("title");
@@ -345,7 +326,6 @@
                 }
             }
             
-		
             function saveBtn() {
                 var saveBtn = document.getElementById('save-button');
                 var articleTitle = document.getElementById('title');
@@ -359,10 +339,7 @@
                 }
             }
             
-            var modal = document.getElementById('submit-draft');
-		
-            // Cancels the submission of the article (No) button
-            function cancel() {
+            function cancel() { // Cancels the submission of the article (No) button
                 modal.style.display = "none";
             }
         
@@ -373,10 +350,6 @@
                 if (event.target == modal) {
                     modal.style.display = "none";
                 }
-                if (event.target == override) {
-                    var override = document.getElementById('override-draft');
-                    override.style.display = "none";
-                }
             }
             
             function exitModal() {
@@ -384,14 +357,6 @@
                 modal.style.display = "none";
             }
 /******************************* FILE UPLOADING *******************************/
-            function onUploadFile() {
-                if($('#editor').text().length > 0) {
-                   $('.override').show();
-                } else {
-                    uploadFile(); // Upload file if the override is approved
-                }
-            }
-
             function uploadFile() {
                 var formData = new FormData(); 
                 formData.append('document', $('#upload-document')[0].files[0]); 
@@ -407,28 +372,6 @@
                     processData: false
                 });
             }
-
-            function cancelOverride() {
-                var override = document.getElementById('override-draft');
-                override.style.display = "none";
-                var uploadDoc = document.getElementById('upload-document').value;
-                uploadDoc.length = 0;
-            }
-
-            function approveOverride() {
-                var override = document.getElementById('override-draft');
-                override.style.display = "none";
-                uploadFile(); // Upload file if the override is approved
-            }
-
-            function exitOverride() {
-                var span = document.getElementsByClassName("close")[0];
-                var override = document.getElementById('override-draft');
-                override.style.display = "none";
-                var uploadDoc = document.getElementById('upload-document').value;
-                uploadDoc.length = 0;
-            }
-
 		</script>
 	</body>
 </html>
