@@ -30,6 +30,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 					exit;
 				}
 			}
+			if(!is_null($_POST['city']) || !is_null($_POST['state'])) {
+				$city = strcmp($_POST['city'], $user['City']) == 0 ? NULL : $_POST['city'];
+				$state = strcmp($_POST['state'], $user['State']) == 0 ? NULL : $_POST['state'];
+				if(!updateLocation($_SESSION['userid'], $city, $state, $db)) {
+					print("Failed to update location.");
+					exit;
+				}
+			}			
 			print "Success";
 			break;
 		case "updatePreferences":
@@ -41,6 +49,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 					}
 				}
 			}
+			if(!is_null($_POST['dateformat'])) {
+				if(strcmp($_POST['dateformat'], $user['DateFormat']) != 0) { // Date format has been changed from the one on record
+					if(!updateDateformat($_SESSION['userid'], $_POST['dateformat'], $db)) {
+						print("Failed to update date format.");
+						exit;
+					}
+				}
+			}			
 			print "Success";
 			break;
 		case "updateAccount":
