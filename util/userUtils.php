@@ -15,6 +15,7 @@
 		   Will return all columns other than the user's hashed password. */
 		$sql = "SELECT UserID,FirstName,LastName,Email,Username,Usertype,ProfilePicture,Bio,TimeZone FROM User WHERE UserID = {$uid};";
 		$result = mysqli_query($db, $sql);
+		if(!$result) { return null; }
 	    if(mysqli_num_rows($result) == 0) {
 	        return null;
 	    }
@@ -240,7 +241,7 @@
 	}
 	function getNumUserArticlesWritten($uid, $db) {
 		/* Returns an integer value representing the number of articles written for a user with provided user id. */
-		$sql = "SELECT * FROM Article WHERE UserID = {$uid}";
+		$sql = "SELECT * FROM Article WHERE UserID = {$uid} AND IsDraft = 0 AND IsSubmitted = 1";
 		$result = mysqli_query($db, $sql);
 		return mysqli_num_rows($result);
 	}
@@ -276,6 +277,26 @@
 			$sql = "UPDATE User SET LastName = '{$lname}' WHERE UserID = {$uid}";
 			if(!mysqli_query($db, $sql)) { return false; }
 		}
+		return true;
+	}
+	function updateLocation($uid, $city, $state, $db) {
+		if(!is_null($city)) {
+			$city = htmlspecialchars(mysqli_escape_string($db, $city), ENT_QUOTES);
+			$sql = "UPDATE User SET City = '{$city}' WHERE UserID = {$uid}";
+			if(!mysqli_query($db, $sql)) { return false; }
+		}
+		if(!is_null($state)) {
+			$state = htmlspecialchars(mysqli_escape_string($db, $state), ENT_QUOTES);
+			$sql = "UPDATE User SET State = '{$state}' WHERE UserID = {$uid}";
+			if(!mysqli_query($db, $sql)) { return false; }
+		}
+		return true;
+	}
+	function updateDateformat($uid, $df, $db) {
+		/* Updates the Date format field of a user of provided User ID. */
+		$df = mysqli_escape_string($db, $df);
+		$sql = "UPDATE User SET DateFormat = '{$df}' WHERE UserID = {$uid}";
+		if(!mysqli_query($db, $sql)) { return false; }
 		return true;
 	}
 	function updateTimezone($uid, $tz, $db) {

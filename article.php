@@ -183,9 +183,7 @@
                 <div class="articleImage">
                     <img src="<?php print $articleData['ArticleImage'] ?>"/>
                 </div>
-                <div class="articleBody">
-                    <p><?php print nl2br($articleData['Body']); ?></p>
-                </div>
+                <p class="articleBody"><?php print nl2br($articleData['Body']); ?></p>
             </section>
             <section id="articleAdColumn">
                 <div class="ad"><p>AD</p></div>
@@ -198,9 +196,9 @@
             <hr/>
             <?php
                 if(!($isDraft || $isPending)) { // Only display a comment form if the article is published
-                    if(!isset($_SESSION['loggedin'])) {
+                    if(!isset($_SESSION['loggedin']) && $articleData['CommentsEnabled'] == TRUE) {
                         print '<div id="commentsMessage">Please log in to comment.</div>';
-                    } else {
+                    } else if($articleData['CommentsEnabled'] == TRUE) {
                         print '<form id="commentForm">
                                 <textarea id="commentBody" placeholder="Add a comment..." required></textarea>
                                 <input type="button" id="commentClearButton" value="Clear"/>
@@ -220,15 +218,29 @@
                                         <input type="submit" id="commentSubmitButton" value="Submit"/>
                                         <div class="errorMessage">An error occured. Please try again later.</div>
                                     </form>';
-                    $commentHtml = '<div class="comment" id="comment-'.$comment['CommentID'].' cid="'.$comment['CommentID'].'" style="margin-left: '.($indent * $indentMultiplier).'px">
-                                <img src="/res/img/'.$user['ProfilePicture'].'"/>
-                                <div class="commentText">
+
+                    $displayName = $user['FirstName'].' '.$user['LastName']; // First and last name by default
+                    $userLink = '<a class="username" href="/profile.php?uid='.$user['UserID'].'">('.$user['Username'].')</a>';
+                    if(is_null($comment['UserID'])) { // Determine if the account or the comment was deleted.
+                        $commentBody = '<span class="deletedComment">Account deleted.</span>';
+                    } else if(is_null($comment['CommentText'])) {
+                        $commentBody = '<span class="deletedComment">Comment deleted.</span>';
+                    } else {
+                        $commentBody = nl2br($comment['CommentText']);
+                    }
+                    $commentHtml =
+                        '<div class="comment" id="comment-'.$comment['CommentID'].' cid="'.$comment['CommentID'].'" style="margin-left: '.($indent * $indentMultiplier).'px">'.
+                            (is_null($comment['UserID']) ? '<span style="padding: 7px"></span>' : '<img src="/res/img/'.$user['ProfilePicture'].'"/>')
+                            .'<div class="commentText">
                                     <div class="commentTitle">
-                                        <span class="commentAuthor">'.$user['FirstName'].' '.$user['LastName'].' <a class="username" href="/profile.php?uid='.$user['UserID'].'">('.$user['Username'].')</a></span> <span class="commentDate">'.date("l, F j Y g:i a", strtotime($comment['CommentDate'])).'</span>
+                                        <span class="commentAuthor">'.(is_null($comment['UserID']) ? 'Deleted Account' : $displayName).' '.(is_null($comment['UserID']) ? '' : $userLink).'</span> <span class="commentDate">'.date("l, F j Y g:i a", strtotime($comment['CommentDate'])).'</span>
                                     </div>
-                                    <p class="commentBody">'.nl2br($comment['CommentText']).'</p>
+                                    <p class="commentBody">'.$commentBody.'</p>
                                     <div class="commentLinks">
-                                        <a class="commentReplyLink" id="'.$comment['CommentID'].'">Reply</a> &dash; <a href="#comment-'.$comment['CommentID'].'">Link</a>
+                                        <a class="commentReplyLink" id="'.$comment['CommentID'].'">Reply</a>
+                                        &dash;
+                                        <a href="#comment-'.$comment['CommentID'].'">Link</a>
+                                        '.($comment['Edited'] == TRUE ? '(edited)' : '').'
                                     </div>
                                     '.(isset($_SESSION['loggedin']) ? $replyFormHtml : '').'
                                 </div>
@@ -247,6 +259,8 @@
                 }
                 if($isDraft || $isPending) {
                     print '<div id="commentsMessage">Comments disabled until article is published.</div>';
+                } else if($articleData['CommentsEnabled'] == FALSE) {
+                    print '<div id="commentsMessage">Comments have been disabled for this article.</div>';
                 } else {
                     $articleComments = getArticleRootComments($articleData['ArticleID'], $db);
                     if(!$articleComments) {

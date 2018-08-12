@@ -171,7 +171,7 @@ if (!$stmt->prepare($query))
     return;
 }
 // bind username
-if (!$stmt->bind_param('s', $data['UserID']))
+if (!$stmt->bind_param('i', $data['UserID']))
 {
     echo "Error binding parameters: <br>";
     echo nl2br(print_r($stmt->error_list, true), false);

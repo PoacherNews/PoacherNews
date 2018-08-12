@@ -86,18 +86,16 @@ textarea[name=bio] {
 
 	<div class="sectionHeader">
 		<h2>Location</h2>
-		<span class="subheader">Will be displayed on your profile page.</span>
+		<span class="subheader">Will be displayed as your location on your profile page.</span>
 	</div>
-    <!-- Disabled until location columns are added to user database. 7/14 -CS -->
 	<div id="locationInputs">
         <label for="city">City</label>
-        <input name="city" type="text" placeholder="City" disabled/>
+        <input name="city" type="text" placeholder="City" value="<?php if(!is_null($user['City'])) { print($user['City']); } ?>"/>
         <label for="state">State</label>
-        <select name="state" disabled>
-            <?php include('includes/stateOptions.html'); ?>
+        <select name="state">
+            <?php include('includes/stateOptions.php'); ?>
         </select>
     </div>
-    <span class="settingsNotice">This feature coming soon!</span>
    
     <div class="settingsMessage"></div>
     <input class="settingsSubmit" type="submit" value="Save changes"/>

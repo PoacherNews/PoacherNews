@@ -179,7 +179,7 @@
             <a href="advertising.php">Advertise with us!</a>
         </section>
 
-        <section id="stackedArticles">
+        <section id="secondaryarticles" class="stackedArticles">
             <article>
                  <a class="stacked-thumbnail" href="article.php?articleid=87">
                     <img src="https://i.imgur.com/U469uHI.jpg" style="height: 217px; width: 325px;">
@@ -199,8 +199,8 @@
                         return;
                     }
                     $.each(data, function(i, row) {
-                        $("#stackedArticles").children().remove('.loader');
-                        $("#stackedArticles").append(createStackedArticle(row));
+                        $("#secondaryarticles").children().remove('.loader');
+                        $("#secondaryarticles").append(createStackedArticle(row));
                     });
                 });
             </script>
