@@ -19,9 +19,18 @@
 
     <div class="sectionHeader">
         <h2>Date Format</h2>
-        <span class="subheader">Specifies how dates are displayed throughout the website. Uses <a href="https://secure.php.net/manual/en/datetime.formats.date.php">PHP date formatting</a> to specify format.</span>
+        <span class="subheader">Specifies how dates are displayed throughout the website.</span>
     </div>
-    <span class="settingsNotice">This feature coming soon!</span>
+    <div id="dateformatInputs">
+        <label for="dateformat">Date Format</label>
+        <select name="dateformat">
+            <option value="F j,Y" <?php print($user['DateFormat'] == "F j,Y" ? "selected" : ""); ?>><?php print date("F j, Y"); ?></option>
+            <option value="j F Y" <?php print($user['DateFormat'] == "j F Y" ? "selected" : ""); ?>><?php print date("j F Y"); ?></option>
+            <option value="m/d/y" <?php print($user['DateFormat'] == "m/d/y" ? "selected" : ""); ?>><?php print date("m/d/y"); ?></option>
+            <option value="d/m/y" <?php print($user['DateFormat'] == "d/m/y" ? "selected" : ""); ?>><?php print date("d/m/y"); ?></option>
+            <option value="l jS \of F Y" <?php print($user['DateFormat'] == "l jS \of F Y" ? "selected" : ""); ?>><?php print date("l jS \of F Y"); ?></option>
+        </select> 
+    </div>
 
     <div class="sectionHeader">
         <h2>Time Zone</h2>
