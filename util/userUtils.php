@@ -279,6 +279,26 @@
 		}
 		return true;
 	}
+	function updateLocation($uid, $city, $state, $db) {
+		if(!is_null($city)) {
+			$city = htmlspecialchars(mysqli_escape_string($db, $city), ENT_QUOTES);
+			$sql = "UPDATE User SET City = '{$city}' WHERE UserID = {$uid}";
+			if(!mysqli_query($db, $sql)) { return false; }
+		}
+		if(!is_null($state)) {
+			$state = htmlspecialchars(mysqli_escape_string($db, $state), ENT_QUOTES);
+			$sql = "UPDATE User SET State = '{$state}' WHERE UserID = {$uid}";
+			if(!mysqli_query($db, $sql)) { return false; }
+		}
+		return true;
+	}
+	function updateDateformat($uid, $df, $db) {
+		/* Updates the Date format field of a user of provided User ID. */
+		$df = mysqli_escape_string($db, $df);
+		$sql = "UPDATE User SET DateFormat = '{$df}' WHERE UserID = {$uid}";
+		if(!mysqli_query($db, $sql)) { return false; }
+		return true;
+	}
 	function updateTimezone($uid, $tz, $db) {
 		/* Updates the Timezone field of a user of provided User ID. */
 		$tz = mysqli_escape_string($db, $tz);
