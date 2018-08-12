@@ -50,12 +50,12 @@
     <div id="timezoneInputs">
         <label for="timezone">Time Zone</label>
         <select name="timezone">
-            <option value="HAST" <?php print($user['TimeZone'] == "HAST" ? "selected" : ""); ?>>Hawaii-Aleutian Time Zone (UTC−10:00)</option>
-            <option value="AKST" <?php print($user['TimeZone'] == "AKST" ? "selected" : ""); ?>>Alaska Time Zone (UTC−09:00)</option>
-            <option value="PST" <?php print($user['TimeZone'] == "PST" ? "selected" : ""); ?>>Pacific Time Zone (UTC−08:00)</option>
-            <option value="MST" <?php print($user['TimeZone'] == "MST" ? "selected" : ""); ?>>Mountain Time Zone (UTC−07:00)</option>
-            <option value="CST" <?php print($user['TimeZone'] == "CST" ? "selected" : ""); ?>>Central Time Zone (UTC−06:00)</option>
-            <option value="EST" <?php print($user['TimeZone'] == "EST" ? "selected" : ""); ?>>Eastern Time Zone (UTC−05:00)</option>
+            <option value="US/Hawaii" <?php print($user['TimeZone'] == "US/Hawaii" ? "selected" : ""); ?>>Hawaii-Aleutian Time Zone (UTC−10:00)</option>
+            <option value="US/Alaska" <?php print($user['TimeZone'] == "US/Alaska" ? "selected" : ""); ?>>Alaska Time Zone (UTC−09:00)</option>
+            <option value="US/Pacific" <?php print($user['TimeZone'] == "US/Pacific" ? "selected" : ""); ?>>Pacific Time Zone (UTC−08:00)</option>
+            <option value="US/Mountain" <?php print($user['TimeZone'] == "US/Mountain" ? "selected" : ""); ?>>Mountain Time Zone (UTC−07:00)</option>
+            <option value="US/Central" <?php print($user['TimeZone'] == "US/Central" ? "selected" : ""); ?>>Central Time Zone (UTC−06:00)</option>
+            <option value="US/Eastern" <?php print($user['TimeZone'] == "US/Eastern" ? "selected" : ""); ?>>Eastern Time Zone (UTC−05:00)</option>
         </select> 
     </div>
 
