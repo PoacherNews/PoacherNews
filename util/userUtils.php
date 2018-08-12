@@ -13,7 +13,7 @@
 	function getUserById($uid, $db) {
 		/* Returns an associated array for a user with provided matching userID.
 		   Will return all columns other than the user's hashed password. */
-		$sql = "SELECT UserID,FirstName,LastName,Email,Username,Usertype,ProfilePicture,Bio,TimeZone FROM User WHERE UserID = {$uid};";
+		$sql = "SELECT UserID,FirstName,LastName,Email,Username,Usertype,ProfilePicture,Bio,TimeZone,City,State,DateFormat FROM User WHERE UserID = {$uid};";
 		$result = mysqli_query($db, $sql);
 		if(!$result) { return null; }
 	    if(mysqli_num_rows($result) == 0) {
