@@ -2,6 +2,17 @@
 #preferences {
 	display: grid;
 }
+	
+#dateformatInputs {
+    display: grid;
+    grid-template-rows: 20px auto;
+    grid-row-gap: 5px;
+    max-width: 250px;
+}
+#dateformatInputs > label {
+    grid-row-start: 1;
+    font-weight: 600;
+}    	
 
 #timezoneInputs {
     display: grid;
