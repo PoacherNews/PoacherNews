@@ -130,7 +130,7 @@ function list_articles()
 {
     include 'util/db.php';
     // query Users
-    $query = "SELECT Article.ArticleID, Headline, Category, IsDraft, IsSubmitted, FeaturedType AS Draft FROM Article LEFT JOIN Featured ON Featured.ArticleID = Article.ArticleID";
+    $query = "SELECT Article.ArticleID, Headline, Category, IsDraft, IsSubmitted, FeaturedType AS Draft FROM Article LEFT JOIN Featured ON Featured.ArticleID = Article.ArticleID ORDER BY FeaturedType DESC, ArticleID DESC";
     // display
     display_table($db, $query, "Articles");
     // done
