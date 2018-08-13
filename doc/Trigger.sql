@@ -1,4 +1,4 @@
-/* When a user account is deleted, CommentText linked to their UserID is set to NULL*/
+/* When a User is deleted, CommentText linked to their UserID is set to NULL*/
 DROP TRIGGER IF EXISTS deleteTrigger;
 DELIMITER $$
 CREATE TRIGGER deleteTrigger 
