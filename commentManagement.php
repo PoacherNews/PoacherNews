@@ -88,7 +88,7 @@ function list_comments()
 {
     include 'util/db.php';
     // query Users
-    $query = "SELECT CommentID, ReplyToID, Comment.ArticleID, Headline, Comment.UserID, Username, CommentText, CommentDate FROM Comment LEFT JOIN User ON Comment.UserID = User.UserID LEFT JOIN Article ON Comment.ArticleID = Article.ArticleID";
+    $query = "SELECT CommentID, ReplyToID, Comment.ArticleID, Headline, Comment.UserID, Username, CommentText, CommentDate FROM Comment LEFT JOIN User ON Comment.UserID = User.UserID LEFT JOIN Article ON Comment.ArticleID = Article.ArticleID ORDER BY CommentID DESC";
     // display
     display_table($db, $query, "Comments");
     // done
