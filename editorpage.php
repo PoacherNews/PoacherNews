@@ -301,15 +301,12 @@
                 var editor = document.getElementById('editor');
                 editor.focus();
             }
-            /*
+            //var focus 
             $('#editor').blur(function () {
-                $(this).focus();
+                //$(this).focus();
+				
             })
-            
-            $('#title').blur(function () {
-                $('#title').focus();
-            })
-            */
+			
 /******************************* SUBMISSION *******************************/
             var modal = document.getElementById('submit-draft');
             

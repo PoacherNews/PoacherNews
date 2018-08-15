@@ -143,7 +143,7 @@ select {
 }
 
 #input-text, #input-link {
-     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 13pt;
     margin: auto 25% 10px 25%;
 }
