@@ -76,18 +76,21 @@ p { word-wrap: break-word; }
 
 article a:not(.continue-reading):hover {
     text-decoration: underline;
+    text-decoration-color: inherit;
     color: inherit;
+    text-decoration-skip: ink;
+    text-decoration-skip-ink: auto;
 }
 
 .pageContent {
         margin: 0px 5% 0px 5%;
         display: grid;
-        grid-template-columns: 1fr auto 2fr auto 1fr;
-        grid-template-rows: auto auto auto;
 }
 
 @media only screen and (min-width: 768px) { /* Desktops */
     .pageContent { 
+        grid-template-columns: 1fr auto 2fr auto 1fr;
+        grid-template-rows: auto auto auto;
         grid-template-areas: 
             "editorPicks     .               mainArticle     .               trending"
             "bannerAd        bannerAd        bannerAd        bannerAd        bannerAd"
