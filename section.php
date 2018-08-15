@@ -1,7 +1,8 @@
 <?php 
     session_start();
     $defaultCategory = "Politics";
-    if(empty($_GET['Category'])) {
+    $validCategories = array("Politics", "Sports", "Entertainment", "Video", "Local", "Opinion");
+    if(empty($_GET['Category']) || !in_array($_GET['Category'], $validCategories)) {
         header('Location: section.php?Category='.$defaultCategory);
         exit();
     }
