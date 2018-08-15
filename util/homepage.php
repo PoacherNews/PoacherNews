@@ -14,7 +14,7 @@ include("db.php");
 include("articleUtils.php");
 
 // Rules for number of articles in respective sections
-$trendingResultCap = 3;
+$trendingResultCap = 2;
 $editorPickCap = $trendingResultCap;
 $secondaryResultCap = 5;
 

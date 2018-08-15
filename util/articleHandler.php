@@ -48,6 +48,24 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 					print "Error";
 				}
 				break;
+			case "editComment":
+				if(empty($_POST['cid']) || empty($_POST['edit'])) {
+					exit;
+				}
+				if(getCommentAuthorID($_POST['cid'], $db) != $_SESSION['userid']) { // Someone is trying to update a comment they didn't author
+					exit;
+				}
+				updateComment($_POST['cid'], $_POST['edit'], $db);
+				break;
+			case "deleteComment":
+				if(empty($_POST['cid'])) {
+					exit;
+				}
+				if(getCommentAuthorID($_POST['cid'], $db) != $_SESSION['userid']) { // Someone is trying to delete a comment they didn't author
+					exit;
+				}
+				deleteComment($_POST['cid'], $db);
+				break;
 		}
 		exit;
 	}

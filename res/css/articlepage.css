@@ -153,6 +153,17 @@
 	color: grey;
 }
 
+
+.commentEditInputs textarea {
+	min-width: 90%;
+	height: auto;
+	font-family: inherit;
+	font-size: inherit;
+}
+.commentEditInputs {
+	display: none; /* Hidden by default */
+}
+
 .replyForm {
 	margin: inherit;
 	padding-top: 15px;
@@ -173,7 +184,7 @@
 #commentForm > * {
 	margin: 5px 5px auto 0px;
 }
-#commentForm > textarea {
+#commentForm > textarea{
 	display: block;
 	font-family: inherit;
 	min-width: 35%;

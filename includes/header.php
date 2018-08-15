@@ -23,7 +23,8 @@
         <!-- <div id="hdrrt"> -->
             <?php
                 if(!empty($_SESSION['loggedin']) && $_SESSION['loggedin']) {
-                    print "<span class=\"username\">{$_SESSION['username']} <i class=\"fa fa-caret-down\"></i>
+                    print "<span class=\"username\"><a href='/profile.php?uid=".$_SESSION['userid']."'>{$_SESSION['username']}</a> <i class=\"fa fa-caret-down\"></i>
+                            <div class='uname-content-wrapper'>
                                 <div class=\"username-content\">
                                     <p>Logged in as <b>{$_SESSION['username']}</b></p>
                                     <hr>
@@ -37,6 +38,7 @@
                                     <a href=\"/settings.php\">Settings</a>
                                     <a href=\"/logout.php\">Log Out</a>
                                 </div>
+                            </div>
                         </span>";
                 } else {
                     print "<span class=\"lgnLink\">Have an account? <b>Log In<i class=\"fa fa-caret-down\"></i></b> 

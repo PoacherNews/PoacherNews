@@ -3,6 +3,7 @@
 <html>
 <head>
 	<?php include 'includes/globalHead.html' ?>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/res/css/homepage.css">
     <!-- Javascript/Jquery imports here -->
     <script>
@@ -179,17 +180,7 @@
             <a href="advertising.php">Advertise with us!</a>
         </section>
 
-        <section id="secondaryarticles" class="stackedArticles">
-            <article>
-                 <a class="stacked-thumbnail" href="article.php?articleid=87">
-                    <img src="https://i.imgur.com/U469uHI.jpg" style="height: 217px; width: 325px;">
-                </a>
-                <div class="stacked-text">
-                    <a href="article.php?articleid=87"><h1>I am never at home on Sundays!!!!!!!</h1></a>
-                    <p>TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY TEST BODY ...</p>
-                    <a class="continue-reading" href="article.php?articleid=87">Continue Reading</a>
-                </div>
-            </article>
+        <section id="secondaryarticles" class="stackedArticles">    
             <script>
                  $.getJSON("util/homepage.php", {
                     'request' : 'secondaryarticles'
