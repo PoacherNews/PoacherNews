@@ -225,6 +225,26 @@
 		return mysqliToArray(mysqli_query($db, $sql));
 	}
 
+	function getCommentAuthorID($cid, $db) {
+		/* Returns the userID of a comment of provided commentID. */
+		$sql = "SELECT UserID FROM Comment WHERE CommentID = {$cid}";
+		$result = mysqli_fetch_array(mysqli_query($db, $sql));
+		if($result) {
+			return $result['UserID'];
+		}
+		return NULL;
+	}
+	function updateComment($cid, $text, $db) {
+		/* Updates a comment with provided comment ID to the provided text. Will also set the edited flag for this comment. */
+		$sql = "UPDATE Comment SET CommentText='{$text}', Edited=TRUE WHERE CommentID={$cid}";
+		return mysqli_query($db, $sql);
+	}
+	function deleteComment($cid, $db) {
+		/* Deletes the comment with provided comment ID from the database. */
+		$sql = "UPDATE Comment SET CommentText=NULL WHERE CommentID={$cid}";
+		return mysqli_query($db, $sql);
+	}
+
 
 // PROFILE PAGE FUNCTIONS
 	function getNumUserBookmarks($uid, $db) {

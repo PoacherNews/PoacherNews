@@ -229,17 +229,23 @@
                         $commentBody = nl2br($comment['CommentText']);
                     }
                     $commentHtml =
-                        '<div class="comment" id="comment-'.$comment['CommentID'].' cid="'.$comment['CommentID'].'" style="margin-left: '.($indent * $indentMultiplier).'px">'.
+                        '<div class="comment" id="comment-'.$comment['CommentID'].'" cid="'.$comment['CommentID'].'" style="margin-left: '.($indent * $indentMultiplier).'px">'.
                             (is_null($comment['UserID']) ? '<span style="padding: 7px"></span>' : '<img src="/res/img/'.$user['ProfilePicture'].'"/>')
                             .'<div class="commentText">
                                     <div class="commentTitle">
                                         <span class="commentAuthor">'.(is_null($comment['UserID']) ? 'Deleted Account' : $displayName).' '.(is_null($comment['UserID']) ? '' : $userLink).'</span> <span class="commentDate">'.date("l, F j Y g:i a", strtotime($comment['CommentDate'])).'</span>
                                     </div>
                                     <p class="commentBody">'.$commentBody.'</p>
+                                    <div class="commentEditInputs">
+                                        <textarea>'.$commentBody.'</textarea>
+                                        <input type="button" class="editCancel" value="Cancel"/>
+                                        <input type="button" class="editSave" value="Save"/>
+                                    </div>
                                     <div class="commentLinks">
                                         <a class="commentReplyLink" id="'.$comment['CommentID'].'">Reply</a>
                                         &dash;
                                         <a href="#comment-'.$comment['CommentID'].'">Link</a>
+                                        '.($_SESSION['userid'] == $comment['UserID'] && !is_null($comment['CommentText']) ? '&dash; <a class="commentEditLink">Edit</a> &dash; <a class="commentDeleteLink">Delete</a>' : '').'
                                         '.($comment['Edited'] == TRUE ? '(edited)' : '').'
                                     </div>
                                     '.(isset($_SESSION['loggedin']) ? $replyFormHtml : '').'
@@ -275,9 +281,10 @@
             ?>
             <script>
                 $("#commentClearButton").click(function() {
-                    // Clears any text in the comment textarea field.
                     $("#commentBody").val('');
                 });
+
+                // Reply functionality
                 $(".replyCancel").click(function() {
                     $(this).closest('.replyForm').slideUp();
                 });
@@ -294,6 +301,42 @@
                     
                     return false; // Prevent default page reload.
                 });
+
+                // Comment editing functionality
+                $(".commentEditLink").click(function() {
+                    $(this).closest('.commentText').children('.commentBody').toggle();
+                    $(this).closest('.commentText').children('.commentEditInputs').toggle();
+                    $(this).closest('.commentText').children('.commentEditInputs').children('textarea').val($(this).closest('.commentText').children('.commentBody').text()); // Reset edit field to match original comment
+                });
+                $(".editCancel").click(function() {
+                    $(this).closest('.commentText').children('.commentBody').show();
+                    $(this).closest('.commentText').children('.commentEditInputs').hide();
+                    $(this).closest('.commentEditInputs').children('textarea').val($(this).parent().siblings('.commentBody').text()); // Reset edit field to match original comment
+                    
+                });
+                $(".editSave").click(function() {
+                    $.post('util/articleHandler.php', {
+                        'request' : "editComment",
+                        'cid' : $(this).closest('.comment').attr('cid'),
+                        'edit' : $(this).closest('.commentEditInputs').children('textarea').val(),
+                    }).done(function(data) {
+                        location.reload();
+                    });
+                });
+
+                // Comment deleting functionality
+                $(".commentDeleteLink").click(function() {
+                    if(confirm("Are you sure you want to delete this comment? Press OK to confirm") == true) {
+                        $.post('util/articleHandler.php', {
+                            'request' : "deleteComment",
+                            'cid' : $(this).closest('.comment').attr('cid'),
+                        }).done(function(data) {
+                            location.reload();
+                        });
+                    }
+                })
+
+                // Comment posting functionality
                 $("#commentForm").submit(function(event) {
                     $.post("util/articleHandler.php", {
                         aid : $("#aid").text(),
