@@ -78,27 +78,31 @@
                                 ?></p>
                             <div class="aboutSectionHeader">Location</div> <!-- 7/10 Location Support not yet implemented in site -->
                                  <p><?php
-                                     print(is_null($userDetails['Location']) ? "No location set yet." : $userDetails['Location']);
+                                     if(is_null($userDetails['City']) && is_null($userDetails['State'])) {
+                                        print "No location set yet.";
+                                     }
+                                     print(is_null($userDetails['City']) ? '' : $userDetails['City'].', ');
+                                     print(is_null($userDetails['State']) ? '' : $userDetails['State']);
                                  ?></p>
                             <div class="aboutSectionHeader">Time Zone</div>
                                 <p><?php
                                     switch($userDetails['TimeZone']) {
-                                        case "HAST":
+                                        case "US/Hawaii":
                                             print "Hawaii-Aleutian Time (UTC−10:00)";
                                             break;
-                                        case "AKST":
+                                        case "US/Alaska":
                                             print "Alaska Time (UTC−09:00)";
                                             break;
-                                        case "PST":
+                                        case "US/Pacific":
                                             print "Pacific Time (UTC−08:00)";
                                             break;
-                                        case "MST":
+                                        case "US/Mountain":
                                             print "Mountain Time (UTC−07:00)";
                                             break;
-                                        case "CST":
+                                        case "US/Central":
                                             print "Central Time (UTC−06:00)";
                                             break;
-                                        case "EST":
+                                        case "US/Eastern":
                                             print "Eastern Time (UTC−05:00)";
                                             break;
                                         case NULL:
