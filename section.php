@@ -134,7 +134,9 @@
     </section>
         <!-- containerPrimary Tail -->
         
-
+    <section class="bannerAd">
+            <a href="advertising.php">Advertise with us!</a>
+    </section>
 
     <!-- containerSecondary Head -->
     <section class="secSecondary">
@@ -144,17 +146,22 @@
             <div class="secColumnLeftSecondary">
                 <h1 class="secCategorySecondary">Editor's Picks</h1>
                 <?php
-                    $picks = array_slice(getEditorPicks($_GET['Category'], NULL, $db), 0, $threeColLimit);
-                    foreach($picks as $article) {
-                        print "<article>
-                            <div class=\"thumbnailSecondary\">
-                                <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['ArticleImage']}\" width=\"150\" height=\"100\"></a>
-                            </div>
-                            <div class=\"textSecondary\">
-                                <h2 class=\"secHeadlineSecondary\"><a href=\"article.php?articleid={$article['ArticleID']}\">{$article['Headline']}</a></h2>
-                                <p>".substr($article['Body'], 0, 75)."...</p>                    
-                            </div>
-                        </article>";
+                    $ep = getEditorPicks($_GET['Category'], NULL, $db);
+                    if($ep === null) {
+                        print "<div class=\"columnError\"><p>No editor picks in this section.</p></div>";
+                    } else {
+                        $picks = array_slice(getEditorPicks($_GET['Category'], NULL, $db), 0, $threeColLimit);
+                        foreach($picks as $article) {
+                            print "<article>
+                                <div class=\"thumbnailSecondary\">
+                                    <a href=\"article.php?articleid={$article['ArticleID']}\"><img src=\"{$article['ArticleImage']}\" width=\"150\" height=\"100\"></a>
+                                </div>
+                                <div class=\"textSecondary\">
+                                    <h2 class=\"secHeadlineSecondary\"><a href=\"article.php?articleid={$article['ArticleID']}\">{$article['Headline']}</a></h2>
+                                    <p>".substr($article['Body'], 0, 75)."...</p>                    
+                                </div>
+                            </article>";
+                        }
                     }
                 ?>
             </div>
@@ -164,7 +171,7 @@
                 <?php
                     $trending = getTrendingArticles($_GET['Category'], $threeColLimit, $db);
                     if($trending === null) {
-                        print "<div class=\"columnError\">No trending articles in this section.</div>";
+                        print "<div class=\"columnError\"><p>No trending articles in this section.</p></div>";
                     } else {
                         foreach($trending as $article) {
                             print "<article>
@@ -185,11 +192,11 @@
                 <h1 class="secCategorySecondary">User Bookmarks</h1>
                 <?php
                     if(!isset($_SESSION['loggedin'])) {
-                        print "<div class=\"columnError\">Log in to see your bookmarks.</div>";
+                        print "<div class=\"columnError\"><p>Log in to see your bookmarks.</p></div>";
                     } else {
                         $bookmarks = getUserBookmarks($_SESSION['userid'], $_GET['Category'], $threeColLimit, $db);
                         if($bookmarks === null) {
-                            print "<div class=\"columnError\">No bookmarks in this section.</div>";
+                            print "<div class=\"columnError\"><p>No bookmarks in this section.</p></div>";
                         } else {
                             foreach($bookmarks as $article) {
                                 print "<article>

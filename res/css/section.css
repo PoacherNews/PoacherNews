@@ -14,12 +14,29 @@ a {
     color: grey;
     font-style: italic;
     text-align: center;
-    margin-top: 25%;
-    padding: 5%;
+    position: relative;
+    min-height: 350px;
+}
+.columnError > p {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 55%;
+    height: 30%;
+    margin: auto;
 }
 
 .hidden {
     display: none;
+}
+
+.bannerAd {
+    margin: 35px 10px 35px 10px;
+}
+.bannerAd > a {
+    color: #83A8F0;
 }
         
 #secName {
