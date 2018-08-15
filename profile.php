@@ -13,6 +13,13 @@
     } else {
         date_default_timezone_set('US/CENTRAL');
     }
+    // Set date format
+    if(isset($_SESSION) && getUserDateFormat($_SESSION['userid'], $db) != NULL) {
+        $dateFormat = getUserDateFormat($_SESSION['userid'], $db);
+    } else {
+        $dateFormat = "l, F j Y";
+    }
+    $dateFormat = $dateFormat." g:i a"; // Append hour and minute of publish onto format
 ?>
 
 <!DOCTYPE html>
@@ -122,7 +129,7 @@
                                         $author = getUserById($bookmark['UserID'], $db);
                                         print "<li>
                                                 <div><a href='article.php?articleid={$bookmark['ArticleID']}'>{$bookmark['Headline']}</a></div>
-                                                <div><a href='profile.php?uid={$author['UserID']}'>{$author['FirstName']} {$author['LastName']}</a> - ".date("l, F j Y g:i a", strtotime($bookmark['PublishDate']))."</div>
+                                                <div><a href='profile.php?uid={$author['UserID']}'>{$author['FirstName']} {$author['LastName']}</a> - ".date($dateFormat, strtotime($bookmark['PublishDate']))."</div>
                                               </li>";
                                     }
                                 }
@@ -141,7 +148,7 @@
                                             print "<li>
                                                     <div>\"{$comment['CommentText']}\"</div>
                                                     <div><a href='article.php?articleid={$comment['ArticleID']}'>{$article['Headline']}</a></div>
-                                                    <div>Commented on ".date('l, F j Y g:i a', strtotime($comment['CommentDate']))."</div>
+                                                    <div>Commented on ".date($dateFormat, strtotime($comment['CommentDate']))."</div>
                                                   </li>";
                                         }
                                     }
@@ -179,7 +186,7 @@
                                         foreach($publishedArticles as $article) {
                                             print "<li>
                                                 <div><a href='article.php?articleid={$article['ArticleID']}'>{$article['Headline']}</a></div>
-                                                <div>".date("l, F j Y g:i a", strtotime($article['PublishDate']))."</div>
+                                                <div>".date($dateFormat, strtotime($article['PublishDate']))."</div>
                                               </li>";
                                         }
                                      ?>
@@ -194,7 +201,7 @@
                                         foreach($draftArticles as $article) {
                                             print "<li>
                                                 <div><a href='article.php?articleid={$article['ArticleID']}'>{$article['Headline']}</a></div>
-                                                <div>".date("l, F j Y g:i a", strtotime($article['PublishDate']))."</div>
+                                                <div>".date($dateFormat, strtotime($article['PublishDate']))."</div>
                                               </li>";
                                         }
                                 print '</ul>';
@@ -206,7 +213,7 @@
                                         foreach($pendingArticles as $article) {
                                             print "<li>
                                                 <div><a href='article.php?articleid={$article['ArticleID']}'>{$article['Headline']}</a></div>
-                                                <div>".date("l, F j Y g:i a", strtotime($article['PublishDate']))."</div>
+                                                <div>".date($dateFormat, strtotime($article['PublishDate']))."</div>
                                               </li>";
                                         }
                                 print '</ul>';

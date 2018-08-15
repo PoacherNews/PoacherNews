@@ -60,6 +60,15 @@
 		}
 		return NULL;
     }
+    function getUserDateFormat($uid, $db) {
+    	/* Returns the date format from a user of provided user ID, if one is set. */
+    	$sql = "SELECT DateFormat FROM User WHERE UserID = {$uid}";
+    	$result = mysqli_fetch_array(mysqli_query($db, $sql));
+		if($result) {
+			return $result['DateFormat'];
+		}
+		return NULL;
+    }
 
 // BOOKMARKING FUNCTIONS
 	function isBookmark($uid, $aid, $db) {

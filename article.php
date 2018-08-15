@@ -19,11 +19,19 @@
             include('includes/header.php');
             include('includes/nav.php');
             
+            // Set timezone
             if(isset($_SESSION) && getUserTimezone($_SESSION['userid'], $db) != NULL) {
                 date_default_timezone_set(getUserTimezone($_SESSION['userid'], $db));
             } else {
                 date_default_timezone_set('US/CENTRAL');
             }
+            // Set date format
+            if(isset($_SESSION) && getUserDateFormat($_SESSION['userid'], $db) != NULL) {
+                $dateFormat = getUserDateFormat($_SESSION['userid'], $db);
+            } else {
+                $dateFormat = "l, F j Y";
+            }
+            $dateFormat = $dateFormat." g:i a"; // Append hour and minute of publish onto format
 
             $articleData = getArticleByID($_GET['articleid'], $db);
             if(!$articleData) {
@@ -50,8 +58,8 @@
 
     <div class="pageContent">
         <?php
-            if($isDraft) { print "<div id=\"infoBanner\">DRAFT</div>"; }
-            if($isPending) { print "<div id=\"infoBanner\">PENDING APPROVAL</div>"; }
+            if($isDraft) { print "<div id=\"infoBanner\">Draft</div>"; }
+            if($isPending) { print "<div id=\"infoBanner\">Pending Approval</div>"; }
         ?>
         <div class="articleColumns">
             <section id="articleColumn">
@@ -64,7 +72,7 @@
                             print "Written by <a href=\"/profile.php?uid={$articleData['UserID']}\">{$authorData['FirstName']} {$authorData['LastName']}</a>";
                         ?>
                     </p>
-                    <p id="pubDate">Published on <?php print date("l, F j Y g:i a", strtotime($articleData['PublishDate']))?></p>
+                    <p id="pubDate">Published on <?php print date($dateFormat, strtotime($articleData['PublishDate']))?></p>
                     <p id="pubDetails">
                         <?php print "<a href=\"section.php?Category={$articleData['Category']}\">{$articleData['Category']}</a>" ?>
                         &mdash;
@@ -209,6 +217,7 @@
                 }
                 function drawComment($comment, $indent, $db) {
                     $indentMultiplier = 60; // Amount to indent each nested reply set in pixels.
+                    global $dateFormat;
                     $user = getUserById($comment['UserID'], $db);
                     $replyFormHtml = '<form class="replyForm">
                                         <textarea name="content" class="replyBody" placeholder="Add a reply..." required></textarea>
@@ -233,7 +242,7 @@
                             (is_null($comment['UserID']) ? '<span style="padding: 7px"></span>' : '<img src="/res/img/'.$user['ProfilePicture'].'"/>')
                             .'<div class="commentText">
                                     <div class="commentTitle">
-                                        <span class="commentAuthor">'.(is_null($comment['UserID']) ? 'Deleted Account' : $displayName).' '.(is_null($comment['UserID']) ? '' : $userLink).'</span> <span class="commentDate">'.date("l, F j Y g:i a", strtotime($comment['CommentDate'])).'</span>
+                                        <span class="commentAuthor">'.(is_null($comment['UserID']) ? 'Deleted Account' : $displayName).' '.(is_null($comment['UserID']) ? '' : $userLink).'</span> <span class="commentDate">'.date($dateFormat, strtotime($comment['CommentDate'])).'</span>
                                     </div>
                                     <p class="commentBody">'.$commentBody.'</p>
                                     <div class="commentEditInputs">
@@ -315,13 +324,18 @@
                     
                 });
                 $(".editSave").click(function() {
-                    $.post('util/articleHandler.php', {
-                        'request' : "editComment",
-                        'cid' : $(this).closest('.comment').attr('cid'),
-                        'edit' : $(this).closest('.commentEditInputs').children('textarea').val(),
-                    }).done(function(data) {
-                        location.reload();
-                    });
+                    var existingCommentText = $(this).closest('.commentText').children('.commentBody').text();
+                    var newCommentText = $(this).closest('.commentEditInputs').children('textarea').val();
+                    if(!(existingCommentText == newCommentText)) {
+                        $.post('util/articleHandler.php', {
+                            'request' : "editComment",
+                            'cid' : $(this).closest('.comment').attr('cid'),
+                            'edit' : newCommentText,
+                        }).done(function(data) {
+                            location.reload();
+                        });
+                    }
+                    
                 });
 
                 // Comment deleting functionality
