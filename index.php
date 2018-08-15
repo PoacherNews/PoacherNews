@@ -179,7 +179,7 @@
             <a href="advertising.php">Advertise with us!</a>
         </section>
 
-        <section id="secondaryarticles" class="stackedArticles">
+        <section id="secondaryarticles" class="stackedArticles">    
             <script>
                  $.getJSON("util/homepage.php", {
                     'request' : 'secondaryarticles'

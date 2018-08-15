@@ -80,11 +80,14 @@ a.hdrA {
 /* LOGIN/SEARCH */
 .lgnLink, .username {
     margin: auto auto auto auto;
-    font-family: Arial, Helvetica, sans-serif;
+}
+
+.username > a {
+    color: inherit;
 }
 
 .lgnLink:hover, .username:hover {
-    text-decoration: underline;
+    /*text-decoration: underline;*/
     cursor: pointer;
 }
 
@@ -136,7 +139,6 @@ a.hdrA {
 
 .lgnDrpdwn-content a {
     color: black;
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     text-decoration: none;
     display: block;
@@ -157,7 +159,6 @@ a.hdrA {
 }
 
 .lgnDrpdwn-content p {
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     cursor: auto;
 }
@@ -204,16 +205,32 @@ a.hdrA {
     opacity: 0.5;
 }
 
+.uname-content-wrapper {
+    position: relative;
+    margin-top: 4px;
+}
 .username-content {
     position: absolute;
+    right: -10px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
-    border: 1px solid black;
+    border-radius: 4px;
+    border: 1px solid lightgrey;
     text-align: center;
     z-index: 10;
     min-width: 180px;
     background-color: white;
     display: none;
-	right: 0;
+}
+.username-content:after {
+    content: "";
+    width: 0;
+    height: 0;
+    position: absolute;
+    bottom: 100%;
+    right: 25px;
+    border-width: 0 6px 6px 6px;
+    border-style: solid;
+    border-color: #fff transparent;
 }
 
 .username:hover .username-content {
@@ -222,23 +239,21 @@ a.hdrA {
 
 .username-content a {
     color: black;
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     text-decoration: none;
     display: block;
     padding: 10px 0px 10px 0px;
+}
 
+.username-content > a:hover {
+    background-color: #83A8F0;
+    color: white;
 }
 
 .username-content p {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     cursor: auto;
-}
-
-.username-content > a:hover {
-    background-color: #83A8F0;
-    color: white;
 }
 
 .username-content hr {
