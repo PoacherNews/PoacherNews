@@ -113,6 +113,7 @@ input {
                 $("#saveMessage").text(data);
             }
             $("#saveMessage").fadeIn();
+            $("#saveMessage").delay(5000).fadeOut();
         });
     });
     $("#deleteAccount").submit(function(event) {

@@ -81,6 +81,7 @@
                 $(".settingsMessage").text(data);
             }
             $(".settingsMessage").fadeIn();
+            $(".settingsMessage").delay(5000).fadeOut();
         });
     })
 </script>
