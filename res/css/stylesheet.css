@@ -1,7 +1,7 @@
 /* HEADER */
 header[id="mainHeader"] {
     grid-area: mainHeader;
-    min-width: 100%;
+    width: 100%;
     min-height: 10vh;
 	background: #83a8f0;
 	background: linear-gradient(140deg, #83A8F0 0%, #BDD4E7 50%, #8693AB 75%);
