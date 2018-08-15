@@ -33,7 +33,6 @@
         <span class="subheader">Specifies how dates are displayed throughout the website.</span>
     </div>
     <div id="dateformatInputs">
-        <label for="dateformat">Date Format</label>
         <select name="dateformat">
             <option value="F j,Y" <?php print($user['DateFormat'] == "F j,Y" ? "selected" : ""); ?>><?php print date("F j, Y"); ?></option>
             <option value="j F Y" <?php print($user['DateFormat'] == "j F Y" ? "selected" : ""); ?>><?php print date("j F Y"); ?></option>
@@ -48,7 +47,6 @@
         <span class="subheader">Specifies times throughout the site to be displayed in your local timezone.</span>
     </div>
     <div id="timezoneInputs">
-        <label for="timezone">Time Zone</label>
         <select name="timezone">
             <option value="US/Hawaii" <?php print($user['TimeZone'] == "US/Hawaii" ? "selected" : ""); ?>>Hawaii-Aleutian Time Zone (UTC−10:00)</option>
             <option value="US/Alaska" <?php print($user['TimeZone'] == "US/Alaska" ? "selected" : ""); ?>>Alaska Time Zone (UTC−09:00)</option>
