@@ -1,5 +1,5 @@
 body {
-	font-size: 14px;
+	/*font-size: 14px;*/
 }
 
 .editor-tab {
@@ -63,21 +63,21 @@ body {
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-ul {
+.editorNav ul {
     font-size: 13pt;
     margin-bottom: 0px;
     padding-left: 0px;
     border-top: 1px solid black;
 }
 
-ul > li {
+.editorNav ul > li {
 	display: inline-block;
 	padding: 10px 12px;
     cursor: pointer;
     margin: 0px 15px 0px 15px;
 }
 
-ul > li:hover {
+.editorNav ul > li:hover {
     background-color: #f1f1f1;
 }
 
@@ -92,7 +92,7 @@ input {
 }
 
 
-li > label, i {
+.editorNav li > label, i {
     cursor: pointer;
 }
 

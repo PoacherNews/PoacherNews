@@ -65,38 +65,40 @@
                     <option value="Local">Local</option>
                     <option value="Opinion">Opinion</option>
                 </select>
-                <ul>
-                    <li onclick="setUndo()" id="undo"><i class="fas fa-undo-alt"></i></li>
-                    <li onclick="setRedo()" id="redo"><i class="fas fa-redo-alt"></i></li>
-                    <li id="boldLbl" onclick="setBold()">
-						<label onclick="setBold()" for="bold"><i class="fas fa-bold"></i></label>
-						<input id="bold" type="button"/>
-					</li>
-                    <li id="italicLbl" onclick="setItalic()">
-						<label onclick="setItalic()" for="italic"><i class="fas fa-italic"></i></label>
-						<input id="italic" type="button"/>
-					</li>
-					<li id="underlineLbl" onclick="setUnderline()">
-						<label onclick="setUnderline()" for="underline"><i class="fas fa-underline"></i></label>
-						<input id="underline" type="button"/>
-					</li>
-                    <li onclick="linkBox()"><i id="insert" class="fas fa-link"></i></li>
-                    <div id="link-modal" class="insert-link">
-                        <div class="link-content">
-                            <span onclick="exitLink()" class="close">&times;</span>
-                            <span>Hyperlink</span><br>
-                            <input type="text" id="input-text" placeholder="Text">
-                            <input type="text" id="input-link" placeholder="Paste a link">
-                            <input type="button" id="set-link" onclick="addLink()" value="Set Link"/>
+                <div class="editorNav">
+                    <ul>
+                        <li onclick="setUndo()" id="undo"><i class="fas fa-undo-alt"></i></li>
+                        <li onclick="setRedo()" id="redo"><i class="fas fa-redo-alt"></i></li>
+                        <li id="boldLbl" onclick="setBold()">
+    						<label onclick="setBold()" for="bold"><i class="fas fa-bold"></i></label>
+    						<input id="bold" type="button"/>
+    					</li>
+                        <li id="italicLbl" onclick="setItalic()">
+    						<label onclick="setItalic()" for="italic"><i class="fas fa-italic"></i></label>
+    						<input id="italic" type="button"/>
+    					</li>
+    					<li id="underlineLbl" onclick="setUnderline()">
+    						<label onclick="setUnderline()" for="underline"><i class="fas fa-underline"></i></label>
+    						<input id="underline" type="button"/>
+    					</li>
+                        <li onclick="linkBox()"><i id="insert" class="fas fa-link"></i></li>
+                        <div id="link-modal" class="insert-link">
+                            <div class="link-content">
+                                <span onclick="exitLink()" class="close">&times;</span>
+                                <span>Hyperlink</span><br>
+                                <input type="text" id="input-text" placeholder="Text">
+                                <input type="text" id="input-link" placeholder="Paste a link">
+                                <input type="button" id="set-link" onclick="addLink()" value="Set Link"/>
+                            </div>
                         </div>
-                    </div>
-                    <li>
-                        <label for="upload-document" id="custom-file-upload">
-                            <i class="fas fa-cloud-upload-alt"></i> Upload File
-                        </label>
-                        <input onchange="uploadFile()" id="upload-document" type="file" name="document">
-                    </li>
-                </ul>
+                        <li>
+                            <label for="upload-document" id="custom-file-upload">
+                                <i class="fas fa-cloud-upload-alt"></i> Upload File
+                            </label>
+                            <input onchange="uploadFile()" id="upload-document" type="file" name="document">
+                        </li>
+                    </ul>
+                </div>
                 <div id="editor" contenteditable="true"><?php if(isset($_POST['draft'])) {print($_POST['body']);}?></div>
             </div>
 
