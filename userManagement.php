@@ -109,7 +109,7 @@ function list_users()
             $toolsTab = 'usermanagement';
             include 'includes/toolsNav.php';
         ?>
-        <h1>Manage Users</h1>
+        <h1>User Management</h1>
         <?php list_users(); ?>
     </div>
     <?php include 'includes/footer.html'; ?>

@@ -133,7 +133,7 @@ function list_comments()
             include 'includes/toolsNav.php';
         ?>
     
-        <h1>Manage Comments</h1>
+        <h1>Comment Management</h1>
         <div>
             <?php list_comments(); ?>
         </div>

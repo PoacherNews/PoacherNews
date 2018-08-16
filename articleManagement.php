@@ -175,7 +175,7 @@ function list_articles()
             $toolsTab = 'articlemanagement';
             include 'includes/toolsNav.php';
         ?>
-        <h1>Manage Articles</h1>
+        <h1>Article Management</h1>
 		<?php list_articles(); ?>
     </div>
     <?php include 'includes/footer.html'; ?>
