@@ -72,26 +72,28 @@ if (!isset($data) || !$data)
 <html lang="en">
     <head>
 	   <?php include '../includes/globalHead.html' ?>
-        <link rel="stylesheet" href="../res/css/profile.css">
-        <link rel="stylesheet" href="../res/css/profileNav.css">
+        <link rel="stylesheet" href="/res/css/tools.css">
         <title><?php echo $data['Headline']; ?> | Edit Article</title>
+        <style>
+            .wrap {
+                margin: auto;
+                width: 80%;
+            }
+        </style>
     </head>
     
     <body>
         <?php
             include '../includes/header.php';
             include '../includes/nav.php';
-            //include '../includes/footer.html';
         ?>
         
         <div class="pageContent">
-            <div class="nav">
                 <?php
-                    $current = 'manageArticles';
+                    $toolsTab = 'articlemanagement';
                     include '../includes/toolsNav.php';
                 ?>
-            </div>
-
+        <div class="wrap">
             <h1>Edit Article &#8216;<?php
             	echo "<a href='/article.php?articleid={$data['ArticleID']}'>"; 
 				echo $data['Headline'];
@@ -682,7 +684,7 @@ if(isset($_POST['deleteSubmit']))
 } ?>
 
             
-        </main>
+        </div>
         </div>
         
         <?php include '../includes/footer.html'; ?>

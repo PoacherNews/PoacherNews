@@ -69,7 +69,7 @@ function display_table($db, $query, $tablename)
                     echo "[deleted]";
                 }
                 
-                if ($key == 'Username' || $key == 'Headline')
+                if ($key == 'Username' || $key == 'CommentID')
                 {
                     echo '</a>';
                 }
@@ -100,8 +100,7 @@ function list_comments()
 <html lang="en">
 <head>
     <?php include 'includes/globalHead.html' ?>
-    <link rel="stylesheet" href="res/css/profile.css">
-    <link rel="stylesheet" href="res/css/profileNav.css">
+    <link rel="stylesheet" href="res/css/tools.css">
 </head>
 <body>
     <style>
@@ -110,25 +109,29 @@ function list_comments()
     }
 
     table {
-        margin: 0px auto;
+        margin: 25px;
         border-collapse:collapse;
+    }
+    table a {
+        font-weight: bold;
     }
 
     table, th, td {
         border: 1px solid black;
     }
+    tr:nth-child(even) {
+            background-color: #ccc;
+        }
     </style>
     <?php 
     	include 'includes/header.php';
         include 'includes/nav.php';
     ?>
     <div class="pageContent">
-        <div class="nav">
-            <?php
-                $current = 'manageComments';
-                include 'includes/toolsNav.php';
-            ?>
-        </div>
+        <?php
+            $toolsTab = 'commentmanagement';
+            include 'includes/toolsNav.php';
+        ?>
     
         <h1>Manage Comments</h1>
         <div>

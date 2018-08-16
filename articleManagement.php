@@ -60,12 +60,12 @@ function display_table($db, $query, $tablename)
                 if($key != 'IsSubmitted')
                 {
                     echo '<td>';
-                    if ($key == 'Headline') 
+                    if ($key == 'ArticleID') 
                     {
                         echo "<a href='util/editArticle.php?ArticleID=$articleid'>";
                     }
                     echo $r;
-                    if ($key == 'Headline')
+                    if ($key == 'ArticleID')
                     {
                         echo '</a>';
                     }
@@ -142,8 +142,7 @@ function list_articles()
 <html lang="en">
 <head>
     <?php include 'includes/globalHead.html' ?>
-    <link rel="stylesheet" href="res/css/profile.css">
-    <link rel="stylesheet" href="res/css/profileNav.css">
+    <link rel="stylesheet" href="res/css/tools.css">
 </head>
 <body>
     <style>
@@ -152,25 +151,30 @@ function list_articles()
         }
 
         table {
-            margin: 0px auto;
+            margin: 25px;
             border-collapse:collapse;
+        }
+        table a {
+            font-weight: bold;
         }
 
         table, th, td {
             border: 1px solid black;
         }
+        tr:nth-child(even) {
+            background-color: #ccc;
+        }
+
     </style>
     <?php 
     	include 'includes/header.php';
         include 'includes/nav.php';
     ?>
     <div class="pageContent">
-        <div class="nav">
-            <?php
-                $current = 'manageArticles';
-                include 'includes/toolsNav.php';
-            ?>
-        </div>
+        <?php
+            $toolsTab = 'articlemanagement';
+            include 'includes/toolsNav.php';
+        ?>
         <h1>Manage Articles</h1>
 		<?php list_articles(); ?>
     </div>

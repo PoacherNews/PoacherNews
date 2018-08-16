@@ -16,6 +16,7 @@
     <head>
         <title>The Poacher | Editor Page</title>
         <link rel="stylesheet" href="res/css/editorpage.css">
+        <link rel="stylesheet" href="res/css/tools.css"/>
         <?php include 'includes/globalHead.html'?>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
@@ -24,11 +25,10 @@
 	    	include 'includes/header.php';
             include 'includes/nav.php';
         ?>
-        <div class="nav">
-            <?php
-                include 'includes/toolsNav.php';
-            ?>
-        </div>
+        <?php
+            $toolsTab = "editorpage";
+            include 'includes/toolsNav.php';
+        ?>
 		<div class="editor-tab">
 			<button class="tablinks" onclick="editorTab(event, 'article');editorFocus();"><i class="fas fa-pencil-alt"></i></button>
 			<button class="tablinks" onclick="editorTab(event, 'picture')"><i class="fas fa-camera"></i></button>

@@ -42,12 +42,12 @@ function display_table($db, $query, $tablename)
             }
             
             echo '<td>';
-            if ($key == 'Username')
+            if ($key == 'UserID')
             {
                 echo "<a href='util/editUser.php?UserID=$userid'>";
             }
             echo $r;
-            if ($key == 'Username')
+            if ($key == 'UserID')
             {
                 echo '</a>';
             }
@@ -77,13 +77,15 @@ function list_users()
 <html lang="en">
 <head>
     <?php include 'includes/globalHead.html' ?>
-    <link rel="stylesheet" href="res/css/profile.css">
-    <link rel="stylesheet" href="res/css/profileNav.css">
+    <link rel="stylesheet" href="res/css/tools.css">
 </head>
 <body>
     <style>
         h1 {
             text-align: center;
+        }
+        table a {
+            font-weight: bold;
         }
 
         table {
@@ -94,18 +96,19 @@ function list_users()
         table, th, td {
             border: 1px solid black;
         }
+        tr:nth-child(even) {
+            background-color: #ccc;
+        }
     </style>
     <?php 
     	include 'includes/header.php';
         include 'includes/nav.php';
     ?>
     <div class="pageContent">
-        <div class="nav">
-            <?php
-                $current = 'manageUsers';
-                include 'includes/toolsNav.php';
-            ?>
-        </div>
+        <?php
+            $toolsTab = 'usermanagement';
+            include 'includes/toolsNav.php';
+        ?>
         <h1>Manage Users</h1>
         <?php list_users(); ?>
     </div>

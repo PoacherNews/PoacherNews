@@ -1,14 +1,9 @@
-<ul>
-    <?php if($_SESSION['usertype'] == 'W' || $_SESSION['usertype'] == 'A') { ?>
-    <li <?php if($current == 'editorHistoryTools') {echo 'class="current"';} ?>><a href="/editorHistory.php">Editor History</a></li>    
-    <li <?php if($current == 'editorPage') {echo 'class="current"';} ?>><a href="/editorpage.php">Editor Page</a></li>
-    <?php } ?>
-    
-    <!-- Admin Tools -->
-    <?php if($_SESSION['usertype'] == 'A') { ?>
-    <li <?php if($current == 'manageUsers'){echo 'class="current"';} ?>><a href="/userManagement.php">Manage Users</a></li>
-    <li <?php if($current == 'manageArticles'){echo 'class="current"';} ?>><a href="/articleManagement.php">Manage Articles</a></li>
-    <li <?php if($current == 'manageComments'){echo 'class="current"';} ?>><a href="/commentManagement.php">Manage Comments</a></li>
-
-    <?php } ?>
-</ul>
+<div id="toolsNav">
+    <ul>
+<!--         <li><a <?php print($toolsTab === "editorHistory" ? 'class="active"' : ''); ?> href="/editorHistory.php">Editor History</a></li> -->
+        <li><a <?php print($toolsTab === "editorpage" ? 'class="active"' : ''); ?> href="/editorpage.php">Editor Page</a></li>
+        <li><a <?php print($toolsTab === "usermanagement" && $_SESSION['usertype'] === 'A' ? 'class="active"' : ''); ?> href="/userManagement.php">Manage Users</a></li>
+        <li><a <?php print($toolsTab === "articlemanagement" && $_SESSION['usertype'] === 'A' ? 'class="active"' : ''); ?> href="/articleManagement.php">Manage Articles</a></li>
+        <li><a <?php print($toolsTab === "commentmanagement" && $_SESSION['usertype'] === 'A' ? 'class="active"' : ''); ?> href="/commentManagement.php">Manage Comments</a></li>
+    </ul>
+</div>

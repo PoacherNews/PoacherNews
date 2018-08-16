@@ -79,9 +79,12 @@ if (!isset($data) || !$data)
     <head>
 	   <?php
 		include '../includes/globalHead.html' ?>
-        <link rel="stylesheet" href="../res/css/profile.css">
-        <link rel="stylesheet" href="../res/css/profileNav.css">
+        <link rel="stylesheet" href="../res/css/tools.css"/>
         <title><?php echo $data['Username']; ?> | Edit User</title>
+        <style>
+            .wrap { margin: auto;
+                width: 50%; }
+        </style>
     </head>
     
     <body>
@@ -92,14 +95,11 @@ if (!isset($data) || !$data)
         ?>    
 
         <div class="pageContent">
-
-            <div class="nav">
-                <?php
-                    $current = 'manageUsers';
-                    include '../includes/toolsNav.php';
-                ?>
-            </div>
-        
+            <?php
+                $toolsTab = 'usermanagement';
+                include '../includes/toolsNav.php';
+            ?>
+            <div class="wrap">
             <h1>Edit User &#8216;<?php
                 echo "<a href='/profile.php?uid={$data['UserID']}'>"; 
 				echo $data['Username'];
@@ -259,9 +259,8 @@ $db->close();
     }
     }
 ?>
-
+            </div>
         </div>
-        
         <?php include '../includes/footer.html'; ?>
     </body>
 </html>

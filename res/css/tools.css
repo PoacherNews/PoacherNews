@@ -1,0 +1,32 @@
+#toolsNav ul {
+	list-style: none;
+	text-align: center;
+	margin: 15px 0 0 0;
+	padding: 0;
+	border-bottom: 2px solid lightblue;
+}
+
+#toolsNav li {
+	display: inline-block;
+	line-height: 45px;
+	height: 45px;
+	min-width: 175px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+#toolsNav li:hover {
+	font-weight: bold;
+}
+
+#toolsNav a {
+	display: block;
+	color: inherit;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+#toolsNav a.active {
+	border: 2px solid lightblue;
+	border-bottom: 2px solid white;
+	border-radius: 5px 5px 0 0;
+	font-weight: bold;
+}
