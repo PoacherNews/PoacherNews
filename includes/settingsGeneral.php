@@ -4,6 +4,11 @@
 #general {
 	display: grid;
 }
+	
+#profilePic {
+	max-height: 250px;
+	max-width: 250px;
+}	
 
 textarea[name=bio] {
 	max-width: 500px;
@@ -29,24 +34,21 @@ textarea[name=bio] {
 		<h2>Profile Picture</h2>
 		<span class="subheader">Image representation of yourself, displayed on your profile page.</span>
 	</div>
-    <div id="profilePicture">
-        <!--
-                        <div class="editor-image">
-                    <input id="imgInp" type='file' onchange="readURL(this);"/>
-                    <div id="picture-content">
-                        <img id="image" src="#" alt="Image" width="650" height="434"/>
-                    </div>
-                </div>
-        -->
+    <div class="avatar">
     <?php
+	// Echo profile picture if set
         if($user['ProfilePicture'] != 'defaultAvatar.png')
         {
-            echo "<img id='profilePic' src='../res/img/profilePictures/".$user['UserID']."/".$user['ProfilePicture']."'>";
+		// profilePicture file path
+        	echo "<img id='profilePic' src='../res/img/profilePictures/".$user['UserID']."/".$user['ProfilePicture']."'>";
         }
+	// Echo default profile picture
         else 
         {
-            echo "<img id='profilePic' src='../res/img/".$user['ProfilePicture']."'>";
-            echo "<br>";
+		// defaultAvatar.png file path
+            	echo "<img id='profilePic'
+			src='../res/img/profilePictures/".$user['ProfilePicture']."'>";
+            	echo "<br>";
         }
     ?>
     <?php
@@ -56,7 +58,7 @@ textarea[name=bio] {
                 <form id="upload" method="post" enctype="multipart/form-data">
                     Select image to upload:
                     <input id="imgInp" onchange="readURL(this);" type="file" name="profilePicture" class="profilePicture">
-                    <input class="settingsSubmit" type="submit" value="Save Profile Picture" name="submit">
+                    <input class="settingsSubmit" type="submit" value="Save Picture" name="submit">
                 </form>
         <?php
             }
