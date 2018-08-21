@@ -79,6 +79,7 @@
           }
           echo "Article: " . $title . " submitted successfully.";
       }
+          
   } //End of submitArticle
 
   function saveArticle() {

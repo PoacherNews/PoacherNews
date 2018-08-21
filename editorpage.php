@@ -99,7 +99,7 @@
                         </li>
                     </ul>
                 </div>
-                <div id="editor" contenteditable="true"><?php if(isset($_POST['draft'])) {print($_POST['body']);}?></div>
+                <div name="body" id="editor" contenteditable="true"><?php if(isset($_POST['draft'])) {print($_POST['body']);}?></div>
             </div>
 
             <div id="picture" class="tabcontent">
@@ -310,6 +310,13 @@
             })
 			
 /******************************* SUBMISSION *******************************/
+            $(document).ready(function() { // Submitting articles
+               $("#action-form").on("submit", function () {
+                    var hvalue = $('#editor').text();
+                    $(this).append("<input type='hidden' name='body' value=' " + hvalue + " '/>");
+                });
+            });
+            
             var modal = document.getElementById('submit-draft');
             
             function submitBtn() {
