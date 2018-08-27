@@ -28,13 +28,15 @@
 								| LIBXML_NOERROR
 								| LIBXML_NOWARNING);
 							$xmldata = $dom->saveXML();
-                            
+							$contents = $xmldata;
+							// TODO: V 2.10
+                            /*
 							$contents = strip_tags($xmldata, '<w:p><w:u><w:i><w:b><w:r>'); // Strip the p, u, i, b, and r tags
-							$contents = preg_replace("/(<(\/?)w:(.)[^>]*>)\1*/", "<$2$3>", $contents);
+							$contents = preg_replace("/(<(\/?)w:(.)[^>]*>)\1*[DELETE THIS]/", "<$2$3>", $contents);
 							$dom = new DOMDocument;
-							@$dom->loadHTML($contents, LIBXML_HTML_NOIMPLIED  | LIBXML_HTML_NODEFDTD);
+							// @$dom->loadHTML($contents, LIBXML_HTML_NOIMPLIED  | LIBXML_HTML_NODEFDTD);
                             $contents = $dom->saveHTML();
-                            
+                            */
 							// Get rid of weird special chars
 							$find = array('&acirc;&#128;&#156;', '&acirc;&#128;&#157;', '&acirc;&#128;&#152;', '&acirc;&#128;&#153;', '&acirc;&#128;&brvbar;', '&acirc;&#128;&#147;', '&acirc;&#128;&#148;');
 							$replace = array('“', '”', "‘", "’", "...", "–", "—");
