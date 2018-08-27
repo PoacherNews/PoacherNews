@@ -36,7 +36,7 @@
 
 .articleColumns > #articleAdColumn {
 	min-width: 25%;
-	display: flex;
+	display: none; /*Change to flex once finished*/
 	flex-direction: column;
 }
 

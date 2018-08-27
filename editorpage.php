@@ -69,6 +69,7 @@
                     <ul>
                         <li onclick="setUndo()" id="undo"><i class="fas fa-undo-alt"></i></li>
                         <li onclick="setRedo()" id="redo"><i class="fas fa-redo-alt"></i></li>
+						<!-- TODO: V 2.10
                         <li id="boldLbl" onclick="setBold()">
     						<label onclick="setBold()" for="bold"><i class="fas fa-bold"></i></label>
     						<input id="bold" type="button"/>
@@ -91,6 +92,7 @@
                                 <input type="button" id="set-link" onclick="addLink()" value="Set Link"/>
                             </div>
                         </div>
+						-->
                         <li>
                             <label for="upload-document" id="custom-file-upload">
                                 <i class="fas fa-cloud-upload-alt"></i> Upload File
@@ -304,7 +306,7 @@
                 editor.focus();
             }
             //var focus 
-            $('#editor').blur(function () {
+            $('#editor').blur(function () { // TODO
                 //$(this).focus();
 				
             })

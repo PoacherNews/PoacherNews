@@ -14,13 +14,13 @@
 				</div>
 			</div>
         </div>
-       <!-- <div id="hdrmid"> -->
-            <div class="hdrctr">
-                <a href="/index.php"><img class="hdrLogo" src="/res/img/PoacherLogo.png"></a>
+        <div id="hdrmid">
+            <!-- <div class="hdrctr"> -->
+                <!-- <a href="/index.php"><img class="hdrLogo" src="/res/img/PoacherLogo.png"></a> -->
                 <span class="hdrTitle"><a class="hdrA" href="/index.php">The Poacher</a></span>	
-            </div>
-       <!-- </div> -->
-        <!-- <div id="hdrrt"> -->
+            <!-- </div> -->
+        </div> 
+        <div id="hdrrt">
             <?php
                 if(!empty($_SESSION['loggedin']) && $_SESSION['loggedin']) {
                     print "<span class=\"username\"><a href='/profile.php?uid=".$_SESSION['userid']."'>{$_SESSION['username']}</a> <i class=\"fa fa-caret-down\"></i>
@@ -61,7 +61,7 @@
                 }
             ?>
             
-       <!-- </div>-->
+       </div>
     </div>
 </header>
 
