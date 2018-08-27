@@ -80,7 +80,6 @@
                         <?php
                             $numFaves = getNumBookmarks($articleData['ArticleID'], $db);
                             print "{$numFaves} ".($numFaves === 1 ? "Bookmark" : "Bookmarks");
-                            
                              if($isDraft) { // Create link back to editorpage with the text in correct format
                                  print "<form action=\"editorpage.php?articleid={$articleData['ArticleID']}\" method=\"post\">
                                             <input type=\"submit\" id=\"edit-draft\" name=\"draft\" value=\"Edit\">
@@ -88,7 +87,7 @@
                                             <input type=\"hidden\" name=\"body\" value=\"{$articleData['Body']}\">
                                         </form>";
                              }
-                        ?>, 
+                        ?>
                         <?php
                             $articleRating = getRatingByID($_GET['articleid'], $db);
                             print "Rated ".number_format((float)$articleRating, 2, '.', '')."/5 stars";
