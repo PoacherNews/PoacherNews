@@ -101,22 +101,29 @@ select {
 }
 
 .get-info {
-    min-width: 400px;
-    max-width: 400px;
-    min-height: 600px;
+    max-width: 50%;
+    min-height: 400px;
     border: 1px solid black;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.25);
-    margin: auto 30% 20px 37%;
+    margin: auto 25% 20px 25%;
+	color: #83A8F0;
+	text-align: center;
 }
 
-.get-info > label {
-    color: #83A8F0;
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif; 
-    font-size: 13pt;
+.get-info > input[type="text"]{
+	margin: 10px auto 10px auto;
 }
+
+.get-info > #submit-button, #save-button {
+	margin: 10px auto auto auto;
+}
+.get-info > label {
+	display: block;
+}
+
 
 .insert-link {
-    display: none; 
+    display: none;
     position: fixed; 
     z-index: 1; 
     padding-top: 100px; 
@@ -128,7 +135,6 @@ select {
     background-color: rgb(0,0,0); 
     background-color: rgba(0,0,0,0.4);
 }
-
 
 .link-content {
     background-color: #fefefe;
@@ -161,7 +167,6 @@ select {
     text-decoration: none;
     cursor: pointer;
 }
-
 
 /* Others */
 #submit-button, #save-button, #verify-submit, #cancel-submit, #set-link {

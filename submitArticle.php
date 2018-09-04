@@ -35,6 +35,7 @@
       $body = empty($_POST['body']) ? '' : $_POST['body'];
       $authorid = getAuthorID();
       // upload image
+	  $image = empty($_POST['image']) ? '' : $_POST['image'];
       $is_draft = 1; // true
       $is_submitted = 1; // true
 	  $views = 0; // true
@@ -62,12 +63,12 @@
           }
           echo "Article: " . $title . " submitted successfully.";
       } else { // The draft is new and was not saved upon edit
-          if (!$stmt->prepare("INSERT INTO Article(UserID, Headline, Body, Category, IsDraft, IsSubmitted) VALUES(?, ?, ?, ?, ?, ?)")) {
+          if (!$stmt->prepare("INSERT INTO Article(UserID, Headline, Body, Category, ArticleImage, IsDraft, IsSubmitted) VALUES(?, ?, ?, ?, ?, ?, ?)")) {
               echo "Error preparing statement: \n";
               print_r($stmt->error_list);
               exit;
           }
-          if (!$stmt->bind_param('isssii', $authorid, $title, $body, $category, $is_draft, $is_submitted)) {
+          if (!$stmt->bind_param('issssii', $authorid, $title, $body, $category, $image, $is_draft, $is_submitted)) {
               echo "Error binding parameters: \n";
               print_r($stmt->error_list);
               exit;
@@ -169,5 +170,9 @@
   function relocate() {
         header("Location: /editorHistory.php");
         exit;
+  }
+
+  function getImage() {
+	  
   }
 ?>

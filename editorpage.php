@@ -107,7 +107,7 @@
             <div id="picture" class="tabcontent">
                 <h3>Choose a picture</h3>
                 <div class="editor-image">
-                    <input id="imgInp" type='file' onchange="readURL(this);"/>
+                    <input name="image" id="imgInp" type='file' onchange="readURL(this);"/>
                     <div id="picture-content">
                         <img id="image" src="#" alt="Image" width="650" height="434"/>
                     </div>
@@ -122,11 +122,12 @@
                     <input type="text" id="getTitle" readonly><br>
                     <label>Category: </label>
                     <input type="text" id="getCategory" readonly><br>
+					<!-- TODO: V 2.10
                     <label>Date: </label>
-                    <input type="text" id="getDate" readonly><br>
+                    <input type="text" id="getDate" readonly>
                     <label>Picture: </label>
-                    <input type="text" id="getImage" readonly><br>
-                    <!-- Submitting Article -->
+                    <input type="text" id="getImage" readonly>
+					-->
                     <input onclick="submitBtn()" type="button" id="submit-button" value="Submit"><br>
                     <div id="submit-draft" class="submit">
                           <div class="modal-content">
@@ -182,18 +183,9 @@
                 document.getElementById('getTitle').value = title;
                 var category = document.getElementById('category').value;
                 document.getElementById('getCategory').value = category;
-                var today = new Date();
-                var dd = today.getDate();
-                var mm = today.getMonth()+1; //January is 0!
-                var yyyy = today.getFullYear();
-                if(dd<10) dd = '0'+dd;
-                if(mm<10) mm = '0'+mm; 
-                today = mm + '/' + dd + '/' + yyyy;
-                document.getElementById('getDate').value = today;
-                document.getElementById('getImage').value = "TODO";
             }
             
-/******************************* TEXT FORMATTING *******************************/
+/******************************* TEXT FORMATTING (TODO) *******************************/
 			setInterval(function () {
                 var boldLbl, italicLbl, underlineLbl;
                 var idName = ['boldLbl', 'italicLbl', 'underlineLbl'];
@@ -239,7 +231,6 @@
 			}
 			
 			function addLink() { // Add the link to the rich text editor with valid requiremnents
-                /*
 				var texteditor = document.getElementById('editor');
 				var a = document.createElement('a');
 				var inputText = document.getElementById('input-text').value;
@@ -256,23 +247,7 @@
 					a.href = inputLink;
 					texteditor.appendChild(a);
 					linkModal.style.display = "none";
-				}
-                */
-                
-                var inputText = document.getElementById('input-text').value;
-                var inputLink = document.getElementById('input-link').value;
-                var editor = document.getElementById('editor');
-                inputText = inputText.replace(/^\s+|\s+$/g, '');
-                if(inputText.length == 0) {
-                    editor.focus();
-                    document.execCommand('createLink', false, inputLink);
-                    linkModal.style.display = "none";
-                } else {
-                    editor.focus();
-                    var result = inputText.link(inputLink);
-                    document.execCommand('createLink', false, result);
-                    linkModal.style.display = "none";
-                }
+			 	}
 			}
             
             function exitLink() {// Close the link via exit button
@@ -323,12 +298,12 @@
             
             function submitBtn() {
                 var submitBtn = document.getElementById("submit-button");
-                var articleTitle = document.getElementById("title");
+                var getTitle = document.getElementById("getTitle");
                 var uploadDocument = document.getElementById("upload-document");
 
-                if(articleTitle.value.length == 0) {
-                    articleTitle.style.border = "2px solid red";
-                    articleTitle.placeholder = "Invalid requirements";
+                if(getTitle.value.length == 0) {
+                    getTitle.style.border = "2px solid red";
+                    getTitle.placeholder = "Invalid requirements";
                 } else {
                     modal.style.display = "block";
                 }
