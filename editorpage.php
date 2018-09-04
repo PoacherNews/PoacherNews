@@ -39,14 +39,13 @@
                 $isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
                 if($isDraft) {
                     print "<form id=\"action-form\" action=\"/submitArticle.php?articleid={$articleData['ArticleID']}\" method=\"post\" enctype=\"multipart/form-data\">";
-                } 
-            } else {
-                    print "<form id=\"action-form\" action=\"/submitArticle.php\" method=\"post\" enctype=\"multipart/form-data\">";
-            }
-        ?>
-        <!--
+            	} else {
+		?>
         <form id="action-form" action="/submitArticle.php" method="post" enctype="multipart/form-data">
-        -->
+		<?php
+				}
+			}
+		?>
             <input type="hidden" name="action">
             <div id="article" class="tabcontent">
                 <label style="font-size: 13pt;">Title</label>

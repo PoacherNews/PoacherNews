@@ -35,7 +35,7 @@
       $body = empty($_POST['body']) ? '' : $_POST['body'];
       $authorid = getAuthorID();
       // upload image
-	  $image = empty($_POST['image']) ? '' : $_POST['image'];
+	  $image = getImage();
       $is_draft = 1; // true
       $is_submitted = 1; // true
 	  $views = 0; // true
@@ -173,6 +173,8 @@
   }
 
   function getImage() {
-	  
+	  $image = empty($_FILES['image']['name']) ? 'error' : $_FILES['image']['name'];
+	  $image_tmp = addslashes(file_get_contents($_FILES['image']['tmp_name']));
+	  return $image_tmp;
   }
 ?>
