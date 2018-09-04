@@ -39,13 +39,10 @@
                 $isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
                 if($isDraft) {
                     print "<form id=\"action-form\" action=\"/submitArticle.php?articleid={$articleData['ArticleID']}\" method=\"post\" enctype=\"multipart/form-data\">";
-            	} else {
-		?>
-        <form id="action-form" action="/submitArticle.php" method="post" enctype="multipart/form-data">
-		<?php
-				}
+            	}
 			}
 		?>
+        <form id="action-form" action="/submitArticle.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="action">
             <div id="article" class="tabcontent">
                 <label style="font-size: 13pt;">Title</label>
@@ -298,7 +295,6 @@
             function submitBtn() {
                 var submitBtn = document.getElementById("submit-button");
                 var getTitle = document.getElementById("getTitle");
-                var uploadDocument = document.getElementById("upload-document");
 
                 if(getTitle.value.length == 0) {
                     getTitle.style.border = "2px solid red";
@@ -310,11 +306,11 @@
             
             function saveBtn() {
                 var saveBtn = document.getElementById('save-button');
-                var articleTitle = document.getElementById('title');
+                var getTitle = document.getElementById('getTitle');
 
                 if(articleTitle.value.length == 0) {
-                    articleTitle.style.border = "2px solid red";
-                    articleTitle.placeholder = "Invalid requirements";
+                    getTitle.style.border = "2px solid red";
+                    getTitle.placeholder = "Invalid requirements";
                     return false;
                 } else {
                     return true;

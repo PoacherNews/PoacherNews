@@ -30,12 +30,15 @@
   }
 
   function submitArticle() {
-      $title = empty($_POST['title']) ? '' : $_POST['title'];
+      //$title = empty($_POST['title']) ? '' : mysqli_escape_string($db, $_POST['title']);
+      //$category = empty($_POST['category']) ? '' : mysqli_escape_string($db, $_POST['category']);
+      //$body = empty($_POST['body']) ? '' : mysqli_escape_string($db, $_POST['body']);
+	  $title = empty($_POST['title']) ? '' : $_POST['title'];
       $category = empty($_POST['category']) ? '' : $_POST['category'];
       $body = empty($_POST['body']) ? '' : $_POST['body'];
       $authorid = getAuthorID();
       // upload image
-	  $image = getImage();
+	  //$image = getImage();
       $is_draft = 1; // true
       $is_submitted = 1; // true
 	  $views = 0; // true
@@ -62,13 +65,14 @@
                 exit;
           }
           echo "Article: " . $title . " submitted successfully.";
+		  
       } else { // The draft is new and was not saved upon edit
-          if (!$stmt->prepare("INSERT INTO Article(UserID, Headline, Body, Category, ArticleImage, IsDraft, IsSubmitted) VALUES(?, ?, ?, ?, ?, ?, ?)")) {
+          if (!$stmt->prepare("INSERT INTO Article(UserID, Headline, Body, Category, IsDraft, IsSubmitted) VALUES(?, ?, ?, ?, ?, ?)")) {
               echo "Error preparing statement: \n";
               print_r($stmt->error_list);
               exit;
           }
-          if (!$stmt->bind_param('issssii', $authorid, $title, $body, $category, $image, $is_draft, $is_submitted)) {
+          if (!$stmt->bind_param('isssii', $authorid, $title, $body, $category, $is_draft, $is_submitted)) {
               echo "Error binding parameters: \n";
               print_r($stmt->error_list);
               exit;
@@ -172,9 +176,4 @@
         exit;
   }
 
-  function getImage() {
-	  $image = empty($_FILES['image']['name']) ? 'error' : $_FILES['image']['name'];
-	  $image_tmp = addslashes(file_get_contents($_FILES['image']['tmp_name']));
-	  return $image_tmp;
-  }
 ?>
