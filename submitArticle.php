@@ -30,12 +30,10 @@
   }
 
   function submitArticle() {
-      //$title = empty($_POST['title']) ? '' : mysqli_escape_string($db, $_POST['title']);
-      //$category = empty($_POST['category']) ? '' : mysqli_escape_string($db, $_POST['category']);
-      //$body = empty($_POST['body']) ? '' : mysqli_escape_string($db, $_POST['body']);
-	  $title = empty($_POST['title']) ? '' : $_POST['title'];
+      $title = empty($_POST['title']) ? '' : $_POST['title'];
       $category = empty($_POST['category']) ? '' : $_POST['category'];
       $body = empty($_POST['body']) ? '' : $_POST['body'];
+	  
       $authorid = getAuthorID();
       // upload image
 	  //$image = getImage();

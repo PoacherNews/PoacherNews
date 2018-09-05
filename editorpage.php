@@ -1,4 +1,9 @@
 <?php
+	ob_start();
+    session_start(); 
+	function redirectHome() {
+		header('Location: index.php');
+	}
     include 'util/loginCheck.php';
     include('util/articleUtils.php');
     include('util/userUtils.php');
@@ -8,7 +13,11 @@
         echo "You must be an administrator. Redirecting in 1 second...";
         echo '<meta http-equiv="refresh" content="1; url=/index.php">';
         exit;
-    }
+	}
+	if(isset($_GET['articleid'])) {
+		/* Get articleid if the URL paramater exists */ 
+		$articleData = getArticleByID($_GET['articleid'], $db);
+	}
 ?>
 
 <!DOCTYPE html>
@@ -24,9 +33,6 @@
         <?php
 	    	include 'includes/header.php';
             include 'includes/nav.php';
-        ?>
-        <?php
-            $toolsTab = "editorpage";
             include 'includes/toolsNav.php';
         ?>
 		<div class="editor-tab">
@@ -34,25 +40,24 @@
 			<button class="tablinks" onclick="editorTab(event, 'picture')"><i class="fas fa-camera"></i></button>
 			<button class="tablinks" onclick="editorTab(event, 'save');getInfo();"><i class="fas fa-save"></i></button>
 		</div>
-		<?php 
-            if(isset($_POST['draft'])) {
-                $isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
-                if($isDraft) {
-                    print "<form id=\"action-form\" action=\"/submitArticle.php?articleid={$articleData['ArticleID']}\" method=\"post\" enctype=\"multipart/form-data\">";
-            	}
-			}
-		?>
         <form id="action-form" action="/submitArticle.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="action">
             <div id="article" class="tabcontent">
                 <label style="font-size: 13pt;">Title</label>
                 <?php
-                    if(isset($_POST['draft'])) {
-                        print "<input type=\"text\" id=\"title\" placeholder=\"Title\" name=\"title\" value=\"{$_POST['title']}\"";
-                    } else {
-                        print "<input type=\"text\" id=\"title\" placeholder=\"Title\" name=\"title\">";
-                    }
+					if(!$articleData && !isset($_GET['articleid'])) {
+						/* Must be a new editor page */
+					} else {
+						$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
+						$isAuthor = ($articleData['UserID'] == $_SESSION['userid'] ? TRUE : FALSE);
+						if(!$isAuthor && !$isDraft) {
+							redirectHome();
+						} else {
+							print "<input type=text id=title placeholder=Title name=title value={$articleData['Headline']}";
+						}
+					}
                 ?>
+				<input type="text" id="title" placeholder="Title" name="title">
                 <select name="category" id="category">
                     <option value="Politics">Politics</option>
                     <option value="Sports">Sports</option>
@@ -97,7 +102,7 @@
                         </li>
                     </ul>
                 </div>
-                <div name="body" id="editor" contenteditable="true"><?php if(isset($_POST['draft'])) {print($_POST['body']);}?></div>
+				<div name="body" id="editor" contenteditable="true"><?php if($articleData)print $articleData['Body'];?></div>
             </div>
 
             <div id="picture" class="tabcontent">

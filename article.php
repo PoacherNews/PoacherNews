@@ -80,17 +80,21 @@
                         <?php
                             $numFaves = getNumBookmarks($articleData['ArticleID'], $db);
                             print "{$numFaves} ".($numFaves === 1 ? "Bookmark" : "Bookmarks");
-                             if($isDraft) { // Create link back to editorpage with the text in correct format
+                        ?>
+                        <?php
+                            $articleRating = getRatingByID($_GET['articleid'], $db);
+                            print "Rated ".number_format((float)$articleRating, 2, '.', '')."/5 stars";
+							if($isDraft && $isAuthor) { // Create link back to editorpage with the text in correct format
+								 // TODO
+								 /*
                                  print "<form action=\"editorpage.php?articleid={$articleData['ArticleID']}\" method=\"post\">
                                             <input type=\"submit\" id=\"edit-draft\" name=\"draft\" value=\"Edit\">
                                             <input type=\"hidden\" name=\"title\" value=\"{$articleData['Headline']}\">
                                             <input type=\"hidden\" name=\"body\" value=\"{$articleData['Body']}\">
                                         </form>";
+								 */
+								print ('<br><a href=editorpage.php?articleid='.$articleData['ArticleID'].'>Edit</a>');
                              }
-                        ?>
-                        <?php
-                            $articleRating = getRatingByID($_GET['articleid'], $db);
-                            print "Rated ".number_format((float)$articleRating, 2, '.', '')."/5 stars";
                         ?>
                         <span class="rightIcons">
                             <?php
