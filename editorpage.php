@@ -45,26 +45,28 @@
             <div id="article" class="tabcontent">
                 <label style="font-size: 13pt;">Title</label>
                 <?php
-					if(!$articleData && !isset($_GET['articleid'])) {
-						/* Must be a new editor page */
-					} else {
-						$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
-						$isAuthor = ($articleData['UserID'] == $_SESSION['userid'] ? TRUE : FALSE);
+					$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
+					$isAuthor = ($articleData['UserID'] == $_SESSION['userid'] ? TRUE : FALSE);
+					if($articleData || isset($_GET['articleid'])) {
 						if(!$isAuthor && !$isDraft) {
 							redirectHome();
 						} else {
-							print "<input type=text id=title placeholder=Title name=title value={$articleData['Headline']}";
+							/* Grab ArticleID via POST method */
+							print "<input type=hidden name=articleid value={$articleData['ArticleID']}>";
+							print "<input type=text id=title placeholder=Title name=title value={$articleData['Headline']}>";
 						}
+					} else {
+						print "<input type=text id=title placeholder=Title name=title>";
 					}
                 ?>
-				<input type="text" id="title" placeholder="Title" name="title">
+				<!--<input type="text" id="title" placeholder="Title" name="title">-->
                 <select name="category" id="category">
-                    <option value="Politics">Politics</option>
-                    <option value="Sports">Sports</option>
-                    <option value="Entertainment">Entertainment</option>
-                    <option value="Video">Video</option>
-                    <option value="Local">Local</option>
-                    <option value="Opinion">Opinion</option>
+                    <option value="Politics"<?php if($articleData['Category'] == "Politics"){print "selected";}?>>Politics</option>
+                    <option value="Sports"<?php if($articleData['Category'] == "Sports"){print "selected";}?>>Sports</option>
+                    <option value="Entertainment"<?php if($articleData['Category'] == "Entertainment"){print "selected";}?>>Entertainment</option>
+                    <option value="Video"<?php if($articleData['Category'] == "Video"){print "selected";}?>>Video</option>
+                    <option value="Local"<?php if($articleData['Category'] == "Local"){print "selected";}?>>Local</option>
+                    <option value="Opinion"<?php if($articleData['Category'] == "Opinion"){print "selected";}?>>Opinion</option>
                 </select>
                 <div class="editorNav">
                     <ul>
@@ -102,7 +104,7 @@
                         </li>
                     </ul>
                 </div>
-				<div name="body" id="editor" contenteditable="true"><?php if($articleData)print $articleData['Body'];?></div>
+				<div name="body" id="editor" contenteditable="true"><?php if($articleData['Body'])print $articleData['Body'];?></div>
             </div>
 
             <div id="picture" class="tabcontent">
