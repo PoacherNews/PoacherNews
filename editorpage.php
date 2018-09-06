@@ -47,19 +47,19 @@
                 <?php
 					$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
 					$isAuthor = ($articleData['UserID'] == $_SESSION['userid'] ? TRUE : FALSE);
+					$draftOk = FALSE;
 					if($articleData || isset($_GET['articleid'])) {
-						if(!$isAuthor && !$isDraft) {
+						if(!$isAuthor || !$isDraft) {
 							redirectHome();
+							$draftOk = FALSE;
 						} else {
 							/* Grab ArticleID via POST method */
 							print "<input type=hidden name=articleid value={$articleData['ArticleID']}>";
-							print "<input type=text id=title placeholder=Title name=title value={$articleData['Headline']}>";
+							$draftOk = TRUE;
 						}
-					} else {
-						print "<input type=text id=title placeholder=Title name=title>";
 					}
                 ?>
-				<!--<input type="text" id="title" placeholder="Title" name="title">-->
+				<input type="text" id="title" placeholder="Title" name="title" value="<?php if($draftOk){print $articleData['Headline'];}?>">
                 <select name="category" id="category">
                     <option value="Politics"<?php if($articleData['Category'] == "Politics"){print "selected";}?>>Politics</option>
                     <option value="Sports"<?php if($articleData['Category'] == "Sports"){print "selected";}?>>Sports</option>

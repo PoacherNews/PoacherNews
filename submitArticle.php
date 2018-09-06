@@ -15,8 +15,7 @@
 
 		if ($db->connect_error) { // Check connection
 		   die("Connection failed: " . $db->connect_error);
-		}
-		else{
+		} else{
 			return $db;
 		}
 	} // End of dbConnect
