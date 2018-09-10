@@ -89,7 +89,7 @@ function handle_create()
 // terms of agreement   
 if(!isset($_POST['checkbox']))
 {
-    $error = "Please confirm Terms of Agreement";
+    $error = "You must agree to the Terms of Service";
     include '../createUser.php';
     exit;
 }    
