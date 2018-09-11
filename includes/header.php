@@ -7,7 +7,7 @@
             </div>
         </div>
         <div id="center">
-            <h1>The Poacher</h1>
+            <a href="/index.php"><h1>The Poacher</h1></a>
         </div>
         <div id="right">
             <?php
