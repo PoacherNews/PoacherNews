@@ -54,18 +54,18 @@
     function getUserTimezone($uid, $db) {
     	/* Returns a user of provided userID's timezone, if one is set. */
     	$sql = "SELECT Timezone FROM User WHERE UserID = {$uid}";
-    	$result = mysqli_fetch_array(mysqli_query($db, $sql));
+    	$result = mysqli_query($db, $sql);
 		if($result) {
-			return $result['Timezone'];
+			return mysqli_fetch_array($result)['Timezone'];
 		}
 		return NULL;
     }
     function getUserDateFormat($uid, $db) {
     	/* Returns the date format from a user of provided user ID, if one is set. */
     	$sql = "SELECT DateFormat FROM User WHERE UserID = {$uid}";
-    	$result = mysqli_fetch_array(mysqli_query($db, $sql));
+    	$result = mysqli_query($db, $sql);
 		if($result) {
-			return $result['DateFormat'];
+			return mysqli_fetch_array($result)['DateFormat'];
 		}
 		return NULL;
     }

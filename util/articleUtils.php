@@ -25,7 +25,12 @@ function getArticleByID($id, $db) {
 function getAuthorByID($id, $db) {
     /* Returns an associative array representation of the MYSQL result for the author of the provided id. */
     $sql = "SELECT * FROM User WHERE UserID = {$id};";
-    return mysqli_fetch_assoc(mysqli_query($db, $sql));
+    $result = mysqli_query($db, $sql);
+    if($result) {
+        return mysqli_fetch_assoc($result);
+    } else {
+        return NULL;
+    }
 }
 
 function getSectionArticles($category, $limit=NULL, $offset=NULL, $db) {

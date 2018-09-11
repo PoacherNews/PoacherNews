@@ -69,7 +69,9 @@
                     <p>
                         <?php
                             $authorData = getAuthorByID($articleData['UserID'], $db);
-                            print "Written by <a href=\"/profile.php?uid={$articleData['UserID']}\">{$authorData['FirstName']} {$authorData['LastName']}</a>";
+                            if($authorData != NULL) {
+                                print "Written by <a href=\"/profile.php?uid={$articleData['UserID']}\">{$authorData['FirstName']} {$authorData['LastName']}</a>";
+                            }
                         ?>
                     </p>
                     <p id="pubDate">Published on <?php print date($dateFormat, strtotime($articleData['PublishDate']))?></p>
@@ -77,10 +79,6 @@
                         <?php print "<a href=\"section.php?Category={$articleData['Category']}\">{$articleData['Category']}</a>" ?>
                         &mdash;
                         <?php print "{$articleData['Views']} ".($articleData['Views'] === 1 ? "View" : "Views") ?>,
-                        <?php
-                            $numFaves = getNumBookmarks($articleData['ArticleID'], $db);
-                            print "{$numFaves} ".($numFaves === 1 ? "Bookmark" : "Bookmarks");
-                        ?>
                         <?php
                             $articleRating = getRatingByID($_GET['articleid'], $db);
                             print "Rated ".number_format((float)$articleRating, 2, '.', '')."/5 stars";
