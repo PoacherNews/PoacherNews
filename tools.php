@@ -1,6 +1,6 @@
 <?php
     include 'util/loginCheck.php';
-    if($_SESSION['usertype'] != 'A' || $_SESSION['usertype'] != 'W') { // Disallow regular users from accessing tools page.
+    if($_SESSION['usertype'] == "U") { // Disallow regular users from accessing tools page.
         header('Location: index.php');
     }
 ?>
