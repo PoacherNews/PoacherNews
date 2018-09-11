@@ -1,40 +1,27 @@
 <header id="mainHeader">
-    <div class="hdrflxr">
-        <div id="hdrlft">
-			<div class="hdrlftFlxr">
-				<!-- Disabled 8/1 - CS
-                <div id="drpdwn">
-					<div id="drpdwnIcon"></div>
-					<div id="drpdwnIcon"></div>
-					<div id="drpdwnIcon"></div>
-				</div> -->
-				<div class="srcIcn">
-					<a>Search</a>
-					<i class="fa fa-search"></i>
-				</div>
-			</div>
+    <div class="headerContainer">
+        <div id="left">
+            <div class="srcIcn">
+                <a>Search</a>
+                <i class="fa fa-search"></i>
+            </div>
         </div>
-        <div id="hdrmid">
-            <!-- <div class="hdrctr"> -->
-                <!-- <a href="/index.php"><img class="hdrLogo" src="/res/img/PoacherLogo.png"></a> -->
-                <span class="hdrTitle"><a class="hdrA" href="/index.php">The Poacher</a></span>	
-            <!-- </div> -->
-        </div> 
-        <div id="hdrrt">
+        <div id="center">
+            <h1>The Poacher</h1>
+        </div>
+        <div id="right">
             <?php
                 if(!empty($_SESSION['loggedin']) && $_SESSION['loggedin']) {
-                    print "<span class=\"username\"><a href='/profile.php?uid=".$_SESSION['userid']."'>{$_SESSION['username']}</a> <i class=\"fa fa-caret-down\"></i>
+                    print "<span class=\"username\"><a href='/profile.php?uid={$_SESSION['userid']}'>{$_SESSION['username']}</a> <i class=\"fa fa-caret-down\"></i>
                             <div class='uname-content-wrapper'>
                                 <div class=\"username-content\">
                                     <p>Logged in as <b>{$_SESSION['username']}</b></p>
                                     <hr>
-                                    <a href=\"/profile.php?uid=".$_SESSION['userid']."\">Your Profile</a>";
-                                    if($_SESSION['usertype'] == 'W' || $_SESSION['usertype'] == 'A')
-                                    {
-                                    	print "<a href=\"/tools.php\">Tools</a>";
-    								}
-                    print "
-                    				<a href=\"/help.php\">Help</a>
+                                    <a href=\"/profile.php?uid={$_SESSION['userid']}\">Your Profile</a>";
+                                    if($_SESSION['usertype'] == 'W' || $_SESSION['usertype'] == 'A') {
+                                        print "<a href=\"/tools.php\">Tools</a>";
+                                    }
+                    print "         <a href=\"/help.php\">Help</a>
                                     <a href=\"/settings.php\">Settings</a>
                                     <a href=\"/logout.php\">Log Out</a>
                                 </div>
@@ -60,11 +47,9 @@
                             </span>";
                 }
             ?>
-            
-       </div>
+        </div>
     </div>
 </header>
-
 <script>
     $(document).ready(function() {
        $(".srcIcn").click(function() {
@@ -78,15 +63,4 @@
             }
        });
     });
-	
-	/*
-	function clickLgnLink() {
-        if($('.lgnDrpdwn-content').is(':hidden')) {
-            $('.lgnDrpdwn-content').show();
-        } else if($('.lgnDrpdwn-content').is(':visible')) {
-            $('.lgnDrpdwn-content').hide();
-        }
-    }
-    */
-    
 </script>

@@ -111,5 +111,8 @@ article a:not(.continue-reading):hover {
             "bannerAd"
             "stackedArticles"
     }
+    .headerContainer #center h1 {
+        font-size: 4.5vh;
+    }
 }
 
