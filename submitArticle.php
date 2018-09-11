@@ -173,10 +173,10 @@
 			 }
 			 */
 	  	}
-		$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/";
-		
-		if (!file_exists($target_dir)) {
-			mkdir($target_dir, 0777, true);
+		$target_dir = "/home/ec2-user/public_html/res/img/articlePictures";
+		//$target_dir = "/Users/rolandoruche/Desktop/test/PoacherNews/res/img/articlePictures";
+		if (!file_exists("/home/ec2-user/public_html/res/img/articlePictures")) {
+			mkdir("/home/ec2-user/public_html/res/img/articlePictures", 0777, true);
 		}
 		
 		chmod($target_dir, 0777);
