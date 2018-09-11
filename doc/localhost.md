@@ -1,7 +1,7 @@
-I would recommend updating the version of your php to at least version 7 before running on a localhost.
-You can check your version through the command line with "php -v".
+I would recommend updating the version of your php to at least version 7 before running on a localhost.  
+You can check your version through the command line with "php -v".  
 
-If you need to update your php: 
+If you need to update your php:  
 I have only updated it through the command line, so if you google "update php command line" you will find a lot of resources.
                                 
 Running on localhost:                                
