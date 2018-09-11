@@ -47,7 +47,7 @@
                 <?php
 					$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
 					$isAuthor = ($articleData['UserID'] == $_SESSION['userid'] ? TRUE : FALSE);
-					$draftOk = FALSE;
+					$draftOk = TRUE;
 					if($articleData || isset($_GET['articleid'])) {
 						if(!$isAuthor || !$isDraft) {
 							redirectHome();
