@@ -2,78 +2,39 @@
 header[id="mainHeader"] {
     grid-area: mainHeader;
     width: 100%;
-    min-height: 10vh;
 	background: #83a8f0;
 	background: linear-gradient(140deg, #83A8F0 0%, #BDD4E7 50%, #8693AB 75%);
 }
 
-.hdrflxr {
-    display: flex;
-    flex-direction: row;
+#mainHeader .headerContainer {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 0.5fr 6fr 0.5fr;
+    grid-template-areas: ".          .            ."
+                         "headerLeft headerCenter headerRight"
+                         ".          .            .";
 }
 
-#hdrlft, #hdrrt {
-    display: flex;
-    flex-direction: column;
-    width: 25%;
-    height: 10vh; /*Same height as header*/
+.headerContainer #center {
+    grid-area: headerCenter;
+    margin: auto;
+    text-align: center;
 }
-
-.hdrlftFlxr {
-	display: flex;
-	flex-direction: row;
-	height: 55%;
-	min-width: 100%;
-}
-
-
-#hdrmid {
-    display: flex; 
-    flex-direction: column;
-    width: 50vw;
-    height: 10vh; /*Same height as header*/
-	display: inline-block;
-	text-align: center;
-}
-
-/* TITLE */
-.hdrTitle {
+.headerContainer #center h1 {
+    margin: 0;
     font-family: 'Do Hyeon', sans-serif;
-    font-size: 50px;
+    font-size: 7vh;
     text-shadow: 4px 3px 2px #7E7F7F;
-	/*position: absolute;*/
-	margin: 1% auto auto 0.5%;
-}
-
-.hdrctr {
-	width: 50%;
-	margin: 0 auto;
-	height: 100%;
-	max-height: 10vh;
-	white-space: nowrap;
-	text-align: center;
-}
-
-
-.hdrlftFlxc {
-	display: flex;
-	flex-direction: column;
-	width: 50%;
-}
-
-a.hdrA {
     color: white;
-    text-decoration: none;
 }
 
-.hdrLogo {
-	/*height: 100%*/
-	position: relative;
-	height: 104.89px;
-	min-height: 104.89px;
-    width: 100px;
-   	margin:  auto auto auto 20%;
-	display: none; /*display inline-block for V 2.5*/
+.headerContainer #right {
+    grid-area: headerRight;
+    margin: auto;
+}
+.headerContainer #left {
+    grid-area: headerLeft;
+    margin: auto;
 }
 
 
@@ -261,6 +222,8 @@ a.hdrA {
     opacity: 0.5;
 }
 
+
+/* SEARCH AREA IN HEADER */
 .srcIcn{
 	margin: 6px 0px 0px 10px;
     width: 120px;
@@ -298,16 +261,14 @@ a.hdrA {
 .fa:hover, .fa-search:hover {
     cursor: pointer;
 }
-/* END OF HEADER */
 
 
-/* SEARCH BAR */
+/* SEARCH BAR DROPDOWN */
 
 #searchbar {
     z-index: 1;
     background: #f3f3f3;
-    max-width: 100%;
-    min-width: 100vh;
+    width: 100%;
     min-height: 75px;
     list-style-type: none;
     margin: 0;
@@ -334,41 +295,6 @@ a.hdrA {
 	border-bottom: 1px solid #1f1209;
 }
 
-/* CREATE USER (LAYOUT) */
-
-#titleText {
-    text-align: center;
-    font-size: 72px;
-    font-family: serif;
-}
-            
-#titleDiv {
-    background-color: aquamarine;
-    padding: -10px;
-}
-                  
-#mascotImage {
-    height: 300px;
-    width: 240px;
-    float: left;
-}
-            
-#newUserForm {
-    border: 2px solid black;
-    border-radius: 10%;
-    padding: 10px;
-                
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    height: 300px;
-    float: right;            
-}
-            
-#bodyDiv {
-    margin: auto;
-    width: 600px;
-}
 
 /* FOOTER */
 footer[id="mainFooter"] {
@@ -453,35 +379,6 @@ p.ftCpyright {
 }
 
 
-
-/* USER_WRITER_ADMIN_PAGEV3*/  
-
-.PageRow {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    background-color: antiquewhite;
-    height: 84vh;
-}
-        
-.PageBorder {
-    border: 1px solid blue;
-    height: auto;
-}
-
-.PageColumn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: azure;
-    width: 80%;
-}
-        
-.tools {
-    font-size: 24px;
-    text-decoration: underline;
-}
-
 /* NAVIGATION BAR */
 
 #drpdwn {
@@ -544,6 +441,7 @@ p.ftCpyright {
 #navbar {
     grid-area: mainNav;
     width: 100%;
+    height: 5vh;
   	background-color: #f3f3f3;
 	text-align: center;
 	list-style-type: none;
@@ -563,7 +461,7 @@ p.ftCpyright {
 
 #navbar a {
     display: inline-block;
-    padding: 10px;
+    padding: 1.4vh;
     color: inherit;
 }
 #navbar a:hover {
