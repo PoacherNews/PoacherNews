@@ -131,25 +131,38 @@ textarea[name=bio] {
     })
     
 /* ADDED BY BRUCE */
-                 $("form#upload").submit(function(event){   
-                      var formData = new FormData($(this)[0]);
-                      $.ajax({
-                        url: 'util/uploadProfilePicture.php',
-                        type: 'POST',
-                        data: formData,
-                        async: false,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        success: function (returndata) {
-                            //$("#comment-list-box").append(returndata);
+    $("form#upload").submit(function(event){   
+            
+        $(".settingsMessage").hide();
+        $(".settingsMessage").removeClass("error");
+        event.preventDefault();
 
-                        $("form#upload")[0].reset();
-                        //$("#loaderIcon").hide();   
-                        },
-                        error:function (){}                 
-                      });
-                    });   
+        var formData = new FormData(this);
+        $.ajax({
+            url: 'util/uploadProfilePicture.php',
+            type: 'POST',
+            data: formData,
+            dataType: 'text',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if(data == "Success") {
+                    $(".settingsMessage").addClass("success");
+                    $(".settingsMessage").text("Setings successfully saved.");
+                } else {
+                    $(".settingsMessage").addClass("error");
+                    $(".settingsMessage").text(data);
+                }
+            }, 
+            error:function (data) {
+                    $(".settingsMessage").text("Sorry, there was an error uploading your file.");
+                } 
+            });
+                $(".settingsMessage").fadeIn();
+                $(".settingsMessage").delay(5000).fadeOut();
+    });   
     
     function readURL(input) { // Reads in a picture and displays it
         var imgInp = document.getElementById('imgInp').value;
