@@ -7,7 +7,7 @@
 	$action = empty($_POST['action']) ? '' : $_POST['action'];
 	$submit = empty($_POST['submit']) ? '' : $_POST['submit'];
 	$save = empty($_POST['save']) ? '' : $_POST['save'];
-	$articleid = empty($_POST['articleid']) ? '' : $_POST['articleid'];
+	//$articleid = empty($_POST['article_id']) ? '' : $_POST['article_id'];
 
 	include('util/articleUtils.php');
 
@@ -19,7 +19,7 @@
 		} else{
 			return $db;
 		}
-	} // End of dbConnect
+	}
 
 	if(isset($action)){
 		if($submit == "Yes") { // If the user wants to submit
@@ -28,7 +28,7 @@
 			saveArticle();
 		}
 	} else {
-		redirectTools(); //Go back to /tools.php
+		redirectTools(); // ../tools.php
 	}
 
 	function submitArticle() {
@@ -36,50 +36,44 @@
 	  	$category = empty($_POST['category']) ? '' : $_POST['category'];
 	  	$body = empty($_POST['body']) ? '' : $_POST['body'];
 	  	$authorid = getAuthorID();
-	  	// upload image
 	  	$image = getImage();
 	  	$is_draft = 1; // true
 	  	$is_submitted = 1; // true
 		
-		if(isset($_POST['articleid'])) { // Thus the article is a draft
+		if(isset($_POST['article_id'])) { // Thus the article is a draft
 			$db = dbConnect();
 			$stmt = $db->stmt_init();
-		  	$articleData = getArticleByID($articleid, $db);
+		  	$articleData = getArticleByID($_POST['article_id'], $db);
 		  	$isAuthor = ($articleData['UserID'] && $_SESSION['userid'] ? TRUE : FALSE);
-	  	}
-
-	  	if($articleData['ArticleID'] && $isAuthor) { // The draft was saved upon edit
+	  	} 
+		if($articleData['ArticleID'] && $isAuthor) { // The draft was submitted upon edit
 			updateArticle($articleData['ArticleID'], $title, $body, $category, $image, $is_submitted, $db, $stmt);
-			
-	  	} else { // The draft is new and was not saved upon edit
+		} else { // The draft is new and was not saved upon edit
 		  	insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted);
 	  	}
-	} //End of submitArticle
+	}
 
 	function saveArticle() {	
 	    $title = empty($_POST['title']) ? '' : $_POST['title'];
 	    $category = empty($_POST['category']) ? '' : $_POST['category'];
 	    $body = empty($_POST['body']) ? '' : $_POST['body'];
 	    $authorid = getAuthorID();
-	    // upload image
 		$image = getImage();
 	  	$is_draft = 1;
 	  	$is_submitted = 0;
 
-	  	if(isset($_POST['articleid'])) { // Thus the article is a draft
+	  	if(isset($_POST['article_id'])) { // Thus the article is a draft
 			$db = dbConnect();
 			$stmt = $db->stmt_init();
-		  	$articleData = getArticleByID($articleid, $db);
+		  	$articleData = getArticleByID($_POST['article_id'], $db);
 		  	$isAuthor = ($articleData['UserID'] && $_SESSION['userid'] ? TRUE : FALSE);
 	  	}
-		
-	  	if($articleData['ArticleID'] && $isAuthor) { // The draft was saved upon edit
+		if($articleData['ArticleID'] || $isAuthor) { // The draft was saved upon edit
 			updateArticle($articleData['ArticleID'], $title, $body, $category, $image, $is_submitted, $db, $stmt);
-
-	  	} else { // The draft is new and was not saved upon edit
+		} else { // The draft is new and was not saved upon edit
 			insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted);
 	  	}
-	} //End of saveArticle
+	}
 
 	function insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted) {
 		$db = dbConnect();
@@ -154,7 +148,7 @@
 	} // End of getAuthorID
 
 	function getImage() {
-		if(!isset($_POST['articleid'])) { // Thus the article is not a draft
+		if(!isset($_POST['article_id'])) { // Thus the article is not a draft
 		  	$db = dbConnect();
 			$sql = "SELECT ArticleID FROM Article";
 			$result = mysqli_query($db, $sql);
@@ -162,14 +156,14 @@
 			$counter = 0;
 			while($row = mysqli_fetch_assoc($result)) {
 				if (++$counter == $numResults) {
-					$articleid = $row['ArticleID']+1; // last row
+					$_POST['article_id'] = $row['ArticleID']+1;
 				}
 			}
 	  	}
-		
+
 		//$target_dir = "/home/ec2-user/public_html/res/img/articlePictures";
-		/*Used for local host*/
-		$target_dir = "/Users/rolandoruche/Desktop/test/PoacherNews/res/img/articlePictures/".$articleid."/";
+		//Used for local host
+		$target_dir = "/Users/rolandoruche/Desktop/test/PoacherNews/res/img/articlePictures/".$_POST['article_id']."/";
 		if (!file_exists($target_dir)) {
 			mkdir($target_dir, 0777, true);
 		}

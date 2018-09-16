@@ -54,7 +54,7 @@
 							$draftOk = FALSE;
 						} else {
 							/* Grab ArticleID via POST method */
-							print "<input type=hidden name=articleid value={$articleData['ArticleID']}>";
+							print "<input type=hidden name=article_id value={$articleData['ArticleID']}>";
 							$draftOk = TRUE;
 						}
 					}
