@@ -259,7 +259,7 @@ if(isset($_POST['draftSubmit']))
                 $query = "UPDATE Article SET IsDraft = 1, IsSubmitted = 1 WHERE ArticleID = ?";
             }
             // DRAFT TO APPROVED
-            else if($selected_option == 1 && ($data['IsDraft'] == 1 &&   $data['IsSubmitted'] == 1))
+            else if($selected_option == 1 && ($data['IsDraft'] == 1 &&   $data['IsSubmitted'] == 0))
             {
                 $query = "UPDATE Article SET IsDraft = 0, IsSubmitted = 1 WHERE ArticleID = ?";
             }
