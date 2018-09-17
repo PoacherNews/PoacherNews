@@ -157,6 +157,7 @@ textarea[name=bio] {
                 }
             }, 
             error:function (data) {
+		    $(".settingsMessage").addClass("error");
                     $(".settingsMessage").text("Sorry, there was an error uploading your file.");
                 } 
             });
