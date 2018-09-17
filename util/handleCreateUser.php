@@ -245,9 +245,12 @@ if(!isset($_POST['checkbox']))
         exit;
     }
  
+	$num = mysqli_query($db, "SELECT MAX(UserID) FROM User");
+	$row = mysqli_fetch_row($num);
+		
     // Set session variables
     $_SESSION['loggedin'] = true;
-    $_SESSION['userid'] = $userid;
+    $_SESSION['userid'] = $row[0];
     $_SESSION['firstname'] = $firstname;
     $_SESSION['lastname'] = $lastname;
     $_SESSION['email'] = $email;
