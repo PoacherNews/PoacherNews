@@ -50,6 +50,10 @@ function display_table($db, $query, $tablename)
             {
                 $articleid = $r;
             }
+            if($key == 'CommentID')
+            {
+                $commentid = $r;
+            }            
             
             if($key != 'UserID' && $key != 'ArticleID')
             {
@@ -62,6 +66,10 @@ function display_table($db, $query, $tablename)
                 {
                     echo "<a href='util/editArticle.php?ArticleID=$articleid'>";
                 }
+                if ($key == 'CommentText')
+                {
+                    echo "<a href='util/editComment.php?CommentID=$commentid'>";
+                }                
                     echo $r;
                 
                 if($key == 'CommentText' && $r == null)
