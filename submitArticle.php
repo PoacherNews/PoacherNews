@@ -7,53 +7,57 @@
 	$action = empty($_POST['action']) ? '' : $_POST['action'];
 	$submit = empty($_POST['submit']) ? '' : $_POST['submit'];
 	$save = empty($_POST['save']) ? '' : $_POST['save'];
-	//$articleid = empty($_POST['article_id']) ? '' : $_POST['article_id'];
 
 	include('util/articleUtils.php');
 
 	function dbConnect() {
-	include 'util/db.php';
-
-		if ($db->connect_error) { // Check connection
+		/* Checks the connection of the database. Abort databse if the connection was NOT successful, 
+		otherwise return db */
+		include 'util/db.php';
+		if ($db->connect_error) {
 		   die("Connection failed: " . $db->connect_error);
 		} else{
 			return $db;
 		}
 	}
-
+	
+	/* Calls input[name = action] from editorpage.php. If user selects "Yes", article is submitted.
+	If user selects "Save", article is saved. Otherwise redirect to ../tools.php */
 	if(isset($action)){
-		if($submit == "Yes") { // If the user wants to submit
+		if($submit == "Yes") {
 			submitArticle();
-		} else if($save == "Save") { // If the user wants to save
+		} else if($save == "Save") {
 			saveArticle();
 		}
 	} else {
-		redirectTools(); // ../tools.php
+		redirectTools();
 	}
 
 	function submitArticle() {
+		/* Submits the article whether it is a draft or new document */
 	  	$title = empty($_POST['title']) ? '' : $_POST['title'];
 	  	$category = empty($_POST['category']) ? '' : $_POST['category'];
 	  	$body = empty($_POST['body']) ? '' : $_POST['body'];
 	  	$authorid = getAuthorID();
 	  	$image = getImage();
-	  	$is_draft = 1; // true
-	  	$is_submitted = 1; // true
+	  	$is_draft = 1; 
+	  	$is_submitted = 1;
 		
-		if(isset($_POST['article_id'])) { // Thus the article is a draft
+		if(isset($_POST['article_id'])) { 
 			$db = dbConnect();
 			$stmt = $db->stmt_init();
 		  	$articleData = getArticleByID($_POST['article_id'], $db);
 		  	$isAuthor = ($articleData['UserID'] && $_SESSION['userid'] ? TRUE : FALSE);
 	  	} 
-		if($articleData['ArticleID'] && $isAuthor) { // The draft was submitted upon edit
+		if($articleData['ArticleID'] && $isAuthor) {
 			updateArticle($articleData['ArticleID'], $title, $body, $category, $image, $is_submitted, $db, $stmt);
-		} else { // The draft is new and was not saved upon edit
+		} else {
 		  	insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted);
 	  	}
 	}
 
-	function saveArticle() {	
+	function saveArticle() {
+		/* Saves the article whether it is a draft or new document */
 	    $title = empty($_POST['title']) ? '' : $_POST['title'];
 	    $category = empty($_POST['category']) ? '' : $_POST['category'];
 	    $body = empty($_POST['body']) ? '' : $_POST['body'];
@@ -62,20 +66,21 @@
 	  	$is_draft = 1;
 	  	$is_submitted = 0;
 
-	  	if(isset($_POST['article_id'])) { // Thus the article is a draft
+	  	if(isset($_POST['article_id'])) {
 			$db = dbConnect();
 			$stmt = $db->stmt_init();
 		  	$articleData = getArticleByID($_POST['article_id'], $db);
 		  	$isAuthor = ($articleData['UserID'] && $_SESSION['userid'] ? TRUE : FALSE);
 	  	}
-		if($articleData['ArticleID'] || $isAuthor) { // The draft was saved upon edit
+		if($articleData['ArticleID'] || $isAuthor) {
 			updateArticle($articleData['ArticleID'], $title, $body, $category, $image, $is_submitted, $db, $stmt);
-		} else { // The draft is new and was not saved upon edit
+		} else {
 			insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted);
 	  	}
 	}
 
 	function insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted) {
+		/* Inserts a new document based on authorid, title, body, category, image, if its a draft, and if its submitted */
 		$db = dbConnect();
 	  	$stmt = $db->stmt_init();
 		if (!$stmt->prepare("INSERT INTO Article(UserID, Headline, Body, Category, ArticleImage, IsDraft, IsSubmitted) VALUES(?, ?, ?, ?, ?, ?, ?)")) {
@@ -98,7 +103,8 @@
 	}
 
 	function updateArticle($articleid, $title, $body, $category, $image, $is_submitted, $db, $stmt) {
-		//Update the mysql
+		/* Updates the drafted article based on article id, body contents, 
+		category of choice, article image, and status of submission state */
 		$sql_query = "UPDATE Article SET Headline = '".$title."', Body= '".$body."', Category = '".$category."', ArticleImage = '".$image."', IsSubmitted = '".$is_submitted."' WHERE ArticleID = ?";
 		if (!$stmt->prepare($sql_query)) {
 			echo "Error preparing statement: \n";
@@ -120,6 +126,7 @@
 	}
 	
 	function getAuthorID() {
+		/* Returns the author id for a new article to be submitted */
 		$username = empty($_SESSION['username']) ? 'error' : $_SESSION['username'];
 		$db = dbConnect();
 		$stmt = $db->stmt_init();
@@ -136,7 +143,6 @@
 		  	exit;
 		}
 		$stmt->execute();
-		// get result
 		$result = $stmt->get_result();
 
 		if($result->num_rows != 1){
@@ -145,10 +151,11 @@
 		}
 		$row = $result->fetch_assoc();
 		return $row['UserID'];
-	} // End of getAuthorID
+	}
 
 	function getImage() {
-		if(!isset($_POST['article_id'])) { // Thus the article is not a draft
+		/* Gets the article image and returns the filename if it is valid */
+		if(!isset($_POST['article_id'])) {
 		  	$db = dbConnect();
 			$sql = "SELECT ArticleID FROM Article";
 			$result = mysqli_query($db, $sql);

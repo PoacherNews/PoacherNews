@@ -1,6 +1,7 @@
 <?php
 	$files = empty($_FILES['document'] ? '' : $_FILES['document']);
-
+	/* Calls input[name = document] from editorpage.php and calls readTextFile() if success, 
+	otherwise prints error */
 	if(isset($files)) {
 		readTextFile();
 	} else {
@@ -8,18 +9,19 @@
 	}
 	
 	function readTextFile() {
+		/* Reads in uploaded file via ajax POST and prints the contents on the rich text editor. Only takes
+		.docx, .doc, and .txt files. NOTE: May be updated in later versions */
 		if (isset( $_FILES['document'])) {
-			// Upload .docx, .doc, .txt
 			$app_docx = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 			$app_doc = "application/msword";
 			$text_plain = "text/plain";
 			switch($_FILES['document']['type']) {
-				case $app_docx: // Fix line break before paragraph starts
+				case $app_docx: // TODO:  Fix line break before paragraph starts
 					$source_file = $_FILES['document']['tmp_name'];
-					$zip = new ZipArchive; // Parse word docx by opening up zip file then display it
+					$zip = new ZipArchive;
 					$dataFile = 'word/document.xml';
-					if (true === $zip->open($source_file)) { // Open the archive file
-						if (($index = $zip->locateName($dataFile)) !== false) { // If true, search for the data file in archive
+					if (true === $zip->open($source_file)) {
+						if (($index = $zip->locateName($dataFile)) !== false) {
 							$data = $zip->getFromIndex($index);
 							$zip->close();
 							$dom = new DOMDocument;
@@ -37,9 +39,14 @@
 							// @$dom->loadHTML($contents, LIBXML_HTML_NOIMPLIED  | LIBXML_HTML_NODEFDTD);
                             $contents = $dom->saveHTML();
                             */
+							$contents = strip_tags($xmldata, '<w:p><w:r>'); // Strip the p and r tags
+							$contents = preg_replace("/(<(\/?)w:(.)[^>]*>)\1*/", "<$2$3>", $contents);
+							$dom = new DOMDocument;
+							@$dom->loadHTML($contents, LIBXML_HTML_NOIMPLIED  | LIBXML_HTML_NODEFDTD);
+                            $contents = $dom->saveHTML();
 							// Get rid of weird special chars
 							$find = array('&acirc;&#128;&#156;', '&acirc;&#128;&#157;', '&acirc;&#128;&#152;', '&acirc;&#128;&#153;', '&acirc;&#128;&brvbar;', '&acirc;&#128;&#147;', '&acirc;&#128;&#148;');
-							$replace = array('“', '”', "‘", "’", "...", "–", "—");
+							$replace = array('"', '"', "'", "'", "...", "–", "—");
 						
 							$contents = str_replace($find, $replace, $contents);
 							print ($contents);
@@ -93,7 +100,7 @@
 					}
 					break;
 
-				case $text_plain: // Good
+				case $text_plain:
 					$source_file = $_FILES['document']['tmp_name'];
 					$body = file_get_contents($source_file);
 					$map = array(
@@ -136,5 +143,5 @@
 					break;
 			}
 		}
-	  }// End of readTextFile
+	  }
 ?>

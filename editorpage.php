@@ -110,7 +110,7 @@
             <div id="picture" class="tabcontent">
                 <h3>Choose a picture</h3>
                 <div class="editor-image">
-                    <input name="image" id="imgInp" type='file' onchange="readURL(this);"/>
+                    <input name="image" id="imgInp" value="<?php if($articleData['ArticleImage'])print $articleData['ArticleImage']; ?>" type='file' onchange="readURL(this);"/>
                     <div id="picture-content">
                         <img id="image" src="#" alt="Image" width="650" height="434"/>
                     </div>
@@ -275,6 +275,7 @@
                 var text = event.clipboardData.getData('text/plain');
                 document.execCommand('insertHTML', false, text);
             });
+			/*
             $(function() {
                 $('#editor').focus();
             });
@@ -288,7 +289,7 @@
                 //$(this).focus();
 				
             })
-			
+			*/
 /******************************* SUBMISSION *******************************/
             $(document).ready(function() { // Submitting articles
                $("#action-form").on("submit", function () {
