@@ -8,7 +8,8 @@ Running on localhost:
 1. Open terminal / command prompt
 2. Command line: git clone https://github.com/PoacherNews/PoacherNews.git
 3. Open the folder PoacherNews, then open the folder util
-4. Rename db.php.scrubbed to db.php
-5. Open db.php and add the password in the blank single quotes (I'll put the password in the groupme), then save it
-6. Command line: cd PoacherNews
-7. Command line: php -S localhost:8000
+4. Create db.php
+6. Copy db.php.scrubbed to db.php
+6. In db.php, add the password in the blank single quotes (I'll put the password in the groupme), then save it
+7. Command line: cd PoacherNews
+8. Command line: php -S localhost:8000

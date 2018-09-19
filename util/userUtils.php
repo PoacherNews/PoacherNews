@@ -233,6 +233,11 @@
 		$sql = "SELECT * FROM Comment WHERE ArticleID = {$aid} AND ReplyToID = {$cid}";
 		return mysqliToArray(mysqli_query($db, $sql));
 	}
+    function getCommentParents($aid, $cid, $db) {
+        /* Returns an array of comments from an article with articleID specified with `aid` which do not reply to any comment. */
+        $sql = "SELECT * FROM Comment WHERE ArticleID = {$aid} AND CommentID = {$cid}";
+        return mysqliToArray(mysqli_query($db, $sql));
+    }
 
 	function getCommentAuthorID($cid, $db) {
 		/* Returns the userID of a comment of provided commentID. */
