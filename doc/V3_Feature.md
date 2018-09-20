@@ -46,3 +46,5 @@
 ### Misc
 * Social Media Account
 * Terms of Service
+* Marketing (Flyers)
+* Recruiting
