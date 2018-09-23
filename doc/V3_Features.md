@@ -21,11 +21,12 @@
 * Views (Algorithm) (*)
 * Optimizing Queries/Sanitizing
 * Create User Birthday Verification (18+)
+* Search in tools.php (Articles/Comments/Users)
 
 ### Website: Front-End
 * Themes/New Layout
 * NEW logo
-* Dynamic Article Page
+* Dynamic Article Page (*)
 * Comment restructuring
 * Show more for comments
 * Pagination
