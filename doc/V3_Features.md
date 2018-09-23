@@ -16,9 +16,9 @@
 * Blocking users/writers
 * Analytics
 * Sorting articles on section page
-* Trending (Algorithm)
+* Trending (Algorithm) (*)
 * Filter tools page
-* Views (Algorithm)
+* Views (Algorithm) (*)
 * Optimizing Queries/Sanitizing
 * Create User Birthday Verification (18+)
 
