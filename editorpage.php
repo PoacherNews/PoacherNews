@@ -37,7 +37,7 @@
         ?>
 		<div class="editor-tab">
 			<button class="tablinks" onclick="editorTab(event, 'article');editorFocus();"><i class="fas fa-pencil-alt"></i></button>
-			<button class="tablinks" onclick="editorTab(event, 'picture')"><i class="fas fa-camera"></i></button>
+			<button class="tablinks" onclick="editorTab(event, 'picture');"><i class="fas fa-camera"></i></button>
 			<button class="tablinks" onclick="editorTab(event, 'save');getInfo();"><i class="fas fa-save"></i></button>
 		</div>
         <form id="action-form" action="/submitArticle.php" method="post" enctype="multipart/form-data">
@@ -110,7 +110,7 @@
             <div id="picture" class="tabcontent">
                 <h3>Choose a picture</h3>
                 <div class="editor-image">
-                    <input name="image" id="imgInp" value="<?php if($articleData['ArticleImage'])print $articleData['ArticleImage']; ?>" type='file' onchange="readURL(this);"/>
+                    <input name="image" id="imgInp" value="Hello" type='file' onchange="readURL(this);"/>
                     <div id="picture-content">
                         <img id="image" src="#" alt="Image" width="650" height="434"/>
                     </div>
@@ -164,7 +164,7 @@
 				document.getElementById(tabName).style.display = "block";
 				evt.currentTarget.className += " active";
 			}
-            
+			
             function readURL(input) { // Reads in a picture and displays it
                 var imgInp = document.getElementById('imgInp').value;
                 if(!(imgInp.length == 0)) { // Display image
@@ -189,6 +189,7 @@
             }
             
 /******************************* TEXT FORMATTING (TODO) *******************************/
+			/* TODO: V 2.10
 			setInterval(function () {
                 var boldLbl, italicLbl, underlineLbl;
                 var idName = ['boldLbl', 'italicLbl', 'underlineLbl'];
@@ -207,6 +208,7 @@
                     }
                 }
             }
+			*/
             
             function setUndo() {
                 document.execCommand("Undo", false, null);
@@ -214,6 +216,7 @@
             function setRedo() {
                 document.execCommand("Redo", false, null);
             }
+			/* TODO: V 2.10
             function setBold() {
 				document.execCommand("Bold", false, null);
 			}
@@ -223,7 +226,7 @@
 			function setUnderline() {
 				document.execCommand("Underline", false, null);
 			}
-            
+            */
             var linkModal = document.getElementById('link-modal');
 			
 			function linkBox() { // When the user clicks, open up the link box
@@ -300,19 +303,21 @@
             
             var modal = document.getElementById('submit-draft');
             
-            function submitBtn() {
+            function submitBtn() { // Submit button; Returns false if NOT successful otherise true
                 var submitBtn = document.getElementById("submit-button");
                 var getTitle = document.getElementById("getTitle");
 
                 if(getTitle.value.length == 0) {
                     getTitle.style.border = "2px solid red";
                     getTitle.placeholder = "Invalid requirements";
+					return false;
                 } else {
                     modal.style.display = "block";
+					return true;
                 }
             }
             
-            function saveBtn() {
+            function saveBtn() { // Save button; Returns false if NOT successful otherise true
                 var saveBtn = document.getElementById('save-button');
                 var getTitle = document.getElementById('getTitle');
 
