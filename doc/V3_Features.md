@@ -22,6 +22,7 @@
 * Optimizing Queries/Sanitizing
 * Create User Birthday Verification (18+)
 * Search in tools.php (Articles/Comments/Users)
+* Subscription Section
 
 ### Website: Front-End
 * Themes/New Layout
