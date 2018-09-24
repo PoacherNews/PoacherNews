@@ -1,21 +1,21 @@
 ## Features:
 
 ### Website: Back-End
-* Default Username/Article Pics (if not set then NULL)
-* Emails (feedback form sent to email) (*)
+* **Default Username/Article Pics (if not set then NULL)**
+* **Emails (feedback form sent to email) (*)**
 * Create User email verification
-* Text formatting for editorpage
-* Article Tags (*)
-* Filter (Advanced search) (*)
-* Salt Passwords
+* **Text formatting for editorpage**
+* **Article Tags (*)**
+* **Filter (Advanced search) (*)**
+* **Salt Passwords**
 * Following "Poaching" someone
 * Notifications/Status (*)
 * Reporting (comments/users/articles) (*)
 * Two-Factor Authentication
 * Search query for friends
-* Blocking users/writers
-* Analytics
-* Sorting articles on section page
+* Blocking users/writers (*)
+* **Analytics**
+* **Sorting articles on section page**
 * Trending (Algorithm) (*)
 * Filter tools page
 * Views (Algorithm) (*)
@@ -24,6 +24,7 @@
 * Search in tools.php (Articles/Comments/Users)
 * Subscription Section
 * Email password reset
+* **Upload 10 articles for each section**
 
 ### Website: Front-End
 * Themes/New Layout
@@ -39,7 +40,7 @@
 * Article Page (redesign)
 * Carousel Article 
 * In-Article Images
-* Search Page (redesign)
+* **Search Page (redesign)**
 
 
 ### Mobile Site: Front-End
