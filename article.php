@@ -233,7 +233,7 @@
                     }
                     $commentHtml =
                         '<div class="comment" id="comment-'.$comment['CommentID'].'" cid="'.$comment['CommentID'].'" style="margin-left: '.($indent * $indentMultiplier).'px">'.
-                            (is_null($comment['UserID']) ? '<span style="padding: 7px"></span>' : '<img src="/res/img/'.$user['ProfilePicture'].'"/>')
+                            (is_null($comment['UserID']) ? '<span style="padding: 7px"></span>' : '<img src="/res/img/profilePictures/'.$user['UserID'].'/'.$user['ProfilePicture'].'"/>')
                             .'<div class="commentText">
                                     <div class="commentTitle">
                                         <span class="commentAuthor">'.(is_null($comment['UserID']) ? 'Deleted Account' : $displayName).' '.(is_null($comment['UserID']) ? '' : $userLink).'</span> <span class="commentDate">'.date($dateFormat, strtotime($comment['CommentDate'])).'</span>
