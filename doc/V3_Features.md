@@ -23,6 +23,7 @@
 * Create User Birthday Verification (18+)
 * Search in tools.php (Articles/Comments/Users)
 * Subscription Section
+* Email password reset
 
 ### Website: Front-End
 * Themes/New Layout
