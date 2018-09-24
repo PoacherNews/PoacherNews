@@ -168,9 +168,9 @@
 			}
 	  	}
 
-		//$target_dir = "/home/ec2-user/public_html/res/img/articlePictures";
+		$target_dir = "/home/ec2-user/public_html/res/img/articlePictures";
 		//Used for local host
-		$target_dir = "/Users/rolandoruche/Desktop/test/PoacherNews/res/img/articlePictures/".$_POST['article_id']."/";
+		//$target_dir = "/Users/rolandoruche/Desktop/test/PoacherNews/res/img/articlePictures/".$_POST['article_id']."/";
 		if (!file_exists($target_dir)) {
 			mkdir($target_dir, 0777, true);
 		}
