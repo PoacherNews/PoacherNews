@@ -162,7 +162,7 @@
 			$numResults = mysqli_num_rows($result);
 			$counter = 0;
 			while($row = mysqli_fetch_assoc($result)) {
-				if (++$counter == $numResults) {
+				if (++$counter == $numResults || $numResults == 0) {
 					$_POST['article_id'] = $row['ArticleID']+1;
 				}
 			}
