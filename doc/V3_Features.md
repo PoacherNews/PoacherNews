@@ -37,7 +37,7 @@
 * Create User/Login (redesign)
 * Highlight current section in nav
 * Drop down for login hover
-* Article Page (redesign)
+* **Article Page (redesign)**
 * Carousel Article 
 * In-Article Images
 * **Search Page (redesign)**
