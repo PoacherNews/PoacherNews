@@ -11,7 +11,7 @@
 * Following "Poaching" someone
 * Notifications/Status (*)
 * Reporting (comments/users/articles) (*)
-* Two-Factor Authentication
+* **Two-Factor Authentication**
 * Search query for friends
 * Blocking users/writers (*)
 * **Analytics**
