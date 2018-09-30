@@ -33,7 +33,7 @@
             </td>
             </tr>
             <tr>
-            <td valign="top"">
+            <td valign="top">
             <label for="last_name">Last Name *</label>
             </td>
             <td valign="top">
