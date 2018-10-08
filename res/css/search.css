@@ -13,6 +13,11 @@
     flex-direction: column;
 }
 
+.advancedSearch{
+    display: flex;
+    flex-direction: column;
+}
+
 .resultFlex {
     display: flex;
     flex-direction: column;
@@ -56,7 +61,7 @@ hr.searchHr {
     margin-bottom: 0px;
 }
 
-#searchInput {
+.searchInput {
     width: 60vh;
     float: left;
     background-repeat: no-repeat;
@@ -171,3 +176,9 @@ form.search:after {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+#advancedSearch{
+    flex-direction: column;
+    display: none;
+}
+
