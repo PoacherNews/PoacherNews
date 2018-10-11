@@ -9,7 +9,7 @@
             border: solid 2px #83A8F0;
             border-radius: 20px 0px;
             padding: 10px;
-            margin: 8% auto 8% auto;
+            margin: 1.5% auto 1.5% auto;
         }
 
         .accountContainer h1 {
@@ -18,19 +18,32 @@
 
         .formFields {
             margin: 0px 25px 0px 25px;
-            display: grid;
-            grid-template-columns: 1.75fr 2fr;
-            grid-column-gap: 20px;
-            grid-row-gap: 5px;
+            display: flex;
+            flex-direction: column;
+        }
+        .formFields label {
+            display: block;
+            padding: 6px 0px 6px 0px;
+            font-weight: bold;
+            color: dark-grey;
+            font-size: 15px;
+        }
+        .formFields input {
+            line-height: 25px;
+            font-size: 15px;
+            padding: 5px;
+            border: 1px solid grey;
+            border-radius: 15px;
         }
 
         #tosField {
-            grid-column: 1 / span 2;
             font-style: italic;
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
         }
 
         #createSubmitButton {
-            grid-column: 1 / span 2;
             background: #83A8F0;
             color: white;
             border-radius: 100px;
@@ -84,20 +97,20 @@
             <h1>Create an Account</h1>
             <div class="formFields">
                 <label for="firstName">First Name</label>
-                <input type="text" placeholder="First Name" name="firstname" value="<?php echo isset($_POST['firstname']) ? $_POST['firstname'] : '' ?>" required/>
+                <input type="text" name="firstname" value="<?php echo isset($_POST['firstname']) ? $_POST['firstname'] : '' ?>" required/>
                 <label for="lastName">Last Name</label>
-                <input type="text" placeholder="Last Name" name="lastname" value="<?php echo isset($_POST['lastname']) ? $_POST['lastname'] : '' ?>" required/>
+                <input type="text" name="lastname" value="<?php echo isset($_POST['lastname']) ? $_POST['lastname'] : '' ?>" required/>
                 <label for="email">Email</label>
-                <input type="text" placeholder="Email" name="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : '' ?>" required/>
+                <input type="text" name="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : '' ?>" required/>
                 <label for="confirmEmail">Confirm Email</label>
-                <input type="text" placeholder="Confirm Email" name="email_confirm" value="<?php echo isset($_POST['email_confirm']) ? $_POST['email_confirm'] : '' ?>" required/>
+                <input type="text" name="email_confirm" value="<?php echo isset($_POST['email_confirm']) ? $_POST['email_confirm'] : '' ?>" required autocomplete="off"/>
                 <label for="username">Username</label>
-                <input type="text" placeholder="Username" name="username" value="<?php echo isset($_POST['username']) ? $_POST['username'] : '' ?>" required/>
+                <input type="text" name="username" value="<?php echo isset($_POST['username']) ? $_POST['username'] : '' ?>" required/>
                 <label for="password">Password</label>
-                <input type="password" placeholder="*****" name="password" required>
+                <input type="password" name="password" required>
                 <span class="smalltext passwordInfo">Must be at least six characters, with at least one uppercase and one lowercase letter, and with at least one number.</span>
                 <label for="confirmPassword">Confirm Password</label>
-                <input type="password" placeholder="*****" name="password_confirm" required>
+                <input type="password" name="password_confirm" required autocomplete="off">
                 <div id="tosField">
                     <label for="agree">I agree to the <a href="/terms.php">Terms of Service</a></label>
                     <input type="checkbox" name="checkbox">
