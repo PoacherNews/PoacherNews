@@ -1,5 +1,5 @@
 ## V2 Priority List
-### **NOTE:** please use create a strikethrough when assignment is completed
+### NOTE: Please use create a strikethrough when assignment is completed
 
 ### What needs to be fixed
 * Add image path for trending and bookmarks in section pages
