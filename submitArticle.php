@@ -186,7 +186,7 @@
 		$target_file = $target_dir . basename($_FILES['image']['name']);
 		$filename = basename($_FILES['image']['name']);
 		$imageFileType = basename($_FILES['image']['type']);
-		$extensions_arr = ["gif", "jpeg", "jpg", "png"];
+		$extensions_arr = ["jpeg", "jpg", "png"];
 		
 		if(in_array($imageFileType, $extensions_arr)) {
 			echo "Valid extension: success<br>";
