@@ -15,5 +15,5 @@
 
 ### What needs to be done
 * Article tagging
-* Terms of Service/Use
+* ~~Terms of Service/Use~~
 * Filter section pages
