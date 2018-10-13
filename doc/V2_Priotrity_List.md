@@ -29,4 +29,5 @@
    * Section page
    * ~~User page~~
    * ~~Settings page~~
-   * Everything else
+   * Everything else  
+* Sanatizing editor page
