@@ -13,6 +13,7 @@
 * Fix line breaks on editor page (upon submission)
 * Get image file path when editing article
 * ~~Error checking on saving articles with no content~~
+* Add image path for articles on search page
 
 ### What needs to be done
 * Article tagging
