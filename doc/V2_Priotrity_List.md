@@ -9,7 +9,7 @@
 * /article.php redesign
 * /createUser.php redesign
 * ~~/login.php redesign~~
-* Firefox - cannot click sign up button on homepage
+* ~~Firefox - cannot click sign up button on homepage
 * Fix line breaks in editor page
 * Get image file path when editing article
 * Mobile compatability
