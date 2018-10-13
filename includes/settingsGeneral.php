@@ -40,14 +40,14 @@ textarea[name=bio] {
         if($user['ProfilePicture'] != 'defaultAvatar.png')
         {
 		// profilePicture file path
-        	echo "<img id='profilePic' src='../res/img/profilePictures/".$user['UserID']."/".$user['ProfilePicture']."'>";
+        	echo "<img id='profilePic' src='https://poachernews.com/res/img/profilePictures/".$user['UserID']."/".$user['ProfilePicture']."'>";
         }
 	// Echo default profile picture
         else 
         {
 		// defaultAvatar.png file path
             	echo "<img id='profilePic'
-			src='../res/img/profilePictures/".$user['ProfilePicture']."'>";
+			src='https://poachernews.com/res/img/profilePictures/".$user['ProfilePicture']."'>";
             	echo "<br>";
         }
     ?>
