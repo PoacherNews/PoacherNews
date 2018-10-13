@@ -3,7 +3,7 @@
 
 ### What needs to be fixed
 * ~~Add image path for trending and bookmarks in section pages~~
-* Fix overriding articles in the editor page
+* ~~Fix overriding articles in the editor page~~
 * ~~Restrict article image files (i.e. gifs)~~
 * /search.php redesign
 * /article.php redesign
