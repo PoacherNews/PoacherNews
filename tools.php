@@ -19,9 +19,21 @@
         include 'includes/nav.php';
     ?>
     <div class="pageContent">
-        <?php
-            include 'includes/toolsNav.php';
-        ?>
+        <div class="toolsHomepageNav">
+            <h1>Tools</h1>
+            <ul>
+                <li><a <?php print($toolsTab === "editorpage" ? 'class="active"' : ''); ?> href="/editorpage.php">Editor Page</a></li>
+                <?php
+                    if($_SESSION['usertype'] === 'A') {
+                        print '
+                        <li><a '.($toolsTab === "usermanagement" ? 'class="active"' : '').' href="/userManagement.php">Manage Users</a></li>
+                        <li><a '.($toolsTab === "articlemanagement" ? 'class="active"' : '').' href="/articleManagement.php">Manage Articles</a></li>
+                        <li><a '.($toolsTab === "commentmanagement" ? 'class="active"' : '').' href="/commentManagement.php">Manage Comments</a></li>
+                        ';
+                    }
+                ?>
+            </ul>
+        </div>
     </div>       
     <?php include 'includes/footer.html'; ?>
 </body>
