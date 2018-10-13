@@ -182,7 +182,7 @@
                     </p>
                 </span>
                 <div class="articleImage">
-                    <img src="<?php print "/res/img/articlePictures/".$articleData['ArticleID']."/".$articleData['ArticleImage']; ?>"/>
+                    <img src="<?php print "https://poachernews.com/res/img/articlePictures/".$articleData['ArticleID']."/".$articleData['ArticleImage']; ?>"/>
                 </div>
                 <p class="articleBody"><?php print nl2br($articleData['Body']); ?></p>
             </section>
@@ -233,7 +233,7 @@
                     }
                     $commentHtml =
                         '<div class="comment" id="comment-'.$comment['CommentID'].'" cid="'.$comment['CommentID'].'" style="margin-left: '.($indent * $indentMultiplier).'px">'.
-                            (is_null($comment['UserID']) ? '<span style="padding: 7px"></span>' : '<img src="/res/img/profilePictures/'.$user['UserID'].'/'.$user['ProfilePicture'].'"/>')
+                            (is_null($comment['UserID']) ? '<span style="padding: 7px"></span>' : '<img src="'.getUserProfilePicturePath($comment['UserID'], $db).'"/>')
                             .'<div class="commentText">
                                     <div class="commentTitle">
                                         <span class="commentAuthor">'.(is_null($comment['UserID']) ? 'Deleted Account' : $displayName).' '.(is_null($comment['UserID']) ? '' : $userLink).'</span> <span class="commentDate">'.date($dateFormat, strtotime($comment['CommentDate'])).'</span>

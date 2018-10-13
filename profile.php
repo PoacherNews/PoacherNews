@@ -37,7 +37,7 @@
     <div id="mainContent">
         <div id="profileContainer">
             <div id="left-sidebar">
-                <img class="avatar" src=<?php print("/res/img/profilePictures/".$userDetails['UserID']."/".$userDetails['ProfilePicture']); ?>>
+                <img class="avatar" src="<?php print(getUserProfilePicturePath($userDetails['UserID'], $db)); ?>">
                 <span class="userRealName"><?php print($userDetails['FirstName'].' '.$userDetails['LastName']); ?></span>
                 <span class="userName">(<?php print($userDetails['Username']); ?>)</span>
             </div>

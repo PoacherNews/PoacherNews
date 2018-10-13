@@ -101,6 +101,10 @@ article a:not(.continue-reading):hover {
 @media only screen and (max-width: 600px) { /* Mobile */
     .divider { display: none; }
     #secondaryarticles { border: none; }
+    #secondaryarticles article {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+    }
     .pageContent {
         margin: 0;
         grid-template-columns: 1fr;
@@ -114,5 +118,6 @@ article a:not(.continue-reading):hover {
     .headerContainer #center h1 {
         font-size: 4.5vh;
     }
+    footer { display: none; }
 }
 
