@@ -27,5 +27,6 @@
    * ~~Main page~~
    * Article page
    * Section page
-   * User page
+   * ~~User page~~
+   * ~~Settings page~~
    * Everything else
