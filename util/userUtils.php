@@ -9,6 +9,8 @@
 		}
 	}
 
+$GLOBAL_SITE_URL = "https://poachernews.com";
+
 // GENERAL FUNCTIONS
 	function getUserById($uid, $db) {
 		/* Returns an associated array for a user with provided matching userID.
@@ -68,6 +70,16 @@
 			return mysqli_fetch_array($result)['DateFormat'];
 		}
 		return NULL;
+    }
+    function getUserProfilePicturePath($uid, $db) {
+    	/* Returns a path string of the user of provided user ID. Can be placed directly in an href or src element. */
+    	$sql = "SELECT ProfilePicture FROM User WHERE UserID = {$uid}";
+    	$result = mysqli_query($db, $sql);
+		$imgStr = mysqli_fetch_array($result)['ProfilePicture'];
+    	if($result && $imgStr) {
+    		return $GLOBALS['GLOBAL_SITE_URL']."/res/img/profilePictures/{$uid}/".$imgStr;
+    	}
+		return $GLOBALS['GLOBAL_SITE_URL']."/res/img/profilePictures/defaultAvatar.png";
     }
 
 // BOOKMARKING FUNCTIONS

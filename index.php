@@ -34,7 +34,7 @@
                 'href' : "article.php?articleid="+rowData['ArticleID'],
             });
             $imageWrap.append($("<img/>", {
-                'src' : "/res/img/articlePictures/"+rowData['ArticleID']+"/"+rowData['ArticleImage'],
+                'src' : "https://poachernews.com/res/img/articlePictures/"+rowData['ArticleID']+"/"+rowData['ArticleImage'],
                 'class': "articleImage"
             }));
             $article.append($imageWrap);
@@ -78,7 +78,7 @@
                 'class' : "stacked-thumbnail"
             });
             $imageWrap.append($("<img/>", {
-                'src' : "/res/img/articlePictures/"+rowData['ArticleID']+"/"+rowData['ArticleImage'],
+                'src' : "https://poachernews.com/res/img/articlePictures/"+rowData['ArticleID']+"/"+rowData['ArticleImage'],
                 'height' : "217",
                 'width' : "325",
             }));
