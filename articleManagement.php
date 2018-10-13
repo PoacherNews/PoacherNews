@@ -18,110 +18,75 @@ function display_table($db, $query, $tablename)
         echo $db->error;
         return;
     }
+
+    // Get column names
+    if(!$cols = $db->query("SHOW COLUMNS FROM {$tablename}")) {
+        echo "Error executing statement: <br>";
+        echo $db->error;
+        return;
+    }
+    while($row = $cols->fetch_array()) {
+        if(!in_array($row['Field'], array("IsDraft", "IsSubmitted", "UserID", "Body", "ArticleImage"))) {
+            $columnNames[] = $row['Field'];
+        }
+    }
+    // Add our custom fields not in the database.
+    $columnNames[] = "State";
+    $columnNames[] = "FeaturedType";
+
     // print table
     $fields = $result->fetch_fields();
-    echo "<form method='post' action=''>";
-    echo "\n<table>\n";
-    echo "<caption>$tablename in DB</caption>\n";
-    echo "<thead>\n";
-    echo "<tr>\n";
-    foreach ($fields as $field)
-    {
-        if($field->name != 'IsDraft')
-        {
-            if($field->name != 'IsSubmitted')
-            {
-                echo "<th>$field->name</th>";
-            }
-            else if($field->name == 'IsSubmitted')
-            {
-                echo "<th>Article State</th>";
-            }
-        }
-    }
-    echo "<th>Pending</th>";
-    echo "<th>Approved</th>";
-    echo "<th>FeaturedType</th>";
-    echo "<tr>\n";
-    echo "</thead>\n<tbody>\n";
-    // get row as an array
-    while ($row = $result->fetch_assoc())
-    {
-        echo "<tr>\n";
-        foreach ($row as $key => $r)
-        {
-            if($key == 'ArticleID')
-            {
-                $articleid = $r;
-            }
-            
-            if($key != 'IsDraft')
-            {
-                if($key != 'IsSubmitted')
-                {
-                    echo '<td>';
-                    if ($key == 'ArticleID') 
-                    {
-                        echo "<a href='util/editArticle.php?ArticleID=$articleid'>";
+    // data-order=\'[[9, "asc"]]\'
+    echo '<table id="articleTable">
+            <thead>
+                <tr>';
+                    foreach ($columnNames as $col) {
+                        echo '<th>'.$col.'</th>';
                     }
-                    echo $r;
-                    if ($key == 'ArticleID')
-                    {
-                        echo '</a>';
-                    }
-                    echo '</td>'; 
+    echo '      </tr>
+            </thead>
+            <tbody>';
+                while($row = $result->fetch_assoc()) {
+                    echo '<tr>';
+                        foreach($row as $key => $col) {
+                            switch($key) {
+                                case 'ArticleID':
+                                    echo '<td>';
+                                        echo '<a href="/util/editArticle.php?ArticleID='.$col.'">'.$col."</a>";
+                                    echo '</td>';
+                                    break;
+                                case 'CommentsEnabled':
+                                    echo '<td>';
+                                        echo ($col == 0 ? 'No' : 'Yes');
+                                    echo '</td>';
+                                    break;
+                                case 'IsDraft':
+                                        if($col == 0 && $row['IsSubmitted'] == 1) { // Approved
+                                            print "<td><span style='display: none'>1</span><i class='fa fa-circle' style='color:green'></i></td>";
+                                        } else if($col == 1 && $row['IsSubmitted'] == 0) { // Draft
+                                            print "<td><span style='display: none'>2</span><i class='fa fa-circle' style='color:red'></i></td>";
+                                        } else if($col == 1 && $row['IsSubmitted'] == 1) { // Pending
+                                            print "<td><span style='display: none'>3</span><i class='fa fa-circle' style='color:yellow'></i></td>";
+                                        }
+                                    break;
+                                case 'IsSubmitted':
+                                    // Do nothing. This field is checked by the 'IsDraft' code in this switch.
+                                    break;
+
+                                case 'FeaturedType':
+                                    print '<td>';
+                                        echo ($col ? $col : '-');
+                                    print '</td>';
+                                    break;
+                                default:
+                                    echo '<td>'.$col.'</td>';
+                                    break;
+                            }
+                        }
+                    echo '</tr>';
                 }
-            }
-            
-            foreach ($row as $nextKey => $nextR)
-            {
-                if($key=='IsDraft' && $r==1)
-                {
-                    // DRAFT
-                    if($nextKey=='IsSubmitted' && $nextR==0)
-                    {
-                        echo "<td>Draft</td>";
-                        echo "<td style='text-align:center;'><i class='fa fa-circle' style='color:red'></i></td>";
-                        echo '<td></td>';
-                        echo '<td></td>';
-                    }
-                    // PENDING
-                    else if($nextKey=='IsSubmitted' && $nextR==1)
-                    {
-                        echo "<td>Pending</td>";
-                        echo '<td></td>';
-                        echo "<td style='text-align:center;'><i class='fa fa-circle' style='color:yellow'></i></td>";
-                        echo '<td></td>';
-                    }
-                }
-                
-                if($key=='IsDraft' && $r==0)
-                {
-                    // ERROR
-                    if($nextKey=='IsSubmitted' && $nextR==0)
-                    {
-                        echo "<td>Error</td>";
-                        echo '<td></td>';
-                        echo '<td></td>';
-                        echo '<td></td>';
-                        echo "<td style='text-align:center;'><i class='fa fa-remove' style='color:black'></i></td>";
-                    }
-                    // APPROVED
-                    else if($nextKey=='IsSubmitted' && $nextR==1)
-                    {
-                        echo"<td>Approved</td>";
-                        echo '<td></td>';
-                        echo '<td></td>';
-                        echo "<td style='text-align:center;'><i class='fa fa-circle' style='color:green'></i></td>";
-                    }
-                }
-            }
-        }
-        echo "</tr>\n";
-    }
-    // close table
-    echo "</tbody>\n</table>\n";
-	echo "</form>";
+    echo    '</tbody>
+        </table>';
     $result->free();
 }
 
@@ -130,9 +95,9 @@ function list_articles()
 {
     include 'util/db.php';
     // query Users
-    $query = "SELECT Article.ArticleID, Headline, Category, IsDraft, IsSubmitted, FeaturedType AS Draft FROM Article LEFT JOIN Featured ON Featured.ArticleID = Article.ArticleID ORDER BY FeaturedType DESC, ArticleID DESC";
+    $query = "SELECT Article.ArticleID, Headline, Category, PublishDate, Views, ArticleRating, CommentsEnabled, IsDraft, IsSubmitted, FeaturedType FROM Article LEFT JOIN Featured ON Featured.ArticleID = Article.ArticleID ORDER BY FeaturedType DESC, ArticleID DESC";
     // display
-    display_table($db, $query, "Articles");
+    display_table($db, $query, "Article");
     // done
     $db->close();
 }
@@ -143,28 +108,30 @@ function list_articles()
 <head>
     <?php include 'includes/globalHead.html' ?>
     <link rel="stylesheet" href="res/css/tools.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
     <style>
         h1 {
             text-align: center;
         }
-
-        table {
-            margin: 25px;
-            border-collapse:collapse;
+        .pageContent {
+            margin: auto 8% 75px 8%;
         }
+
+        #articleTable {
+            margin: 0px auto 0px auto;
+            border-collapse: collapse;
+        }
+
         table a {
             font-weight: bold;
         }
-
-        table, th, td {
-            border: 1px solid black;
+        table td {
+            border-bottom: 1px solid black;
+            text-align: center;
         }
-        tr:nth-child(even) {
-            background-color: #ccc;
-        }
-
     </style>
     <?php 
     	include 'includes/header.php';
@@ -178,6 +145,13 @@ function list_articles()
         <h1>Article Management</h1>
 		<?php list_articles(); ?>
     </div>
+    <script>
+        $(document).ready( function () {
+            $("#articleTable").DataTable({
+                "order" : [[8, "desc"], [0, "desc"]],
+            });
+        } );
+    </script>
     <?php include 'includes/footer.html'; ?>
 </body>
 </html>

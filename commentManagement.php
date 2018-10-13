@@ -118,6 +118,7 @@ function list_comments()
 
     table {
         margin: 25px;
+        width: 80%;
         border-collapse:collapse;
     }
     table a {
