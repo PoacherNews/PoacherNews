@@ -12,7 +12,7 @@
 * ~~Firefox - cannot click sign up button on homepage~~
 * Fix line breaks on editor page (upon submission)
 * Get image file path when editing article
-* Error checking on saving articles with no content
+* ~~Error checking on saving articles with no content~~
 
 ### What needs to be done
 * Article tagging
