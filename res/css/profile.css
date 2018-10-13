@@ -1,7 +1,5 @@
 #profileContainer {
 	display: grid;
-	grid-template-columns: 100px 350px auto 100px; /* Far left and far right values set left and right gutter widths */
-	grid-template-areas: ". left right .";
 	margin: 25px auto 25px auto;
 }
 
@@ -63,8 +61,6 @@
 .userStats {
 	grid-area: userStats;
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-template-rows: 50px auto;
 	grid-row-gap: 10px; /* Margin between rows */
 	grid-column-gap: 5px;
 }
@@ -150,4 +146,38 @@ ul {
 	text-align: center;
 	font-style: italic;
 	display: block;
+}
+
+@media only screen and (min-width: 768px) { /* Desktops */
+	#profileContainer {
+		grid-template-columns: 100px 350px auto 100px; /* Far left and far right values set left and right gutter widths */
+		grid-template-areas: ". left right .";
+	}
+
+	.userStats {
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+		grid-template-rows: 50px auto;
+	}
+}
+
+@media only screen and (max-width: 600px) { /* Mobile */
+    .pageContent {
+        margin: 0;
+    }
+    .headerContainer #center h1 {
+        font-size: 4.5vh;
+    }
+
+    #profileContainer {
+    	margin: 0 10px 0 10px;
+    	grid-template-columns: 1fr;
+    	grid-template-rows: 350px auto;
+    	grid-template-areas: "left"
+    					     "right";
+    }
+
+    .userStats {
+    	grid-template-columns: 1fr 1fr;
+		grid-template-rows: 50px auto 50px auto;
+    }
 }
