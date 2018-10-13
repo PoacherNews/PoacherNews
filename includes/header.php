@@ -28,7 +28,7 @@
                             </div>
                         </span>";
                 } else {
-                    print "<span class=\"lgnLink\">Have an account? <b>Log In<i class=\"fa fa-caret-down\"></i></b> 
+                    print "<span class=\"lgnLink\"><a style='color: inherit; text-decoration: none' href=\"/login.php\">Have an account? <b>Log In<i class=\"fa fa-caret-down\"></i></b></a> 
                                 <div class=\"lgnDrpdwn-content\">
                                     <p>Log in here!</p>
                                     <form action=\"/util/handleLogin.php\" method=\"POST\">
