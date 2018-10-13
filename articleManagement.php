@@ -62,11 +62,11 @@ function display_table($db, $query, $tablename)
                                     break;
                                 case 'IsDraft':
                                         if($col == 0 && $row['IsSubmitted'] == 1) { // Approved
-                                            print "<td data=\"approved\"><i class='fa fa-circle' style='color:green'></i></td>";
+                                            print "<td><span style='display: none'>1</span><i class='fa fa-circle' style='color:green'></i></td>";
                                         } else if($col == 1 && $row['IsSubmitted'] == 0) { // Draft
-                                            print "<td data=\"draft\"><i class='fa fa-circle' style='color:red'></i></td>";
+                                            print "<td><span style='display: none'>2</span><i class='fa fa-circle' style='color:red'></i></td>";
                                         } else if($col == 1 && $row['IsSubmitted'] == 1) { // Pending
-                                            print "<td data=\"pending\"><i class='fa fa-circle' style='color:yellow'></i></td>";
+                                            print "<td><span style='display: none'>3</span><i class='fa fa-circle' style='color:yellow'></i></td>";
                                         }
                                     break;
                                 case 'IsSubmitted':
@@ -116,17 +116,19 @@ function list_articles()
         h1 {
             text-align: center;
         }
+        .pageContent {
+            margin: auto 8% 75px 8%;
+        }
 
         #articleTable {
             margin: 0px auto 0px auto;
-            width: 80%;
             border-collapse: collapse;
         }
 
         table a {
             font-weight: bold;
         }
-        table, th, td {
+        table td {
             border-bottom: 1px solid black;
             text-align: center;
         }
@@ -146,7 +148,7 @@ function list_articles()
     <script>
         $(document).ready( function () {
             $("#articleTable").DataTable({
-                "order" : [[8, "desc"]]
+                "order" : [[8, "desc"], [0, "desc"]],
             });
         } );
     </script>
