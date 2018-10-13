@@ -59,7 +59,7 @@
 						}
 					}
                 ?>
-				<input type="text" id="title" placeholder="Title" name="title" value="<?php if($draftOk){print $articleData['Headline'];}?>">
+				<input type="text" id="title" placeholder="Title" name="title" value="<?php if($draftOk){print $articleData['Headline'];}?>" required/>
                 <select name="category" id="category">
                     <option value="Politics"<?php if($articleData['Category'] == "Politics"){print "selected";}?>>Politics</option>
                     <option value="Sports"<?php if($articleData['Category'] == "Sports"){print "selected";}?>>Sports</option>
@@ -100,7 +100,7 @@
                             <label for="upload-document" id="custom-file-upload">
                                 <i class="fas fa-cloud-upload-alt"></i> Upload File
                             </label>
-                            <input onchange="uploadFile()" id="upload-document" type="file" name="document">
+                            <input onchange="uploadFile()" id="upload-document" type="file" name="document"/>
                         </li>
                     </ul>
                 </div>
@@ -110,7 +110,7 @@
             <div id="picture" class="tabcontent">
                 <h3>Choose a picture</h3>
                 <div class="editor-image">
-                    <input name="image" id="imgInp" type='file' onchange="readURL(this);"/>
+                    <input onchange="uploadImage(this);" id="upload-image" type='file' name="image" required/>
                     <div id="picture-content">
 						<?php 
 							$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
@@ -132,9 +132,9 @@
                 <div class="get-info">
                     <h3>Article Info</h3>
                     <label>Title: </label>
-                    <input type="text" id="getTitle" readonly><br>
+                    <input type="text" id="getTitle" readonly/><br>
                     <label>Category: </label>
-                    <input type="text" id="getCategory" readonly><br>
+                    <input type="text" id="getCategory" readonly/><br>
 					<!-- TODO: V 2.10
                     <label>Date: </label>
                     <input type="text" id="getDate" readonly>
@@ -175,21 +175,58 @@
 				evt.currentTarget.className += " active";
 			}
 			
-            function readURL(input) { // Reads in a picture and displays it
-                var imgInp = document.getElementById('imgInp').value;
-                if(!(imgInp.length == 0)) { // Display image
-                    if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                      $('#image').attr('src', e.target.result);
-                    }
-                    reader.readAsDataURL(input.files[0]);
-                  }
-                } else { // Remove image
-                    $('#image').attr('src', '');
-                }
+            function uploadImage(event) {
+				/* Calls a PHP Ajax request to see if the image is in the correct format. If it isn't it will alert
+				an error otherwise display the image. */
+				var formData = new FormData(); 
+                formData.append('image', $('#upload-image')[0].files[0]); 
+                $.ajax({
+                    url: 'readImageFile.php',
+                    type: 'POST',
+                    data: formData,
+                    success: function (output) {
+						switch(output) {
+							case 'falseType':
+								alert('Invalid file input. Please use .jpeg, .jpg, or .png files.');
+								document.getElementById('upload-image').value = null;
+								$('#image').attr('src', '');
+								break;
+								
+							case 'falseSize':
+								alert('Invalid file size. Please try again.');
+								document.getElementById('upload-image').value = null;
+								$('#image').attr('src', '');
+								break;
+								
+							default:
+								readURL(event);
+								break;
+						}
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+				
             }
-            $("#imgInp").change(function(){readURL(this);});
+			
+			function readURL(input) {
+				/* Reads in an image using FileReader then displays it in the image box. Removes image if contents are
+				not present. */
+                var upload_image = document.getElementById('upload-image').value;
+				if(!(upload_image.length == 0)) {
+					if (input.files && input.files[0]) {
+						var reader = new FileReader();
+						reader.onload = function(event) {
+							$('#image').attr('src', event.target.result);
+						}
+						reader.readAsDataURL(input.files[0]);
+					}
+				} else {
+					$('#image').attr('src', '');
+				}
+			}
+            $("#upload-image").change(function(){readURL(this);});
             
             function getInfo() { // Gets info from the article and displays
                 var title = document.getElementById('title').value;
@@ -316,7 +353,7 @@
             function submitBtn() { // Submit button; Returns false if NOT successful otherise true
                 var submitBtn = document.getElementById("submit-button");
                 var getTitle = document.getElementById("getTitle");
-
+				/*
                 if(getTitle.value.length == 0) {
                     getTitle.style.border = "2px solid red";
                     getTitle.placeholder = "Invalid requirements";
@@ -325,6 +362,9 @@
                     modal.style.display = "block";
 					return true;
                 }
+				*/
+				modal.style.display = "block";
+				return true;
             }
             
             function saveBtn() { // Save button; Returns false if NOT successful otherise true

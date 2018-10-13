@@ -45,10 +45,9 @@ if ($_FILES["profilePicture"]["size"] > 200000) {
     exit;
 }
 // Allow certain file formats
-if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-&& $imageFileType != "gif" ) {
+if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
     $uploadOk = 0;
-    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+    echo "Sorry, only JPG, JPEG & PNG files are allowed.";
     exit;
 }
 // Check if $uploadOk is set to 0 by an error

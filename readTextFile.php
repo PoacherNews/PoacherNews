@@ -139,7 +139,7 @@
 					break;
 
 				default:
-					print "<script language='javascript'>alert('Invalid input. Please try again');</script>";
+					print "<script language='javascript'>alert('Invalid input. Please try again.');</script>";
 					break;
 			}
 		}
