@@ -104,7 +104,7 @@
                         </li>
                     </ul>
                 </div>
-				<div name="body" id="editor" contenteditable="true"><?php if($articleData['Body'])print $articleData['Body'];?></div>
+				<div id="editor" contenteditable="true"><?php if($articleData['Body'])print $articleData['Body'];?></div>
             </div>
 
             <div id="picture" class="tabcontent">
@@ -120,9 +120,6 @@
 								print "<img id=image src=/# alt=Image width=650 height=434/>";
 							}
 						?>
-						<!--
-                        <img id="image" src= alt="Image" width="650" height="434"/>
-						-->
                     </div>
                 </div>
             </div>
@@ -174,61 +171,9 @@
 				document.getElementById(tabName).style.display = "block";
 				evt.currentTarget.className += " active";
 			}
-			
-            function uploadImage(event) {
-				/* Calls a PHP Ajax request to see if the image is in the correct format. If it isn't it will alert
-				an error otherwise display the image. */
-				var formData = new FormData(); 
-                formData.append('image', $('#upload-image')[0].files[0]); 
-                $.ajax({
-                    url: 'readImageFile.php',
-                    type: 'POST',
-                    data: formData,
-                    success: function (output) {
-						switch(output) {
-							case 'falseType':
-								alert('Invalid file input. Please use .jpeg, .jpg, or .png files.');
-								document.getElementById('upload-image').value = null;
-								$('#image').attr('src', '');
-								break;
-								
-							case 'falseSize':
-								alert('Invalid file size. Please try again.');
-								document.getElementById('upload-image').value = null;
-								$('#image').attr('src', '');
-								break;
-								
-							default:
-								readURL(event);
-								break;
-						}
-                    },
-                    cache: false,
-                    contentType: false,
-                    processData: false
-                });
-				
-            }
-			
-			function readURL(input) {
-				/* Reads in an image using FileReader then displays it in the image box. Removes image if contents are
-				not present. */
-                var upload_image = document.getElementById('upload-image').value;
-				if(!(upload_image.length == 0)) {
-					if (input.files && input.files[0]) {
-						var reader = new FileReader();
-						reader.onload = function(event) {
-							$('#image').attr('src', event.target.result);
-						}
-						reader.readAsDataURL(input.files[0]);
-					}
-				} else {
-					$('#image').attr('src', '');
-				}
-			}
-            $("#upload-image").change(function(){readURL(this);});
             
-            function getInfo() { // Gets info from the article and displays
+            function getInfo() { 
+				/* Gets info from the article and displays it in 'Article Info' */
                 var title = document.getElementById('title').value;
                 document.getElementById('getTitle').value = title;
                 var category = document.getElementById('category').value;
@@ -325,7 +270,7 @@
                 var text = event.clipboardData.getData('text/plain');
                 document.execCommand('insertHTML', false, text);
             });
-			/*
+			/* V 2.10
             $(function() {
                 $('#editor').focus();
             });
@@ -334,7 +279,7 @@
                 var editor = document.getElementById('editor');
                 editor.focus();
             }
-            //var focus 
+            //var focus
             $('#editor').blur(function () { // TODO
                 //$(this).focus();
 				
@@ -343,41 +288,16 @@
 /******************************* SUBMISSION *******************************/
             $(document).ready(function() { // Submitting articles
                $("#action-form").on("submit", function () {
-                    var hvalue = $('#editor').text();
-                    $(this).append("<input type='hidden' name='body' value=' " + hvalue + " '/>");
+                   var hvalue = $('#editor').text().replace("\n", "<br />", "g");//$('#editor').text();
+                   $(this).append("<input type='hidden' name='body' value=' " + hvalue + " '/>");
                 });
             });
-            
+
             var modal = document.getElementById('submit-draft');
             
             function submitBtn() { // Submit button; Returns false if NOT successful otherise true
-                var submitBtn = document.getElementById("submit-button");
-                var getTitle = document.getElementById("getTitle");
-				/*
-                if(getTitle.value.length == 0) {
-                    getTitle.style.border = "2px solid red";
-                    getTitle.placeholder = "Invalid requirements";
-					return false;
-                } else {
-                    modal.style.display = "block";
-					return true;
-                }
-				*/
 				modal.style.display = "block";
 				return true;
-            }
-            
-            function saveBtn() { // Save button; Returns false if NOT successful otherise true
-                var saveBtn = document.getElementById('save-button');
-                var getTitle = document.getElementById('getTitle');
-
-                if(articleTitle.value.length == 0) {
-                    getTitle.style.border = "2px solid red";
-                    getTitle.placeholder = "Invalid requirements";
-                    return false;
-                } else {
-                    return true;
-                }
             }
             
             function cancel() { // Cancels the submission of the article (No) button
@@ -407,12 +327,65 @@
                     data: formData,
                     success: function (output) {
                         $('#editor').html(output);
+						// TODO
                     },
                     cache: false,
                     contentType: false,
                     processData: false
                 });
             }
+			
+			function uploadImage(event) {
+				/* Calls a PHP Ajax request to see if the image is in the correct format. If it isn't it will alert
+				an error otherwise display the image. */
+				var formData = new FormData(); 
+                formData.append('image', $('#upload-image')[0].files[0]); 
+                $.ajax({
+                    url: 'readImageFile.php',
+                    type: 'POST',
+                    data: formData,
+                    success: function (output) {
+						switch(output) {
+							case 'falseType':
+								alert('Invalid file input. Please use .jpeg, .jpg, or .png files.');
+								document.getElementById('upload-image').value = null;
+								$('#image').attr('src', '');
+								break;
+								
+							case 'falseSize':
+								alert('Invalid file size. Please try again.');
+								document.getElementById('upload-image').value = null;
+								$('#image').attr('src', '');
+								break;
+								
+							default:
+								readURL(event);
+								break;
+						}
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });	
+            }
+			
+			function readURL(input) {
+				/* Reads in an image using FileReader then displays it in the image box. Removes image if contents are
+				not present. */
+                var upload_image = document.getElementById('upload-image').value;
+				if(!(upload_image.length == 0)) {
+					if (input.files && input.files[0]) {
+						var reader = new FileReader();
+						reader.onload = function(event) {
+							$('#image').attr('src', event.target.result);
+						}
+						reader.readAsDataURL(input.files[0]);
+					}
+				} else {
+					$('#image').attr('src', '');
+				}
+			}
+            $("#upload-image").change(function(){readURL(this);});
 		</script>
 	</body>
 </html>

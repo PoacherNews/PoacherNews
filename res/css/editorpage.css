@@ -40,12 +40,13 @@
 }
 
 #editor {
+	white-space: pre-line;
 	position: absolute;
 	align-self: center;
 	justify-content: center;
 	min-height: 800px;
-	min-width: 40%;
 	max-width: 40%;
+	min-width: 40%;
 	font-size: 13pt;
 	padding: 5% 10%;
 	resize: none;
@@ -55,7 +56,6 @@
 	text-align: left;
 	margin: auto 15% 20px 19%;
     line-height: 120%; /* To possibly fix later */
-	white-space: pre-wrap;
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
