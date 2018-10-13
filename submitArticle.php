@@ -197,7 +197,7 @@
 				echo "Image upload via HTTP POST: FAILED<br>";
 			}
 			
-			if($_FILES["image"]["size"] > 500000) {
+			if($_FILES["image"]["size"] > 250000) {
 				echo "Image correct size: FAILED<br>";
 				//return FALSE;
 			} else {
