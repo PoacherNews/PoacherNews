@@ -30,3 +30,28 @@
 	border-radius: 5px 5px 0 0;
 	font-weight: bold;
 }
+
+.toolsHomepageNav {
+	margin: 15% auto 15% auto;
+	border: 2px solid #83A8F0;
+	border-radius: 20px;
+	max-width: 400px;
+	padding: 10px;
+}
+
+.toolsHomepageNav ul {
+	list-style: none;
+}
+.toolsHomepageNav ul li {
+	padding: 7px;
+	text-align: center;
+}
+.toolsHomepageNav ul li a:hover {
+	font-weight: bold;
+}
+
+.toolsHomepageNav h1 {
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px solid #83A8F0;
+}
