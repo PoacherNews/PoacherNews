@@ -299,11 +299,12 @@ header[id="mainHeader"] {
 /* FOOTER */
 footer[id="mainFooter"] {
     grid-area: mainFooter;
-    padding: 15px;
+    display: grid;
+    grid-template-rows: auto auto auto;
+    padding: 10px 0px 10px 0px;
     text-align: center;
     background: #83A8F0;
     background: linear-gradient(140deg, #83A8F0 0%, #BDD4E7 50%, #8693AB 75%);
-    margin-bottom: 0;
 }
 
 .fab {
@@ -337,42 +338,28 @@ footer[id="mainFooter"] {
     background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); 
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
 }
-
-
-.ftFlxr{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-.ftFlxr > p {
-    display: block;
-    width: 125px;
-    height: 20px;
-}
-.ftFlxr > p a {
-    text-align: center;
+footer .footerLinks {
+    list-style: none;
+    margin: 0px;
     padding: 0px;
 }
-.ftFlxr > p a:hover {
+footer .footerLinks > li {
+    display: inline-block;
+    min-width: 125px;
+    height: auto;
+    min-height: 15px;
+    margin: 10px 0 6px 0;
+}
+
+footer .footerLinks > li a {
+    color: white;
+}
+footer .footerLinks > li a:hover {
     text-decoration: none;
     font-weight: bold;
 }
 
-
-.ft {
-    font-size: 18px;
-    text-decoration: none;
-    color: white;
-    margin: 5px 10px 10px 10px;
-}
-
-.ft:hover {
-    text-decoration: underline;
-    opacity: 0.7;
-}
-
-p.ftCpyright {
+p.footerCopyright {
     font-size: 14px;
     color: black;
     padding: 5px;
