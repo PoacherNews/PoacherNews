@@ -19,10 +19,10 @@
 * ~~Terms of Service/Use~~
 * Filter section pages
 * Error checking on editor page for:
-   * Article title input
-   * Image file input
+   * ~~Article title input~~
+   * ~~Image file input~~
    * Valid image size
-   * Valid image file extension
+   * ~~Valid image file extension~~
 * Mobile compatability
    * ~~Main page~~
    * Article page
