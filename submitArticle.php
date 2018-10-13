@@ -172,6 +172,7 @@
 			$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/1/";
 		} else {
 			$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/".$_POST['article_id']."/";
+			//$target_dir = "/Users/rolandoruche/Desktop/test/PoacherNews/res/img/articlePictures/".$_POST['article_id']."/";
 		}
 		
 		//$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/".$_POST['article_id']."/";
