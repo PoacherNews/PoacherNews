@@ -13,6 +13,11 @@
 * Fix line breaks in editor page
 * Get image file path when editing article
 * Mobile compatability
+   * ~~Main page~~
+   * Article page
+   * Section page
+   * User page
+   * Everything else
 
 
 ### What needs to be done
