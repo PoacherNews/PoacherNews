@@ -12,6 +12,7 @@
 * ~~Firefox - cannot click sign up button on homepage~~
 * Fix line breaks in editor page
 * Get image file path when editing article
+* Error checking on editor page
 * Mobile compatability
    * ~~Main page~~
    * Article page
