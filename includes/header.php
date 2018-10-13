@@ -40,7 +40,7 @@
                                     </form>
                                     <hr>
                                     <p>Need an account?</p>
-                                    <input type= \"button\" value= \"Sign Up\" onclick=\"window.location.href='createUser.php'\" />
+                                    <input type= \"button\" value= \"Sign Up\" onclick=\"window.location.href=\'createUser.php'\" />
                                 </div>
                             </span>";
                 }
