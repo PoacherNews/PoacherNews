@@ -110,9 +110,19 @@
             <div id="picture" class="tabcontent">
                 <h3>Choose a picture</h3>
                 <div class="editor-image">
-                    <input name="image" id="imgInp" value="Hello" type='file' onchange="readURL(this);"/>
+                    <input name="image" id="imgInp" type='file' onchange="readURL(this);"/>
                     <div id="picture-content">
-                        <img id="image" src="#" alt="Image" width="650" height="434"/>
+						<?php 
+							$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
+							if($isDraft) {
+								print "<img id=image src=/res/img/articlePictures/{$articleData['ArticleID']}/{$articleData['ArticleImage']} alt=Image width=650 height=434/>";
+							} else {
+								print "<img id=image src=/# alt=Image width=650 height=434/>";
+							}
+						?>
+						<!--
+                        <img id="image" src= alt="Image" width="650" height="434"/>
+						-->
                     </div>
                 </div>
             </div>
