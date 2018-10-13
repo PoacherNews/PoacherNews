@@ -12,16 +12,20 @@
 * ~~Firefox - cannot click sign up button on homepage~~
 * Fix line breaks on editor page (upon submission)
 * Get image file path when editing article
-* Error checking on editor page
+* Error checking on saving articles with no content
+
+### What needs to be done
+* Article tagging
+* ~~Terms of Service/Use~~
+* Filter section pages
+* Error checking on editor page for:
+   * Article title input
+   * Image file input
+   * Valid image size
+   * Valid image file extension
 * Mobile compatability
    * ~~Main page~~
    * Article page
    * Section page
    * User page
    * Everything else
-
-
-### What needs to be done
-* Article tagging
-* ~~Terms of Service/Use~~
-* Filter section pages
