@@ -1,10 +1,5 @@
 #settingsContainer {
 	display: grid;
-	grid-template-columns: 18% 225px 1fr 18%;
-	grid-template-rows: 50px auto;
-	grid-template-areas: 
-		". .   header  ."
-		". nav content .";
 	margin: 25px auto 25px auto;
 }
 
@@ -105,4 +100,36 @@
 	box-shadow: 0 0 0 1px #e0b4b4 inset;
 	background-color: #fff6f6;
 	color: #9f3a38;
+}
+
+@media only screen and (min-width: 768px) { /* Desktops */
+	#settingsContainer {
+		grid-template-columns: 18% 225px 1fr 18%;
+		grid-template-rows: 50px auto;
+		grid-template-areas: 
+			". .   header  ."
+			". nav content .";
+	}
+}
+
+@media only screen and (max-width: 600px) { /* Mobile */
+	.headerContainer #center h1 {
+        font-size: 4.5vh;
+    }
+	#settingsContainer {
+		margin: 20px 0px 20px 0px;
+		padding: 20px;
+		grid-template-columns: 1fr;
+		grid-template-rows: 50px auto auto;
+		grid-template-areas: "header"
+							 "nav"
+							 "content";
+	}
+	.nav li {
+		display: inline-block;
+		margin-top: 5px;
+	}
+	.nav li a {
+		display: block;
+	}
 }
