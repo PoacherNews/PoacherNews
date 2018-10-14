@@ -38,6 +38,7 @@
 	  	$title = empty($_POST['title']) ? '' : $_POST['title'];
 	  	$category = empty($_POST['category']) ? '' : $_POST['category'];
 	  	$body = empty($_POST['body']) ? '' : $_POST['body'];
+		$body = nl2br(body);
 	  	$authorid = getAuthorID();
 	  	$image = getImage();
 	  	$is_draft = 1; 

@@ -292,7 +292,7 @@
                    $(this).append("<input type='hidden' name='body' value=' " + hvalue + " '/>");
                 });
             });
-
+			
             var modal = document.getElementById('submit-draft');
             
             function submitBtn() { // Submit button; Returns false if NOT successful otherise true
