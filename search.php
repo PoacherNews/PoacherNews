@@ -40,7 +40,7 @@
                             print "Refine Search Date";
                             print "<input type=\"date\" class=\"searchInput\" placeholder=\"What are you looking for?\" name=\"query2\" value={$_GET['query2']}>";
                             print "<input type=\"date\" class=\"searchInput\" placeholder=\"What are you looking for?\" name=\"query3\" value={$_GET['query3']}>";
-                            /*print "<input type=\"text\" class=\"searchInput\" placeholder=\"Author Name\" name=\"query4\" value={$_GET['query4']}>";*/
+                            
                         ?>
                     </div>
                     
