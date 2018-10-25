@@ -62,6 +62,8 @@
 	    $title = empty($_POST['title']) ? '' : $_POST['title'];
 	    $category = empty($_POST['category']) ? '' : $_POST['category'];
 	    $body = empty($_POST['body']) ? '' : $_POST['body'];
+		//$body = "This<br>is<br>example<br>text.";
+		
 	    $authorid = getAuthorID();
 		$image = getImage();
 	  	$is_draft = 1;
@@ -183,9 +185,16 @@
 		}
 		
 		chmod($target_dir, 0777);
-	
+		/*
+		$articleData = getArticleByID($_POST['article_id'], $db);
+		$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
+		if($isDraft) {
+			$filename = $articleData['ArticleImage'];
+		} else {
+			$filename = basename($_FILES['image']['name']);
+		}
+		*/
 		$target_file = $target_dir . basename($_FILES['image']['name']);
-		$filename = basename($_FILES['image']['name']);
 		$imageFileType = basename($_FILES['image']['type']);
 		$extensions_arr = ["jpeg", "jpg", "png"];
 		
