@@ -61,6 +61,7 @@
 						}
 					}
                 ?>
+				
 				<input type="text" id="title" placeholder="Title" name="title" value="<?php if($draftOk){print $articleData['Headline'];}?>" required/>
                 <select name="category" id="category">
                     <option value="Politics"<?php if($articleData['Category'] == "Politics"){print "selected";}?>>Politics</option>
@@ -77,7 +78,7 @@
             <div id="picture" class="tabcontent">
                 <h3>Choose a picture</h3>
                 <div class="editor-image">
-					
+					<!-- TODO -->
                     <input onchange="uploadImage(this);" id="upload-image" type='file' name="image" required/>
                     <div id="picture-content">
 						<?php 
@@ -158,27 +159,21 @@
                 var text = event.clipboardData.getData('text/plain');
                 document.execCommand('insertHTML', false, text);
 			});
-			
-			/* V 2.10
-            $(function() {
-                $('#editor').focus();
-            });
-            
-            function editorFocus() {
-                var editor = document.getElementById('editor');
-                editor.focus();
-            }
-            //var focus
-            $('#editor').blur(function () { // TODO
-                //$(this).focus();
-				
-            })
-			*/
 /******************************* SUBMISSION *******************************/
+			function removeEditorTags() {
+				$('.ql-editor').attr('contentEditable', false);
+				$('.ql-clipboard').attr('contentEditable', false);
+				$('.ql-tooltip').remove();
+				$('.ql-hidden').remove();
+				$('.ql-preview').remove();
+				$('.ql-action').remove();
+				$('.ql-remove').remove();
+			}
+			
             $(document).ready(function() { // Submitting articles
                $("#action-form").on("submit", function () {
-				   //var htmlString = $('#editor').html();
-                   var hvalue = $('#editor').text();
+				   removeEditorTags();
+                   var hvalue = $('#editor').html();
                    $(this).append("<input type='hidden' name='body' value=' " + hvalue + " '/>");
                 });
             });
@@ -187,7 +182,6 @@
             
             function submitBtn() { // Submit button; Returns false if NOT successful otherise true
 				modal.style.display = "block";
-				return true;
             }
             
             function cancel() { // Cancels the submission of the article (No) button
