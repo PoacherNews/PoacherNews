@@ -10,7 +10,7 @@
 * ~~/createUser.php redesign~~
 * ~~/login.php redesign~~
 * ~~Firefox - cannot click sign up button on homepage~~
-* Fix line breaks on editor page (upon submission)
+* ~~Fix line breaks on editor page (upon submission)~~
 * Get image file path when editing article
 * Submitting article image on editor page
 * ~~Error checking on saving articles with no content~~
