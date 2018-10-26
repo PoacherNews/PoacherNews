@@ -72,7 +72,7 @@
                     <option value="Opinion"<?php if($articleData['Category'] == "Opinion"){print "selected";}?>>Opinion</option>
                 </select>
 				<!-- EDITOR -->
-                <div id="editor" style="height: 1000px;"><?php if($articleData['Body'])print $articleData['Body'];?></div>
+                <div id="editor" style="height: 800px;"><?php if($articleData['Body'])print $articleData['Body'];?></div>
             </div>
 
             <div id="picture" class="tabcontent">
@@ -160,20 +160,9 @@
                 document.execCommand('insertHTML', false, text);
 			});
 /******************************* SUBMISSION *******************************/
-			function removeEditorTags() {
-				$('.ql-editor').attr('contentEditable', false);
-				$('.ql-clipboard').attr('contentEditable', false);
-				$('.ql-tooltip').remove();
-				$('.ql-hidden').remove();
-				$('.ql-preview').remove();
-				$('.ql-action').remove();
-				$('.ql-remove').remove();
-			}
-			
             $(document).ready(function() { // Submitting articles
                $("#action-form").on("submit", function () {
-				   removeEditorTags();
-                   var hvalue = $('#editor').html();
+                   var hvalue = $('.ql-editor').html();
                    $(this).append("<input type='hidden' name='body' value=' " + hvalue + " '/>");
                 });
             });

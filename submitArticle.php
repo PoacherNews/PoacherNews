@@ -38,6 +38,7 @@
 	  	$title = empty($_POST['title']) ? '' : $_POST['title'];
 	  	$category = empty($_POST['category']) ? '' : $_POST['category'];
 	  	$body = empty($_POST['body']) ? '' : $_POST['body'];
+		$body = preg_replace("/(<(\/?)(\w+)[^>]*>)\1*/", "\{$2$3}", $body);
 	  	$authorid = getAuthorID();
 	  	$image = getImage();
 	  	$is_draft = 1; 
@@ -61,6 +62,9 @@
 	    $title = empty($_POST['title']) ? '' : $_POST['title'];
 	    $category = empty($_POST['category']) ? '' : $_POST['category'];
 	    $body = empty($_POST['body']) ? '' : $_POST['body'];
+		$body = preg_replace("/(<(\/?)(\w+)[^>]*>)\1*/", "\{$2$3}", $body);
+		//$body = preg_replace('|((https?://)?([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i', '<a href="$1">$3</a>', $body);
+		$body = htmlspecialchars($body);
 	    $authorid = getAuthorID();
 		$image = getImage();
 	  	$is_draft = 1;
