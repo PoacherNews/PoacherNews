@@ -166,24 +166,13 @@
 		/* Gets the article image and returns the filename if it is valid */
 		if(!isset($_POST['article_id'])) {
 		  	$db = dbConnect();
-			$sql = "SELECT ArticleID FROM Article";
-			$result = mysqli_query($db, $sql);
-			$numResults = mysqli_num_rows($result);
-			$counter = 0;
-			while($row = mysqli_fetch_assoc($result)) {
-				if (++$counter == $numResults) {
-					$_POST['article_id'] = $row['ArticleID']+1;
-				} 
-			}	
+			$stmt = $db->stmt_init();
+			$sql = "INSERT INTO Article (ArticleID) VALUES (DEFAULT)";
+			mysqli_query($db, $sql);
+			$_POST['article_id'] = mysqli_insert_id($db);
 	  	}
 		
-		if(empty($_POST['article_id'])) {
-			$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/1/";
-		} else {
-			$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/".$_POST['article_id']."/";
-		}
-		
-		//$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/".$_POST['article_id']."/";
+		$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/".$_POST['article_id']."/";
 		//Used for local host
 		//$target_dir = "/Users/rolandoruche/Desktop/test/PoacherNews/res/img/articlePictures/".$_POST['article_id']."/";
 		if (!file_exists($target_dir)) {
@@ -191,18 +180,11 @@
 		}
 		
 		chmod($target_dir, 0777);
-		/*
-		$articleData = getArticleByID($_POST['article_id'], $db);
-		$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
-		if($isDraft) {
-			$filename = $articleData['ArticleImage'];
-		} else {
-			$filename = basename($_FILES['image']['name']);
-		}
-		*/
+	
 		$target_file = $target_dir . basename($_FILES['image']['name']);
+		$filename = basename($_FILES['image']['name']);
 		$imageFileType = basename($_FILES['image']['type']);
-		$extensions_arr = ["jpeg", "jpg", "png"];
+		$extensions_arr = ["gif", "jpeg", "jpg", "png"];
 		
 		if(in_array($imageFileType, $extensions_arr)) {
 			echo "Valid extension: success<br>";
@@ -213,7 +195,7 @@
 				echo "Image upload via HTTP POST: FAILED<br>";
 			}
 			
-			if($_FILES["image"]["size"] > 250000) {
+			if($_FILES["image"]["size"] > 500000) {
 				echo "Image correct size: FAILED<br>";
 				//return FALSE;
 			} else {
@@ -225,11 +207,10 @@
 			} else {
 				echo "Image moved to file: FAILED<br>";
 			}
-
 		} else {
 			echo "Valid extension: FAILED<br>";
 		}
-		$filename = basename($_FILES['image']['name']);
+		
 		return $filename;
  	}
 ?>
