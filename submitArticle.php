@@ -167,7 +167,7 @@
 		if(!isset($_POST['article_id'])) {
 		  	$db = dbConnect();
 			$stmt = $db->stmt_init();
-			$sql = "INSERT INTO Article (ArticleID) VALUES (DEFAULT)";
+			$sql = "INSERT INTO Article (ArticleID) VALUES (NULL)";
 			mysqli_query($db, $sql);
 			$_POST['article_id'] = mysqli_insert_id($db);
 	  	}
