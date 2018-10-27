@@ -35,10 +35,9 @@
 
 	function submitArticle() {
 		/* Submits the article whether it is a draft or new document */
-	  	$title = empty($_POST['title']) ? '' : $_POST['title'];
+	  	$title = empty($_POST['title']) ? '' : htmlspecialchars($_POST['title']);
 	  	$category = empty($_POST['category']) ? '' : $_POST['category'];
-	  	$body = empty($_POST['body']) ? '' : $_POST['body'];
-		$body = nl2br(body);
+	  	$body = handleTextFormat($body);
 	  	$authorid = getAuthorID();
 	  	$image = getImage();
 	  	$is_draft = 1; 
@@ -59,9 +58,9 @@
 
 	function saveArticle() {
 		/* Saves the article whether it is a draft or new document */
-	    $title = empty($_POST['title']) ? '' : $_POST['title'];
+	    $title = empty($_POST['title']) ? '' : htmlspecialchars($_POST['title']);
 	    $category = empty($_POST['category']) ? '' : $_POST['category'];
-	    $body = empty($_POST['body']) ? '' : $_POST['body'];
+		$body = handleTextFormat($body);
 	    $authorid = getAuthorID();
 		$image = getImage();
 	  	$is_draft = 1;
@@ -78,6 +77,15 @@
 		} else {
 			insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted);
 	  	}
+	}
+
+	function handleTextFormat($input) {
+		/* Handles text formatting of the rich text editor and sends 'special' tags into the database */
+		$input = empty($_POST['body']) ? '' : $_POST['body'];
+		$input = strip_tags($input, '<p><h1><h2><h3><em><strong><u><a><br><li><ol><ul>');
+		$input = preg_replace('/(<(\/?)a(\s+)?(href="([^"]*)")?(\s+)?(target="([^"]*)")?[^>]*>)\1*/', '{$2a$3$4$6$7}', $input);
+		$input = preg_replace('/(<(\/?)(\w+)[^>]*>)\1*/', '{$2$3}', $input);
+		return htmlspecialchars($input);
 	}
 
 	function insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted) {
@@ -183,9 +191,16 @@
 		}
 		
 		chmod($target_dir, 0777);
-	
+		/*
+		$articleData = getArticleByID($_POST['article_id'], $db);
+		$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
+		if($isDraft) {
+			$filename = $articleData['ArticleImage'];
+		} else {
+			$filename = basename($_FILES['image']['name']);
+		}
+		*/
 		$target_file = $target_dir . basename($_FILES['image']['name']);
-		$filename = basename($_FILES['image']['name']);
 		$imageFileType = basename($_FILES['image']['type']);
 		$extensions_arr = ["jpeg", "jpg", "png"];
 		
