@@ -32,4 +32,4 @@
    * ~~User page~~
    * ~~Settings page~~
    * Everything else  
-* Sanatizing editor page
+* ~~Sanatizing editor page~~
