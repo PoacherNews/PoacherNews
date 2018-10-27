@@ -35,7 +35,7 @@
 
 	function submitArticle() {
 		/* Submits the article whether it is a draft or new document */
-	  	$title = empty($_POST['title']) ? '' : $_POST['title'];
+	  	$title = empty($_POST['title']) ? '' : htmlspecialchars($_POST['title']);
 	  	$category = empty($_POST['category']) ? '' : $_POST['category'];
 	  	$body = handleTextFormat($body);
 	  	$authorid = getAuthorID();
@@ -58,7 +58,7 @@
 
 	function saveArticle() {
 		/* Saves the article whether it is a draft or new document */
-	    $title = empty($_POST['title']) ? '' : $_POST['title'];
+	    $title = empty($_POST['title']) ? '' : htmlspecialchars($_POST['title']);
 	    $category = empty($_POST['category']) ? '' : $_POST['category'];
 		$body = handleTextFormat($body);
 	    $authorid = getAuthorID();
