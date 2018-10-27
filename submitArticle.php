@@ -200,7 +200,7 @@
 			$filename = basename($_FILES['image']['name']);
 		}
 		*/
-		$filename = $target_dir . basename($_FILES['image']['name']);
+		$target_file = $target_dir . basename($_FILES['image']['name']);
 		$imageFileType = basename($_FILES['image']['type']);
 		$extensions_arr = ["jpeg", "jpg", "png"];
 		
@@ -229,7 +229,7 @@
 		} else {
 			echo "Valid extension: FAILED<br>";
 		}
-		
+		$filename = basename($_FILES['image']['name']);
 		return $filename;
  	}
 ?>
