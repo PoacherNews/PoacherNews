@@ -72,7 +72,7 @@
                     <option value="Opinion"<?php if($articleData['Category'] == "Opinion"){print "selected";}?>>Opinion</option>
                 </select>
 				<!-- EDITOR -->
-                <div id="editor" style="height: 800px;"><?php if($articleData['Body'])print $articleData['Body'];?></div>
+                <div id="editor" style="height: 800px;"><?php if($articleData['Body'])print decodeArticleBodyFormatting($articleData['Body']);?></div>
             </div>
 
             <div id="picture" class="tabcontent">
