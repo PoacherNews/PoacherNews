@@ -96,7 +96,7 @@ article a:not(.continue-reading):hover {
         grid-template-columns: 1fr auto 2fr auto 1fr;
         grid-template-rows: auto auto auto;
         grid-template-areas: 
-            ".               adsenseBanner   adsenseBanner   adsenseBanner   ."
+            "adsenseBanner   adsenseBanner   adsenseBanner   adsenseBanner   adsenseBanner"
             "editorPicks     .               mainArticle     .               trending"
             "bannerAd        bannerAd        bannerAd        bannerAd        bannerAd"
             "stackedArticles stackedArticles stackedArticles stackedArticles stackedArticles";
