@@ -34,3 +34,4 @@
    * ~~Settings page~~
    * Everything else  
 * ~~Sanatizing editor page~~
+* Poacher Logo
