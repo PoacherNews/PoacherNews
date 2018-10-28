@@ -188,7 +188,18 @@
         </section>
 
         <section class="bannerAd">
-            <a href="advertising.php">Advertise with us!</a>
+            <!--<a href="advertising.php">Advertise with us!</a>-->
+		<div id="adsenseBanner">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- Large banner ad -->
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width:970px;height:90px"
+                     data-ad-client="ca-pub-3927571828981469"
+                     data-ad-slot="9395185359"></ins>
+                <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
         </section>
 
         <section id="secondaryarticles" class="stackedArticles">    
