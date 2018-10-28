@@ -2,7 +2,7 @@
 	ob_start();
 	session_start();
 	function redirectTools() {
-	  header("Location: ../tools.php");
+	  //header("Location: ../tools.php");
 	}
 	$action = empty($_POST['action']) ? '' : $_POST['action'];
 	$submit = empty($_POST['submit']) ? '' : $_POST['submit'];
@@ -167,10 +167,17 @@
 		if(!isset($_POST['article_id'])) {
 		  	$db = dbConnect();
 			$stmt = $db->stmt_init();
-			$sql = "INSERT INTO Article (ArticleID) VALUES (NULL)";
-			mysqli_query($db, $sql);
-			$_POST['article_id'] = mysqli_insert_id($db);
+			$sql = "SELECT MAX(ArticleID) FROM Article";
+			$result = mysqli_query($db, $sql) or die(mysqli_error());
+
+			while($row = mysqli_fetch_assoc($result)){
+				foreach($row as $value){
+					$_POST['article_id'] = $value + 1;
+					print $_POST['article_id'];
+				}
+			}
 	  	}
+		
 		
 		$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/".$_POST['article_id']."/";
 		//Used for local host
