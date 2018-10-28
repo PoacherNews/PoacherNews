@@ -2,7 +2,7 @@
 	ob_start();
 	session_start();
 	function redirectTools() {
-	  //header("Location: ../tools.php");
+	  header("Location: ../tools.php");
 	}
 	$action = empty($_POST['action']) ? '' : $_POST['action'];
 	$submit = empty($_POST['submit']) ? '' : $_POST['submit'];
