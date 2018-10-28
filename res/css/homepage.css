@@ -83,7 +83,8 @@ article a:not(.continue-reading):hover {
 }
 
 #adsenseBanner {
-    grid-template-areas: adsenseBanner;
+    grid-area: adsenseBanner;
+    margin: 20px auto 0px auto;
 }
 
 .pageContent {
