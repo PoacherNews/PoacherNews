@@ -82,7 +82,15 @@
         include 'includes/nav.php';
     ?>
     <div id="mainContent">
-    
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Large banner ad -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:970px;height:90px"
+         data-ad-client="ca-pub-3927571828981469"
+         data-ad-slot="9395185359"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
     <p id="secName"><?php echo $_GET['Category'] ?></p>
 
     <!-- containerPrimary Head -->
@@ -138,6 +146,16 @@
     <section class="bannerAd">
             <a href="advertising.php">Advertise with us!</a>
     </section>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Large banner ad -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:970px;height:90px"
+         data-ad-client="ca-pub-3927571828981469"
+         data-ad-slot="9395185359"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 
     <!-- containerSecondary Head -->
     <section class="secSecondary">

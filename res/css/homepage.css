@@ -82,6 +82,10 @@ article a:not(.continue-reading):hover {
     text-decoration-skip-ink: auto;
 }
 
+#adsenseBanner {
+    grid-template-areas: adsenseBanner;
+}
+
 .pageContent {
         margin: 0px 5% 0px 5%;
         display: grid;
@@ -92,6 +96,7 @@ article a:not(.continue-reading):hover {
         grid-template-columns: 1fr auto 2fr auto 1fr;
         grid-template-rows: auto auto auto;
         grid-template-areas: 
+            ".               adsenseBanner   adsenseBanner   adsenseBanner   ."
             "editorPicks     .               mainArticle     .               trending"
             "bannerAd        bannerAd        bannerAd        bannerAd        bannerAd"
             "stackedArticles stackedArticles stackedArticles stackedArticles stackedArticles";
@@ -108,7 +113,8 @@ article a:not(.continue-reading):hover {
     .pageContent {
         margin: 0;
         grid-template-columns: 1fr;
-        grid-template-areas: 
+        grid-template-areas:
+            "adsenseBanner" 
             "mainArticle"
             "editorPicks"
             "trending"

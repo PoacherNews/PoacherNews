@@ -185,11 +185,9 @@
                     <img src="<?php print "https://poachernews.com/res/img/articlePictures/".$articleData['ArticleID']."/".$articleData['ArticleImage']; ?>"/>
                 </div>
                 <p class="articleBody">
-                   <div id="test">
                         <?php
                             print(decodeArticleBodyFormatting($articleData['Body']));
                         ?>
-                    </div>
                 </p>
             </section>
 			<!-- Display: none -->
