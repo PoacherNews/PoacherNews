@@ -22,6 +22,13 @@ function getArticleByID($id, $db) {
     return mysqli_fetch_assoc($result);
 }
 
+function decodeArticleBodyFormatting($body) {
+    $output = preg_replace('/&quot;/', '"', $body); // Replaces html &quot; with actual quotes (")
+    $output = preg_replace('/\{a\s+href="([^"]*)"\s+target="([^"]*)"\}([\w|\s]+)\{\/a\}/', '<a href="http://$1" target="$2">$3</a>', $output); // Repalces {a href="foo" target="bar"}baz{/a} to <a href="foo" target="bar">baz</a>
+    $output = preg_replace('/\{(\/)?(\w+)\}/', '<$1$2>', $output); // Replace {foo} with <foo> and {/foo} with </foo>
+    return $output;
+}
+
 function getAuthorByID($id, $db) {
     /* Returns an associative array representation of the MYSQL result for the author of the provided id. */
     $sql = "SELECT * FROM User WHERE UserID = {$id};";

@@ -184,7 +184,13 @@
                 <div class="articleImage">
                     <img src="<?php print "https://poachernews.com/res/img/articlePictures/".$articleData['ArticleID']."/".$articleData['ArticleImage']; ?>"/>
                 </div>
-                <p class="articleBody"><?php print nl2br($articleData['Body']); ?></p>
+                <p class="articleBody">
+                   <div id="test">
+                        <?php
+                            print(decodeArticleBodyFormatting($articleData['Body']));
+                        ?>
+                    </div>
+                </p>
             </section>
 			<!-- Display: none -->
             <section id="articleAdColumn">
