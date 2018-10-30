@@ -24,12 +24,13 @@
 <html>
     <head>
         <title>The Poacher | Editor Page</title>
-        <link rel="stylesheet" href="res/css/editorpage.css">
+        <link rel="stylesheet" href="res/css/editorpage.css"/>
         <link rel="stylesheet" href="res/css/tools.css"/>
+		<link rel="stylesheet" href="res/css/quill.snow.css"/>
         <?php include 'includes/globalHead.html'?>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<!-- Include the Quill librarys -->
-		<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+		<!-- <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"> -->
 		<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     </head>
     <body>
@@ -99,6 +100,7 @@
             </div>
 
             <div id="save" class="tabcontent" onclick="getInfo()">
+				
                 <h3>Save/Submit</h3>
                 <div class="get-info">
                     <h3>Article Info</h3>
@@ -124,6 +126,7 @@
                     <!-- Saving Article -->
                     <input onclick="saveBtn()" type="submit" id="save-button" value="Save" name="save">
                 </div>
+				
             </div>
 		</form>
 		<script type="text/javascript">
