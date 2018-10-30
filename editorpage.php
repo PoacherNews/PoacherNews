@@ -78,18 +78,23 @@
             <div id="picture" class="tabcontent">
                 <h3>Choose a picture</h3>
                 <div class="editor-image">
-					<!-- TODO -->
-                    <input onchange="uploadImage(this);" id="upload-image" type='file' name="image" required/>
-                    <div id="picture-content">
-						<?php 
-							$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
-							if($isDraft) {
-								print "<img id=image src=/res/img/articlePictures/{$articleData['ArticleID']}/{$articleData['ArticleImage']} alt=Image width=650 height=434/>";
-							} else {
-								print "<img id=image src=/# alt=Image width=650 height=434/>";
-							}
-						?>
-                    </div>
+					<div id="image-container">
+						<div id="image-wrapper">
+							<div id="image-box">
+								<?php 
+									$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
+									if($isDraft) {
+										print "<img id=image src=https://poachernews.com/res/img/articlePictures/{$articleData['ArticleID']}/{$articleData['ArticleImage']} alt=Image width=250 height=250/><br>";
+									} else {
+										print "<img id=image src=https://poachernews.com/res/img/articlePictures/defaultArticleImage.png alt=Image width=250 height=250/><br>";
+									}
+								?>
+								<span id="image-path"><?php if($isDraft) print $articleData['ArticleImage'];?></span>
+							</div>
+							<label for="upload-image">Upload</label>
+							<input id="upload-image" type="file" onchange="getImagePath();" accept="image/jpeg, image/png" style="display: none;" required/>
+						</div>
+					</div>
                 </div>
             </div>
 
@@ -239,6 +244,16 @@
                 });	
             }
 			
+			function getImagePath() {
+				var input = document.getElementById('upload-image');
+				var path = document.getElementById('image-path');
+				path.innerHTML = imageBasename(input.value);
+			}
+			
+			function imageBasename(input) {
+				return input.split(/[\\/]/).pop();
+			}
+			
 			function readURL(input) {
 				/* Reads in an image using FileReader then displays it in the image box. Removes image if contents are
 				not present. */
@@ -252,7 +267,8 @@
 						reader.readAsDataURL(input.files[0]);
 					}
 				} else {
-					$('#image').attr('src', '');
+					var defaultImage = 'https://poachernews.com/res/img/articlePictures/defaultArticleImage.png';
+					$('#image').attr('src', defaultImage);
 				}
 			}
             $("#upload-image").change(function(){readURL(this);});

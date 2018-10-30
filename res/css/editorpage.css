@@ -228,3 +228,31 @@ select {
     border: 1px solid #888;
     width: 30%;
 }
+
+/******************** IMAGE ********************/
+#image-wrapper, label[for="upload-image"], #image-box {
+	border: 2px dashed #8693AB;
+    margin: 10px;
+}
+
+#image-container div{
+	height: 500px;
+	width: 500px;
+	background-color: #BDD4E7;
+	margin: 50px auto;
+	text-align: center;
+}
+
+#image-wrapper div {
+	height: 50%;
+	width: 75%;
+}
+
+label[for="upload-image"] {
+	padding: 5px;
+	border: 2px dashed #8693AB;
+}
+
+label[for="upload-image"]:hover {
+	cursor: pointer;
+}
