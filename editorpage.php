@@ -93,7 +93,7 @@
 								<span id="image-path"><?php if($isDraft) print $articleData['ArticleImage'];?></span>
 							</div>
 							<label for="upload-image">Upload</label>
-							<input id="upload-image" type="file" onchange="getImagePath();" accept="image/jpeg, image/png" style="display: none;" required/>
+							<input id="upload-image" type="file" onchange="getImagePath(event);" accept="image/jpeg, image/png" required/>
 						</div>
 					</div>
                 </div>
@@ -247,10 +247,13 @@
                 });	
             }
 			
-			function getImagePath() {
+			function getImagePath(event) {
 				var input = document.getElementById('upload-image');
 				var path = document.getElementById('image-path');
 				path.innerHTML = imageBasename(input.value);
+				
+				var tmppath = URL.createObjectURL(event.target.files[0]);
+				alert(tmppath);
 			}
 			
 			function imageBasename(input) {
