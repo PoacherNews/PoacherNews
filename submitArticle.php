@@ -2,7 +2,7 @@
 	ob_start();
 	session_start();
 	function redirectTools() {
-	  //header("Location: ../tools.php");
+	  header("Location: ../tools.php");
 	}
 	$action = empty($_POST['action']) ? '' : $_POST['action'];
 	$submit = empty($_POST['submit']) ? '' : $_POST['submit'];
@@ -50,9 +50,9 @@
 		  	$isAuthor = ($articleData['UserID'] && $_SESSION['userid'] ? TRUE : FALSE);
 	  	} 
 		if($articleData['ArticleID'] && $isAuthor) {
-			//updateArticle($articleData['ArticleID'], $title, $body, $category, $image, $is_submitted, $db, $stmt);
+			updateArticle($articleData['ArticleID'], $title, $body, $category, $image, $is_submitted, $db, $stmt);
 		} else {
-		  	//insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted);
+		  	insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted);
 	  	}
 	}
 
@@ -181,9 +181,9 @@
 			}
 	  	}
 		
-		//$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/".$_POST['article_id']."/";
+		$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/".$_POST['article_id']."/";
 		//Used for local host
-		$target_dir = "/Users/rolandoruche/Desktop/test/PoacherNews/res/img/articlePictures/".$_POST['article_id']."/";
+		//$target_dir = "/Users/rolandoruche/Desktop/test/PoacherNews/res/img/articlePictures/".$_POST['article_id']."/";
 		if (!file_exists($target_dir)) {
 			mkdir($target_dir, 0777, true);
 		}
@@ -197,17 +197,17 @@
 		
 		switch($isDraft) {
 			case TRUE:
-				if(empty($_FILES['image']['name'])) { // Meaning the image was probably not changed
+				if(empty($_FILES['image']['name'])) {
 					if(empty($articleData['ArticleImage'])) {
 						return;
 					}
 					return $articleData['ArticleImage'];
 				} else {
-					imageValidation($imageFileType, $extensions_arr, $target_file); // Changed image during draft;
+					imageValidation($imageFileType, $extensions_arr, $target_file);
 				}
 				break;
 			case FALSE:
-				imageValidation($imageFileType, $extensions_arr, $target_file); // Changed image during draft;
+				imageValidation($imageFileType, $extensions_arr, $target_file);
 				break;
 		}
 		
