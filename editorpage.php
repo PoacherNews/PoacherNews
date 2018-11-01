@@ -93,7 +93,7 @@
 								<span id="image-path"><?php if($isDraft) print $articleData['ArticleImage'];?></span>
 							</div>
 							<label for="upload-image">Upload</label>
-							<input id="upload-image" type="file" onchange="getImagePath(event);" accept="image/jpeg, image/png" required/>
+							<input id="upload-image" type="file" name="image" onchange="getImagePath(event);" accept="image/jpeg, image/png" />
 						</div>
 					</div>
                 </div>
@@ -196,23 +196,6 @@
                 modal.style.display = "none";
             }
 /******************************* FILE UPLOADING *******************************/
-            function uploadFile() {
-                var formData = new FormData(); 
-                formData.append('document', $('#upload-document')[0].files[0]); 
-                $.ajax({
-                    url: 'readTextFile.php',
-                    type: 'POST',
-                    data: formData,
-                    success: function (output) {
-                        $('#editor').html(output);
-						// TODO
-                    },
-                    cache: false,
-                    contentType: false,
-                    processData: false
-                });
-            }
-			
 			function uploadImage(event) {
 				/* Calls a PHP Ajax request to see if the image is in the correct format. If it isn't it will alert
 				an error otherwise display the image. */
@@ -251,9 +234,6 @@
 				var input = document.getElementById('upload-image');
 				var path = document.getElementById('image-path');
 				path.innerHTML = imageBasename(input.value);
-				
-				var tmppath = URL.createObjectURL(event.target.files[0]);
-				alert(tmppath);
 			}
 			
 			function imageBasename(input) {
