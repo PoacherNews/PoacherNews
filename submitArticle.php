@@ -73,9 +73,9 @@
 		  	$isAuthor = ($articleData['UserID'] && $_SESSION['userid'] ? TRUE : FALSE);
 	  	}
 		if($articleData['ArticleID'] || $isAuthor) {
-			//updateArticle($articleData['ArticleID'], $title, $body, $category, $image, $is_submitted, $db, $stmt);
+			updateArticle($articleData['ArticleID'], $title, $body, $category, $image, $is_submitted, $db, $stmt);
 		} else {
-			//insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted);
+			insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted);
 	  	}
 	}
 
