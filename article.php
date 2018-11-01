@@ -183,13 +183,16 @@
                 </span>
                 <div class="articleImage">
 					<?php 
+					/*
 						$filename = "https://poachernews.com/res/img/articlePictures/".$articleData['ArticleID']."/".$articleData['ArticleImage'];
 						if(file_exists($filename)) {
 							print "<img src=https://poachernews.com/res/img/articlePictures/".$articleData['ArticleID']."/".$articleData['ArticleImage']."/>";
 						} else {
 							print "<a href=http://icons8.com/ ><img src=https://poachernews.com/res/img/articlePictures/noImage.png /></a>";
 						}
-					?>   
+					*/
+					?>
+					<img src="<?php print "https://poachernews.com/res/img/articlePictures/".$articleData['ArticleID']."/".$articleData['ArticleImage']; ?>"/>
                 </div>
                 <p class="articleBody">
                         <?php
