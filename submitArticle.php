@@ -2,7 +2,7 @@
 	ob_start();
 	session_start();
 	function redirectTools() {
-	  header("Location: ../tools.php");
+	  //header("Location: ../tools.php");
 	}
 	$action = empty($_POST['action']) ? '' : $_POST['action'];
 	$submit = empty($_POST['submit']) ? '' : $_POST['submit'];
@@ -50,9 +50,9 @@
 		  	$isAuthor = ($articleData['UserID'] && $_SESSION['userid'] ? TRUE : FALSE);
 	  	} 
 		if($articleData['ArticleID'] && $isAuthor) {
-			updateArticle($articleData['ArticleID'], $title, $body, $category, $image, $is_submitted, $db, $stmt);
+			//updateArticle($articleData['ArticleID'], $title, $body, $category, $image, $is_submitted, $db, $stmt);
 		} else {
-		  	insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted);
+		  	//insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted);
 	  	}
 	}
 
@@ -73,9 +73,9 @@
 		  	$isAuthor = ($articleData['UserID'] && $_SESSION['userid'] ? TRUE : FALSE);
 	  	}
 		if($articleData['ArticleID'] || $isAuthor) {
-			updateArticle($articleData['ArticleID'], $title, $body, $category, $image, $is_submitted, $db, $stmt);
+			//updateArticle($articleData['ArticleID'], $title, $body, $category, $image, $is_submitted, $db, $stmt);
 		} else {
-			insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted);
+			//insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted);
 	  	}
 	}
 
@@ -163,6 +163,9 @@
 	}
 
 	function getImage() {
+		$db = dbConnect();
+		$articleData = getArticleByID($_POST['article_id'], $db);
+		$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
 		/* Gets the article image and returns the filename if it is valid */
 		if(!isset($_POST['article_id'])) {
 		  	$db = dbConnect();
@@ -178,10 +181,9 @@
 			}
 	  	}
 		
-		
-		$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/".$_POST['article_id']."/";
+		//$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/".$_POST['article_id']."/";
 		//Used for local host
-		//$target_dir = "/Users/rolandoruche/Desktop/test/PoacherNews/res/img/articlePictures/".$_POST['article_id']."/";
+		$target_dir = "/Users/rolandoruche/Desktop/test/PoacherNews/res/img/articlePictures/".$_POST['article_id']."/";
 		if (!file_exists($target_dir)) {
 			mkdir($target_dir, 0777, true);
 		}
@@ -193,31 +195,49 @@
 		$imageFileType = basename($_FILES['image']['type']);
 		$extensions_arr = ["gif", "jpeg", "jpg", "png"];
 		
-		if(in_array($imageFileType, $extensions_arr)) {
+		switch($isDraft) {
+			case TRUE:
+				if(empty($_FILES['image']['name'])) { // Meaning the image was probably not changed
+					if(empty($articleData['ArticleImage'])) {
+						return;
+					}
+					return $articleData['ArticleImage'];
+				} else {
+					imageValidation($imageFileType, $extensions_arr, $target_file); // Changed image during draft;
+				}
+				break;
+			case FALSE:
+				imageValidation($imageFileType, $extensions_arr, $target_file); // Changed image during draft;
+				break;
+		}
+		
+		mysqli_close($db);
+		return $filename;	
+ 	}
+	
+	function imageValidation($type, $ext, $target) {
+		if(in_array($type, $ext)) {
 			echo "Valid extension: success<br>";
-			
+
 			if(is_uploaded_file($_FILES['image']['tmp_name'])) {
 				echo "Image upload via HTTP POST: success<br>";
 			} else {
 				echo "Image upload via HTTP POST: FAILED<br>";
 			}
-			
+
 			if($_FILES["image"]["size"] > 500000) {
 				echo "Image correct size: FAILED<br>";
-				//return FALSE;
 			} else {
 				echo "Image correct size: success<br>";
 			}
-			if(move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
+			if(move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
 				echo "Image moved to file: success<br>";
-				
+
 			} else {
 				echo "Image moved to file: FAILED<br>";
 			}
 		} else {
 			echo "Valid extension: FAILED<br>";
 		}
-		
-		return $filename;
- 	}
+	}
 ?>
