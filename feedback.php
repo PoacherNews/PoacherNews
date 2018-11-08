@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<?php include 'includes/globalHead.html' ?>
     <link rel="stylesheet" type="text/css" href="res/css/feedback.css">
 </head>
@@ -14,7 +15,7 @@
         include 'includes/header.php';
         include 'includes/nav.php';
     ?>
-    <div id="mainContent">
+    <div class="mainContent">
         <h1 id="feedbackHeader">Feedback</h1>
         <p>
             The staff here at <span class="text-emphasis">The Poacher</span> really appreciate what our users think about our content. Let us know how our website is doing!

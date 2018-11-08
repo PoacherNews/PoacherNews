@@ -1,11 +1,29 @@
 
-@media only screen and (min-width: 600px) {
-#mainContent {
-	margin: 15px 10% 15px 10%;
-	padding: 15px;
-	border-left: 1px solid #83A8F0;
-	border-right: 1px solid #83A8F0;
+/* @media only screen and (min-width: 600px) {
+	#mainContent {
+		margin: 15px 10% 15px 10%;
+		padding: 15px;
+		border-left: 1px solid #83A8F0;
+		border-right: 1px solid #83A8F0;
+	}
+} */
+
+@media all and (min-width: 600px){
+	.mainContent {
+		margin: 15px 10% 15px 10%;
+		padding: 15px;
+		border-left: 1px solid #83A8F0;
+		border-right: 1px solid #83A8F0;
+	}
 }
+
+@media all and (max-width: 599px){
+	.mainContent {
+		margin: 5px 10% 5px 10%;
+		padding: 5px;
+		border-left: 1px solid #83A8F0;
+		border-right: 1px solid #83A8F0;
+	}
 }
 #feedbackHeader {
 	text-align: center;
