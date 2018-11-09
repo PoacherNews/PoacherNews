@@ -3,6 +3,8 @@
 	display: flex;
 	flex-direction: row;
 	align-items: stretch;
+	border-left: 1px solid #83A8F0;
+	border-right: 1px solid #83A8F0;
 }
 
 .articleColumns > section {
