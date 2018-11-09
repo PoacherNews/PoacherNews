@@ -58,6 +58,10 @@ header[id="mainHeader"] {
     margin: auto auto auto auto;
 }
 
+.lgnLink {
+    padding: 10px;
+}
+
 .lgnDrpdwn-content { 
     position: absolute;
     margin-top: 7px;
