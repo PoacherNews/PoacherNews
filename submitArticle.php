@@ -108,6 +108,7 @@
 			exit;
 		}
 		echo "Article: " . $title . " inserted successfully.";
+		mysqli_close($db);
 		redirectTools();
 	}
 
@@ -131,6 +132,7 @@
 				exit;
 		}
 		echo "Article: " . $title . " updated successfully.";
+		mysqli_close($db);
 		redirectTools();
 	}
 	
@@ -159,6 +161,7 @@
 		  	exit;
 		}
 		$row = $result->fetch_assoc();
+		mysqli_close($db);
 		return $row['UserID'];
 	}
 

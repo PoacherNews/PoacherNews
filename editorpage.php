@@ -40,7 +40,7 @@
             include 'includes/toolsNav.php';
         ?>
 		<div class="editor-tab">
-			<button class="tablinks" onclick="editorTab(event, 'article');editorFocus();"><i class="fas fa-pencil-alt"></i></button>
+			<button class="tablinks" onclick="editorTab(event, 'article');"><i class="fas fa-pencil-alt"></i></button>
 			<button class="tablinks" onclick="editorTab(event, 'picture');"><i class="fas fa-camera"></i></button>
 			<button class="tablinks" onclick="editorTab(event, 'save');getInfo();"><i class="fas fa-save"></i></button>
 		</div>

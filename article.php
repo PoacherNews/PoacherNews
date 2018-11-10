@@ -184,7 +184,7 @@
                 <div class="articleImage">
 					<?php
 						$hashed_subdir = hash_hmac('md5', $articleData['UserID'], $articleData['PublishDate']);
-						/*
+						/* TODO: no image
 						$filename = "https://poachernews.com/res/img/articlePictures/".$articleData['ArticleID']."/".$articleData['ArticleImage'];
 						if(file_exists($filename)) {
 							print "<img src=https://poachernews.com/res/img/articlePictures/".$articleData['ArticleID']."/".$articleData['ArticleImage']."/>";
