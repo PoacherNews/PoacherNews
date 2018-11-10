@@ -1,7 +1,7 @@
-<!-- Bastardized login.php -->
 <?php
     include 'util/loginCheck.php';
 ?>
+<!-- Bastardized login.php -->
 
 <!DOCTYPE html>
 <html>
