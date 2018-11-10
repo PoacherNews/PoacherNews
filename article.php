@@ -182,17 +182,18 @@
                     </p>
                 </span>
                 <div class="articleImage">
-					<?php 
-					/*
+					<?php
+						$hashed_subdir = hash_hmac('md5', $articleData['UserID'], $articleData['PublishDate']);
+						/*
 						$filename = "https://poachernews.com/res/img/articlePictures/".$articleData['ArticleID']."/".$articleData['ArticleImage'];
 						if(file_exists($filename)) {
 							print "<img src=https://poachernews.com/res/img/articlePictures/".$articleData['ArticleID']."/".$articleData['ArticleImage']."/>";
 						} else {
 							print "<a href=http://icons8.com/ ><img src=https://poachernews.com/res/img/articlePictures/noImage.png /></a>";
 						}
-					*/
+						*/
 					?>
-					<img src="<?php print "https://poachernews.com/res/img/articlePictures/".$articleData['ArticleID']."/".$articleData['ArticleImage']; ?>"/>
+					<img src="<?php print "https://poachernews.com/res/img/articlePictures/".$hashed_subdir."/".$articleData['ArticleImage']; ?>"/>
                 </div>
                 <p class="articleBody">
                         <?php

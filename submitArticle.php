@@ -163,27 +163,19 @@
 	}
 
 	function getImage() {
+		/* Gets the article image and returns the filename if it is valid */
 		$db = dbConnect();
 		$articleData = getArticleByID($_POST['article_id'], $db);
+		$authorID = getAuthorByID($_SESSION['userid'], $db);
 		$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
-		/* Gets the article image and returns the filename if it is valid */
-		if(!isset($_POST['article_id'])) {
-		  	$db = dbConnect();
-			$stmt = $db->stmt_init();
-			$sql = "SELECT MAX(ArticleID) FROM Article";
-			$result = mysqli_query($db, $sql) or die(mysqli_error());
-
-			while($row = mysqli_fetch_assoc($result)){
-				foreach($row as $value){
-					$_POST['article_id'] = $value + 1;
-					print $_POST['article_id'];
-				}
-			}
-	  	}
-		
-		$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/".$_POST['article_id']."/";
+		if(!isset($_POST['article_id'])) { 
+			$cur_date = date("Y-m-d H:i:s");
+			$articleData['PublishDate'] = $cur_date;
+		}
+		$hashed_subdir = hash_hmac('md5', $authorID['UserID'], $articleData['PublishDate']);
+		$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/".$hashed_subdir."/";
 		//Used for local host
-		//$target_dir = "/Users/rolandoruche/Desktop/test/PoacherNews/res/img/articlePictures/".$_POST['article_id']."/";
+		//$target_dir = "/Users/rolandoruche/Desktop/test/PoacherNews/res/img/articlePictures/".$hashed_subdir."/";
 		if (!file_exists($target_dir)) {
 			mkdir($target_dir, 0777, true);
 		}
