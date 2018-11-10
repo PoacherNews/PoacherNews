@@ -352,6 +352,17 @@ $GLOBAL_SITE_URL = "https://poachernews.com";
 		if(!mysqli_query($db, $sql)) { return false; }
 		return true;
 	}
+    function updateTFA($uid, $db) {
+		/* Updates the 2FA field of a user of provided User ID. */
+        if($_SESSION['2fa'] == 0) {
+    	   $sql = "UPDATE User SET 2FA = 1 WHERE UserID = {$uid}";
+        }
+        if($_SESSION['2fa'] == 1) {
+    	   $sql = "UPDATE User SET 2FA = 0 WHERE UserID = {$uid}";
+        }
+    	if(!mysqli_query($db, $sql)) { return false; }
+		return true;
+    }
     function updateUserPassword($uid, $password, $db) {
 		/* Updates the Password field of a user of provided User ID. */
     	$sql = "UPDATE User SET Password = '{$password}' WHERE UserID = {$uid}";
