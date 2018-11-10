@@ -101,7 +101,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 			}
 
 			// Password change functionality
-			
 			if(!empty($_POST['currentPassword'])) { 
 				if(empty($_POST['newPassword']) || empty($_POST['confirmPassword'])) { // Make sure that if the new password field is set, the other password fields are set
 					print("Please fill out all password fields.");
@@ -134,6 +133,26 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 
 			print "Success";
 			break;
+            
+        // Added by Bruce Head    
+        // Two-Factor Authentication Functionality
+        case "twoFactorAuthentication":
+            if(!updateTFA($_SESSION['userid'], $db)) {
+				print("Failed to update two-factor authentication. Please contact the site administrator.");
+				break;
+			}
+            
+        // Update session so changes take effect without them having to log out and back in
+        if($_SESSION['2fa'] === 0) {
+            $_SESSION['2fa'] = 1;            
+        }
+        else if($_SESSION['2fa'] == 1) {
+             $_SESSION['2fa'] = 0;            
+        }
+        print ("Success");
+        break;    
+        // Added by Bruce Tail
+            
 		case "deleteAccount":
 		// print_r($_POST);
 			if(empty($_POST['deleteConfirm'])) {

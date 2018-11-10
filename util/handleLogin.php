@@ -107,6 +107,7 @@ function handle_login() {
     $_SESSION['email'] = $row['Email'];
     $_SESSION['username'] = $row['Username'];
     $_SESSION['usertype'] = $row['Usertype'];
+    $_SESSION['2fa'] = $row['2FA'];
     // redirect    
     //echo '<meta http-equiv="refresh" content="1; url=/index.php">';
     header('Location: '.$_SERVER['HTTP_REFERER']); // Redirect the user to the page they logged in at
