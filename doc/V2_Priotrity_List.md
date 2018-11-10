@@ -11,11 +11,11 @@
 * ~~/login.php redesign~~
 * ~~Firefox - cannot click sign up button on homepage~~
 * ~~Fix line breaks on editor page (upon submission)~~
-* Get image file path when editing article
+* ~~Get image file path when editing article~~
 * ~~Submitting article image on editor page~~
 * ~~Error checking on saving articles with no content~~
 * Add image path for articles on search page
-* /editorpage.php redesign
+* ~~/editorpage.php redesign~~
 
 ### What needs to be done
 * Article tagging
