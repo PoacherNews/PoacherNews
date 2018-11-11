@@ -135,6 +135,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 			break;
             
         // Added by Bruce Head    
+        // TODO: 
+        //      Integrate twoFactorAuthentication case into GA case
+            
         // Two-Factor Authentication Functionality
         case "twoFactorAuthentication":
             if(!updateTFA($_SESSION['userid'], $db)) {
@@ -151,6 +154,28 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
         }
         print ("Success");
         break;    
+            
+        // New 2FA case
+        case "GA":
+            require "GoogleAuthenticator.php";
+    
+            if($_SERVER['REQUEST_METHOD'] != "POST") {
+                header("location: test.php");
+                die();
+            }
+
+            $authenticator = new GoogleAuthenticator();
+            $checkResult = $authenticator->verifyCode($_SESSION['auth_secret'], $_POST['code'], 0);
+            
+            if($checkResult) {
+                print("Code Matched");
+                break;
+            } else {
+                print ("Code not matched");
+                break;
+            }
+            print("Success");
+            break;            
         // Added by Bruce Tail
             
 		case "deleteAccount":
@@ -173,7 +198,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
         	session_destroy();
 			print("Success");
 			// header('Location: login.php');
-			break;
+			break;    
 	}
 }
 
