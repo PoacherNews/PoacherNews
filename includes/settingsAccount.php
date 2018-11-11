@@ -38,6 +38,7 @@ input {
 }
     
 /* Added by Bruce Head */    
+/*
 #twoFactorAuthenticationEnableButton {
     display: block;
     margin-top: 25px;
@@ -70,7 +71,43 @@ input {
 #twoFactorAuthenticationDisableButton:hover {
     background-color: red;
     color: white;    
-}    
+}
+*/
+
+#enable2fa {
+    display: block;
+    margin-top: 25px;
+    width: 200px;
+    height: 35px;
+    background-color: #6EDC6B;
+    border-color: #267C23;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+#enable2fa:hover {
+    background-color: green;
+    color: white;
+}
+    
+#disable2fa {
+    display: block;
+    margin-top: 25px;
+    width: 205px;
+    height: 35px;
+    background-color: #FF8383;
+    border-color: #D44F33;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+#disable2fa:hover {
+    background-color: red;
+    color: white;    
+}        
+    
 /* Added by Bruce Tail*/
 
 </style>
@@ -114,6 +151,7 @@ input {
 
 <!-- Added by Bruce Head -->    
 <br>
+<!--
 <form id="twoFactorAuthentication">
     <input type="hidden" name="action" value="twoFactorAuthentication"/>
     <div class="sectionHeader">
@@ -133,6 +171,16 @@ input {
     </div>
     <div id="twoFactorAuthenticationError" class="settingsMessage"></div>
 </form>    
+-->
+<!-- Button integration to QR code / secret -->
+        <?php 
+            if($_SESSION['2fa'] == 0) { ?>
+                <button id="enable2fa">New enable2fa</button>
+            <?php } ?>
+        <?php 
+            if($_SESSION['2fa'] == 1) { ?>
+                <button id="disable2fa">New disable2fa</button>
+        <?php } ?>
 <!-- Added by Bruce Tail -->
 
 <br>
@@ -178,6 +226,7 @@ input {
     });
     
 /* Added by Bruce head */
+    /*
         $("#twoFactorAuthentication").submit(function(event) {
         $("#twoFactorAuthenticationError").hide();
         $("#twoFactorAuthenticationError").text('');
@@ -195,7 +244,16 @@ input {
             }
         });
     });
+    */
+    
+    // Redirect to enable 2FA
+    var btn = document.getElementById('enable2fa');
+    btn.addEventListener('click', function() {
+    document.location.href = '/test.php';
+});
 /* Added by Bruce tail */
+    
+    
             
     $("#deleteAccount").submit(function(event) {
         $("#deleteError").hide();
