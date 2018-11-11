@@ -135,45 +135,41 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 			break;
             
         // Added by Bruce Head    
-        // TODO: 
-        //      Integrate twoFactorAuthentication case into GA case
-            
-        // Two-Factor Authentication Functionality
-        case "twoFactorAuthentication":
-            if(!updateTFA($_SESSION['userid'], $db)) {
-				print("Failed to update two-factor authentication. Please contact the site administrator.");
-				break;
-			}
-            
-        // Update session so changes take effect without them having to log out and back in
-        if($_SESSION['2fa'] === 0) {
-            $_SESSION['2fa'] = 1;            
-        }
-        else if($_SESSION['2fa'] == 1) {
-             $_SESSION['2fa'] = 0;            
-        }
-        print ("Success");
-        break;    
+        // TODO:    
             
         // New 2FA case
         case "GA":
-            require "GoogleAuthenticator.php";
-    
-            if($_SERVER['REQUEST_METHOD'] != "POST") {
-                header("location: test.php");
-                die();
-            }
+			
+			if($_SESSION['2fa'] == 0) {
+            	require "GoogleAuthenticator.php";
 
-            $authenticator = new GoogleAuthenticator();
-            $checkResult = $authenticator->verifyCode($_SESSION['auth_secret'], $_POST['code'], 0);
-            
-            if($checkResult) {
-                print("Code Matched");
-                break;
-            } else {
-                print ("Code not matched");
-                break;
-            }
+				$authenticator = new GoogleAuthenticator();
+            	$checkResult = $authenticator->verifyCode($_SESSION['auth_secret'], $_POST['code'], 0);
+				
+            	if(!$checkResult) {
+					print ("Incorrect authentication code. Please try again.");
+					break;
+            	}    
+			} else if($_SESSION['2fa'] == 1) {
+				if(!password_verify($_POST['password'], getHashedPassword($_SESSION['userid'], $db))) {
+					print("Password is incorrect.");
+					break;
+				}
+        	}
+
+			if(!updateTFA($_SESSION['userid'], $db)) {
+				print("Failed to update two-factor authentication. Please contact the site administrator.");
+				break;
+			}
+			
+			// Update Session variable for User
+        	if($_SESSION['2fa'] == 0) {
+				$_SESSION['2fa'] = 1;            
+        	}
+        	else if($_SESSION['2fa'] == 1) {
+				$_SESSION['2fa'] = 0;            
+        	}
+			
             print("Success");
             break;            
         // Added by Bruce Tail
