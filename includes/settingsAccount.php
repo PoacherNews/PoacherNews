@@ -77,7 +77,7 @@ input {
 #enable2fa {
     display: block;
     margin-top: 25px;
-    width: 200px;
+    width: 250px;
     height: 35px;
     background-color: #6EDC6B;
     border-color: #267C23;
@@ -94,7 +94,7 @@ input {
 #disable2fa {
     display: block;
     margin-top: 25px;
-    width: 205px;
+    width: 250px;
     height: 35px;
     background-color: #FF8383;
     border-color: #D44F33;
@@ -175,11 +175,11 @@ input {
 <!-- Button integration to QR code / secret -->
         <?php 
             if($_SESSION['2fa'] == 0) { ?>
-                <button id="enable2fa">New enable2fa</button>
+                <button id="enable2fa">Enable Two-Factor Authentication</button>
             <?php } ?>
         <?php 
             if($_SESSION['2fa'] == 1) { ?>
-                <button id="disable2fa">New disable2fa</button>
+                <button id="disable2fa">Disable Two-Factor Authentication</button>
         <?php } ?>
 <!-- Added by Bruce Tail -->
 
@@ -246,11 +246,11 @@ input {
     });
     */
     
-    // Redirect to enable 2FA
-    var btn = document.getElementById('enable2fa');
-    btn.addEventListener('click', function() {
-    document.location.href = '/test.php';
+    // Redirect to enable/disable 2FA
+$('#enable2fa, #disable2fa').click(function() {
+    window.location.href = '/test.php';
 });
+
 /* Added by Bruce tail */
     
     
