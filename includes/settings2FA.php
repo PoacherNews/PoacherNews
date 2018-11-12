@@ -1,28 +1,17 @@
 <?php 
-    include 'util/loginCheck.php';
-
-// https://github.com/PHPGangsta/GoogleAuthenticator
-// https://www.youtube.com/watch?v=t49zjBGD75U
-// https://www.9lessons.info/2016/06/google-two-factor-authentication-login.html
-
-// Recovery code
-
-/*
-$checkResult = $authenticator->verifyCode($secret, $oneCode, 2);    // 2 = 2*30sec clock tolerance
-if ($checkResult) {
-    echo 'OK';
-} else {
-    echo 'FAILED';
-}*/
+    include '../util/loginCheck.php';
+    // https://github.com/PHPGangsta/GoogleAuthenticator
+    // https://www.youtube.com/watch?v=t49zjBGD75U
+    // https://www.9lessons.info/2016/06/google-two-factor-authentication-login.html
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <?php include 'includes/globalHead.html' ?>
+    <?php include 'globalHead.html' ?>
     <link rel="stylesheet" href="/res/css/settings.css">
 
-    <title>Enable 2FA</title>
+    <title>Settings | 2FA</title>
     <style>
         .accountContainer {
             max-width: 530px;
@@ -88,12 +77,12 @@ if ($checkResult) {
 </head>
 <body>
     <?php
-    	include 'includes/header.php';
-        include 'includes/nav.php';
+    	include 'header.php';
+        include 'nav.php';
     ?>
     <div id="mainContent">
-        <form id="GA" class="accountContainer">
-            <input type="hidden" name="action" value="GA"/>
+        <form id="TFAStatus" class="accountContainer">
+            <input type="hidden" name="action" value="TFAStatus"/>
 
 			<?php if($_SESSION['2fa'] == 0) { ?>
 				<h1>Enable Two-Factor Authentication</h1>
@@ -106,7 +95,7 @@ if ($checkResult) {
 			
             <div class="formFields">    
             <?php
-                require "util/GoogleAuthenticator.php";
+                require "../util/GoogleAuthenticator.php";
 
                 $authenticator = new GoogleAuthenticator();
 
@@ -115,54 +104,20 @@ if ($checkResult) {
                     $_SESSION['google2facode'] = $secret;
                 }
 
-				
                 $secret = $authenticator->createSecret();
 				
 				if($_SESSION['2fa'] == 0) {
-
                 	echo "Please download the Google Authenticator app to continue";
                 	echo "<br>";
                 	echo "(Google Authenticator link downloads)";
                 	echo "<br>";
                 	echo"<br>";
 
-					/*
-                	echo "Set secret is: ".$_SESSION['auth_secret']."";
-					echo "<br>";
-                	echo "Secret is: ".$secret."";
-                	echo "<br>";
-                	echo "<br>";
-					*/
-                
-                	/*
-                	$qrCode = $authenticator->getQR('PoacherNews', $secret);
-                	echo "<img src='{$qrCode}' >";
-                	echo "<br>";
-					*/
-                	$email = $_SESSION['email'];
-                	$qrCodeUrl = $authenticator->getQRCodeGoogleUrl($email, $_SESSION['google2facode'], 'PoacherNews.com');
-                	//echo "Google Charts URL for the QR-Code: ".$qrCodeUrl."\n\n";
-                	//echo "<br>";
+                	$qrCodeUrl = $authenticator->getQRCodeGoogleUrl($_SESSION['email'], $_SESSION['google2facode'], 'PoacherNews.com');
 					
                 	echo "<img src='{$qrCodeUrl}'>";
-                	echo "<br>";
-                	echo "<br>";
 					echo "Key: ".$_SESSION['google2facode']."";
-					
-					/*
-                	$oneCode = $authenticator->getCode($secret);
-				
-                	echo "Checking Code '$oneCode' and Secret '$secret':\n";
-                	echo "<br>";
-                	echo "<br>";
-                
-                	$checkResult = $authenticator->verifyCode($secret, $oneCode, 2);    // 2 = 2*30sec clock tolerance
-                	if ($checkResult) {
-						echo 'OK';
-                	} else {
-                    	echo 'FAILED';
-                	}
-					*/
+					echo "<br>";
 				} else if($_SESSION['2fa'] == 1) {
 					// Print nothing if 2FA is enabled
 				}
@@ -181,12 +136,12 @@ if ($checkResult) {
         </form>
         
         <script>
-        $("#GA").submit(function(event) {
+        $("#TFAStatus").submit(function(event) {
         $("#errorMessage").hide();
         $("#errorMessage").text('');
         $("#errorMessage").removeClass("error");
         event.preventDefault();
-        $.post("util/settingsHandler.php", $(this).serialize(), function(data) {
+        $.post("../util/settingsHandler.php", $(this).serialize(), function(data) {
             if(data != "Success") {
                 $("#errorMessage").addClass("error");
                 $("#errorMessage").text(data);
@@ -206,7 +161,7 @@ if ($checkResult) {
 				
 				// Redirect (set in milliseconds)
 				window.setTimeout(function() {
-    				window.location.href = 'http://localhost:8000/settings.php?tab=account';
+    				window.location.href = '/settings.php?tab=account';
 				}, 3000);
             }
         });
@@ -214,6 +169,6 @@ if ($checkResult) {
         </script>
         
     </div>
-    <?php include('includes/footer.html'); ?>
+    <?php include('footer.html'); ?>
 </body>
 </html>

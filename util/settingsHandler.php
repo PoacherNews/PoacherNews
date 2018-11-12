@@ -137,8 +137,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
         // Added by Bruce Head    
         // TODO:    
             
-        // New 2FA case
-        case "GA":
+        // 2FA status functionality
+        case "TFAStatus":
 			if($_SESSION['2fa'] == 0) {
             	require "GoogleAuthenticator.php";
 
@@ -150,7 +150,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 					break;
             	}
                 // Sets Google QR Code / Key to $_SESSION['google2facode'] upon activation
-                if(!updateTFACode($_SESSION['userid'], $_SESSION['google2facode'], $db)) {
+                if(!update2FACode($_SESSION['userid'], $_SESSION['google2facode'], $db)) {
                     print("Failed to store Google Authenticator Code.");
                     break;
                 }
@@ -160,7 +160,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 					break;
 				}
                 // Sets Google QR / Key to NULL upon deactivation
-                if(!updateTFACode($_SESSION['userid'], NULL, $db)) {
+                if(!update2FACode($_SESSION['userid'], NULL, $db)) {
                     print("Failed to reset Google Authenticator Code.");
                     break;
                 }
@@ -168,7 +168,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
                 $_SESSION['google2facode'] = NULL;
         	}
             // Updates 2FA status
-			if(!updateTFA($_SESSION['userid'], $db)) {
+			if(!update2FAStatus($_SESSION['userid'], $db)) {
 				print("Failed to update two-factor authentication. Please contact the site administrator.");
 				break;
 			}
@@ -184,11 +184,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
             print("Success");
             break;            
             
-        case "TFA":
+        case "TFACode":
             require "GoogleAuthenticator.php";
 
             $authenticator = new GoogleAuthenticator();
-            $checkResult = $authenticator->verifyCode($_SESSION['google2facode'], $_POST['2FACode'], 0);
+            $checkResult = $authenticator->verifyCode($_SESSION['google2facode'], $_POST['code'], 0);
 				
             if(!$checkResult) {
 				print ("Incorrect authentication code. Please try again.");
@@ -197,9 +197,21 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
                 // Unset $_SESSION['previous'] upon successful 2FA authentication
                 unset($_SESSION['previous']);
             }
-            
             print("Success");
             break;  
+            
+        case "recoverCode":
+            require "GoogleAuthenticator.php";
+
+            $authenticator = new GoogleAuthenticator();
+            $checkResult = $authenticator->verifyCode($_SESSION['google2facode'], $_POST['code'], 0);
+				
+            if(!$checkResult) {
+				print ("Incorrect authentication code. Please try again.");
+				break;
+            }
+            print("Success");
+            break;      
         // Added by Bruce Tail
             
 		case "deleteAccount":

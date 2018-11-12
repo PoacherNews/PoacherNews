@@ -352,7 +352,7 @@ $GLOBAL_SITE_URL = "https://poachernews.com";
 		if(!mysqli_query($db, $sql)) { return false; }
 		return true;
 	}
-    function updateTFA($uid, $db) {
+    function update2FAStatus($uid, $db) {
 		/* Updates the 2FA field of a user of provided User ID. */
         if($_SESSION['2fa'] == 0) {
     	   $sql = "UPDATE User SET 2FA = 1 WHERE UserID = {$uid}";
@@ -363,7 +363,7 @@ $GLOBAL_SITE_URL = "https://poachernews.com";
     	if(!mysqli_query($db, $sql)) { return false; }
 		return true;
     }
-    function updateTFACode($uid, $TFACode, $db) {
+    function update2FACode($uid, $TFACode, $db) {
 		/* Updates the Password field of a user of provided User ID. */
     	$sql = "UPDATE User SET Google2FACode = '{$TFACode}' WHERE UserID = {$uid}";
     	if(!mysqli_query($db, $sql)) { return false; }

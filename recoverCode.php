@@ -1,15 +1,16 @@
 <?php
     include 'util/loginCheck.php';
     // Set session of page URL / Used to destroy session if user does not enter GA code
-    $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
-
+    //$_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
 ?>
-<!-- Bastardized login.php -->
+<!-- Bastardized login.php / 2FA.php -->
 <!-- TODO -->
 
 <!--
-// Redirect logged in users manually entering 2fa.php
+// Redirect logged in users manually entering recoverCode.php
 // Add 2FACheck.php to other files
+// QR / Key viewable from page source
+// Redirect button after successful recover
 -->
 
 <!DOCTYPE html>
@@ -96,36 +97,36 @@
         include 'includes/nav.php';
     ?>
     <div id="mainContent">
-        <form id="TFACode" class="accountContainer">
-            <input type="hidden" name="action" value="TFACode"/>
-            <h1>Two-Factor Authentication</h1>
-            <span class="subheader">Enter your Google Authenticator code to login</span>
+        <form id="recoverCode" class="accountContainer">
+            <input type="hidden" name="action" value="recoverCode"/>
+            <h1>Recover Code</h1>
+            <span class="subheader">(do something) in order to recover code</span>
             <div class="formFields">
                 
             <?php	
-                /*
+                
                 require "util/GoogleAuthenticator.php";
                 $authenticator = new GoogleAuthenticator();
-                $qrCodeUrl = $authenticator->getQRCodeGoogleUrl($email, $_SESSION['google2facode'], 'PoacherNews.com');
-                
-                echo "<img src='{$qrCodeUrl}'>";
-                echo "<br>";
-                echo "Key: ".$_SESSION['google2facode']."";
-            
+                $qrCodeUrl = $authenticator->getQRCodeGoogleUrl($_SESSION['email'], $_SESSION['google2facode'], 'PoacherNews.com');
+            ?>
+                <div id="code">
+                    <img src="" id="QR">
+                    <p id="key"></p>
+                </div>
+            <?php
+                /*
                 echo "Session: ".$_SESSION['previous']."";
                 */
             ?>
 
-                <input type="text" name="code" placeholder="Verify Code">
+                <input type="text" name="code" placeholder="placeholder">
                 <input id="verifySubmitButton" type="submit" name="submit" value="Submit">
-                <a id="recoverCode" href="recoverCode.php">Recover Code</a>
-
             </div>
             <div id="errorMessage" class="settingsMessage"></div>
         </form>
         
         <script>
-        $("#TFACode").submit(function(event) {
+        $("#recoverCode").submit(function(event) {
         $("#errorMessage").hide();
         $("#errorMessage").text('');
         $("#errorMessage").removeClass("error");
@@ -135,23 +136,22 @@
                 $("#errorMessage").addClass("error");
                 $("#errorMessage").text(data);
                 $("#errorMessage").fadeIn();
-                
             } else {
-                $("#recoverCode").hide();
+                // QR / key shown in source code 
+                var QR = '<?php echo $qrCodeUrl; ?>';
+                var key = '<?php echo $_SESSION['google2facode'] ?>';
+                jQuery("#QR").attr("src", QR);
+                $("#key").text(key);
 				$("#verifySubmitButton").hide();
                 $("#errorMessage").addClass("success");
-                $("#errorMessage").text("Authentication success. <br />You will be redirected momentarily..");
+                $("#errorMessage").text("Recovery success.");
                 $("#errorMessage").fadeIn();
-                
-				// Redirect (set in milliseconds)
-				window.setTimeout(function() {
-    				window.location.href = 'index.php';
-				}, 3000);
             }
         });
     });
         </script>
         
+
     </div>
     <?php include('includes/footer.html'); ?>
 </body>

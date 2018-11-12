@@ -7,7 +7,6 @@ if(!session_start()) {
     exit;
 }
 
-
 // Check to see if the user has already logged in
 if(empty($_SESSION['loggedin'])) {
     $loggedIn = false;
@@ -115,7 +114,6 @@ function handle_login() {
         header("Location: /2FA.php");
     }
     else if($_SESSION['2fa'] == 0) {
-    
         // redirect    
         //echo '<meta http-equiv="refresh" content="1; url=/index.php">';
         header('Location: '.$_SERVER['HTTP_REFERER']); // Redirect the user to the page they logged in at
