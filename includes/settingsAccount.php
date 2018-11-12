@@ -38,42 +38,6 @@ input {
 }
     
 /* Added by Bruce Head */    
-/*
-#twoFactorAuthenticationEnableButton {
-    display: block;
-    margin-top: 25px;
-    width: 200px;
-    height: 35px;
-    background-color: #6EDC6B;
-    border-color: #267C23;
-    border-radius: 5px;
-    text-align: center;
-    font-weight: bold;
-    cursor: pointer;
-}
-#twoFactorAuthenticationEnableButton:hover {
-    background-color: green;
-    color: white;
-}
-    
-#twoFactorAuthenticationDisableButton {
-    display: block;
-    margin-top: 25px;
-    width: 205px;
-    height: 35px;
-    background-color: #FF8383;
-    border-color: #D44F33;
-    border-radius: 5px;
-    text-align: center;
-    font-weight: bold;
-    cursor: pointer;
-}
-#twoFactorAuthenticationDisableButton:hover {
-    background-color: red;
-    color: white;    
-}
-*/
-
 #enable2fa {
     display: block;
     margin-top: 25px;
@@ -107,7 +71,6 @@ input {
     background-color: red;
     color: white;    
 }        
-    
 /* Added by Bruce Tail*/
 
 </style>
@@ -151,36 +114,14 @@ input {
 
 <!-- Added by Bruce Head -->    
 <br>
-<!--
-<form id="twoFactorAuthentication">
-    <input type="hidden" name="action" value="twoFactorAuthentication"/>
-    <div class="sectionHeader">
-        <h2>Two-Factor Authentication</h2>
-        <span class="subheader">Enables two-factor authentication with the use of the Google Authenticator app</span>
-    </div>
-    <div id="twoFactorAuthentication">
-        <?php 
-            if($_SESSION['2fa'] == 0) { ?>
-            <input id="twoFactorAuthenticationEnableButton" type="submit" value="Enable Two-Factor Authentication"/>
-        <?php } ?>
-        
-        <?php 
-            if($_SESSION['2fa'] == 1) { ?>
-            <input id="twoFactorAuthenticationDisableButton" type="submit" value="Disable Two-Factor Authentication"/>
-        <?php } ?>
-    </div>
-    <div id="twoFactorAuthenticationError" class="settingsMessage"></div>
-</form>    
--->
-<!-- Button integration to QR code / secret -->
-        <?php 
-            if($_SESSION['2fa'] == 0) { ?>
-                <button id="enable2fa">Enable Two-Factor Authentication</button>
-            <?php } ?>
-        <?php 
-            if($_SESSION['2fa'] == 1) { ?>
-                <button id="disable2fa">Disable Two-Factor Authentication</button>
-        <?php } ?>
+    <?php 
+        if($_SESSION['2fa'] == 0) { ?>
+            <button id="enable2fa">Enable Two-Factor Authentication</button>
+    <?php } ?>
+    <?php 
+        if($_SESSION['2fa'] == 1) { ?>
+            <button id="disable2fa">Disable Two-Factor Authentication</button>
+     <?php } ?>
 <!-- Added by Bruce Tail -->
 
 <br>
@@ -226,34 +167,11 @@ input {
     });
     
 /* Added by Bruce head */
-    /*
-        $("#twoFactorAuthentication").submit(function(event) {
-        $("#twoFactorAuthenticationError").hide();
-        $("#twoFactorAuthenticationError").text('');
-        $("#twoFactorAuthenticationError").removeClass("error");
-        event.preventDefault();
-        $.post("util/settingsHandler.php", $(this).serialize(), function(data) {
-            if(data != "Success") {
-                $("#twoFactorAuthenticationError").addClass("error");
-                $("#twoFactorAuthenticationError").text(data);
-                $("#twoFactorAuthenticationError").fadeIn();
-            } else {
-                $("#twoFactorAuthenticationError").addClass("success");
-                $("#twoFactorAuthenticationError").text("Two-factor Authentication successfully updated.");
-                $("#twoFactorAuthenticationError").fadeIn();
-            }
-        });
-    });
-    */
-    
     // Redirect to enable/disable 2FA
-$('#enable2fa, #disable2fa').click(function() {
-    window.location.href = '/test.php';
-});
-
+    $('#enable2fa, #disable2fa').click(function() {
+        window.location.href = 'includes/settings2FA.php';
+    });
 /* Added by Bruce tail */
-    
-    
             
     $("#deleteAccount").submit(function(event) {
         $("#deleteError").hide();
