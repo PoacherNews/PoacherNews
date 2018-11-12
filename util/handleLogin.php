@@ -108,7 +108,8 @@ function handle_login() {
     $_SESSION['usertype'] = $row['Usertype'];
     $_SESSION['2fa'] = $row['2FA'];
     $_SESSION['google2facode'] = $row['Google2FACode'];
-    
+    $_SESSION['recoverycode'] = $row['RecoveryCode'];
+
     if($_SESSION['2fa'] == 1)
     {
         header("Location: /2FA.php");

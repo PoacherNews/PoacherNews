@@ -97,36 +97,20 @@
         include 'includes/nav.php';
     ?>
     <div id="mainContent">
-        <form id="recoverCode" class="accountContainer">
-            <input type="hidden" name="action" value="recoverCode"/>
-            <h1>Recover Code</h1>
-            <span class="subheader">(do something) in order to recover code</span>
+        <form id="recoveryCode" class="accountContainer">
+            <input type="hidden" name="action" value="recoveryCode"/>
+            <h1>Recovery Code</h1>
+            <span class="subheader">Phone inaccessible? Enter your recovery code.</span>
             <div class="formFields">
-                
-            <?php	
-                
-                require "util/GoogleAuthenticator.php";
-                $authenticator = new GoogleAuthenticator();
-                $qrCodeUrl = $authenticator->getQRCodeGoogleUrl($_SESSION['email'], $_SESSION['google2facode'], 'PoacherNews.com');
-            ?>
-                <div id="code">
-                    <img src="" id="QR">
-                    <p id="key"></p>
-                </div>
-            <?php
-                /*
-                echo "Session: ".$_SESSION['previous']."";
-                */
-            ?>
-
-                <input type="text" name="code" placeholder="placeholder">
+                <br>
+                <input type="text" name="RCode" placeholder="Recovery Code">
                 <input id="verifySubmitButton" type="submit" name="submit" value="Submit">
             </div>
             <div id="errorMessage" class="settingsMessage"></div>
         </form>
         
         <script>
-        $("#recoverCode").submit(function(event) {
+        $("#recoveryCode").submit(function(event) {
         $("#errorMessage").hide();
         $("#errorMessage").text('');
         $("#errorMessage").removeClass("error");
@@ -137,15 +121,15 @@
                 $("#errorMessage").text(data);
                 $("#errorMessage").fadeIn();
             } else {
-                // QR / key shown in source code 
-                var QR = '<?php echo $qrCodeUrl; ?>';
-                var key = '<?php echo $_SESSION['google2facode'] ?>';
-                jQuery("#QR").attr("src", QR);
-                $("#key").text(key);
 				$("#verifySubmitButton").hide();
                 $("#errorMessage").addClass("success");
-                $("#errorMessage").text("Recovery success.");
+                $("#errorMessage").text("Authentication success. <br />You will be redirected momentarily..");
                 $("#errorMessage").fadeIn();
+                
+				// Redirect (set in milliseconds)
+				window.setTimeout(function() {
+    				window.location.href = 'index.php';
+				}, 3000);                
             }
         });
     });
