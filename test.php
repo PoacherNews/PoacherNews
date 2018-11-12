@@ -93,7 +93,7 @@ if ($checkResult) {
     ?>
     <div id="mainContent">
         <form id="GA" class="accountContainer">
-                <input type="hidden" name="action" value="GA"/>
+            <input type="hidden" name="action" value="GA"/>
 
 			<?php if($_SESSION['2fa'] == 0) { ?>
 				<h1>Enable Two-Factor Authentication</h1>
@@ -110,9 +110,9 @@ if ($checkResult) {
 
                 $authenticator = new GoogleAuthenticator();
 
-                if(!isset($_SESSION['auth_secret'])) {
+                if(empty($_SESSION['google2facode'])) {
                     $secret = $authenticator->createSecret();
-                    $_SESSION['auth_secret'] = $secret;
+                    $_SESSION['google2facode'] = $secret;
                 }
 
 				
@@ -140,14 +140,14 @@ if ($checkResult) {
                 	echo "<br>";
 					*/
                 	$email = $_SESSION['email'];
-                	$qrCodeUrl = $authenticator->getQRCodeGoogleUrl($email, $_SESSION['auth_secret'], 'PoacherNews');
+                	$qrCodeUrl = $authenticator->getQRCodeGoogleUrl($email, $_SESSION['google2facode'], 'PoacherNews.com');
                 	//echo "Google Charts URL for the QR-Code: ".$qrCodeUrl."\n\n";
                 	//echo "<br>";
 					
                 	echo "<img src='{$qrCodeUrl}'>";
                 	echo "<br>";
                 	echo "<br>";
-					echo "Code is: ".$_SESSION['auth_secret']."";
+					echo "Key: ".$_SESSION['google2facode']."";
 					
 					/*
                 	$oneCode = $authenticator->getCode($secret);

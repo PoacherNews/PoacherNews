@@ -1,12 +1,23 @@
 <?php
     include 'util/loginCheck.php';
+    // Set session of page URL / Used to destroy session if user does not enter GA code
+    $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
+
 ?>
 <!-- Bastardized login.php -->
+<!-- TODO -->
+
+<!--
+// Redirect logged in users manually entering 2fa.php
+// Add 2FACheck.php to other files
+-->
 
 <!DOCTYPE html>
 <html>
 <head>
     <?php include 'includes/globalHead.html' ?>
+    <link rel="stylesheet" href="/res/css/settings.css">
+    
     <title>Login</title>
     <style>
         .accountContainer {
@@ -74,28 +85,72 @@
 <body>
     <?php
         // Check to see if the user has already logged in
-        if(empty($_SESSION['loggedin'])) {
+        if(empty($_SESSION['loggedin']) || $_SESSION['2fa'] == 0) {
             $loggedIn = false;
-        } else { // The user is already logged in, so send them back to the index
-             echo '<meta http-equiv="refresh" content="0; url=/index.php">';
+            // Unset $_SESSION['previous'] upon manual entry of 2FA.php
+            unset($_SESSION['previous']);
+            echo '<meta http-equiv="refresh" content="0; url=/index.php">';
             exit;
         }
     	include 'includes/header.php';
         include 'includes/nav.php';
     ?>
     <div id="mainContent">
-        <form class="accountContainer" action="/util/handleLogin.php" method="POST">
+        <form id="TFA" class="accountContainer">
+            <input type="hidden" name="action" value="TFA"/>
             <h1>Two-Factor Authentication</h1>
+            <span class="subheader">Enter your Google Authenticator code to login</span>
             <div class="formFields">
-                <input type="2FACode" name="2FACode" placeholder="Verify Code">
+                
+            <?php	
+                /*
+                require "util/GoogleAuthenticator.php";
+                $authenticator = new GoogleAuthenticator();
+                $qrCodeUrl = $authenticator->getQRCodeGoogleUrl($email, $_SESSION['google2facode'], 'PoacherNews.com');
+                
+                echo "<img src='{$qrCodeUrl}'>";
+                echo "<br>";
+                echo "Key: ".$_SESSION['google2facode']."";
+            
+                echo "Session: ".$_SESSION['previous']."";
+                */
+
+            ?>
+
+                <input type="text" name="2FACode" placeholder="Verify Code">
                 <input id="verifySubmitButton" type="submit" name="submit" value="Submit">
-                <?php
-                    if (isset($error)) {
-                        echo "<p class='errorMessage'>$error</p>";
-                    }
-                ?>
             </div>
+            <div id="errorMessage" class="settingsMessage"></div>
         </form>
+        
+        <script>
+        $("#TFA").submit(function(event) {
+        $("#errorMessage").hide();
+        $("#errorMessage").text('');
+        $("#errorMessage").removeClass("error");
+        event.preventDefault();
+        $.post("util/settingsHandler.php", $(this).serialize(), function(data) {
+            if(data != "Success") {
+                $("#errorMessage").addClass("error");
+                $("#errorMessage").text(data);
+                $("#errorMessage").fadeIn();
+                
+            } else {
+				$("#verifySubmitButton").hide();
+                $("#errorMessage").addClass("success");
+                $("#errorMessage").text("Authentication success. <br />You will be redirected momentarily..");
+                $("#errorMessage").fadeIn();
+                
+				// Redirect (set in milliseconds)
+				window.setTimeout(function() {
+    				window.location.href = 'http://localhost:8000/index.php';
+				}, 3000);
+            }
+        });
+    });
+        </script>
+        
+
     </div>
     <?php include('includes/footer.html'); ?>
 </body>
