@@ -95,7 +95,7 @@
             // Unset $_SESSION['previous'] for logged in Users to bypass 2FACheck.php
             unset($_SESSION['previous']);           
             echo '<meta http-equiv="refresh" content="0; url=/index.php">';
-            //exit;
+            exit;
         }
  
     
