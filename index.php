@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php 
+    session_start(); 
+    // Check if User is coming from 2FA.php
+    include 'util/2FACheck.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
