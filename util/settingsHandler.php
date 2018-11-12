@@ -208,22 +208,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
             } else {
                 // Unset $_SESSION['previous'] upon successful 2FA authentication
                 unset($_SESSION['previous']);
+                // Set a check, used to redirect during manually entry of 2FA.php during login
+                $_SESSION['check'] = true;
             }
             print("Success");
             break;  
             
         case "recoveryCode":
-            /*
-            require "GoogleAuthenticator.php";
-
-            $authenticator = new GoogleAuthenticator();
-            $checkResult = $authenticator->verifyCode($_SESSION['google2facode'], $_POST['recoveryCode'], 0);
-				
-            if(!$checkResult) {
-				print ("Incorrect recovery code. Please try again.");
-				break;
-            }
-            */
             if($_POST['RCode'] != $_SESSION['recoverycode']) {
                 print ("Incorrect recovery code. Please try again.");
 				break;

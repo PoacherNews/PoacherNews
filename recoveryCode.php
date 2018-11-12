@@ -1,16 +1,10 @@
 <?php
     include 'util/loginCheck.php';
-    // Set session of page URL / Used to destroy session if user does not enter GA code
-    //$_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
 ?>
-<!-- Bastardized login.php / 2FA.php -->
 <!-- TODO -->
 
 <!--
-// Redirect logged in users manually entering recoverCode.php
 // Add 2FACheck.php to other files
-// QR / Key viewable from page source
-// Redirect button after successful recover
 -->
 
 <!DOCTYPE html>
@@ -88,11 +82,15 @@
         // Check to see if the user has already logged in
         if(empty($_SESSION['loggedin']) || $_SESSION['2fa'] == 0) {
             $loggedIn = false;
-            // Unset $_SESSION['previous'] upon manual entry of 2FA.php
-            unset($_SESSION['previous']);
             echo '<meta http-equiv="refresh" content="0; url=/index.php">';
             exit;
         }
+        // Prevents access to recoveryCode.php unless prior page is 2FA.php
+        else if(!isset($_SESSION['previous'])) {
+            echo '<meta http-equiv="refresh" content="0; url=/index.php">';
+            exit;
+        }
+        
     	include 'includes/header.php';
         include 'includes/nav.php';
     ?>
