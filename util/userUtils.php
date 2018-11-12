@@ -369,6 +369,12 @@ $GLOBAL_SITE_URL = "https://poachernews.com";
     	if(!mysqli_query($db, $sql)) { return false; }
 		return true;
     }
+    function updateRecoveryCode($uid, $recoveryCode, $db) {
+		/* Updates the Password field of a user of provided User ID. */
+    	$sql = "UPDATE User SET RecoveryCode = '{$recoveryCode}' WHERE UserID = {$uid}";
+    	if(!mysqli_query($db, $sql)) { return false; }
+		return true;
+    }
     function updateUserPassword($uid, $password, $db) {
 		/* Updates the Password field of a user of provided User ID. */
     	$sql = "UPDATE User SET Password = '{$password}' WHERE UserID = {$uid}";

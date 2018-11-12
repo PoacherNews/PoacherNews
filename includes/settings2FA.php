@@ -105,6 +105,22 @@
                 }
 
                 $secret = $authenticator->createSecret();
+                
+                //Generate random recovery code string      
+                function generateRandomString($length = 10) {
+                    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    $charactersLength = strlen($characters);
+                    $randomString = '';
+                    for ($i = 0; $i < $length; $i++) {
+                        $randomString .= $characters[rand(0, $charactersLength - 1)];
+                    }
+            
+                    return $randomString;
+                }
+                // Store recovery code in session variable
+                if(empty($_SESSION['recoverycode'])) {
+                    $_SESSION['recoverycode'] = generateRandomString();
+                }    
 				
 				if($_SESSION['2fa'] == 0) {
                 	echo "Please download the Google Authenticator app to continue";
@@ -112,12 +128,20 @@
                 	echo "(Google Authenticator link downloads)";
                 	echo "<br>";
                 	echo"<br>";
-
+        
+                    echo "Save the following recovery code in the case that your phone is inaccessible.";
+                    echo "<br>";
+                    echo "Recovery Code: ".$_SESSION['recoverycode']."";
+                    echo "<br>";
+                    /*
+                    echo  generateRandomString();
+                    */
                 	$qrCodeUrl = $authenticator->getQRCodeGoogleUrl($_SESSION['email'], $_SESSION['google2facode'], 'PoacherNews.com');
 					
                 	echo "<img src='{$qrCodeUrl}'>";
 					echo "Key: ".$_SESSION['google2facode']."";
 					echo "<br>";
+                    
 				} else if($_SESSION['2fa'] == 1) {
 					// Print nothing if 2FA is enabled
 				}

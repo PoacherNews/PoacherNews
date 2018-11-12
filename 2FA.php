@@ -101,7 +101,7 @@
             <h1>Two-Factor Authentication</h1>
             <span class="subheader">Enter your Google Authenticator code to login</span>
             <div class="formFields">
-                
+            <br>
             <?php	
                 /*
                 require "util/GoogleAuthenticator.php";
@@ -118,7 +118,7 @@
 
                 <input type="text" name="code" placeholder="Verify Code">
                 <input id="verifySubmitButton" type="submit" name="submit" value="Submit">
-                <a id="recoverCode" href="recoverCode.php">Recover Code</a>
+                <a id="recoverCode" href="recoveryCode.php">Recovery Code</a>
 
             </div>
             <div id="errorMessage" class="settingsMessage"></div>
