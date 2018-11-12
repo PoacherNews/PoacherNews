@@ -1,14 +1,9 @@
 <?php
     include 'util/loginCheck.php';
-    // Set session of page URL / Used to destroy session if user does not enter GA code
-    $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
-
 ?>
-<!-- Bastardized login.php -->
 <!-- TODO -->
 
 <!--
-// Redirect logged in users manually entering 2fa.php
 // Add 2FACheck.php to other files
 -->
 
@@ -87,11 +82,23 @@
         // Check to see if the user has already logged in
         if(empty($_SESSION['loggedin']) || $_SESSION['2fa'] == 0) {
             $loggedIn = false;
-            // Unset $_SESSION['previous'] upon manual entry of 2FA.php
-            unset($_SESSION['previous']);
             echo '<meta http-equiv="refresh" content="0; url=/index.php">';
             exit;
+        } 
+        else if(!empty($_SESSION['loggedin'])) {
+            // Set session of page URL / Used to destroy session if user does not enter GA code
+            $_SESSION['previous'] = basename($_SERVER['PHP_SELF']);
         }
+        // $_SESSION['check'] created upon successful authentcation
+        // Set session check to redirect Users who have already successfully logged in with 2FA
+        if(!empty($_SESSION['check'])) {
+            // Unset $_SESSION['previous'] for logged in Users to bypass 2FACheck.php
+            unset($_SESSION['previous']);           
+            echo '<meta http-equiv="refresh" content="0; url=/index.php">';
+            //exit;
+        }
+ 
+    
     	include 'includes/header.php';
         include 'includes/nav.php';
     ?>
@@ -102,20 +109,6 @@
             <span class="subheader">Enter your Google Authenticator code to login</span>
             <div class="formFields">
             <br>
-            <?php	
-                /*
-                require "util/GoogleAuthenticator.php";
-                $authenticator = new GoogleAuthenticator();
-                $qrCodeUrl = $authenticator->getQRCodeGoogleUrl($email, $_SESSION['google2facode'], 'PoacherNews.com');
-                
-                echo "<img src='{$qrCodeUrl}'>";
-                echo "<br>";
-                echo "Key: ".$_SESSION['google2facode']."";
-            
-                echo "Session: ".$_SESSION['previous']."";
-                */
-            ?>
-
                 <input type="text" name="code" placeholder="Verify Code">
                 <input id="verifySubmitButton" type="submit" name="submit" value="Submit">
                 <a id="recoverCode" href="recoveryCode.php">Recovery Code</a>
