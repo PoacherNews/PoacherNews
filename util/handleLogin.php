@@ -7,7 +7,6 @@ if(!session_start()) {
     exit;
 }
 
-
 // Check to see if the user has already logged in
 if(empty($_SESSION['loggedin'])) {
     $loggedIn = false;
@@ -107,9 +106,19 @@ function handle_login() {
     $_SESSION['email'] = $row['Email'];
     $_SESSION['username'] = $row['Username'];
     $_SESSION['usertype'] = $row['Usertype'];
-    // redirect    
-    //echo '<meta http-equiv="refresh" content="1; url=/index.php">';
-    header('Location: '.$_SERVER['HTTP_REFERER']); // Redirect the user to the page they logged in at
-    exit;
+    $_SESSION['2fa'] = $row['2FA'];
+    $_SESSION['google2facode'] = $row['Google2FACode'];
+    $_SESSION['recoverycode'] = $row['RecoveryCode'];
+
+    if($_SESSION['2fa'] == 1)
+    {
+        header("Location: /2FA.php");
+    }
+    else if($_SESSION['2fa'] == 0) {
+        // redirect    
+        //echo '<meta http-equiv="refresh" content="1; url=/index.php">';
+        header('Location: '.$_SERVER['HTTP_REFERER']); // Redirect the user to the page they logged in at
+        exit;
+    }
 }
 ?>

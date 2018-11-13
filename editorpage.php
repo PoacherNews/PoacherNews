@@ -40,7 +40,7 @@
             include 'includes/toolsNav.php';
         ?>
 		<div class="editor-tab">
-			<button class="tablinks" onclick="editorTab(event, 'article');editorFocus();"><i class="fas fa-pencil-alt"></i></button>
+			<button class="tablinks" onclick="editorTab(event, 'article');"><i class="fas fa-pencil-alt"></i></button>
 			<button class="tablinks" onclick="editorTab(event, 'picture');"><i class="fas fa-camera"></i></button>
 			<button class="tablinks" onclick="editorTab(event, 'save');getInfo();"><i class="fas fa-save"></i></button>
 		</div>
@@ -82,10 +82,11 @@
 					<div id="image-container">
 						<div id="image-wrapper">
 							<div id="image-box">
-								<?php 
+								<?php
+									$hashed_subdir = hash_hmac('md5', $articleData['UserID'], $articleData['PublishDate']);
 									$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
 									if($isDraft) {
-										print "<img id=image src=https://poachernews.com/res/img/articlePictures/{$articleData['ArticleID']}/{$articleData['ArticleImage']} alt=Image width=250 height=250/><br>";
+										print "<img id=image src=https://poachernews.com/res/img/articlePictures/{$hashed_subdir}/{$articleData['ArticleImage']} alt=Image width=250 height=250/><br>";
 									} else {
 										print "<img id=image src=https://poachernews.com/res/img/articlePictures/defaultArticleImage.png alt=Image width=250 height=250/><br>";
 									}
@@ -100,14 +101,12 @@
 									print "<input id=upload-image type=file name=image onchange=getImagePath();uploadImage(this); accept=image/jpeg,image/png style=display:none; required/> ";
 								}
 							?>
-							<!-- <input id="upload-image" type="file" name="image" onchange="getImagePath(); uploadImage(this);" accept="image/jpeg, image/png" style="display: none;" /> -->
 						</div>
 					</div>
                 </div>
             </div>
 
-            <div id="save" class="tabcontent" onclick="getInfo()">
-				
+            <div id="save" class="tabcontent" onclick="getInfo();">
                 <h3>Save/Submit</h3>
                 <div class="get-info">
                     <h3>Article Info</h3>
@@ -121,17 +120,17 @@
                     <label>Picture: </label>
                     <input type="text" id="getImage" readonly>
 					-->
-                    <input onclick="submitBtn()" type="button" id="submit-button" value="Submit"><br>
+                    <input onclick="submitBtn();" type="button" id="submit-button" value="Submit"><br>
                     <div id="submit-draft" class="submit">
                           <div class="modal-content">
-                            <span onclick="exitModal()" class="close">&times;</span>
+                            <span onclick="exitModal();" class="close">&times;</span>
                               <p>Are you sure you want to submit?</p>
                               <input type="submit" id="verify-submit" value="Yes" name="submit">
-                              <input onclick="cancel()" type="button" id="cancel-submit" value="No" name="no-submit">
+                              <input onclick="cancel();" type="button" id="cancel-submit" value="No" name="no-submit">
                           </div>
                     </div>
                     <!-- Saving Article -->
-                    <input onclick="saveBtn()" type="submit" id="save-button" value="Save" name="save">
+                    <input onclick="saveBtn();" type="submit" id="save-button" value="Save" name="save">
                 </div>
 				
             </div>

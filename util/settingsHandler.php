@@ -101,7 +101,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 			}
 
 			// Password change functionality
-			
 			if(!empty($_POST['currentPassword'])) { 
 				if(empty($_POST['newPassword']) || empty($_POST['confirmPassword'])) { // Make sure that if the new password field is set, the other password fields are set
 					print("Please fill out all password fields.");
@@ -134,6 +133,100 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 
 			print "Success";
 			break;
+            
+        // Added by Bruce Head    
+        // TODO:    
+            
+        // 2FA status functionality
+        case "TFAStatus":
+			if($_SESSION['2fa'] == 0) {
+            	require "GoogleAuthenticator.php";
+
+				$authenticator = new GoogleAuthenticator();
+            	$checkResult = $authenticator->verifyCode($_SESSION['google2facode'], $_POST['code'], 0);
+				
+            	if(!$checkResult) {
+					print ("Incorrect authentication code. Please try again.");
+					break;
+            	}
+                // Sets Google QR Code / Key to $_SESSION['google2facode'] upon activation
+                if(!update2FACode($_SESSION['userid'], $_SESSION['google2facode'], $db)) {
+                    print("Failed to store Google Authenticator Code.");
+                    break;
+                }
+                // Sets recovery code to $_SESSION['recoverycode'] upon activation
+                if(!updateRecoveryCode($_SESSION['userid'], $_SESSION['recoverycode'], $db)) {
+                    print("Failed to store recovery code.");
+                    break;
+                }                
+			} else if($_SESSION['2fa'] == 1) {
+				if(!password_verify($_POST['password'], getHashedPassword($_SESSION['userid'], $db))) {
+					print("Password is incorrect.");
+					break;
+				}
+                // Sets Google QR / Key to NULL upon deactivation
+                if(!update2FACode($_SESSION['userid'], NULL, $db)) {
+                    print("Failed to reset Google Authenticator Code.");
+                    break;
+                }
+                // Sets recovery code to NULL upon deactivation
+                if(!updateRecoveryCode($_SESSION['userid'], NULL, $db)) {
+                    print("Failed to reset recovery code.");
+                    break;
+                }                
+                // Update $_SESSION['google2facode'] to generate new Google QR / Key upon deactivation
+                $_SESSION['google2facode'] = NULL;
+                // Update $_SESSION['recoverycode'] to generate new recovery code upon deactivation
+                $_SESSION['recoverycode'] = NULL;
+        	}            
+            // Updates 2FA status
+			if(!update2FAStatus($_SESSION['userid'], $db)) {
+				print("Failed to update two-factor authentication. Please contact the site administrator.");
+				break;
+			}            
+			
+			// Update Session variable for User
+        	if($_SESSION['2fa'] == 0) {
+				$_SESSION['2fa'] = 1;            
+        	}
+        	else if($_SESSION['2fa'] == 1) {
+				$_SESSION['2fa'] = 0;            
+        	}
+			
+            print("Success");
+            break;            
+            
+        case "TFACode":
+            require "GoogleAuthenticator.php";
+
+            $authenticator = new GoogleAuthenticator();
+            $checkResult = $authenticator->verifyCode($_SESSION['google2facode'], $_POST['code'], 0);
+				
+            if(!$checkResult) {
+				print ("Incorrect authentication code. Please try again.");
+				break;
+            } else {
+                // Unset $_SESSION['previous'] upon successful 2FA authentication
+                unset($_SESSION['previous']);
+                // Set a check, used to redirect during manually entry of 2FA.php during login
+                $_SESSION['check'] = true;
+            }
+            print("Success");
+            break;  
+            
+        case "recoveryCode":
+            if($_POST['RCode'] != $_SESSION['recoverycode']) {
+                print ("Incorrect recovery code. Please try again.");
+				break;
+            } else {
+                // Unset $_SESSION['previous'] upon successful 2FA authentication
+                unset($_SESSION['previous']);                
+            }
+            
+            print("Success");
+            break;      
+        // Added by Bruce Tail
+            
 		case "deleteAccount":
 		// print_r($_POST);
 			if(empty($_POST['deleteConfirm'])) {
@@ -154,7 +247,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
         	session_destroy();
 			print("Success");
 			// header('Location: login.php');
-			break;
+			break;    
 	}
 }
 
