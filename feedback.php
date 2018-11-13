@@ -25,14 +25,14 @@
         </p>
         <form name="contactform" class="formTable" method="post" action="util/emailForm.php">
             <label for="first_name">First Name *</label>
-            <input  type="text" name="first_name" maxlength="50" size="30">
+            <input class="feedbackInput" type="text" name="first_name" maxlength="50" size="30">
             <label for="last_name">Last Name *</label>
-            <input  type="text" name="last_name" maxlength="50" size="30">
+            <input class="feedbackInput" type="text" name="last_name" maxlength="50" size="30">
             <label for="email">Email Address *</label>
-            <input  type="text" name="email" maxlength="80" size="30">
+            <input class="feedbackInput" type="text" name="email" maxlength="80" size="30">
             <label for="comments">Comments *</label>
-            <textarea  name="comments" maxlength="2000" cols="50" rows="6" id="comments"></textarea>
-            <input type="submit" value="Submit">  
+            <textarea class="feedbackInput" name="comments" maxlength="2000" cols="50" rows="6" id="comments"></textarea>
+            <input class="feedbackSubmit" type="submit" value="Submit">  
         </form>
     </div>
     <?php include('includes/footer.html'); ?>
