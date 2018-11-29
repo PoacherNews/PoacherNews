@@ -86,7 +86,7 @@
 
 			<?php if($_SESSION['2fa'] == 0) { ?>
 				<h1>Enable Two-Factor Authentication</h1>
-				<span class="subheader">Enter your Google Authenticator code to enable two-factor authentication</span>
+				<span class="subheader">Enter your authenticator code to enable two-factor authentication</span>
             <?php } ?>
 			<?php if($_SESSION['2fa'] == 1) { ?>
 				<h1>Disable Two-Factor Authentication</h1>
@@ -123,9 +123,9 @@
                 }    
 				
 				if($_SESSION['2fa'] == 0) {
-                	echo "Please download the Google Authenticator app to continue";
+                	echo "Please download a two-factor authentication app to continue";
                 	echo "<br>";
-                	echo "(Google Authenticator link downloads)";
+                	// echo "(Google Authenticator link downloads)";
                 	echo "<br>";
                 	echo"<br>";
         

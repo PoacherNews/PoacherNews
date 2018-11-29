@@ -114,6 +114,10 @@ input {
 
 <!-- Added by Bruce Head -->    
 <br>
+<div class="sectionHeader">
+    <h2>Two-Factor Authentication</h2>
+        <span class="subheader">Enables two-factor authentication with the use of a two-factor authentication app</span>
+</div>
     <?php 
         if($_SESSION['2fa'] == 0) { ?>
             <button id="enable2fa">Enable Two-Factor Authentication</button>
