@@ -94,6 +94,7 @@
     	include 'includes/header.php';
         include 'includes/nav.php';
     ?>
+    
     <div id="mainContent">
         <form id="recoveryCode" class="accountContainer">
             <input type="hidden" name="action" value="recoveryCode"/>

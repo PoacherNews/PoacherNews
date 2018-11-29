@@ -149,13 +149,17 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 					print ("Incorrect authentication code. Please try again.");
 					break;
             	}
+                // Hash 2faCode
+                $tfaCode = password_hash($_SESSION['google2facode'], PASSWORD_DEFAULT);
                 // Sets Google QR Code / Key to $_SESSION['google2facode'] upon activation
-                if(!update2FACode($_SESSION['userid'], $_SESSION['google2facode'], $db)) {
-                    print("Failed to store Google Authenticator Code.");
+                if(!update2FACode($_SESSION['userid'], $tfaCode, $db)) {
+                    print("Failed to store two-factor authentication code.");
                     break;
                 }
-                // Sets recovery code to $_SESSION['recoverycode'] upon activation
-                if(!updateRecoveryCode($_SESSION['userid'], $_SESSION['recoverycode'], $db)) {
+                // Hash recovery code
+                $recoveryCode = password_hash($_SESSION['recoverycode'], PASSWORD_DEFAULT);
+                // Sets recovery code to $recoveryCode upon activation
+                if(!updateRecoveryCode($_SESSION['userid'], $recoveryCode, $db)) {
                     print("Failed to store recovery code.");
                     break;
                 }                
@@ -200,7 +204,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
             require "GoogleAuthenticator.php";
 
             $authenticator = new GoogleAuthenticator();
-            $checkResult = $authenticator->verifyCode($_SESSION['google2facode'], $_POST['code'], 0);
+            
+            $r = password_verify($_POST['code'], $_SESSION['google2facode']);
+        
+            $checkResult = $authenticator->verifyCode($r, $_POST['code'], 0);
 				
             if(!$checkResult) {
 				print ("Incorrect authentication code. Please try again.");
@@ -215,14 +222,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
             break;  
             
         case "recoveryCode":
-            if($_POST['RCode'] != $_SESSION['recoverycode']) {
+            if (!password_verify($_POST['RCode'], $_SESSION['recoverycode']))
+            {
                 print ("Incorrect recovery code. Please try again.");
 				break;
             } else {
                 // Unset $_SESSION['previous'] upon successful 2FA authentication
-                unset($_SESSION['previous']);                
+                unset($_SESSION['previous']);                   
             }
-            
+        
             print("Success");
             break;      
         // Added by Bruce Tail

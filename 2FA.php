@@ -102,6 +102,17 @@
     	include 'includes/header.php';
         include 'includes/nav.php';
     ?>
+    
+    <?php
+    echo $_SESSION['google2facode'];
+    echo "<br>";
+    if (password_verify('2GOTX6XVSFUKEKPV', $_SESSION['google2facode'])) {
+    echo 'Password is valid!';
+} else {
+    echo 'Invalid password.';
+}
+    ?>
+    
     <div id="mainContent">
         <form id="TFACode" class="accountContainer">
             <input type="hidden" name="action" value="TFACode"/>
