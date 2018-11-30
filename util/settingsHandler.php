@@ -143,16 +143,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
             	require "GoogleAuthenticator.php";
 
 				$authenticator = new GoogleAuthenticator();
-            	$checkResult = $authenticator->verifyCode($_SESSION['google2facode'], $_POST['code'], 0);
-				
+            	$checkResult = $authenticator->verifyCode($_SESSION['google2facode'], $_POST['code'], 0);				
             	if(!$checkResult) {
 					print ("Incorrect authentication code. Please try again.");
 					break;
             	}
-                // Hash 2faCode
-                $tfaCode = password_hash($_SESSION['google2facode'], PASSWORD_DEFAULT);
                 // Sets Google QR Code / Key to $_SESSION['google2facode'] upon activation
-                if(!update2FACode($_SESSION['userid'], $tfaCode, $db)) {
+                if(!update2FACode($_SESSION['userid'], $_SESSION['google2facode'], $db)) {
                     print("Failed to store two-factor authentication code.");
                     break;
                 }
@@ -204,10 +201,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
             require "GoogleAuthenticator.php";
 
             $authenticator = new GoogleAuthenticator();
-            
-            $r = password_verify($_POST['code'], $_SESSION['google2facode']);
-        
-            $checkResult = $authenticator->verifyCode($r, $_POST['code'], 0);
+            $checkResult = $authenticator->verifyCode($_SESSION['google2facode'], $_POST['code'], 0);
 				
             if(!$checkResult) {
 				print ("Incorrect authentication code. Please try again.");

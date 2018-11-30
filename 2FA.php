@@ -103,21 +103,11 @@
         include 'includes/nav.php';
     ?>
     
-    <?php
-    echo $_SESSION['google2facode'];
-    echo "<br>";
-    if (password_verify('2GOTX6XVSFUKEKPV', $_SESSION['google2facode'])) {
-    echo 'Password is valid!';
-} else {
-    echo 'Invalid password.';
-}
-    ?>
-    
     <div id="mainContent">
         <form id="TFACode" class="accountContainer">
             <input type="hidden" name="action" value="TFACode"/>
             <h1>Two-Factor Authentication</h1>
-            <span class="subheader">Enter your Google Authenticator code to login</span>
+            <span class="subheader">Enter your authenticator code to login</span>
             <div class="formFields">
             <br>
                 <input type="text" name="code" placeholder="Verify Code">
