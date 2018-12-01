@@ -108,6 +108,7 @@
 			exit;
 		}
 		echo "Article: " . $title . " inserted successfully.";
+		mysqli_close($db);
 		redirectTools();
 	}
 
@@ -131,6 +132,7 @@
 				exit;
 		}
 		echo "Article: " . $title . " updated successfully.";
+		mysqli_close($db);
 		redirectTools();
 	}
 	
@@ -159,29 +161,24 @@
 		  	exit;
 		}
 		$row = $result->fetch_assoc();
+		mysqli_close($db);
 		return $row['UserID'];
 	}
 
 	function getImage() {
 		/* Gets the article image and returns the filename if it is valid */
-		if(!isset($_POST['article_id'])) {
-		  	$db = dbConnect();
-			$stmt = $db->stmt_init();
-			$sql = "SELECT MAX(ArticleID) FROM Article";
-			$result = mysqli_query($db, $sql) or die(mysqli_error());
-
-			while($row = mysqli_fetch_assoc($result)){
-				foreach($row as $value){
-					$_POST['article_id'] = $value + 1;
-					print $_POST['article_id'];
-				}
-			}
-	  	}
-		
-		
-		$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/".$_POST['article_id']."/";
+		$db = dbConnect();
+		$articleData = getArticleByID($_POST['article_id'], $db);
+		$authorID = getAuthorByID($_SESSION['userid'], $db);
+		$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
+		if(!isset($_POST['article_id'])) { 
+			$cur_date = date("Y-m-d H:i:s");
+			$articleData['PublishDate'] = $cur_date;
+		}
+		$hashed_subdir = hash_hmac('md5', $authorID['UserID'], $articleData['PublishDate']);
+		$target_dir = "/home/ec2-user/public_html/res/img/articlePictures/".$hashed_subdir."/";
 		//Used for local host
-		//$target_dir = "/Users/rolandoruche/Desktop/test/PoacherNews/res/img/articlePictures/".$_POST['article_id']."/";
+		//$target_dir = "/Users/rolandoruche/Desktop/test/PoacherNews/res/img/articlePictures/".$hashed_subdir."/";
 		if (!file_exists($target_dir)) {
 			mkdir($target_dir, 0777, true);
 		}
@@ -193,31 +190,49 @@
 		$imageFileType = basename($_FILES['image']['type']);
 		$extensions_arr = ["gif", "jpeg", "jpg", "png"];
 		
-		if(in_array($imageFileType, $extensions_arr)) {
+		switch($isDraft) {
+			case TRUE:
+				if(empty($_FILES['image']['name'])) {
+					if(empty($articleData['ArticleImage'])) {
+						return;
+					}
+					return $articleData['ArticleImage'];
+				} else {
+					imageValidation($imageFileType, $extensions_arr, $target_file);
+				}
+				break;
+			case FALSE:
+				imageValidation($imageFileType, $extensions_arr, $target_file);
+				break;
+		}
+		
+		mysqli_close($db);
+		return $filename;	
+ 	}
+	
+	function imageValidation($type, $ext, $target) {
+		if(in_array($type, $ext)) {
 			echo "Valid extension: success<br>";
-			
+
 			if(is_uploaded_file($_FILES['image']['tmp_name'])) {
 				echo "Image upload via HTTP POST: success<br>";
 			} else {
 				echo "Image upload via HTTP POST: FAILED<br>";
 			}
-			
+
 			if($_FILES["image"]["size"] > 500000) {
 				echo "Image correct size: FAILED<br>";
-				//return FALSE;
 			} else {
 				echo "Image correct size: success<br>";
 			}
-			if(move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
+			if(move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
 				echo "Image moved to file: success<br>";
-				
+
 			} else {
 				echo "Image moved to file: FAILED<br>";
 			}
 		} else {
 			echo "Valid extension: FAILED<br>";
 		}
-		
-		return $filename;
- 	}
+	}
 ?>

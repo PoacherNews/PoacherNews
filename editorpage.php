@@ -24,12 +24,13 @@
 <html>
     <head>
         <title>The Poacher | Editor Page</title>
-        <link rel="stylesheet" href="res/css/editorpage.css">
+        <link rel="stylesheet" href="res/css/editorpage.css"/>
         <link rel="stylesheet" href="res/css/tools.css"/>
+		<link rel="stylesheet" href="res/css/quill.snow.css"/>
         <?php include 'includes/globalHead.html'?>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<!-- Include the Quill librarys -->
-		<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+		<!-- <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"> -->
 		<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     </head>
     <body>
@@ -39,7 +40,7 @@
             include 'includes/toolsNav.php';
         ?>
 		<div class="editor-tab">
-			<button class="tablinks" onclick="editorTab(event, 'article');editorFocus();"><i class="fas fa-pencil-alt"></i></button>
+			<button class="tablinks" onclick="editorTab(event, 'article');"><i class="fas fa-pencil-alt"></i></button>
 			<button class="tablinks" onclick="editorTab(event, 'picture');"><i class="fas fa-camera"></i></button>
 			<button class="tablinks" onclick="editorTab(event, 'save');getInfo();"><i class="fas fa-save"></i></button>
 		</div>
@@ -78,22 +79,34 @@
             <div id="picture" class="tabcontent">
                 <h3>Choose a picture</h3>
                 <div class="editor-image">
-					<!-- TODO -->
-                    <input onchange="uploadImage(this);" id="upload-image" type='file' name="image" required/>
-                    <div id="picture-content">
-						<?php 
-							$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
-							if($isDraft) {
-								print "<img id=image src=/res/img/articlePictures/{$articleData['ArticleID']}/{$articleData['ArticleImage']} alt=Image width=650 height=434/>";
-							} else {
-								print "<img id=image src=/# alt=Image width=650 height=434/>";
-							}
-						?>
-                    </div>
+					<div id="image-container">
+						<div id="image-wrapper">
+							<div id="image-box">
+								<?php
+									$hashed_subdir = hash_hmac('md5', $articleData['UserID'], $articleData['PublishDate']);
+									$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
+									if($isDraft) {
+										print "<img id=image src=https://poachernews.com/res/img/articlePictures/{$hashed_subdir}/{$articleData['ArticleImage']} alt=Image width=250 height=250/><br>";
+									} else {
+										print "<img id=image src=https://poachernews.com/res/img/articlePictures/defaultArticleImage.png alt=Image width=250 height=250/><br>";
+									}
+								?>
+								<span id="image-path"><?php if($isDraft) print $articleData['ArticleImage'];?></span>
+							</div>
+							<label for="upload-image">Upload</label>
+							<?php
+								if($isDraft) {
+									print "<input id=upload-image type=file name=image onchange=getImagePath();uploadImage(this); accept=image/jpeg,image/png style=display:none; /> ";
+								} else {
+									print "<input id=upload-image type=file name=image onchange=getImagePath();uploadImage(this); accept=image/jpeg,image/png style=display:none; required/> ";
+								}
+							?>
+						</div>
+					</div>
                 </div>
             </div>
 
-            <div id="save" class="tabcontent" onclick="getInfo()">
+            <div id="save" class="tabcontent" onclick="getInfo();">
                 <h3>Save/Submit</h3>
                 <div class="get-info">
                     <h3>Article Info</h3>
@@ -107,18 +120,19 @@
                     <label>Picture: </label>
                     <input type="text" id="getImage" readonly>
 					-->
-                    <input onclick="submitBtn()" type="button" id="submit-button" value="Submit"><br>
+                    <input onclick="submitBtn();" type="button" id="submit-button" value="Submit"><br>
                     <div id="submit-draft" class="submit">
                           <div class="modal-content">
-                            <span onclick="exitModal()" class="close">&times;</span>
+                            <span onclick="exitModal();" class="close">&times;</span>
                               <p>Are you sure you want to submit?</p>
                               <input type="submit" id="verify-submit" value="Yes" name="submit">
-                              <input onclick="cancel()" type="button" id="cancel-submit" value="No" name="no-submit">
+                              <input onclick="cancel();" type="button" id="cancel-submit" value="No" name="no-submit">
                           </div>
                     </div>
                     <!-- Saving Article -->
-                    <input onclick="saveBtn()" type="submit" id="save-button" value="Save" name="save">
+                    <input onclick="saveBtn();" type="submit" id="save-button" value="Save" name="save">
                 </div>
+				
             </div>
 		</form>
 		<script type="text/javascript">
@@ -188,23 +202,6 @@
                 modal.style.display = "none";
             }
 /******************************* FILE UPLOADING *******************************/
-            function uploadFile() {
-                var formData = new FormData(); 
-                formData.append('document', $('#upload-document')[0].files[0]); 
-                $.ajax({
-                    url: 'readTextFile.php',
-                    type: 'POST',
-                    data: formData,
-                    success: function (output) {
-                        $('#editor').html(output);
-						// TODO
-                    },
-                    cache: false,
-                    contentType: false,
-                    processData: false
-                });
-            }
-			
 			function uploadImage(event) {
 				/* Calls a PHP Ajax request to see if the image is in the correct format. If it isn't it will alert
 				an error otherwise display the image. */
@@ -239,6 +236,16 @@
                 });	
             }
 			
+			function getImagePath() {
+				var input = document.getElementById('upload-image');
+				var path = document.getElementById('image-path');
+				path.innerHTML = imageBasename(input.value);
+			}
+			
+			function imageBasename(input) {
+				return input.split(/[\\/]/).pop();
+			}
+			
 			function readURL(input) {
 				/* Reads in an image using FileReader then displays it in the image box. Removes image if contents are
 				not present. */
@@ -252,7 +259,8 @@
 						reader.readAsDataURL(input.files[0]);
 					}
 				} else {
-					$('#image').attr('src', '');
+					var defaultImage = 'https://poachernews.com/res/img/articlePictures/defaultArticleImage.png';
+					$('#image').attr('src', defaultImage);
 				}
 			}
             $("#upload-image").change(function(){readURL(this);});

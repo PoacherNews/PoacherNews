@@ -36,6 +36,42 @@ input {
     background-color: red;
     color: white;
 }
+    
+/* Added by Bruce Head */    
+#enable2fa {
+    display: block;
+    margin-top: 25px;
+    width: 250px;
+    height: 35px;
+    background-color: #6EDC6B;
+    border-color: #267C23;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+#enable2fa:hover {
+    background-color: green;
+    color: white;
+}
+    
+#disable2fa {
+    display: block;
+    margin-top: 25px;
+    width: 250px;
+    height: 35px;
+    background-color: #FF8383;
+    border-color: #D44F33;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+#disable2fa:hover {
+    background-color: red;
+    color: white;    
+}        
+/* Added by Bruce Tail*/
 
 </style>
 <form id="account">
@@ -71,10 +107,27 @@ input {
         <label for="confirmPassword">Confirm New Password</label>
         <input type="password" name="confirmPassword" autocomplete="off" />
     </div>
-
+    
     <div id="saveMessage" class="settingsMessage error"></div>
     <input class="settingsSubmit" type="submit" value="Save changes"/>
 </form>
+
+<!-- Added by Bruce Head -->    
+<br>
+<div class="sectionHeader">
+    <h2>Two-Factor Authentication</h2>
+        <span class="subheader">Enables two-factor authentication with the use of a two-factor authentication app</span>
+</div>
+    <?php 
+        if($_SESSION['2fa'] == 0) { ?>
+            <button id="enable2fa">Enable Two-Factor Authentication</button>
+    <?php } ?>
+    <?php 
+        if($_SESSION['2fa'] == 1) { ?>
+            <button id="disable2fa">Disable Two-Factor Authentication</button>
+     <?php } ?>
+<!-- Added by Bruce Tail -->
+
 <br>
 <form id="deleteAccount">
     <input type="hidden" name="action" value="deleteAccount"/>
@@ -116,6 +169,14 @@ input {
             $("#saveMessage").delay(5000).fadeOut();
         });
     });
+    
+/* Added by Bruce head */
+    // Redirect to enable/disable 2FA
+    $('#enable2fa, #disable2fa').click(function() {
+        window.location.href = 'includes/settings2FA.php';
+    });
+/* Added by Bruce tail */
+            
     $("#deleteAccount").submit(function(event) {
         $("#deleteError").hide();
         $("#deleteError").text('');
