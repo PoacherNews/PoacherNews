@@ -106,18 +106,18 @@ function handle_login() {
     $_SESSION['email'] = $row['Email'];
     $_SESSION['username'] = $row['Username'];
     $_SESSION['usertype'] = $row['Usertype'];
-    $_SESSION['2fa'] = $row['2FA'];
-    $_SESSION['google2facode'] = $row['Google2FACode'];
+    $_SESSION['tfastatus'] = $row['tfaStatus'];
+    $_SESSION['qrcode'] = $row['qrCode'];
     $_SESSION['recoverycode'] = $row['RecoveryCode'];
 
-    if($_SESSION['2fa'] == 1)
+	// Redirect the user to TFA.php if two-factor authentication is enabled
+    if($_SESSION['tfastatus'] == 1)
     {
-        header("Location: /2FA.php");
+        header("Location: /TFA.php");
     }
-    else if($_SESSION['2fa'] == 0) {
-        // redirect    
-        //echo '<meta http-equiv="refresh" content="1; url=/index.php">';
-        header('Location: '.$_SERVER['HTTP_REFERER']); // Redirect the user to the page they logged in at
+	// Redirect the user to the page they logged in at if two-factor authentication is disabled
+    else if($_SESSION['tfastatus'] == 0) {
+        header('Location: '.$_SERVER['HTTP_REFERER']);
         exit;
     }
 }
