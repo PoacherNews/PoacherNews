@@ -32,6 +32,10 @@
 		<!-- Include the Quill librarys -->
 		<!-- <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"> -->
 		<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+        <!-- Inclusion for Select2 jQuery replacement for default select statement -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
     </head>
     <body>
         <?php
@@ -71,6 +75,23 @@
                     <option value="Video"<?php if($articleData['Category'] == "Video"){print "selected";}?>>Video</option>
                     <option value="Local"<?php if($articleData['Category'] == "Local"){print "selected";}?>>Local</option>
                     <option value="Opinion"<?php if($articleData['Category'] == "Opinion"){print "selected";}?>>Opinion</option>
+                </select>
+                <!-- Article Tags Select2 Dropdown -->    
+                <select class="js-tags-dropdown" name="tags" multiple="multiple">
+                    <?php
+                        // Runs qeury to pull Tags from Tag table
+                        $sql = "SELECT TagName FROM Tag ORDER BY TagName ASC";
+                        $result = $db->query($sql);
+                        
+                        // Populates select statement with individual Tag options
+                        if($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row["TagName"] . '">' . $row["TagName"] . '</option>';
+                            }
+                        } else {
+                            echo "0 results";
+                        }                
+                    php?>
                 </select>
 				<!-- EDITOR -->
                 <div id="editor" style="height: 800px;"><?php if($articleData['Body'])print decodeArticleBodyFormatting($articleData['Body']);?></div>
@@ -167,6 +188,16 @@
                 var category = document.getElementById('category').value;
                 document.getElementById('getCategory').value = category;
             }
+/******************************* ARTICLE TAGS SELECT2 *******************************/
+            $(document).ready(function() {
+                $('.js-tags-dropdown').select2({
+                    placeholder: 'Select article tags',
+                    tags: true,
+                    tokenSeparators: [',', ' '],
+                    maximumSelectionLength: 7,
+                    closeOnSelect: false
+                });
+            });            
  /******************************* EDITIOR COMPATIBILITY *******************************/
 			document.getElementById('editor').addEventListener('paste', function(event) { // All pasted text converted to default font
                 event.preventDefault();
