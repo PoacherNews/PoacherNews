@@ -51,14 +51,39 @@
                 <div class="testFlex">
                 <?php
                     $query = $_GET['query'];
-                    $sort = $_GET['sort'];
+                    if(isset($_GET['sort'])) {
+                        $sort = $_GET['sort'];
+                    }
                     $min_length = 1;
+                    
+                    /* ----- Pagination Paramater Storage ----- */
+                    $articlesPerPage = 5;
+                    $numResults = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%'))";
+                    $totalArticles = mysqli_query($db, $numResults);
+                    $totalPages = ceil($totalArticles->num_rows / $articlesPerPage);
+                    
+                    if(!isset($_GET{'page'})) {
+                        $_GET['page'] = 0;
+                    } else {
+                        $_GET['page'] = (int)$_GET['page'];
+                    }
+                    
+                    if($_GET['page'] < 1) {
+                        $_GET['page'] = 1;
+                    } else if($_GET['page'] > $totalPages) {
+                        $_GET['page'] = $totalPages;
+                    }
+                    
+                    $startArticle = ($_GET['page'] - 1) * $articlesPerPage;
+                    
+                
+                    
 					if(!(isset($_GET['sort']))) {
 						if(strlen($query) >= $min_length){ 
 							$query = htmlspecialchars($query); 
 							$query = mysqli_real_escape_string($db, $query);
 
-							$raw_results = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%'))";
+							$raw_results = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) LIMIT ".$startArticle.", ".$articlesPerPage."";
 							$test = mysqli_query($db, $raw_results);
 							echo "<div class='search-content'>";
 
@@ -89,7 +114,7 @@
                     } else {
                         switch($sort) {
                             case "Relevancy":
-                                $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY PublishDate DESC") or die(mysql_error());
+                                $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY PublishDate DESC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
                                 echo "<div class='search-content'>";
                                 if(mysqli_num_rows($raw_results) > 0){ 
                                     while($results = mysqli_fetch_array($raw_results)){
@@ -115,7 +140,7 @@
                                 break;
 
                             case "Name":
-                                $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY Headline ASC") or die(mysql_error());
+                                $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY Headline ASC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
                                 echo "<div class='search-content'>";
                                 if(mysqli_num_rows($raw_results) > 0){ 
                                     while($results = mysqli_fetch_array($raw_results)){
@@ -140,7 +165,7 @@
                                 break;
 
                             case "Views":
-                               $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY Views DESC") or die(mysql_error());
+                               $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY Views DESC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
                                 echo "<div class='search-content'>";
                                 if(mysqli_num_rows($raw_results) > 0){ 
                                     while($results = mysqli_fetch_array($raw_results)){
@@ -165,10 +190,41 @@
                                 break;
                         }//End of switch
                     }//End of else
+                    
+                    /*if(isset($_GET['query'])) {
+                        echo '<div class="pagination">';
+                        echo '<a href="search.php?query=' . $_GET["query"] . '&page=1">&laquo;</a>';
+                        foreach(range(1, $totalPages) as $page) {
+                            if($page == $_GET['page']) {
+                                echo '<a class="active" href="search.php?query=' . $_GET["query"] . '&page=' . $page . '">' . $page . '</a>';
+                            } else {
+                                echo '<a href="search.php?query=' . $_GET["query"] . '&page=' . $page . '">' . $page . '</a>';
+                            }
+                        }
+                        echo '<a href="search.php?query=' . $_GET["query"] . '&page=' . $totalPages . '">&raquo;</a>';
+                        echo '</div>';
+                    }*/
                 ?>
                 </div>
         </div>
+        <!----- Pagination Links ----->
+        <?php
+            if(isset($_GET['query'])) {
+                echo '<div class="pagination">';
+                echo '<a href="search.php?query=' . $_GET["query"] . '&page=1">&laquo;</a>';
+                foreach(range(1, $totalPages) as $page) {
+                    if($page == $_GET['page']) {
+                        echo '<a class="active" href="search.php?query=' . $_GET["query"] . '&page=' . $page . '">' . $page . '</a>';
+                    } else {
+                        echo '<a href="search.php?query=' . $_GET["query"] . '&page=' . $page . '">' . $page . '</a>';
+                    }
+                }
+                echo '<a href="search.php?query=' . $_GET["query"] . '&page=' . $totalPages . '">&raquo;</a>';
+                echo '</div>';
+            }
+        ?>
     </div>
+    
     <?php include('includes/footer.html'); ?>
 </body>
 </html>
