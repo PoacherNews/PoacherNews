@@ -77,7 +77,7 @@
                     $startArticle = ($_GET['page'] - 1) * $articlesPerPage;
                     
                 
-                    
+                    // Test
 					if(!(isset($_GET['sort']))) {
 						if(strlen($query) >= $min_length){ 
 							$query = htmlspecialchars($query); 
