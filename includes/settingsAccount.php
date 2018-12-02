@@ -38,7 +38,7 @@ input {
 }
     
 /* Added by Bruce Head */    
-#enable2fa {
+#enabletfa {
     display: block;
     margin-top: 25px;
     width: 250px;
@@ -50,12 +50,12 @@ input {
     font-weight: bold;
     cursor: pointer;
 }
-#enable2fa:hover {
+#enabletfa:hover {
     background-color: green;
     color: white;
 }
     
-#disable2fa {
+#disabletfa {
     display: block;
     margin-top: 25px;
     width: 250px;
@@ -67,7 +67,7 @@ input {
     font-weight: bold;
     cursor: pointer;
 }
-#disable2fa:hover {
+#disabletfa:hover {
     background-color: red;
     color: white;    
 }        
@@ -116,15 +116,18 @@ input {
 <br>
 <div class="sectionHeader">
     <h2>Two-Factor Authentication</h2>
-        <span class="subheader">Enables two-factor authentication with the use of a two-factor authentication app</span>
 </div>
-    <?php 
-        if($_SESSION['2fa'] == 0) { ?>
-            <button id="enable2fa">Enable Two-Factor Authentication</button>
+    <?php
+		// Display enable two-factor authentication option if tfaStatus == 0
+        if($_SESSION['tfastatus'] == 0) { ?>
+        	<span class="subheader">Enable two-factor authentication to add a layer of security to your account.</span>
+			<button id="enabletfa">Enable Two-Factor Authentication</button>
     <?php } ?>
     <?php 
-        if($_SESSION['2fa'] == 1) { ?>
-            <button id="disable2fa">Disable Two-Factor Authentication</button>
+		// Display disable two-factor authentication option if tfaStatus == 1		
+        if($_SESSION['tfastatus'] == 1) { ?>
+			<span class="subheader">Disable two-factor authentication to remove a layer of security from your account.</span>
+			<button id="disabletfa">Disable Two-Factor Authentication</button>
      <?php } ?>
 <!-- Added by Bruce Tail -->
 
@@ -171,9 +174,9 @@ input {
     });
     
 /* Added by Bruce head */
-    // Redirect to enable/disable 2FA
-    $('#enable2fa, #disable2fa').click(function() {
-        window.location.href = 'includes/settings2FA.php';
+    // Load settingsTFA.php in .content of ../settings.php upon button click
+    $('#enabletfa, #disabletfa').click(function() {
+		    $(".content").load("includes/settingsTFA.php");
     });
 /* Added by Bruce tail */
             

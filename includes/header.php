@@ -1,3 +1,17 @@
+<?php 
+    // Check if user set $_SESSION['tfaURL'] upon access of TFA.php (../TFA.php line 85)
+	// If string "util" is contained in the URL then remove "util" from path
+	if (strpos($_SERVER['PHP_SELF'], "util") == true){
+    	include 'tfaCheck.php';	
+	}
+	// If string "recoveryCode.php" is not contained in the URL then add "util" to path
+	// Allows recoveryCode.php to bypass util/tfaCheck.php
+	else if(strpos($_SERVER['PHP_SELF'], "recoveryCode.php") == false){
+    	include 'util/tfaCheck.php';	
+	}
+
+?>
+
 <header id="mainHeader">
     <div class="headerContainer">
         <div id="left">

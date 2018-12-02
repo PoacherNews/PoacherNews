@@ -1,11 +1,6 @@
 <?php
     include 'util/loginCheck.php';
 ?>
-<!-- TODO -->
-
-<!--
-// Add 2FACheck.php to other files
--->
 
 <!DOCTYPE html>
 <html>
@@ -79,18 +74,24 @@
 </head>
 <body>
     <?php
-        // Check to see if the user has already logged in
-        if(empty($_SESSION['loggedin']) || $_SESSION['2fa'] == 0) {
-            $loggedIn = false;
+        // Redirect unregisterd users or users with two-factor authentication disabled to index.php
+        if(empty($_SESSION['loggedin']) || $_SESSION['tfastatus'] == 0) {
             echo '<meta http-equiv="refresh" content="0; url=/index.php">';
             exit;
         }
-        // Prevents access to recoveryCode.php unless prior page is 2FA.php
-        else if(!isset($_SESSION['previous'])) {
+        // Redirect users unless $_SESSION['tfaURL'] is set
+        // $_SESSION['tfaURL'] set upon acceess of TFA.php (TFA.php line 84)	
+        if(!isset($_SESSION['tfaURL'])) {
             echo '<meta http-equiv="refresh" content="0; url=/index.php">';
             exit;
         }
-        
+		// Redirect users with two-factor authentication enabled to index.php
+        // $_SESSION['enabledTFACheck'] set upon successful login through recoveryCode.php (util/settingsHandler.php line 233)
+		else if(!empty($_SESSION['enabledTFACheck'])) {       
+            echo '<meta http-equiv="refresh" content="0; url=/index.php">';
+            exit;
+        }	
+	
     	include 'includes/header.php';
         include 'includes/nav.php';
     ?>
@@ -102,39 +103,40 @@
             <span class="subheader">Phone inaccessible? Enter your recovery code.</span>
             <div class="formFields">
                 <br>
-                <input type="text" name="RCode" placeholder="Recovery Code">
+                <input id="RCode" type="text" name="RCode" placeholder="Recovery Code">
                 <input id="verifySubmitButton" type="submit" name="submit" value="Submit">
+				<a id="authenticationCode" href="TFA.php">Authentication Code</a>
             </div>
             <div id="errorMessage" class="settingsMessage"></div>
         </form>
         
         <script>
-        $("#recoveryCode").submit(function(event) {
-        $("#errorMessage").hide();
-        $("#errorMessage").text('');
-        $("#errorMessage").removeClass("error");
-        event.preventDefault();
-        $.post("util/settingsHandler.php", $(this).serialize(), function(data) {
-            if(data != "Success") {
-                $("#errorMessage").addClass("error");
-                $("#errorMessage").text(data);
-                $("#errorMessage").fadeIn();
-            } else {
-				$("#verifySubmitButton").hide();
-                $("#errorMessage").addClass("success");
-                $("#errorMessage").text("Authentication success. <br />You will be redirected momentarily..");
-                $("#errorMessage").fadeIn();
-                
-				// Redirect (set in milliseconds)
-				window.setTimeout(function() {
-    				window.location.href = 'index.php';
-				}, 3000);                
-            }
-        });
-    });
-        </script>
-        
+			$("#recoveryCode").submit(function(event) {
+				$("#errorMessage").hide();
+				$("#errorMessage").text('');
+				$("#errorMessage").removeClass("error");
+				event.preventDefault();
+				$.post("util/settingsHandler.php", $(this).serialize(), function(data) {
+					if(data != "Success") {
+						$("#errorMessage").addClass("error");
+						$("#errorMessage").text(data);
+						$("#errorMessage").fadeIn();
+					} else {
+						$("#RCode").hide();
+						$("#authenticationCode").hide();				
+						$("#verifySubmitButton").hide();
+						$("#errorMessage").addClass("success");
+						$("#errorMessage").text("Authentication success. You will be redirected momentarily..");
+						$("#errorMessage").fadeIn();
 
+						// Redirect (set in milliseconds)
+						window.setTimeout(function() {
+							window.location.href = 'index.php';
+						}, 3000);                
+					}
+				});
+			});
+        </script>
     </div>
     <?php include('includes/footer.html'); ?>
 </body>
