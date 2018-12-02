@@ -107,7 +107,7 @@
 									$hashed_subdir = hash_hmac('md5', $articleData['UserID'], $articleData['PublishDate']);
 									$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
 									if($isDraft) {
-										print "<img id=image src=https://poachernews.com/res/img/articlePictures/{$hashed_subdir}/{$articleData['ArticleImage']} alt=Image width=250 height=250/><br>";
+										print "<img id=image src=https://poachernews.com/res/img/articlePictures/{$hashed_subdir}/".$articleData['ArticleImage']." alt=Image width=250 height=250/><br>";
 									} else {
 										print "<img id=image src=https://poachernews.com/res/img/articlePictures/defaultArticleImage.png alt=Image width=250 height=250/><br>";
 									}
