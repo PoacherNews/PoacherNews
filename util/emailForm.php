@@ -5,11 +5,6 @@ if(isset($_POST['email'])) {
     $email_subject = "Feedback Form Sent";
  
     function died($error) {
-        // echo "We are very sorry, but there were error(s) found with the form you submitted. ";
-        // echo "These errors appear below.<br /><br />";
-        // echo $error."<br /><br />";
-        // echo "Please go back and fix these errors.<br /><br />";
-        // die();
 
         include '../feedback.php';
         //print $error;
@@ -23,10 +18,7 @@ if(isset($_POST['email'])) {
         !isset($_POST['email']) ||
         !isset($_POST['comments'])) {
         //died('We are sorry, but there appears to be a problem with the form you submitted.'); 
-        $error = "We are sorry, but there appears to be a problem with the form you submitted.";
-        // include '../feedback.php';
-        // print $error;
-        // exit;      
+        $error = "We are sorry, but there appears to be a problem with the form you submitted.";   
         died($error);
     }
  
@@ -44,32 +36,20 @@ if(isset($_POST['email'])) {
     //print "email check";
     $error_message .= 'The Email Address you entered does not appear to be valid.<br />';
     $error = "The Email Address you entered does not appear to be valid.<br />";
-        // include '../feedback.php';;
-        // print $error;
-        // exit;
   }
  
     $string_exp = "/^[A-Za-z .'-]+$/";
  
   if(!preg_match($string_exp,$first_name)) {
     $error_message .= 'The First Name you entered does not appear to be valid.<br />';
-    // $error = "The First Name you entered does not appear to be valid.<br />";
-    //     include '../feedback.php';
-    //     exit;
   }
  
   if(!preg_match($string_exp,$last_name)) {
     $error_message .= 'The Last Name you entered does not appear to be valid.<br />';
-    // $error = "The Last Name you entered does not appear to be valid.<br />";
-    //     include '../feedback.php';
-    //     exit;
   }
  
   if(strlen($comments) < 2) {
     $error_message .= 'The Comments you entered do not appear to be valid.<br />';
-    // $error = "The Comments you entered do not appear to be valid.<br />";
-    //     include '../feedback.php';
-    //     exit;
   }
  
   if(strlen($error_message) > 0) {
@@ -97,10 +77,6 @@ $headers = 'From: '.$email_from."\r\n".
 'X-Mailer: PHP/' . phpversion();
 @mail($email_to, $email_subject, $email_message, $headers);  
 ?>
- 
- 
-Thank you for contacting us. We will be in touch with you very soon.
- 
 <?php
  header("Location: ../index.php");
 }
