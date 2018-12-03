@@ -68,7 +68,7 @@
                 ?>
 				
 				<input type="text" id="title" placeholder="Title" name="title" value="<?php if($draftOk){print $articleData['Headline'];}?>" required/>
-                <select name="category" id="category">
+                <select name="category" id="category" class="js-categories-dropdown">
                     <option value="Politics"<?php if($articleData['Category'] == "Politics"){print "selected";}?>>Politics</option>
                     <option value="Sports"<?php if($articleData['Category'] == "Sports"){print "selected";}?>>Sports</option>
                     <option value="Entertainment"<?php if($articleData['Category'] == "Entertainment"){print "selected";}?>>Entertainment</option>
@@ -191,13 +191,17 @@
 /******************************* ARTICLE TAGS SELECT2 *******************************/
             $(document).ready(function() {
                 $('.js-tags-dropdown').select2({
-                    placeholder: 'Select article tags',
+                    placeholder: 'Select tags',
                     tags: true,
                     tokenSeparators: [',', ' '],
                     maximumSelectionLength: 7,
                     closeOnSelect: false
                 });
             });            
+/******************************* ARTICLE CATEGORIES SELECT2 *******************************/
+            $(document).ready(function() {
+                $('.js-categories-dropdown').select2();
+            });
  /******************************* EDITIOR COMPATIBILITY *******************************/
 			document.getElementById('editor').addEventListener('paste', function(event) { // All pasted text converted to default font
                 event.preventDefault();
