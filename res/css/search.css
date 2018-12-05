@@ -173,6 +173,8 @@ form.search:after {
 }
 
 .pagination a {
+    margin-top: 5px;
+    margin-bottom: 5px;
     color: black;
     float: left;
     padding: 8px 16px;
