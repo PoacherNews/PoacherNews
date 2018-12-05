@@ -40,16 +40,39 @@ function getAuthorByID($id, $db) {
     }
 }
 
-function getSectionArticles($category, $limit=NULL, $offset=NULL, $db) {
-    /* Returns an array of articles in a provided category.
+function getSectionArticles($category, $sort, $limit=NULL, $offset=NULL, $db) {
+    /* Returns an array of articles in a provided category arranged by a sort parameter.
        Optionally can provide only a provided limit of articles, and/or optionally return articles from after a given offset.
     */
-    $sql = "SELECT * FROM Article WHERE IsDraft = 0 AND IsSubmitted = 1 AND Category = '{$category}' ";
-    if(!is_null($limit)) {
-        $sql .= "LIMIT {$limit}";
-    }
+    /* Handles sort parameter for sql query */
+    switch($sort) {
+        case "Newest":
+            $sql = "SELECT * FROM Article WHERE( IsDraft = 0 AND IsSubmitted = 1 AND Category = '{$category}') ORDER BY PublishDate DESC";
+
+            break;
+
+        case "Views":
+           $sql = "SELECT * FROM Article WHERE( IsDraft = 0 AND IsSubmitted = 1 AND Category = '{$category}') ORDER BY Views DESC";
+
+            break;
+            
+        case "Name":
+            $sql = "SELECT * FROM Article WHERE( IsDraft = 0 AND IsSubmitted = 1 AND Category = '{$category}') ORDER BY Headline ASC";
+            
+            break;
+
+        default:
+            print "<b>No results.</b>";
+
+            break;
+
+    }//End of switch
+    
     if(!is_null($offset)) {
-        $sql .= " OFFSET {$offset}";
+        $sql .= " LIMIT {$offset},";
+    }
+    if(!is_null($limit)) {
+        $sql .= " {$limit}";
     }
     $result = mysqli_query($db, $sql);
     return mysqliToArray($result);
