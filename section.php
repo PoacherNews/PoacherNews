@@ -1,11 +1,18 @@
 <?php 
     session_start();
     $defaultCategory = "Politics";
+    $defaultSort = "Views";
     $validCategories = array("Politics", "Sports", "Entertainment", "Video", "Local", "Opinion");
     if(empty($_GET['Category']) || !in_array($_GET['Category'], $validCategories)) {
         header('Location: section.php?Category='.$defaultCategory);
         exit();
     }
+
+    if(empty($_GET['sort'])) {
+        header('Location: section.php?Category='.$_GET["Category"].'&sort='.$defaultSort);
+        exit();
+    }
+
     include('util/db.php');
     include('util/articleUtils.php');
     include('util/userUtils.php');
@@ -17,6 +24,7 @@
 <head>
    <?php include 'includes/globalHead.html' ?>
    <link rel="stylesheet" href="res/css/section.css">
+    <link rel="stylesheet" href="res/css/search.css">
    <script>
         function serializeDate(date) {
             // Will convert a date to YYYY-MM-DD HH:MM:SS format.
@@ -99,10 +107,23 @@
     <div class="secRowPrimary">
         <div class="secBorderPrimary"></div>
         <div class="secColumnPrimary">
+            <div class="dropdown">
+                <div class="dropbtn">Sort by 
+                    <i class="fa fa-caret-down"></i>
+                </div>
+                <div class="dropdown-content">
+				<?php
+                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Views\">Views</a>";
+                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Name\">Name</a>";
+                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Name\">Newest</a>";
+				?>
+                </div>
+            </div>
             <div id="articleList" class="stackedArticles">
                 <script>
                     $.getJSON("util/sectionHandler.php", {
                         'category' : "<?php echo $_GET['Category'] ?>",
+                        'sort' : "<?php echo $_GET['sort'] ?>",
                     }).done(function(data) {
                         $.each(data, function(i, row) {
                             $("#articleList").children().remove('.loader');
@@ -123,6 +144,7 @@
                     $.getJSON("util/sectionHandler.php", {
                         'category' : "<?php echo $_GET['Category'] ?>",
                         'offset' : $(this).data('offset'),
+                        'sort' : "<?php echo $_GET['sort'] ?>",
                     }).done(function(data) {
                         $.each(data, function(i, row) {
                             $("#articleList").append(createStackedArticle(row));                          
