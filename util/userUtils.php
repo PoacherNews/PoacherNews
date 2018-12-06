@@ -352,6 +352,29 @@ $GLOBAL_SITE_URL = "https://poachernews.com";
 		if(!mysqli_query($db, $sql)) { return false; }
 		return true;
 	}
+    function updateTFAStatus($uid, $db) {
+		/* Updates the tfaStatus field of a user of provided User ID. */
+        if($_SESSION['tfastatus'] == 0) {
+    	   $sql = "UPDATE User SET tfaStatus = 1 WHERE UserID = {$uid}";
+        }
+        if($_SESSION['tfastatus'] == 1) {
+    	   $sql = "UPDATE User SET tfaStatus = 0 WHERE UserID = {$uid}";
+        }
+    	if(!mysqli_query($db, $sql)) { return false; }
+		return true;
+    }
+    function updateQRCode($uid, $qrCode, $db) {
+		/* Updates the qrCode field of a user of provided User ID. */
+    	$sql = "UPDATE User SET qrCode = '{$qrCode}' WHERE UserID = {$uid}";
+    	if(!mysqli_query($db, $sql)) { return false; }
+		return true;
+    }
+    function updateRecoveryCode($uid, $recoveryCode, $db) {
+		/* Updates the RecoveryCode field of a user of provided User ID. */
+    	$sql = "UPDATE User SET RecoveryCode = '{$recoveryCode}' WHERE UserID = {$uid}";
+    	if(!mysqli_query($db, $sql)) { return false; }
+		return true;
+    }
     function updateUserPassword($uid, $password, $db) {
 		/* Updates the Password field of a user of provided User ID. */
     	$sql = "UPDATE User SET Password = '{$password}' WHERE UserID = {$uid}";

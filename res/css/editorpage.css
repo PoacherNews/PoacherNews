@@ -1,3 +1,16 @@
+/******************** GENERAL **********************/
+input {
+	font-size: 13pt;
+	padding: 10px 12px;
+	min-width: 50%;
+	border: 1px solid black;
+}
+
+select {
+	font-size: 13pt;
+}
+
+/******************* ARTICLE TAB *******************/
 .editor-tab {
 	border: 1px solid #ccc;
 	background-color: #f1f1f1;
@@ -32,6 +45,12 @@
     border-top: none;
 	border-bottom: none;
     min-height: 800px;
+	background-color: #f1f1f1;
+	background-image:
+    radial-gradient(#8693AB 5%, transparent 0), 
+    radial-gradient(#8693AB 5%, transparent 0);
+	background-size: 30px 30px;
+	background-position: 0 0, 15px 15px;
 	
 }
 
@@ -44,9 +63,9 @@
 	position: absolute;
 	align-self: center;
 	justify-content: center;
-	min-height: 800px;
-	max-width: 40%;
-	min-width: 40%;
+	max-height: 100%;
+	max-width: 60%;
+	min-width: 60%;
 	font-size: 13pt;
 	padding: 5% 10%;
 	resize: none;
@@ -54,60 +73,55 @@
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.25);
     border: 1px solid black;
 	text-align: left;
-	margin: auto 15% 20px 19%;
+	margin: auto 15% auto 19%;
     line-height: 120%; /* To possibly fix later */
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	background-color: #ffffff;
 }
 
-.editorNav ul {
-    font-size: 13pt;
-    margin-bottom: 0px;
-    padding-left: 0px;
-    border-top: 1px solid black;
+.ql-toolbar .ql-snow {
+	border: 10px solid orange;
 }
 
-.editorNav ul > li {
-	display: inline-block;
-	padding: 10px 12px;
-    cursor: pointer;
-    margin: 0px 15px 0px 15px;
+/******************** IMAGE TAB ********************/
+#image-wrapper, label[for="upload-image"], #image-box {
+	border: 2px dashed #8693AB;
+    margin: 10px;
 }
 
-.editorNav ul > li:hover {
-    background-color: #f1f1f1;
+#image-container div{
+	height: 500px;
+	width: 500px;
+	background-color: #BDD4E7;
+	margin: 50px auto;
+	text-align: center;
 }
 
-input {
-	font-size: 13pt;
-	padding: 10px 12px;
-	min-width: 50%;
+#image-wrapper div {
+	height: 50%;
+	width: 75%;
 }
 
-#bold, #italic, #underline, #upload-document  {
-    display: none;
+label[for="upload-image"] {
+	padding: 5px;
+	border: 2px dashed #8693AB;
+}
+
+label[for="upload-image"]:hover {
+	cursor: pointer;
 }
 
 
-.editorNav li > label, i {
-    cursor: pointer;
-}
-
-#custom-file-upload {
-    cursor: pointer;
-}
-
-select {
-	font-size: 13pt;
-}
-
+/****************** SUBMISSION TAB *****************/
 .get-info {
-    max-width: 50%;
-    min-height: 400px;
+    height: 500px;
+	width: 500px;
     border: 1px solid black;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.25);
-    margin: auto 25% 20px 25%;
+    margin: 50px auto;
 	color: #83A8F0;
 	text-align: center;
+	background-color: #ffffff;
 }
 
 .get-info > input[type="text"]{
@@ -122,35 +136,13 @@ select {
 }
 
 
-.insert-link {
-    display: none;
-    position: fixed; 
-    z-index: 1; 
-    padding-top: 100px; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgb(0,0,0); 
-    background-color: rgba(0,0,0,0.4);
-}
-
-.link-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 30%;
-}
-
-#input-text, #input-link {
+#input-text {
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 13pt;
     margin: auto 25% 10px 25%;
 }
 
-#input-text::placeholder, #input-link::placeholder, #set-link {
+#input-text::placeholder {
     color: #83A8F0;
 }
 
@@ -169,7 +161,7 @@ select {
 }
 
 /* Others */
-#submit-button, #save-button, #verify-submit, #cancel-submit, #set-link {
+#submit-button, #save-button, #verify-submit, #cancel-submit {
 	margin: 20px 0px 0px 0px;
     width: 120px;
     max-width: 120px;
@@ -184,10 +176,6 @@ select {
     overflow: hidden;
 	font-size: 16px;
 	cursor: pointer;
-}
-
-#set-link{
-    margin-top: 0px;
 }
 
 #verify-submit {
@@ -219,7 +207,6 @@ select {
     background-color: rgb(0,0,0); 
     background-color: rgba(0,0,0,0.4);
 }
-
 
 .modal-content {
     background-color: #fefefe;

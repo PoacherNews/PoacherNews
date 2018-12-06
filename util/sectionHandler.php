@@ -7,7 +7,7 @@ $defaultSectionLimit = 3;
 if(!empty($_GET)) {
 	$offset = isset($_GET['offset']) ? $_GET['offset'] : NULL;
 	if(!empty($_GET['category'])) {
-		print json_encode(getSectionArticles($_GET['category'], $defaultSectionLimit, ($offset * $defaultSectionLimit), $db));
+		print json_encode(getSectionArticles($_GET['category'], $_GET['sort'], $defaultSectionLimit, ($offset * $defaultSectionLimit), $db));
 	}
 }
 

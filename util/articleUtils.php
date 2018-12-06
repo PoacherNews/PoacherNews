@@ -22,6 +22,13 @@ function getArticleByID($id, $db) {
     return mysqli_fetch_assoc($result);
 }
 
+function decodeArticleBodyFormatting($body) {
+    $output = preg_replace('/&quot;/', '"', $body); // Replaces html &quot; with actual quotes (")
+    $output = preg_replace('/\{a\s+href="([^"]*)"\s+target="([^"]*)"\}([\w|\s]+)\{\/a\}/', '<a href="http://$1" target="$2">$3</a>', $output); // Repalces {a href="foo" target="bar"}baz{/a} to <a href="foo" target="bar">baz</a>
+    $output = preg_replace('/\{(\/)?(\w+)\}/', '<$1$2>', $output); // Replace {foo} with <foo> and {/foo} with </foo>
+    return $output;
+}
+
 function getAuthorByID($id, $db) {
     /* Returns an associative array representation of the MYSQL result for the author of the provided id. */
     $sql = "SELECT * FROM User WHERE UserID = {$id};";
@@ -33,16 +40,39 @@ function getAuthorByID($id, $db) {
     }
 }
 
-function getSectionArticles($category, $limit=NULL, $offset=NULL, $db) {
-    /* Returns an array of articles in a provided category.
+function getSectionArticles($category, $sort, $limit=NULL, $offset=NULL, $db) {
+    /* Returns an array of articles in a provided category arranged by a sort parameter.
        Optionally can provide only a provided limit of articles, and/or optionally return articles from after a given offset.
     */
-    $sql = "SELECT * FROM Article WHERE IsDraft = 0 AND IsSubmitted = 1 AND Category = '{$category}' ";
-    if(!is_null($limit)) {
-        $sql .= "LIMIT {$limit}";
-    }
+    /* Handles sort parameter for sql query */
+    switch($sort) {
+        case "Newest":
+            $sql = "SELECT * FROM Article WHERE( IsDraft = 0 AND IsSubmitted = 1 AND Category = '{$category}') ORDER BY PublishDate DESC";
+
+            break;
+
+        case "Views":
+           $sql = "SELECT * FROM Article WHERE( IsDraft = 0 AND IsSubmitted = 1 AND Category = '{$category}') ORDER BY Views DESC";
+
+            break;
+            
+        case "Name":
+            $sql = "SELECT * FROM Article WHERE( IsDraft = 0 AND IsSubmitted = 1 AND Category = '{$category}') ORDER BY Headline ASC";
+            
+            break;
+
+        default:
+            print "<b>No results.</b>";
+
+            break;
+
+    }//End of switch
+    
     if(!is_null($offset)) {
-        $sql .= " OFFSET {$offset}";
+        $sql .= " LIMIT {$offset},";
+    }
+    if(!is_null($limit)) {
+        $sql .= " {$limit}";
     }
     $result = mysqli_query($db, $sql);
     return mysqliToArray($result);

@@ -24,10 +24,18 @@
 <html>
     <head>
         <title>The Poacher | Editor Page</title>
-        <link rel="stylesheet" href="res/css/editorpage.css">
+        <link rel="stylesheet" href="res/css/editorpage.css"/>
         <link rel="stylesheet" href="res/css/tools.css"/>
+		<link rel="stylesheet" href="res/css/quill.snow.css"/>
         <?php include 'includes/globalHead.html'?>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<!-- Include the Quill librarys -->
+		<!-- <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"> -->
+		<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+        <!-- Inclusion for Select2 jQuery replacement for default select statement -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
     </head>
     <body>
         <?php
@@ -36,14 +44,13 @@
             include 'includes/toolsNav.php';
         ?>
 		<div class="editor-tab">
-			<button class="tablinks" onclick="editorTab(event, 'article');editorFocus();"><i class="fas fa-pencil-alt"></i></button>
+			<button class="tablinks" onclick="editorTab(event, 'article');"><i class="fas fa-pencil-alt"></i></button>
 			<button class="tablinks" onclick="editorTab(event, 'picture');"><i class="fas fa-camera"></i></button>
 			<button class="tablinks" onclick="editorTab(event, 'save');getInfo();"><i class="fas fa-save"></i></button>
 		</div>
         <form id="action-form" action="/submitArticle.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="action">
             <div id="article" class="tabcontent">
-                <label style="font-size: 13pt;">Title</label>
                 <?php
 					$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
 					$isAuthor = ($articleData['UserID'] == $_SESSION['userid'] ? TRUE : FALSE);
@@ -59,8 +66,9 @@
 						}
 					}
                 ?>
+				
 				<input type="text" id="title" placeholder="Title" name="title" value="<?php if($draftOk){print $articleData['Headline'];}?>" required/>
-                <select name="category" id="category">
+                <select name="category" id="category" class="js-categories-dropdown">
                     <option value="Politics"<?php if($articleData['Category'] == "Politics"){print "selected";}?>>Politics</option>
                     <option value="Sports"<?php if($articleData['Category'] == "Sports"){print "selected";}?>>Sports</option>
                     <option value="Entertainment"<?php if($articleData['Category'] == "Entertainment"){print "selected";}?>>Entertainment</option>
@@ -68,63 +76,58 @@
                     <option value="Local"<?php if($articleData['Category'] == "Local"){print "selected";}?>>Local</option>
                     <option value="Opinion"<?php if($articleData['Category'] == "Opinion"){print "selected";}?>>Opinion</option>
                 </select>
-                <div class="editorNav">
-                    <ul>
-                        <li onclick="setUndo()" id="undo"><i class="fas fa-undo-alt"></i></li>
-                        <li onclick="setRedo()" id="redo"><i class="fas fa-redo-alt"></i></li>
-						<!-- TODO: V 2.10
-                        <li id="boldLbl" onclick="setBold()">
-    						<label onclick="setBold()" for="bold"><i class="fas fa-bold"></i></label>
-    						<input id="bold" type="button"/>
-    					</li>
-                        <li id="italicLbl" onclick="setItalic()">
-    						<label onclick="setItalic()" for="italic"><i class="fas fa-italic"></i></label>
-    						<input id="italic" type="button"/>
-    					</li>
-    					<li id="underlineLbl" onclick="setUnderline()">
-    						<label onclick="setUnderline()" for="underline"><i class="fas fa-underline"></i></label>
-    						<input id="underline" type="button"/>
-    					</li>
-                        <li onclick="linkBox()"><i id="insert" class="fas fa-link"></i></li>
-                        <div id="link-modal" class="insert-link">
-                            <div class="link-content">
-                                <span onclick="exitLink()" class="close">&times;</span>
-                                <span>Hyperlink</span><br>
-                                <input type="text" id="input-text" placeholder="Text">
-                                <input type="text" id="input-link" placeholder="Paste a link">
-                                <input type="button" id="set-link" onclick="addLink()" value="Set Link"/>
-                            </div>
-                        </div>
-						-->
-                        <li>
-                            <label for="upload-document" id="custom-file-upload">
-                                <i class="fas fa-cloud-upload-alt"></i> Upload File
-                            </label>
-                            <input onchange="uploadFile()" id="upload-document" type="file" name="document"/>
-                        </li>
-                    </ul>
-                </div>
-				<div id="editor" contenteditable="true"><?php if($articleData['Body'])print $articleData['Body'];?></div>
+                <!-- Article Tags Select2 Dropdown -->    
+                <select class="js-tags-dropdown" name="tags" multiple="multiple">
+                    <?php
+                        // Runs qeury to pull Tags from Tag table
+                        $sql = "SELECT TagName FROM Tag ORDER BY TagName ASC";
+                        $result = $db->query($sql);
+                        
+                        // Populates select statement with individual Tag options
+                        if($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row["TagName"] . '">' . $row["TagName"] . '</option>';
+                            }
+                        } else {
+                            echo "0 results";
+                        }                
+                    php?>
+                </select>
+				<!-- EDITOR -->
+                <div id="editor" style="height: 800px;"><?php if($articleData['Body'])print decodeArticleBodyFormatting($articleData['Body']);?></div>
             </div>
 
             <div id="picture" class="tabcontent">
                 <h3>Choose a picture</h3>
                 <div class="editor-image">
-                    <input onchange="uploadImage(this);" id="upload-image" type='file' name="image" required/>
-                    <div id="picture-content">
-						<?php 
-							$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
-							if($isDraft) {
-								print "<img id=image src=/res/img/articlePictures/{$articleData['ArticleID']}/{$articleData['ArticleImage']} alt=Image width=650 height=434/>";
-							} else {
-								print "<img id=image src=/# alt=Image width=650 height=434/>";
-							}
-						?>
-                    </div>
+					<div id="image-container">
+						<div id="image-wrapper">
+							<div id="image-box">
+								<?php
+									$hashed_subdir = hash_hmac('md5', $articleData['UserID'], $articleData['PublishDate']);
+									$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
+									if($isDraft) {
+										print "<img id=image src=https://poachernews.com/res/img/articlePictures/{$hashed_subdir}/".$articleData['ArticleImage']." alt=Image width=250 height=250/><br>";
+									} else {
+										print "<img id=image src=https://poachernews.com/res/img/articlePictures/defaultArticleImage.png alt=Image width=250 height=250/><br>";
+									}
+								?>
+								<span id="image-path"><?php if($isDraft) print $articleData['ArticleImage'];?></span>
+							</div>
+							<label for="upload-image">Upload</label>
+							<?php
+								if($isDraft) {
+									print "<input id=upload-image type=file name=image onchange=getImagePath();uploadImage(this); accept=image/jpeg,image/png style=display:none; /> ";
+								} else {
+									print "<input id=upload-image type=file name=image onchange=getImagePath();uploadImage(this); accept=image/jpeg,image/png style=display:none; required/> ";
+								}
+							?>
+						</div>
+					</div>
                 </div>
             </div>
 
-            <div id="save" class="tabcontent" onclick="getInfo()">
+            <div id="save" class="tabcontent" onclick="getInfo();">
                 <h3>Save/Submit</h3>
                 <div class="get-info">
                     <h3>Article Info</h3>
@@ -138,22 +141,28 @@
                     <label>Picture: </label>
                     <input type="text" id="getImage" readonly>
 					-->
-                    <input onclick="submitBtn()" type="button" id="submit-button" value="Submit"><br>
+                    <input onclick="submitBtn();" type="button" id="submit-button" value="Submit"><br>
                     <div id="submit-draft" class="submit">
                           <div class="modal-content">
-                            <span onclick="exitModal()" class="close">&times;</span>
+                            <span onclick="exitModal();" class="close">&times;</span>
                               <p>Are you sure you want to submit?</p>
                               <input type="submit" id="verify-submit" value="Yes" name="submit">
-                              <input onclick="cancel()" type="button" id="cancel-submit" value="No" name="no-submit">
+                              <input onclick="cancel();" type="button" id="cancel-submit" value="No" name="no-submit">
                           </div>
                     </div>
                     <!-- Saving Article -->
-                    <input onclick="saveBtn()" type="submit" id="save-button" value="Save" name="save">
+                    <input onclick="saveBtn();" type="submit" id="save-button" value="Save" name="save">
                 </div>
+				
             </div>
 		</form>
 		<script type="text/javascript">
 /******************************* TABS *******************************/
+			/* Upload text editor */
+			var quill = new Quill('#editor', {
+				theme: 'snow', 
+			});
+			
             function loadArticle() {
                 document.getElementById('article').style.display = "block";
             }
@@ -179,116 +188,30 @@
                 var category = document.getElementById('category').value;
                 document.getElementById('getCategory').value = category;
             }
-            
-/******************************* TEXT FORMATTING (TODO) *******************************/
-			/* TODO: V 2.10
-			setInterval(function () {
-                var boldLbl, italicLbl, underlineLbl;
-                var idName = ['boldLbl', 'italicLbl', 'underlineLbl'];
-                var varName = [bold, italic, underline];
-                var formatType = ['bold', 'italic', 'underline']; 
-                checkFormat(idName, varName, formatType);
-            }, 100);
-            
-            function checkFormat(id, variable, format) {
-                for(var i = 0; i < id.length; i++) {
-                    variable[i] = document.getElementById(id[i]);
-                    if(document.queryCommandState(format[i]) == true) {
-                        variable[i].style.backgroundColor = "lightgrey";
-                    } else {
-                        variable[i].style.backgroundColor = "#fff";
-                    }
-                }
-            }
-			*/
-            
-            function setUndo() {
-                document.execCommand("Undo", false, null);
-            }
-            function setRedo() {
-                document.execCommand("Redo", false, null);
-            }
-			/* TODO: V 2.10
-            function setBold() {
-				document.execCommand("Bold", false, null);
-			}
-            function setItalic() {
-				document.execCommand("Italic", false, null);
-			}
-			function setUnderline() {
-				document.execCommand("Underline", false, null);
-			}
-            */
-            var linkModal = document.getElementById('link-modal');
-			
-			function linkBox() { // When the user clicks, open up the link box
-				linkModal.style.display = "block";
-                document.getElementById('input-text').value = '';
-				document.getElementById('input-link').value = '';
-                document.getElementById('set-link').disabled = true;
-			}
-			
-			function addLink() { // Add the link to the rich text editor with valid requiremnents
-				var texteditor = document.getElementById('editor');
-				var a = document.createElement('a');
-				var inputText = document.getElementById('input-text').value;
-				var inputLink = document.getElementById('input-link').value;
-				if(inputText === '') { // Print out the or the name of link
-					var linkText = document.createTextNode(inputLink);
-					a.appendChild(linkText)
-					a.href = inputLink;
-					texteditor.appendChild(a);
-					linkModal.style.display = "none";
-				} else {
-					var linkText = document.createTextNode(inputText);
-					a.appendChild(linkText)
-					a.href = inputLink;
-					texteditor.appendChild(a);
-					linkModal.style.display = "none";
-			 	}
-			}
-            
-            function exitLink() {// Close the link via exit button
-                var span = document.getElementsByClassName("close")[0];
-                linkModal.style.display = "none";
-            }
-            setInterval(function () {// Valid configurations to set the link in editor
-                var inputLink = document.getElementById('input-link').value;
-                var setLink = document.getElementById('set-link');
-                inputLink = inputLink.replace(/^\s+|\s+$/g, '');
-                if(inputLink.length == 0) {
-                    document.getElementById('set-link').disabled = true;
-                    document.getElementById('set-link').style.opacity = "0.5";
-                } else {
-                    document.getElementById('set-link').disabled = false;
-                    document.getElementById('set-link').style.opacity = "1";
-                }
-            }, 100);
+/******************************* ARTICLE TAGS SELECT2 *******************************/
+            $(document).ready(function() {
+                $('.js-tags-dropdown').select2({
+                    placeholder: 'Select tags',
+                    tags: true,
+                    tokenSeparators: [',', ' '],
+                    maximumSelectionLength: 7,
+                    closeOnSelect: false
+                });
+            });            
+/******************************* ARTICLE CATEGORIES SELECT2 *******************************/
+            $(document).ready(function() {
+                $('.js-categories-dropdown').select2();
+            });
  /******************************* EDITIOR COMPATIBILITY *******************************/
-            document.getElementById('editor').addEventListener('paste', function(event) { // All pasted text converted to default font
+			document.getElementById('editor').addEventListener('paste', function(event) { // All pasted text converted to default font
                 event.preventDefault();
                 var text = event.clipboardData.getData('text/plain');
                 document.execCommand('insertHTML', false, text);
-            });
-			/* V 2.10
-            $(function() {
-                $('#editor').focus();
-            });
-            
-            function editorFocus() {
-                var editor = document.getElementById('editor');
-                editor.focus();
-            }
-            //var focus
-            $('#editor').blur(function () { // TODO
-                //$(this).focus();
-				
-            })
-			*/
+			});
 /******************************* SUBMISSION *******************************/
             $(document).ready(function() { // Submitting articles
                $("#action-form").on("submit", function () {
-                   var hvalue = $('#editor').text().replace("\n", "<br />", "g");//$('#editor').text();
+                   var hvalue = $('.ql-editor').html();
                    $(this).append("<input type='hidden' name='body' value=' " + hvalue + " '/>");
                 });
             });
@@ -297,7 +220,6 @@
             
             function submitBtn() { // Submit button; Returns false if NOT successful otherise true
 				modal.style.display = "block";
-				return true;
             }
             
             function cancel() { // Cancels the submission of the article (No) button
@@ -305,9 +227,6 @@
             }
         
             window.onclick = function(event) { // Close link via 'blur'-ing
-                if (event.target == linkModal) {
-                    linkModal.style.display = "none";
-                }
                 if (event.target == modal) {
                     modal.style.display = "none";
                 }
@@ -318,23 +237,6 @@
                 modal.style.display = "none";
             }
 /******************************* FILE UPLOADING *******************************/
-            function uploadFile() {
-                var formData = new FormData(); 
-                formData.append('document', $('#upload-document')[0].files[0]); 
-                $.ajax({
-                    url: 'readTextFile.php',
-                    type: 'POST',
-                    data: formData,
-                    success: function (output) {
-                        $('#editor').html(output);
-						// TODO
-                    },
-                    cache: false,
-                    contentType: false,
-                    processData: false
-                });
-            }
-			
 			function uploadImage(event) {
 				/* Calls a PHP Ajax request to see if the image is in the correct format. If it isn't it will alert
 				an error otherwise display the image. */
@@ -369,6 +271,16 @@
                 });	
             }
 			
+			function getImagePath() {
+				var input = document.getElementById('upload-image');
+				var path = document.getElementById('image-path');
+				path.innerHTML = imageBasename(input.value);
+			}
+			
+			function imageBasename(input) {
+				return input.split(/[\\/]/).pop();
+			}
+			
 			function readURL(input) {
 				/* Reads in an image using FileReader then displays it in the image box. Removes image if contents are
 				not present. */
@@ -382,7 +294,8 @@
 						reader.readAsDataURL(input.files[0]);
 					}
 				} else {
-					$('#image').attr('src', '');
+					var defaultImage = 'https://poachernews.com/res/img/articlePictures/defaultArticleImage.png';
+					$('#image').attr('src', defaultImage);
 				}
 			}
             $("#upload-image").change(function(){readURL(this);});

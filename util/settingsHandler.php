@@ -101,7 +101,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 			}
 
 			// Password change functionality
-			
 			if(!empty($_POST['currentPassword'])) { 
 				if(empty($_POST['newPassword']) || empty($_POST['confirmPassword'])) { // Make sure that if the new password field is set, the other password fields are set
 					print("Please fill out all password fields.");
@@ -134,6 +133,110 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 
 			print "Success";
 			break;
+            
+        // Added by Bruce Head                
+        // Enabling / Disabling two-factor authentication functionality (../includes/settingsTFA.php)
+        case "TFAStatus":
+			// Stores two-factor authentication $_SESSION variables in the database  
+			if($_SESSION['tfastatus'] == 0) {
+            	require "GoogleAuthenticator.php";
+				$authenticator = new GoogleAuthenticator();
+				// Verifies posted authentication code against stored QR code
+            	$verifyCode = $authenticator->verifyCode($_SESSION['qrcode'], $_POST['ACode'], 0);
+				// Error if authetnication code does not match against QR code
+            	if(!$verifyCode) {
+					print ("Incorrect authentication code. Please try again.");
+					break;
+            	}
+                // store $_SESSION['qrcode'] in the database
+                if(!updateQRCode($_SESSION['userid'], $_SESSION['qrcode'], $db)) {
+                    print("Failed to store QR code. Please contact the site administrator.");
+                    break;
+                }
+                // Hash $_SESSION['recoverycode']
+                $recoveryCode = password_hash($_SESSION['recoverycode'], PASSWORD_DEFAULT);
+                // Store $recoveryCode in the database
+                if(!updateRecoveryCode($_SESSION['userid'], $recoveryCode, $db)) {
+                    print("Failed to store recovery code. Please contact the site administrator.");
+                    break;
+                }
+			// Stores NULL two-factor authentication $_SESSION variables in the database  				
+			} else if($_SESSION['tfastatus'] == 1) {
+				// Verifies posted password against stored hashed password
+				// Error if posted password does not match against hashed password
+				if(!password_verify($_POST['password'], getHashedPassword($_SESSION['userid'], $db))) {
+					print("Password is incorrect.");
+					break;
+				}
+                // store NULL qrCode in the database
+                if(!updateQRCode($_SESSION['userid'], NULL, $db)) {
+                    print("Failed to reset QR code. Please contact the site administrator.");
+                    break;
+                }
+                // Sets NULL RecoveryCode in the database
+                if(!updateRecoveryCode($_SESSION['userid'], NULL, $db)) {
+                    print("Failed to reset recovery code. Please contact the site administrator.");
+                    break;
+                }                
+                // Update $_SESSION['qrcode'] in order to generate and store new $_SESSION['qrcode']
+                $_SESSION['qrcode'] = NULL;
+                // Update $_SESSION['recoverycode'] in order to generate and store new $_SESSION['recoverycode']
+                $_SESSION['recoverycode'] = NULL;
+        	}            
+            // Store tfaStatus in the database
+			if(!updateTFAStatus($_SESSION['userid'], $db)) {
+				print("Failed to update two-factor authentication. Please contact the site administrator.");
+				break;
+			}            
+			// Update $_SESSION['tfaStatus'] for User so they do not need to logout
+        	if($_SESSION['tfastatus'] == 0) {
+				$_SESSION['tfastatus'] = 1;            
+        	}
+        	else if($_SESSION['tfastatus'] == 1) {
+				$_SESSION['tfastatus'] = 0;            
+        	}
+			
+            print("Success");
+            break;            
+        // Two-factor authentication functionality (../TFA.php)  
+        case "TFACode":
+            require "GoogleAuthenticator.php";
+            $authenticator = new GoogleAuthenticator();
+			// Verifies posted authentication code against stored QR code			
+            $verifyCode = $authenticator->verifyCode($_SESSION['qrcode'], $_POST['ACode'], 0);
+			// Error if authetnication code does not match against QR code				
+            if(!$verifyCode) {
+				print ("Incorrect authentication code. Please try again.");
+				break;
+            } else { 
+				// Successful authentication code match
+                // Create $_SESSION['enabledTFACheck'] in order to redirect users with two-factor authentication enabled
+                $_SESSION['enabledTFACheck'] = true;				
+                //Unset $_SESSION['tfaURL'] in order for logged in user to bypass tfaCheck.php
+				unset($_SESSION['tfaURL']);
+            }
+            print("Success");
+            break;  
+		// Recovery code functionality (../recoveryCode.php)
+        case "recoveryCode":
+			// Verifies posted recovery code against stored hashed recovery code
+			// Error if posted recovery code does not match against hashed recovery code			
+            if (!password_verify($_POST['RCode'], $_SESSION['recoverycode']))
+            {
+                print ("Incorrect recovery code. Please try again.");
+				break;
+            } else {
+				// Successful recovery code match
+                // Create $_SESSION['enabledTFACheck'] in order to redirect users with two-factor authentication enabled
+                $_SESSION['enabledTFACheck'] = true;				
+                // Unset $_SESSION['tfaURL'] in order for logged in user to bypass tfaCheck.php
+                unset($_SESSION['tfaURL']);
+            }
+        
+            print("Success");
+            break;      
+        // Added by Bruce Tail
+            
 		case "deleteAccount":
 		// print_r($_POST);
 			if(empty($_POST['deleteConfirm'])) {
@@ -154,7 +257,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
         	session_destroy();
 			print("Success");
 			// header('Location: login.php');
-			break;
+			break;    
 	}
 }
 

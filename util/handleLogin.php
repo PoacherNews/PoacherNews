@@ -7,7 +7,6 @@ if(!session_start()) {
     exit;
 }
 
-
 // Check to see if the user has already logged in
 if(empty($_SESSION['loggedin'])) {
     $loggedIn = false;
@@ -107,9 +106,19 @@ function handle_login() {
     $_SESSION['email'] = $row['Email'];
     $_SESSION['username'] = $row['Username'];
     $_SESSION['usertype'] = $row['Usertype'];
-    // redirect    
-    //echo '<meta http-equiv="refresh" content="1; url=/index.php">';
-    header('Location: '.$_SERVER['HTTP_REFERER']); // Redirect the user to the page they logged in at
-    exit;
+    $_SESSION['tfastatus'] = $row['tfaStatus'];
+    $_SESSION['qrcode'] = $row['qrCode'];
+    $_SESSION['recoverycode'] = $row['RecoveryCode'];
+
+	// Redirect the user to TFA.php if two-factor authentication is enabled
+    if($_SESSION['tfastatus'] == 1)
+    {
+        header("Location: /TFA.php");
+    }
+	// Redirect the user to the page they logged in at if two-factor authentication is disabled
+    else if($_SESSION['tfastatus'] == 0) {
+        header('Location: '.$_SERVER['HTTP_REFERER']);
+        exit;
+    }
 }
 ?>

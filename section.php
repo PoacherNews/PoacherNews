@@ -1,11 +1,18 @@
 <?php 
     session_start();
     $defaultCategory = "Politics";
+    $defaultSort = "Views";
     $validCategories = array("Politics", "Sports", "Entertainment", "Video", "Local", "Opinion");
     if(empty($_GET['Category']) || !in_array($_GET['Category'], $validCategories)) {
         header('Location: section.php?Category='.$defaultCategory);
         exit();
     }
+
+    if(empty($_GET['sort'])) {
+        header('Location: section.php?Category='.$_GET["Category"].'&sort='.$defaultSort);
+        exit();
+    }
+
     include('util/db.php');
     include('util/articleUtils.php');
     include('util/userUtils.php');
@@ -17,6 +24,7 @@
 <head>
    <?php include 'includes/globalHead.html' ?>
    <link rel="stylesheet" href="res/css/section.css">
+    <link rel="stylesheet" href="res/css/search.css">
    <script>
         function serializeDate(date) {
             // Will convert a date to YYYY-MM-DD HH:MM:SS format.
@@ -82,7 +90,15 @@
         include 'includes/nav.php';
     ?>
     <div id="mainContent">
-    
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Large banner ad -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:970px;height:90px"
+         data-ad-client="ca-pub-3927571828981469"
+         data-ad-slot="9395185359"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
     <p id="secName"><?php echo $_GET['Category'] ?></p>
 
     <!-- containerPrimary Head -->
@@ -91,10 +107,23 @@
     <div class="secRowPrimary">
         <div class="secBorderPrimary"></div>
         <div class="secColumnPrimary">
+            <div class="dropdown">
+                <div class="dropbtn">Sort by 
+                    <i class="fa fa-caret-down"></i>
+                </div>
+                <div class="dropdown-content">
+				<?php
+                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Views\">Views</a>";
+                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Name\">Name</a>";
+                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Newest\">Newest</a>";
+				?>
+                </div>
+            </div>
             <div id="articleList" class="stackedArticles">
                 <script>
                     $.getJSON("util/sectionHandler.php", {
                         'category' : "<?php echo $_GET['Category'] ?>",
+                        'sort' : "<?php echo $_GET['sort'] ?>",
                     }).done(function(data) {
                         $.each(data, function(i, row) {
                             $("#articleList").children().remove('.loader');
@@ -115,6 +144,7 @@
                     $.getJSON("util/sectionHandler.php", {
                         'category' : "<?php echo $_GET['Category'] ?>",
                         'offset' : $(this).data('offset'),
+                        'sort' : "<?php echo $_GET['sort'] ?>",
                     }).done(function(data) {
                         $.each(data, function(i, row) {
                             $("#articleList").append(createStackedArticle(row));                          
@@ -138,6 +168,16 @@
     <section class="bannerAd">
             <a href="advertising.php">Advertise with us!</a>
     </section>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Large banner ad -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:970px;height:90px"
+         data-ad-client="ca-pub-3927571828981469"
+         data-ad-slot="9395185359"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 
     <!-- containerSecondary Head -->
     <section class="secSecondary">

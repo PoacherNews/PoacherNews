@@ -36,6 +36,42 @@ input {
     background-color: red;
     color: white;
 }
+    
+/* Added by Bruce Head */    
+#enabletfa {
+    display: block;
+    margin-top: 25px;
+    width: 250px;
+    height: 35px;
+    background-color: #6EDC6B;
+    border-color: #267C23;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+#enabletfa:hover {
+    background-color: green;
+    color: white;
+}
+    
+#disabletfa {
+    display: block;
+    margin-top: 25px;
+    width: 250px;
+    height: 35px;
+    background-color: #FF8383;
+    border-color: #D44F33;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+#disabletfa:hover {
+    background-color: red;
+    color: white;    
+}        
+/* Added by Bruce Tail*/
 
 </style>
 <form id="account">
@@ -71,10 +107,30 @@ input {
         <label for="confirmPassword">Confirm New Password</label>
         <input type="password" name="confirmPassword" autocomplete="off" />
     </div>
-
+    
     <div id="saveMessage" class="settingsMessage error"></div>
     <input class="settingsSubmit" type="submit" value="Save changes"/>
 </form>
+
+<!-- Added by Bruce Head -->    
+<br>
+<div class="sectionHeader">
+    <h2>Two-Factor Authentication</h2>
+</div>
+    <?php
+		// Display enable two-factor authentication option if tfaStatus == 0
+        if($_SESSION['tfastatus'] == 0) { ?>
+        	<span class="subheader">Enable two-factor authentication to add a layer of security to your account.</span>
+			<button id="enabletfa">Enable Two-Factor Authentication</button>
+    <?php } ?>
+    <?php 
+		// Display disable two-factor authentication option if tfaStatus == 1		
+        if($_SESSION['tfastatus'] == 1) { ?>
+			<span class="subheader">Disable two-factor authentication to remove a layer of security from your account.</span>
+			<button id="disabletfa">Disable Two-Factor Authentication</button>
+     <?php } ?>
+<!-- Added by Bruce Tail -->
+
 <br>
 <form id="deleteAccount">
     <input type="hidden" name="action" value="deleteAccount"/>
@@ -116,6 +172,14 @@ input {
             $("#saveMessage").delay(5000).fadeOut();
         });
     });
+    
+/* Added by Bruce head */
+    // Load settingsTFA.php in .content of ../settings.php upon button click
+    $('#enabletfa, #disabletfa').click(function() {
+		    $(".content").load("includes/settingsTFA.php");
+    });
+/* Added by Bruce tail */
+            
     $("#deleteAccount").submit(function(event) {
         $("#deleteError").hide();
         $("#deleteError").text('');

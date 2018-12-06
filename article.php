@@ -182,9 +182,24 @@
                     </p>
                 </span>
                 <div class="articleImage">
-                    <img src="<?php print "https://poachernews.com/res/img/articlePictures/".$articleData['ArticleID']."/".$articleData['ArticleImage']; ?>"/>
+					<?php
+						$hashed_subdir = hash_hmac('md5', $articleData['UserID'], $articleData['PublishDate']);
+						/* TODO: no image
+						$filename = "https://poachernews.com/res/img/articlePictures/".$articleData['ArticleID']."/".$articleData['ArticleImage'];
+						if(file_exists($filename)) {
+							print "<img src=https://poachernews.com/res/img/articlePictures/".$articleData['ArticleID']."/".$articleData['ArticleImage']."/>";
+						} else {
+							print "<a href=http://icons8.com/ ><img src=https://poachernews.com/res/img/articlePictures/noImage.png /></a>";
+						}
+						*/
+					?>
+					<img src="<?php print "https://poachernews.com/res/img/articlePictures/".$hashed_subdir."/".$articleData['ArticleImage']; ?>"/>
                 </div>
-                <p class="articleBody"><?php print nl2br($articleData['Body']); ?></p>
+                <p class="articleBody">
+                        <?php
+                            print(decodeArticleBodyFormatting($articleData['Body']));
+                        ?>
+                </p>
             </section>
 			<!-- Display: none -->
             <section id="articleAdColumn">

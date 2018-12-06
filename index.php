@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php 
+    session_start();
+	// Include util/tfaCheck.php early to prevent loading of destroyed session in the header
+    include 'util/tfaCheck.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -112,6 +116,17 @@
         include 'includes/nav.php';
     ?>
     <div class="pageContent">
+        <div id="adsenseBanner">
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- Large banner ad -->
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:970px;height:90px"
+                 data-ad-client="ca-pub-3927571828981469"
+                 data-ad-slot="9395185359"></ins>
+            <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
         <section id="editorPicks">
             <h1 class="sidebar-heading">Editor Picks</h1>
             <script>
@@ -177,7 +192,18 @@
         </section>
 
         <section class="bannerAd">
-            <a href="advertising.php">Advertise with us!</a>
+            <!--<a href="advertising.php">Advertise with us!</a>-->
+		<div id="adsenseBanner">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- Large banner ad -->
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width:970px;height:90px"
+                     data-ad-client="ca-pub-3927571828981469"
+                     data-ad-slot="9395185359"></ins>
+                <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
         </section>
 
         <section id="secondaryarticles" class="stackedArticles">    
