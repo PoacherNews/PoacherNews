@@ -442,6 +442,7 @@ p.footerCopyright {
 
 
 /* Navigation Bar */
+
 #navbar {
     grid-area: mainNav;
     width: 100%;
@@ -452,7 +453,19 @@ p.footerCopyright {
 	opacity: .95;
     z-index: 1;
 }
-
+@media only screen and (max-width: 600px) { /* Mobile */
+    #navbar {
+        grid-area: mainNav;
+        width: 100%;
+        height: 5vh;
+        background-color: #f3f3f3;
+        text-align: center;
+        list-style-type: none;
+        opacity: .95;
+        z-index: 1;
+        font-size: 11px;
+    }
+}
 #navbar ul {
     list-style-type: none;
     margin: 0;
