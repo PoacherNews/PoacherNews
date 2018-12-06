@@ -44,7 +44,7 @@
                             break;
                         case "account":
                             include('includes/settingsAccount.php');
-                            break;
+                            break;	
                     }
                 ?>
             </div>

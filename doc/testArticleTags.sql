@@ -1,0 +1,24 @@
+-- ArticleTag data
+-- INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("", "");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("1", "13");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("1", "17");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("12", "22");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("12", "13");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("3", "1");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("3", "12");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("7", "3");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("9", "45");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("37", "40");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("42", "26");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("10", "41");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("20", "25");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("19", "25");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("17", "46");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("36", "46");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("31", "28");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("11", "3");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("23", "26");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("27", "29");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("5", "41");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("8", "30");
+INSERT INTO ArticleTag (ArticleID, TagID) VALUES ("72", "48");

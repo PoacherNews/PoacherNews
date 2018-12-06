@@ -171,3 +171,20 @@ form.search:after {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+.pagination a {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+
+.pagination a.active {
+    background-color: #83A8F0;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}

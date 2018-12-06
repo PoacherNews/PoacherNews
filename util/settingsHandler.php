@@ -134,95 +134,103 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
 			print "Success";
 			break;
             
-        // Added by Bruce Head    
-        // TODO:    
-            
-        // 2FA status functionality
+        // Added by Bruce Head                
+        // Enabling / Disabling two-factor authentication functionality (../includes/settingsTFA.php)
         case "TFAStatus":
-			if($_SESSION['2fa'] == 0) {
+			// Stores two-factor authentication $_SESSION variables in the database  
+			if($_SESSION['tfastatus'] == 0) {
             	require "GoogleAuthenticator.php";
-
 				$authenticator = new GoogleAuthenticator();
-            	$checkResult = $authenticator->verifyCode($_SESSION['google2facode'], $_POST['code'], 0);				
-            	if(!$checkResult) {
+				// Verifies posted authentication code against stored QR code
+            	$verifyCode = $authenticator->verifyCode($_SESSION['qrcode'], $_POST['ACode'], 0);
+				// Error if authetnication code does not match against QR code
+            	if(!$verifyCode) {
 					print ("Incorrect authentication code. Please try again.");
 					break;
             	}
-                // Sets Google QR Code / Key to $_SESSION['google2facode'] upon activation
-                if(!update2FACode($_SESSION['userid'], $_SESSION['google2facode'], $db)) {
-                    print("Failed to store two-factor authentication code.");
+                // store $_SESSION['qrcode'] in the database
+                if(!updateQRCode($_SESSION['userid'], $_SESSION['qrcode'], $db)) {
+                    print("Failed to store QR code. Please contact the site administrator.");
                     break;
                 }
-                // Hash recovery code
+                // Hash $_SESSION['recoverycode']
                 $recoveryCode = password_hash($_SESSION['recoverycode'], PASSWORD_DEFAULT);
-                // Sets recovery code to $recoveryCode upon activation
+                // Store $recoveryCode in the database
                 if(!updateRecoveryCode($_SESSION['userid'], $recoveryCode, $db)) {
-                    print("Failed to store recovery code.");
+                    print("Failed to store recovery code. Please contact the site administrator.");
                     break;
-                }                
-			} else if($_SESSION['2fa'] == 1) {
+                }
+			// Stores NULL two-factor authentication $_SESSION variables in the database  				
+			} else if($_SESSION['tfastatus'] == 1) {
+				// Verifies posted password against stored hashed password
+				// Error if posted password does not match against hashed password
 				if(!password_verify($_POST['password'], getHashedPassword($_SESSION['userid'], $db))) {
 					print("Password is incorrect.");
 					break;
 				}
-                // Sets Google QR / Key to NULL upon deactivation
-                if(!update2FACode($_SESSION['userid'], NULL, $db)) {
-                    print("Failed to reset Google Authenticator Code.");
+                // store NULL qrCode in the database
+                if(!updateQRCode($_SESSION['userid'], NULL, $db)) {
+                    print("Failed to reset QR code. Please contact the site administrator.");
                     break;
                 }
-                // Sets recovery code to NULL upon deactivation
+                // Sets NULL RecoveryCode in the database
                 if(!updateRecoveryCode($_SESSION['userid'], NULL, $db)) {
-                    print("Failed to reset recovery code.");
+                    print("Failed to reset recovery code. Please contact the site administrator.");
                     break;
                 }                
-                // Update $_SESSION['google2facode'] to generate new Google QR / Key upon deactivation
-                $_SESSION['google2facode'] = NULL;
-                // Update $_SESSION['recoverycode'] to generate new recovery code upon deactivation
+                // Update $_SESSION['qrcode'] in order to generate and store new $_SESSION['qrcode']
+                $_SESSION['qrcode'] = NULL;
+                // Update $_SESSION['recoverycode'] in order to generate and store new $_SESSION['recoverycode']
                 $_SESSION['recoverycode'] = NULL;
         	}            
-            // Updates 2FA status
-			if(!update2FAStatus($_SESSION['userid'], $db)) {
+            // Store tfaStatus in the database
+			if(!updateTFAStatus($_SESSION['userid'], $db)) {
 				print("Failed to update two-factor authentication. Please contact the site administrator.");
 				break;
 			}            
-			
-			// Update Session variable for User
-        	if($_SESSION['2fa'] == 0) {
-				$_SESSION['2fa'] = 1;            
+			// Update $_SESSION['tfaStatus'] for User so they do not need to logout
+        	if($_SESSION['tfastatus'] == 0) {
+				$_SESSION['tfastatus'] = 1;            
         	}
-        	else if($_SESSION['2fa'] == 1) {
-				$_SESSION['2fa'] = 0;            
+        	else if($_SESSION['tfastatus'] == 1) {
+				$_SESSION['tfastatus'] = 0;            
         	}
 			
             print("Success");
             break;            
-            
+        // Two-factor authentication functionality (../TFA.php)  
         case "TFACode":
             require "GoogleAuthenticator.php";
-
             $authenticator = new GoogleAuthenticator();
-            $checkResult = $authenticator->verifyCode($_SESSION['google2facode'], $_POST['code'], 0);
-				
-            if(!$checkResult) {
+			// Verifies posted authentication code against stored QR code			
+            $verifyCode = $authenticator->verifyCode($_SESSION['qrcode'], $_POST['ACode'], 0);
+			// Error if authetnication code does not match against QR code				
+            if(!$verifyCode) {
 				print ("Incorrect authentication code. Please try again.");
 				break;
-            } else {
-                // Unset $_SESSION['previous'] upon successful 2FA authentication
-                unset($_SESSION['previous']);
-                // Set a check, used to redirect during manually entry of 2FA.php during login
-                $_SESSION['check'] = true;
+            } else { 
+				// Successful authentication code match
+                // Create $_SESSION['enabledTFACheck'] in order to redirect users with two-factor authentication enabled
+                $_SESSION['enabledTFACheck'] = true;				
+                //Unset $_SESSION['tfaURL'] in order for logged in user to bypass tfaCheck.php
+				unset($_SESSION['tfaURL']);
             }
             print("Success");
             break;  
-            
+		// Recovery code functionality (../recoveryCode.php)
         case "recoveryCode":
+			// Verifies posted recovery code against stored hashed recovery code
+			// Error if posted recovery code does not match against hashed recovery code			
             if (!password_verify($_POST['RCode'], $_SESSION['recoverycode']))
             {
                 print ("Incorrect recovery code. Please try again.");
 				break;
             } else {
-                // Unset $_SESSION['previous'] upon successful 2FA authentication
-                unset($_SESSION['previous']);                   
+				// Successful recovery code match
+                // Create $_SESSION['enabledTFACheck'] in order to redirect users with two-factor authentication enabled
+                $_SESSION['enabledTFACheck'] = true;				
+                // Unset $_SESSION['tfaURL'] in order for logged in user to bypass tfaCheck.php
+                unset($_SESSION['tfaURL']);
             }
         
             print("Success");

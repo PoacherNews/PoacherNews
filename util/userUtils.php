@@ -352,25 +352,25 @@ $GLOBAL_SITE_URL = "https://poachernews.com";
 		if(!mysqli_query($db, $sql)) { return false; }
 		return true;
 	}
-    function update2FAStatus($uid, $db) {
-		/* Updates the 2FA field of a user of provided User ID. */
-        if($_SESSION['2fa'] == 0) {
-    	   $sql = "UPDATE User SET 2FA = 1 WHERE UserID = {$uid}";
+    function updateTFAStatus($uid, $db) {
+		/* Updates the tfaStatus field of a user of provided User ID. */
+        if($_SESSION['tfastatus'] == 0) {
+    	   $sql = "UPDATE User SET tfaStatus = 1 WHERE UserID = {$uid}";
         }
-        if($_SESSION['2fa'] == 1) {
-    	   $sql = "UPDATE User SET 2FA = 0 WHERE UserID = {$uid}";
+        if($_SESSION['tfastatus'] == 1) {
+    	   $sql = "UPDATE User SET tfaStatus = 0 WHERE UserID = {$uid}";
         }
     	if(!mysqli_query($db, $sql)) { return false; }
 		return true;
     }
-    function update2FACode($uid, $TFACode, $db) {
-		/* Updates the Password field of a user of provided User ID. */
-    	$sql = "UPDATE User SET Google2FACode = '{$TFACode}' WHERE UserID = {$uid}";
+    function updateQRCode($uid, $qrCode, $db) {
+		/* Updates the qrCode field of a user of provided User ID. */
+    	$sql = "UPDATE User SET qrCode = '{$qrCode}' WHERE UserID = {$uid}";
     	if(!mysqli_query($db, $sql)) { return false; }
 		return true;
     }
     function updateRecoveryCode($uid, $recoveryCode, $db) {
-		/* Updates the Password field of a user of provided User ID. */
+		/* Updates the RecoveryCode field of a user of provided User ID. */
     	$sql = "UPDATE User SET RecoveryCode = '{$recoveryCode}' WHERE UserID = {$uid}";
     	if(!mysqli_query($db, $sql)) { return false; }
 		return true;

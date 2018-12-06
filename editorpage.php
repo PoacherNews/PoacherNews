@@ -32,6 +32,10 @@
 		<!-- Include the Quill librarys -->
 		<!-- <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"> -->
 		<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+        <!-- Inclusion for Select2 jQuery replacement for default select statement -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
     </head>
     <body>
         <?php
@@ -64,13 +68,30 @@
                 ?>
 				
 				<input type="text" id="title" placeholder="Title" name="title" value="<?php if($draftOk){print $articleData['Headline'];}?>" required/>
-                <select name="category" id="category">
+                <select name="category" id="category" class="js-categories-dropdown">
                     <option value="Politics"<?php if($articleData['Category'] == "Politics"){print "selected";}?>>Politics</option>
                     <option value="Sports"<?php if($articleData['Category'] == "Sports"){print "selected";}?>>Sports</option>
                     <option value="Entertainment"<?php if($articleData['Category'] == "Entertainment"){print "selected";}?>>Entertainment</option>
                     <option value="Video"<?php if($articleData['Category'] == "Video"){print "selected";}?>>Video</option>
                     <option value="Local"<?php if($articleData['Category'] == "Local"){print "selected";}?>>Local</option>
                     <option value="Opinion"<?php if($articleData['Category'] == "Opinion"){print "selected";}?>>Opinion</option>
+                </select>
+                <!-- Article Tags Select2 Dropdown -->    
+                <select class="js-tags-dropdown" name="tags" multiple="multiple">
+                    <?php
+                        // Runs qeury to pull Tags from Tag table
+                        $sql = "SELECT TagName FROM Tag ORDER BY TagName ASC";
+                        $result = $db->query($sql);
+                        
+                        // Populates select statement with individual Tag options
+                        if($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row["TagName"] . '">' . $row["TagName"] . '</option>';
+                            }
+                        } else {
+                            echo "0 results";
+                        }                
+                    php?>
                 </select>
 				<!-- EDITOR -->
                 <div id="editor" style="height: 800px;"><?php if($articleData['Body'])print decodeArticleBodyFormatting($articleData['Body']);?></div>
@@ -86,7 +107,7 @@
 									$hashed_subdir = hash_hmac('md5', $articleData['UserID'], $articleData['PublishDate']);
 									$isDraft = ($articleData['IsDraft'] == 1 && $articleData['IsSubmitted'] == 0 ? TRUE : FALSE);
 									if($isDraft) {
-										print "<img id=image src=https://poachernews.com/res/img/articlePictures/{$hashed_subdir}/{$articleData['ArticleImage']} alt=Image width=250 height=250/><br>";
+										print "<img id=image src=https://poachernews.com/res/img/articlePictures/{$hashed_subdir}/".$articleData['ArticleImage']." alt=Image width=250 height=250/><br>";
 									} else {
 										print "<img id=image src=https://poachernews.com/res/img/articlePictures/defaultArticleImage.png alt=Image width=250 height=250/><br>";
 									}
@@ -167,6 +188,20 @@
                 var category = document.getElementById('category').value;
                 document.getElementById('getCategory').value = category;
             }
+/******************************* ARTICLE TAGS SELECT2 *******************************/
+            $(document).ready(function() {
+                $('.js-tags-dropdown').select2({
+                    placeholder: 'Select tags',
+                    tags: true,
+                    tokenSeparators: [',', ' '],
+                    maximumSelectionLength: 7,
+                    closeOnSelect: false
+                });
+            });            
+/******************************* ARTICLE CATEGORIES SELECT2 *******************************/
+            $(document).ready(function() {
+                $('.js-categories-dropdown').select2();
+            });
  /******************************* EDITIOR COMPATIBILITY *******************************/
 			document.getElementById('editor').addEventListener('paste', function(event) { // All pasted text converted to default font
                 event.preventDefault();

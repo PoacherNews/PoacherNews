@@ -1,8 +1,7 @@
 <?php 
-    session_start(); 
-
-    // Check if User is coming from 2FA.php
-    include 'util/2FACheck.php';
+    session_start();
+	// Include util/tfaCheck.php early to prevent loading of destroyed session in the header
+    include 'util/tfaCheck.php';
 ?>
 <!DOCTYPE html>
 <html>
