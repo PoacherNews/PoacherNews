@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <?php include 'includes/globalHead.html' ?>
     <title>Login</title>
     <style>
@@ -15,6 +16,16 @@
             padding: 10px;
             margin: 8% auto 8% auto;
         }
+        @media only screen and (max-width: 600px) { /* Mobile */
+            .accountContainer {
+                max-width: 400px;
+                border: solid 2px #83A8F0;
+                border-radius: 20px 0px;
+                padding: 10px;
+                margin: 8% 5% 8% 5%;
+            }
+        }
+        
 
         .accountContainer h1 {
             border-bottom: 1px solid #83A8F0;
