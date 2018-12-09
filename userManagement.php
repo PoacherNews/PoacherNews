@@ -18,45 +18,49 @@ function display_table($db, $query, $tablename)
         echo $db->error;
         return;
     }
+
+    // Get column names
+    if(!$cols = $db->query("SHOW COLUMNS FROM {$tablename}")) {
+        echo "Error executing statement: <br>";
+        echo $db->error;
+        return;
+    }
+    while($row = $cols->fetch_array()) {
+        if(!in_array($row['Field'], array("Password", "ProfilePicture", "Bio", "City", "TimeZone", "State", "DateFormat", "tfaStatus", "qrCode", "RecoveryCode"))) {
+            $columnNames[] = $row['Field'];
+        }
+    }
+
     // print table
     $fields = $result->fetch_fields();
-    echo "\n<table>\n";
-    echo "<caption>$tablename in DB</caption>\n";
-    echo "<thead>\n";
-    echo "<tr>\n";
-    foreach ($fields as $field)
-    {
-        echo "<th>$field->name</th>";
-    }
-    echo "<tr>\n";
-    echo "</thead>\n<tbody>\n";
-    // get row as an array
-    while ($row = $result->fetch_assoc())
-    {
-        echo "<tr>\n";
-        foreach ($row as $key => $r)
-        {
-            if($key == 'UserID')
-            {
-                $userid = $r;
-            }
-            
-            echo '<td>';
-            if ($key == 'UserID')
-            {
-                echo "<a href='util/editUser.php?UserID=$userid'>";
-            }
-            echo $r;
-            if ($key == 'UserID')
-            {
-                echo '</a>';
-            }
-            echo '</td>';
-        }	
-        echo "</tr>\n";
-    }
-    // close table
-    echo "</tbody>\n</table>\n";
+    // data-order=\'[[9, "asc"]]\'
+    echo '<table id="userTable">
+            <thead>
+                <tr>';
+                    foreach ($columnNames as $col) {
+                        echo '<th>'.$col.'</th>';
+                    }
+    echo '      </tr>
+            </thead>
+            <tbody>';
+                while($row = $result->fetch_assoc()) {
+                    echo '<tr>';
+                        foreach($row as $key => $col) {
+                            switch($key) {
+                                case 'UserID':
+                                    echo '<td>';
+                                        echo '<a href="/util/editUser.php?UserID='.$col.'">'.$col."</a>";
+                                    echo '</td>';
+                                    break;
+                                default:
+                                    echo '<td>'.$col.'</td>';
+                                    break;
+                            }
+                        }
+                    echo '</tr>';
+                }
+    echo    '</tbody>
+        </table>';
     $result->free();
 }
 
@@ -65,9 +69,9 @@ function list_users()
 {
     include 'util/db.php';
     // query Users
-    $query = "SELECT UserID, FirstName, LastName, Email, Username, Usertype FROM User";
+    $query = "SELECT UserID, FirstName, LastName, Email, Username, Usertype FROM User ORDER BY UserID DESC";
     // display
-    display_table($db, $query, "Users");
+    display_table($db, $query, "User");
     // done
     $db->close();
 }
@@ -78,26 +82,29 @@ function list_users()
 <head>
     <?php include 'includes/globalHead.html' ?>
     <link rel="stylesheet" href="res/css/tools.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
     <style>
         h1 {
             text-align: center;
         }
+        .pageContent {
+            margin: auto 8% 75px 8%;
+        }
+
+        #userTable {
+            margin: 0px auto 0px auto;
+            border-collapse: collapse;
+        }
+
         table a {
             font-weight: bold;
         }
-
-        table {
-            margin: 0px auto;
-            border-collapse:collapse;
-        }
-
-        table, th, td {
-            border: 1px solid black;
-        }
-        tr:nth-child(even) {
-            background-color: #ccc;
+        table td {
+            border-bottom: 1px solid black;
+            text-align: center;
         }
     </style>
     <?php 
@@ -110,8 +117,15 @@ function list_users()
             include 'includes/toolsNav.php';
         ?>
         <h1>User Management</h1>
-        <?php list_users(); ?>
+		<?php list_users(); ?>
     </div>
+    <script>
+        $(document).ready( function () {
+            $("#userTable").DataTable({
+            //    "order" : [[8, "desc"], [0, "desc"]],
+            });
+        } );
+    </script>
     <?php include 'includes/footer.html'; ?>
 </body>
 </html>
