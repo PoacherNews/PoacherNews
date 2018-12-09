@@ -326,6 +326,21 @@ header[id="mainHeader"] {
 	box-shadow: 0 20px 20px -20px #333;
 	border-bottom: 1px solid #1f1209;
 }
+@media only screen and (max-width: 600px) { /* Mobile */
+    #searchbar {
+        z-index: 1;
+        background: #f3f3f3;
+        width: 100%;
+        min-height: 75px;
+        list-style-type: none;
+        margin: 0;
+        padding: 20px 0px 10px 0px;
+        text-align: center;
+        opacity: 1;
+        display: none;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+}
 
 
 /* FOOTER */
