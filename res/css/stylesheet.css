@@ -494,6 +494,8 @@ p.footerCopyright {
 #navbar a {
     display: inline-block;
     padding: 1.4vh;
+    padding-left: .7vh;
+    padding-right: .7vh;
     color: inherit;
 }
 #navbar a:hover {
