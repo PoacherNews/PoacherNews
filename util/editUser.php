@@ -30,7 +30,7 @@ function getUserData($db)
 //    require_once ('util/db.php');
     // prepare statement
     $stmt = $db->stmt_init();
-    if (!$stmt->prepare("SELECT User.UserID, FirstName, LastName, Email, Username, Usertype, CommentText FROM User LEFT JOIN Comment ON User.UserID = Comment.UserID WHERE User.UserID =?"))
+    if (!$stmt->prepare("SELECT * FROM User WHERE UserID =?"))
     {
         echo "Error preparing statement: <br>";
         echo nl2br(print_r($stmt->error_list, true), false);
@@ -128,17 +128,20 @@ if (!isset($data) || !$data)
                     </tr>
                 </tbody>
             </table>
-            <h2>User Options</h2>
-
+                
+<!-- USER -->                
+<h2>User Options</h2>
 <?php 
-if ($data['Usertype'] == 'U' || $data['Usertype'] == 'W') { ?>
+if ($data['Usertype'] == 'U' || $data['Usertype'] == 'W' || $_SESSION['username'] == 'testAdmin') { ?>
 <form method="post" action="">
 
 <legend>Usertype</legend>
 <div>
-<input type="radio" name="role" id="user" value="U" /><label for="user">User</label><br />
-<input type="radio" name="role" id="writer" value="W" /><label for="writer">Writer</label><br />
-<input type="radio" name="role" id="admin" value="A" /><label for="admin">Admin</label><br />
+        <select name="role">
+            <option value="U">User</option>
+            <option value="W">Writer</option>
+            <option value="A">Admin</option>
+        </select>   
 </div>
 
 <div>
@@ -146,17 +149,15 @@ if ($data['Usertype'] == 'U' || $data['Usertype'] == 'W') { ?>
 </div>
 </form>
 
-<?php } ?>
-
-<?php
-if($data['Usertype'] == 'A') { 
-echo "<br>You must have persmissions to edit this user";
+<?php }
+else if($data['Usertype'] == 'A') { 
+echo "You must have persmissions to edit this user";
  } ?>
 
-<?php 
-if(isset($_POST['submit'])){ 
-$selected_radio = $_POST['role'];
-$query = "UPDATE User SET Usertype = '".$selected_radio."' WHERE UserID = ?";
+<?php
+if(isset($_POST['submit'])) { 
+$selected_option = $_POST['role'];
+$query = "UPDATE User SET Usertype = '".$selected_option."' WHERE UserID = ?";
 
 // Refresh
 echo "<meta http-equiv='refresh' content='0'>";
@@ -188,77 +189,209 @@ if (!$stmt->execute())
 $stmt->close();
 $db->close();
 } ?>
+        
+<!-- ARTICLES -->
+<h2>Articles</h2>
+<?php
+    $articles = getArticlesByUserID($data['UserID'], $db);
+
+    if($articles === NULL) {
+        echo "No articles";
+    }   
+                
+    $nullCheck = array();
+    // Store all CommentText into array $nullCheck
+    foreach($articles as $r) {
+        $nullCheck[] = $r['Headline'];
+    }
+    
+    // If all CommentText in $nullCheck is NULL            
+    if(!array_filter($nullCheck)) {
+        echo "No articles";
+    } else { // If there is CommentText in $nullCheck that is not NULL
+    // Sort comments by DESC
+    foreach ($articles as $key => $r) {
+        $sort[$key] = strtotime($r['Headline']);
+    }
+    array_multisort($sort, SORT_DESC, $articles);
+                       
+        echo "<table>";
+        echo "<tr><th>Headline</th></tr>";
             
+        foreach ($articles as $key => $r) 
+        {
+            if($r['Headline'] != NULL)
+            {
+                echo "<tr>";
+                echo "<td>";
+                echo "<a href='/util/editArticle.php?ArticleID={$r['ArticleID']}'>";
+                echo "<p>{$r['Headline']}</p>";
+                echo "</td>";
+                echo "</tr>";
+            }
+        }
+        echo "</table>";
+} ?> 
+
+<!-- COMMENTS -->
 <h2>Comments</h2>
 <?php
     $comments = getUserComments($data['UserID'], null, $db);
 
-    	if($comments === null) 
-        {
-                print "<div class=\"columnError\">No comments yet.</div>";
-                return;
-        }
-            
-        // Sort comments by DESC
-        foreach ($comments as $key => $r) {
-            $sort[$key] = strtotime($r['CommentDate']);
-        }
-        array_multisort($sort, SORT_DESC, $comments);
+    if($comments === NULL) {
+        echo "No comments";
+    }   
+                
+    $nullCheck = array();
+    // Store all CommentText into array $nullCheck
+    foreach($comments as $r) {
+        $nullCheck[] = $r['CommentText'];
+    }
+    
+    // If all CommentText in $nullCheck is NULL            
+    if(!array_filter($nullCheck)) {
+        echo "No comments";
+    } else { // If there is CommentText in $nullCheck that is not NULL
+    // Sort comments by DESC
+    foreach ($comments as $key => $r) {
+        $sort[$key] = strtotime($r['CommentDate']);
+    }
+    array_multisort($sort, SORT_DESC, $comments);
+                       
+        echo "<table>";
+        echo "<tr><th>CommentText</th><th>Delete</th></tr>";
             
         foreach ($comments as $key => $r) 
         {
             if($r['CommentText'] != NULL)
             {
-                print "<p>{$r['CommentText']}</p>";
+                echo "<tr>";
+                echo "<td>";
+                echo "<a href='/util/editComment.php?CommentID={$r['CommentID']}'>";
+                echo "<p>{$r['CommentText']}</p>";
+                echo "</td>";
+                echo "<td>";
         ?>
-<form method="post" action="">
-<div>
-<input type="radio" name="delete" class="deleteComment" value="1" /><label for="delete">Delete</label><br />
-</div>
+                <form method="post" action="">
+                <div>
+                    <input type="checkbox" name="deleteCheckbox[]" class="deleteComment" value="<? echo $r['CommentID'] ?>"/>
+                </div>
 
-<div>
-<input type="submit" name="deleteSubmit[<?php echo $r['CommentID']; ?>]" id="submit" value="Submit" />
-</div>
-</form>
-         
+            <?php
+                echo "</td>";
+                echo "</tr>";
+            }
+        }
+                echo "</table>";
+            ?>
+            <div>     
+                <input type="submit" name="deleteSubmit" id="submit" value="Submit"/>
+            </div>
+            </form>
+<?php } ?> 
 <?php
-if(isset($_POST['deleteSubmit'][''.$r['CommentID'].''])){ 
-$selected_radio = $_POST['delete'];
-$query = "UPDATE Comment SET CommentText = NULL WHERE CommentText = '".$r['CommentText']."' AND UserID = ?";
+if(!isset($_POST['deleteCheckbox']) && isset($_POST['deleteSubmit'])) {
+        echo "Please select a comment to delete.";
+}
+else if(isset($_POST['deleteCheckbox']) && isset($_POST['deleteSubmit'])){ 
+    $selected_check = $_POST['deleteCheckbox'];
+    
+    for ($i = 0; $i < count($selected_check); $i++) {
+        $selected = $selected_check[$i];
+        $query = "UPDATE Comment SET CommentText = NULL WHERE CommentID = '".$selected."' AND UserID = ?";
 
-// Refresh
-echo "<meta http-equiv='refresh' content='0'>";
+        // Refresh
+        echo "<meta http-equiv='refresh' content='0'>";
 
-//include 'util/db.php';
-// prepare statement
-$stmt = $db->stmt_init();
-if (!$stmt->prepare($query))
-{
-    echo "Error preparing statement: <br>";
-    echo nl2br(print_r($stmt->error_list, true), false);
-    return;
-}
-// bind username
-if (!$stmt->bind_param('s', $data['UserID']))
-{
-    echo "Error binding parameters: <br>";
-    echo nl2br(print_r($stmt->error_list, true), false);
-    return;
-}
-// query database
-if (!$stmt->execute())
-{
-    echo "Error executing query: <br>";
-    echo nl2br(print_r($stmt->error_list, true), false);
-    return;
-}
-// done
-$stmt->close();
-$db->close();
-}
+        //include 'util/db.php';
+        // prepare statement
+        $stmt = $db->stmt_init();
+        if (!$stmt->prepare($query))
+        {
+            echo "Error preparing statement: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        // bind username
+        if (!$stmt->bind_param('s', $data['UserID']))
+        {
+            echo "Error binding parameters: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        // query database
+        if (!$stmt->execute())
+        {
+            echo "Error executing query: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
     }
-    }
+    // done
+    $stmt->close();
+    $db->close();
+}
 ?>
+                
+<h2>Delete</h2>
+<!-- DELETE -->            
+<form method="post" action="">
+    <div>
+        <input type="radio" name="deleteRadio" class="deleteRadio" value="0" /><label>DELETE USER</label><br />
+        <input type="checkbox" name="deleteConfirm" class="deleteConfirm" value="Confirm"/><label>CONFIRM DELETE</label>
+    </div>
+
+    <div>
+        <input type="submit" name="deleteSubmit" class="deleteSubmit" value="Submit" />
+    </div>
+</form>
+
+<?php
+if(!isset($_POST['deleteRadio']) && isset($_POST['deleteConfirm'])) {
+    echo "PLEASE CONFIRM DELETION OF USER";
+} 
+else if(isset($_POST['deleteRadio'])) {
+    if(!isset($_POST['deleteConfirm'])) {
+        echo "PLEASE CONFIRM DELETION OF USER";
+    }
+    else {
+        $selected_radio = $_POST['deleteRadio'];
+    
+        $query = "DELETE FROM User WHERE UserID = ?";
+        
+        //include 'util/db.php';
+        // prepare statement
+        $stmt = $db->stmt_init();
+        if (!$stmt->prepare($query))
+        {
+            echo "Error preparing statement: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        // bind username
+        if (!$stmt->bind_param('i', $data['UserID']))
+        {
+            echo "Error binding parameters: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        // query database
+        if (!$stmt->execute())
+        {
+            echo "Error executing query: <br>";
+            echo nl2br(print_r($stmt->error_list, true), false);
+            return;
+        }
+        // done
+        $stmt->close();
+        $db->close();
+
+        // Refresh
+        echo "User successfully deleted. You will be redirected momentarily..";
+        echo '<meta http-equiv="refresh" content="3; url=/userManagement.php">';
+        exit;
+    }
+} ?>      
             </div>
         </div>
         <?php include '../includes/footer.html'; ?>
