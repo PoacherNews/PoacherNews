@@ -472,19 +472,19 @@ if(isset($_POST['approvedSubmit']))
 <?php 
 if(isset($_POST['commentSubmit']))
 {
-    $selected_radio = $_POST['commentStatus'];
+    $selected_option = $_POST['commentStatus'];
     
     // ERROR TESTING
 
     //DISABLE COMMENTS
     if($selected_option == 0 && $data['CommentsEnabled'] == 1)
     {
-        $query = "UPDATE Article SET CommentsEnabled = 0 WHERE ArticleID = ?";
+        $query = "UPDATE Article SET CommentsEnabled = '".$selected_option."' WHERE ArticleID = ?";
     }
     //ENABLE COMMENTS
     else if($selected_option == 1 && $data['CommentsEnabled'] == 0)
     {
-        $query = "UPDATE Article SET CommentsEnabled = 1 WHERE ArticleID = ?";
+        $query = "UPDATE Article SET CommentsEnabled = '".$selected_option."' WHERE ArticleID = ?";
     }
     // Refresh
     echo "<meta http-equiv='refresh' content='0'>";
@@ -628,7 +628,7 @@ if(isset($_POST['featuredSubmit']))
 <!-- DELETE -->            
 <form method="post" action="">
     <div>
-        <input type="radio" name="deleteStatus" class="deleteRadio" value="0" /><label>DELETE ARTICLE</label><br />
+        <input type="radio" name="deleteRadio" class="deleteRadio" value="0" /><label>DELETE ARTICLE</label><br />
         <input type="checkbox" name="deleteConfirm" class="deleteConfirm" value="Confirm"/><label>CONFIRM DELETE</label>
     </div>
 
@@ -637,16 +637,16 @@ if(isset($_POST['featuredSubmit']))
     </div>
 </form>
 
-<?php 
-if(isset($_POST['deleteSubmit']))
-{
-    if(!isset($_POST['deleteConfirm']))
-    {
+<?php
+if(!isset($_POST['deleteRadio']) && isset($_POST['deleteConfirm'])) {
+    echo "PLEASE CONFIRM DELETION OF ARTICLE";
+} 
+else if(isset($_POST['deleteRadio'])) {
+    if(!isset($_POST['deleteConfirm'])) {
         echo "PLEASE CONFIRM DELETION OF ARTICLE";
     }
-    else 
-    {
-        $selected_radio = $_POST['deleteStatus'];
+    else {
+        $selected_radio = $_POST['deleteRadio'];
     
         $query = "DELETE FROM Article WHERE ArticleID = ?";
         
@@ -677,8 +677,8 @@ if(isset($_POST['deleteSubmit']))
         $stmt->close();
 
         // Refresh
-        echo "Article successfully deleted - Redirect to articleManagement still needs to be implemented";
-        echo '<meta http-equiv="refresh" content="1; url=/articleManagement.php">';
+        echo "Article successfully deleted. You will be redirected momentarily..";
+        echo '<meta http-equiv="refresh" content="3; url=/articleManagement.php">';
         exit;
     }
 } ?>
