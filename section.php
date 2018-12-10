@@ -2,7 +2,11 @@
     session_start();
     $defaultCategory = "Politics";
 <<<<<<< HEAD
+<<<<<<< HEAD
     $defaultSort = "Views";
+=======
+    $defaultSort = "Newest";
+>>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
 =======
     $defaultSort = "Newest";
 >>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
@@ -118,9 +122,15 @@
                 <div class="dropdown-content">
 				<?php
 <<<<<<< HEAD
+<<<<<<< HEAD
                     print "<a href=\"section.php?Category={$_GET['Category']}&sort=Views\">Views</a>";
                     print "<a href=\"section.php?Category={$_GET['Category']}&sort=Name\">Name</a>";
                     print "<a href=\"section.php?Category={$_GET['Category']}&sort=Newest\">Newest</a>";
+=======
+                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Newest\">Newest</a>";
+                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Name\">Name</a>";
+                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Views\">Views</a>";
+>>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
 =======
                     print "<a href=\"section.php?Category={$_GET['Category']}&sort=Newest\">Newest</a>";
                     print "<a href=\"section.php?Category={$_GET['Category']}&sort=Name\">Name</a>";

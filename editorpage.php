@@ -190,7 +190,10 @@
                 var category = document.getElementById('category').value;
                 document.getElementById('getCategory').value = category;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
                 var tags = $('.js-tags-dropdown').select2('data');
                 document.getElementById('getTags').value = '';
                 for (i = 0; i < tags.length; i++) {

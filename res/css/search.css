@@ -188,6 +188,7 @@ form.search:after {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 .pagination a:hover:not(.active) {background-color: #ddd;}
 
 #advancedSearch{
@@ -203,6 +204,9 @@ form.search:after {
 
 
 
+=======
+.pagination a:hover:not(.active) {background-color: #ddd;}
+>>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
 =======
 .pagination a:hover:not(.active) {background-color: #ddd;}
 >>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
