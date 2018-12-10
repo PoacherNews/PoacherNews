@@ -190,6 +190,7 @@
                 var category = document.getElementById('category').value;
                 document.getElementById('getCategory').value = category;
                 var tags = $('.js-tags-dropdown').select2('data');
+                document.getElementById('getTags').value = '';
                 for (i = 0; i < tags.length; i++) {
                     document.getElementById('getTags').value += tags[i].text;
                     
