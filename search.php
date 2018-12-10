@@ -120,12 +120,26 @@
                 <?php
                     if(isset($_GET['query'])) {
                         $query = $_GET['query'];
-                        $query2 = $_GET['query2'];
-                        $query3 = $_GET['query3'];
                         if(isset($_GET['sort'])) {
                             $sort = $_GET['sort'];
                         }
                       
+                    if(isset($_GET['query'])) {
+                        $query2 = $_GET['query2'];
+                        }
+                        
+                    if(isset($_GET['query3'])) {
+                        $query3 = $_GET['query3'];
+                        }   
+                    
+                    if(empty($query2)){
+                        $query2 = '2000-11-11';
+                    }
+                    if(empty($query3)){
+                        $query3 = '2020-11-11';
+                    }
+                        
+                        
                         $min_length = 1;
                         
                         $pageCheck = 0;
