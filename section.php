@@ -1,7 +1,7 @@
 <?php 
     session_start();
     $defaultCategory = "Politics";
-    $defaultSort = "Views";
+    $defaultSort = "Newest";
     $validCategories = array("Politics", "Sports", "Entertainment", "Video", "Local", "Opinion");
     if(empty($_GET['Category']) || !in_array($_GET['Category'], $validCategories)) {
         header('Location: section.php?Category='.$defaultCategory);
@@ -113,9 +113,9 @@
                 </div>
                 <div class="dropdown-content">
 				<?php
-                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Views\">Views</a>";
-                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Name\">Name</a>";
                     print "<a href=\"section.php?Category={$_GET['Category']}&sort=Newest\">Newest</a>";
+                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Name\">Name</a>";
+                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Views\">Views</a>";
 				?>
                 </div>
             </div>
