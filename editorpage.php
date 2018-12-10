@@ -135,6 +135,8 @@
                     <input type="text" id="getTitle" readonly/><br>
                     <label>Category: </label>
                     <input type="text" id="getCategory" readonly/><br>
+                    <label>Tags: </label>
+                    <input type="text" id="getTags" readonly/><br>
 					<!-- TODO: V 2.10
                     <label>Date: </label>
                     <input type="text" id="getDate" readonly>
@@ -187,6 +189,14 @@
                 document.getElementById('getTitle').value = title;
                 var category = document.getElementById('category').value;
                 document.getElementById('getCategory').value = category;
+                var tags = $('.js-tags-dropdown').select2('data');
+                for (i = 0; i < tags.length; i++) {
+                    document.getElementById('getTags').value += tags[i].text;
+                    
+                    if(i != tags.length - 1) {
+                        document.getElementById('getTags').value += ', ';
+                    }
+                }
             }
 /******************************* ARTICLE TAGS SELECT2 *******************************/
             $(document).ready(function() {
