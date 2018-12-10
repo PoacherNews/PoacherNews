@@ -11,6 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">   
 	<?php include 'includes/globalHead.html' ?>
     <link rel="stylesheet" type="text/css" href="res/css/articlepage.css">
 </head>

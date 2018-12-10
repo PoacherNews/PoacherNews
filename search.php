@@ -18,6 +18,7 @@
             $check = $_GET['query'];
             $_GET['query'] = mysqli_real_escape_string($db, $check);
         }
+<<<<<<< HEAD
             if(isset($_GET['query2'])) {
             $check = $_GET['query2'];
             $_GET['query2'] = mysqli_real_escape_string($db, $check);
@@ -27,6 +28,8 @@
             $_GET['query3'] = mysqli_real_escape_string($db, $check);
         }
 
+=======
+>>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
     ?>
 </head>
 <body>
@@ -71,15 +74,24 @@
                 <div class="dropdown-content">
 				<?php
                     if(!($_GET['query'] == '')) {    
+<<<<<<< HEAD
                         print "<a href=\"search.php?query={$_GET['query']}&query2={$_GET['query2']}&query3={$_GET['query3']}&sort=Relevancy\">Relevancy</a>";
                         print "<a href=\"search.php?query={$_GET['query']}&query2={$_GET['query2']}&query3={$_GET['query3']}&sort=Views\">Views</a>";
                         print "<a href=\"search.php?query={$_GET['query']}&query2={$_GET['query2']}&query3={$_GET['query3']}&sort=Name\">Name</a>";
                                       
+=======
+                        print "<a href=\"search.php?query={$_GET['query']}&sort=Relevancy\">Relevancy</a>";
+                        print "<a href=\"search.php?query={$_GET['query']}&sort=Name\">Name</a>";
+                        print "<a href=\"search.php?query={$_GET['query']}&sort=Views\">Views</a>";
+>>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
                     } else if (!(isset($_GET['query'])) || $_GET['query'] == '') {
                         print "<a href=\"search.php?query=\">Relevancy</a>";
                         print "<a href=\"search.php?query=\">Name</a>";
                         print "<a href=\"search.php?query=\">Views</a>";
+<<<<<<< HEAD
                         print "<a href=\"search.php?query=\">Date</a>";
+=======
+>>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
                     }
 				?>
                     
@@ -123,6 +135,7 @@
                         if(isset($_GET['sort'])) {
                             $sort = $_GET['sort'];
                         }
+<<<<<<< HEAD
                       
                     if(isset($_GET['query'])) {
                         $query2 = $_GET['query2'];
@@ -140,6 +153,8 @@
                     }
                         
                         
+=======
+>>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
                         $min_length = 1;
                         
                         $pageCheck = 0;
@@ -163,15 +178,24 @@
                         }
 
                         $startArticle = ($_GET['page'] - 1) * $articlesPerPage;
+<<<<<<< HEAD
                             
                        
+=======
+
+
+>>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
                         // Test
                         if(!(isset($_GET['sort']))) {
                             if(strlen($query) >= $min_length){ 
                                 $query = htmlspecialchars($query); 
                                 $query = mysqli_real_escape_string($db, $query);
 
+<<<<<<< HEAD
                                 $raw_results = "SELECT * FROM Article LEFT JOIN ArticleTag ON ArticleTag.ArticleID = Article.ArticleID LEFT JOIN Tag ON Tag.TagID = ArticleTag.TagID WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') AND (`PublishDate` BETWEEN '$query2' AND '$query3') OR (`ArticleImage` LIKE '%".$query."%') OR (`TagName` LIKE '%".$query."%')) LIMIT ".$startArticle.", ".$articlesPerPage."";
+=======
+                                $raw_results = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) LIMIT ".$startArticle.", ".$articlesPerPage."";
+>>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
                                 $test = mysqli_query($db, $raw_results);
                                 echo "<div class='search-content'>";
 
@@ -203,7 +227,11 @@
                         } else {
                             switch($sort) {
                                 case "Relevancy":
+<<<<<<< HEAD
                                     $raw_results = mysqli_query($db, "SELECT * FROM Article LEFT JOIN ArticleTag ON ArticleTag.ArticleID = Article.ArticleID LEFT JOIN Tag ON Tag.TagID = ArticleTag.TagID WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') AND (`PublishDate` BETWEEN '$query2' AND '$query3') OR (`ArticleImage` LIKE '%".$query."%') OR (`TagName` LIKE '%".$query."%')) ORDER BY PublishDate DESC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
+=======
+                                    $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY PublishDate DESC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
+>>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
                                     echo "<div class='search-content'>";
                                     if(mysqli_num_rows($raw_results) > 0){ 
                                         while($results = mysqli_fetch_array($raw_results)){
@@ -229,7 +257,11 @@
                                     break;
 
                                 case "Name":
+<<<<<<< HEAD
                                     $raw_results = mysqli_query($db, "SELECT * FROM Article LEFT JOIN ArticleTag ON ArticleTag.ArticleID = Article.ArticleID LEFT JOIN Tag ON Tag.TagID = ArticleTag.TagID WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') AND (`PublishDate` BETWEEN '$query2' AND '$query3') OR (`ArticleImage` LIKE '%".$query."%') OR (`TagName` LIKE '%".$query."%')) ORDER BY Headline ASC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
+=======
+                                    $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY Headline ASC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
+>>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
                                     echo "<div class='search-content'>";
                                     if(mysqli_num_rows($raw_results) > 0){ 
                                         while($results = mysqli_fetch_array($raw_results)){
@@ -254,7 +286,11 @@
                                     break;
 
                                 case "Views":
+<<<<<<< HEAD
                                    $raw_results = mysqli_query($db, "SELECT * FROM Article LEFT JOIN ArticleTag ON ArticleTag.ArticleID = Article.ArticleID LEFT JOIN Tag ON Tag.TagID = ArticleTag.TagID WHERE IsSubmitted = 1 AND IsDraft = 0 AND (`PublishDate` BETWEEN '$query2' AND '$query3') AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%') OR (`TagName` LIKE '%".$query."%')) ORDER BY Views DESC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
+=======
+                                   $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY Views DESC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
+>>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
                                     echo "<div class='search-content'>";
                                     if(mysqli_num_rows($raw_results) > 0){ 
                                         while($results = mysqli_fetch_array($raw_results)){
@@ -273,7 +309,10 @@
                                                     <hr class='searchHr'>";
                                         }
                                     }
+<<<<<<< HEAD
                                      
+=======
+>>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
                                     else {
                                         print "<b>No results.</b>";
                                     }
@@ -291,6 +330,7 @@
             }
             if(isset($_GET['query'])) {
                 echo '<div class="pagination">';
+<<<<<<< HEAD
                 echo '<a href="search.php?query=' . $_GET["query"] . '&query2=' . $_GET["query2"] . '&query3=' . $_GET["query3"] .  '&page=1">&laquo;</a>';
                 foreach(range(1, $totalPages) as $page) {
                     if($page == $_GET['page']) {
@@ -300,6 +340,17 @@
                     }
                 }
                 echo '<a href="search.php?query=' . $_GET["query"] . '&query2=' . $_GET["query2"] . '&query3=' . $_GET["query3"] . '&page=' . $totalPages . '">&raquo;</a>';
+=======
+                echo '<a href="search.php?query=' . $_GET["query"] . '&page=1">&laquo;</a>';
+                foreach(range(1, $totalPages) as $page) {
+                    if($page == $_GET['page']) {
+                        echo '<a class="active" href="search.php?query=' . $_GET["query"] . '&page=' . $page . '">' . $page . '</a>';
+                    } else {
+                        echo '<a href="search.php?query=' . $_GET["query"] . '&page=' . $page . '">' . $page . '</a>';
+                    }
+                }
+                echo '<a href="search.php?query=' . $_GET["query"] . '&page=' . $totalPages . '">&raquo;</a>';
+>>>>>>> 464550f7c7ff03f24d6546eb4624db4352390eb6
                 echo '</div>';
             }
             if(!(isset($_GET['query'])) || $_GET['query'] == '' || $pageCheck == 1) {
