@@ -37,12 +37,13 @@
 		/* Submits the article whether it is a draft or new document */
 	  	$title = empty($_POST['title']) ? '' : htmlspecialchars($_POST['title']);
 	  	$category = empty($_POST['category']) ? '' : $_POST['category'];
+	  	$tag = empty($_POST['tags']) ? '' : $_POST['tags'];
 	  	$body = handleTextFormat($body);
 	  	$authorid = getAuthorID();
 	  	$image = getImage();
 	  	$is_draft = 1; 
 	  	$is_submitted = 1;
-		
+
 		if(isset($_POST['article_id'])) { 
 			$db = dbConnect();
 			$stmt = $db->stmt_init();
@@ -53,6 +54,18 @@
 			updateArticle($articleData['ArticleID'], $title, $body, $category, $image, $is_submitted, $db, $stmt);
 		} else {
 		  	insertArticle($authorid, $title, $body, $category, $image, $is_draft, $is_submitted);
+		  	insertTag($tag);
+            
+            $getArticleID = "SELECT ArticleID FROM Article ORDER BY ArticleID DESC LIMIT 1";
+            $aID = mysqli_query($db, $getArticleID);
+            $rowA = mysqli_fetch_array($aID, 'MYSQLI_ASSOC');
+            $getTagID = "SELECT TagID FROM Tag ORDER BY TagID DESC LIMIT 1";
+            $tID = mysqli_query($db, $getTagID);        
+            $rowT = mysqli_fetch_array($tID, 'MYSQLI_ASSOC');
+            $articleID = 200;//$rowA['ArticleID'];
+            $tagID = 91;//$rowT['TagID'];
+            
+            insertArticleTag($articleID, $tagID);
 	  	}
 	}
 
@@ -108,6 +121,52 @@
 			exit;
 		}
 		echo "Article: " . $title . " inserted successfully.";
+		mysqli_close($db);
+		redirectTools();
+	}
+
+	function insertTag($tag) {
+		/* Inserts a new document based on authorid, title, body, category, image, if its a draft, and if its submitted */
+		$db = dbConnect();
+	  	$stmt = $db->stmt_init();
+		if (!$stmt->prepare("INSERT INTO Tag(TagName) VALUES(?)")) {
+			  	echo "Error preparing statement: \n";
+			  	print_r($stmt->error_list);
+			  	exit;
+		}
+		if (!$stmt->bind_param('s', $tag)) {
+			echo "Error binding parameters: \n";
+			print_r($stmt->error_list);
+			exit;
+		}
+		if(!$stmt->execute()){
+			echo "Error Inserting: \n";
+			echo nl2br(print_r($stmt->error_list, true), false);
+			exit;
+		}
+		mysqli_close($db);
+		redirectTools();
+	}
+
+	function insertArticleTag($articleID, $tagID) {
+		/* Inserts a new document based on authorid, title, body, category, image, if its a draft, and if its submitted */
+		$db = dbConnect();
+	  	$stmt = $db->stmt_init();
+		if (!$stmt->prepare("INSERT INTO ArticleTag(ArticleID, TagID) VALUES(?, ?)")) {
+			  	echo "Error preparing statement: \n";
+			  	print_r($stmt->error_list);
+			  	exit;
+		}
+		if (!$stmt->bind_param('ii', $articleID, $tagID)) {
+			echo "Error binding parameters: \n";
+			print_r($stmt->error_list);
+			exit;
+		}
+		if(!$stmt->execute()){
+			echo "Error Inserting: \n";
+			echo nl2br(print_r($stmt->error_list, true), false);
+			exit;
+		}
 		mysqli_close($db);
 		redirectTools();
 	}
