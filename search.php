@@ -73,14 +73,7 @@
                         print "<a href=\"search.php?query={$_GET['query']}&query2={$_GET['query2']}&query3={$_GET['query3']}&sort=Relevancy\">Relevancy</a>";
                         print "<a href=\"search.php?query={$_GET['query']}&query2={$_GET['query2']}&query3={$_GET['query3']}&sort=Views\">Views</a>";
                         print "<a href=\"search.php?query={$_GET['query']}&query2={$_GET['query2']}&query3={$_GET['query3']}&sort=Name\">Name</a>";
-                                      
-                        print "<a href=\"search.php?query={$_GET['query']}&sort=Relevancy\">Relevancy</a>";
-                        print "<a href=\"search.php?query={$_GET['query']}&sort=Name\">Name</a>";
-                        print "<a href=\"search.php?query={$_GET['query']}&sort=Views\">Views</a>";
-
-                        print "<a href=\"search.php?query={$_GET['query']}&sort=Relevancy\">Relevancy</a>";
-                        print "<a href=\"search.php?query={$_GET['query']}&sort=Name\">Name</a>";
-                        print "<a href=\"search.php?query={$_GET['query']}&sort=Views\">Views</a>";
+                                    
                     } else if (!(isset($_GET['query'])) || $_GET['query'] == '') {
                         print "<a href=\"search.php?query=\">Relevancy</a>";
                         print "<a href=\"search.php?query=\">Name</a>";
@@ -176,11 +169,7 @@
                                 $query = mysqli_real_escape_string($db, $query);
 
                                 $raw_results = "SELECT * FROM Article LEFT JOIN ArticleTag ON ArticleTag.ArticleID = Article.ArticleID LEFT JOIN Tag ON Tag.TagID = ArticleTag.TagID WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') AND (`PublishDate` BETWEEN '$query2' AND '$query3') OR (`ArticleImage` LIKE '%".$query."%') OR (`TagName` LIKE '%".$query."%')) LIMIT ".$startArticle.", ".$articlesPerPage."";
-
-                                $raw_results = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) LIMIT ".$startArticle.", ".$articlesPerPage."";
-
-                                $raw_results = "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) LIMIT ".$startArticle.", ".$articlesPerPage."";
-
+                                
                                 $test = mysqli_query($db, $raw_results);
                                 echo "<div class='search-content'>";
 
@@ -247,10 +236,6 @@
 
                                     $raw_results = mysqli_query($db, "SELECT * FROM Article LEFT JOIN ArticleTag ON ArticleTag.ArticleID = Article.ArticleID LEFT JOIN Tag ON Tag.TagID = ArticleTag.TagID WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') AND (`PublishDate` BETWEEN '$query2' AND '$query3') OR (`ArticleImage` LIKE '%".$query."%') OR (`TagName` LIKE '%".$query."%')) ORDER BY Headline ASC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
 
-                                    $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY Headline ASC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
-
-                                    $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY Headline ASC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
-
                                     echo "<div class='search-content'>";
                                     if(mysqli_num_rows($raw_results) > 0){ 
                                         while($results = mysqli_fetch_array($raw_results)){
@@ -277,10 +262,6 @@
                                 case "Views":
 
                                    $raw_results = mysqli_query($db, "SELECT * FROM Article LEFT JOIN ArticleTag ON ArticleTag.ArticleID = Article.ArticleID LEFT JOIN Tag ON Tag.TagID = ArticleTag.TagID WHERE IsSubmitted = 1 AND IsDraft = 0 AND (`PublishDate` BETWEEN '$query2' AND '$query3') AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%') OR (`TagName` LIKE '%".$query."%')) ORDER BY Views DESC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
-
-                                   $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY Views DESC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
-
-                                   $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY Views DESC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
 
                                     echo "<div class='search-content'>";
                                     if(mysqli_num_rows($raw_results) > 0){ 
@@ -328,16 +309,7 @@
                         echo '<a href="search.php?query=' . $_GET["query"] . '&query2=' . $_GET["query2"] . '&query3=' . $_GET["query3"] . '&page=' . $page . '">' . $page . '</a>';
                     }
                 }
-                echo '<a href="search.php?query=' . $_GET["query"] . '&query2=' . $_GET["query2"] . '&query3=' . $_GET["query3"] . '&page=' . $totalPages . '">&raquo;</a>';
-
-                echo '<a href="search.php?query=' . $_GET["query"] . '&page=1">&laquo;</a>';
-                foreach(range(1, $totalPages) as $page) {
-                    if($page == $_GET['page']) {
-                        echo '<a class="active" href="search.php?query=' . $_GET["query"] . '&page=' . $page . '">' . $page . '</a>';
-                    } else {
-                        echo '<a href="search.php?query=' . $_GET["query"] . '&page=' . $page . '">' . $page . '</a>';
-                    }
-                }
+                
                 echo '<a href="search.php?query=' . $_GET["query"] . '&page=' . $totalPages . '">&raquo;</a>';
 
                 echo '</div>';
