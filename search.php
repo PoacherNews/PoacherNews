@@ -204,10 +204,6 @@
 
                                     $raw_results = mysqli_query($db, "SELECT * FROM Article LEFT JOIN ArticleTag ON ArticleTag.ArticleID = Article.ArticleID LEFT JOIN Tag ON Tag.TagID = ArticleTag.TagID WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') AND (`PublishDate` BETWEEN '$query2' AND '$query3') OR (`ArticleImage` LIKE '%".$query."%') OR (`TagName` LIKE '%".$query."%')) ORDER BY PublishDate DESC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
 
-                                    $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY PublishDate DESC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
-
-                                    $raw_results = mysqli_query($db, "SELECT * FROM Article WHERE IsSubmitted = 1 AND IsDraft = 0 AND ((`Headline` LIKE '%".$query."%') OR (`ArticleImage` LIKE '%".$query."%')) ORDER BY PublishDate DESC LIMIT ".$startArticle.", ".$articlesPerPage."") or die(mysql_error());
-
                                     echo "<div class='search-content'>";
                                     if(mysqli_num_rows($raw_results) > 0){ 
                                         while($results = mysqli_fetch_array($raw_results)){
