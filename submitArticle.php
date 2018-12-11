@@ -62,8 +62,8 @@
             $getTagID = "SELECT TagID FROM Tag ORDER BY TagID DESC LIMIT 1";
             $tID = mysqli_query($db, $getTagID);        
             $rowT = mysqli_fetch_array($tID, 'MYSQLI_ASSOC');
-            $articleID = 200;//$rowA['ArticleID'];
-            $tagID = 91;//$rowT['TagID'];
+            $articleID = 201;//$rowA['ArticleID'];
+            $tagID = 92;//$rowT['TagID'];
             
             insertArticleTag($articleID, $tagID);
 	  	}

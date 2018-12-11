@@ -115,12 +115,6 @@
                 </div>
                 <div class="dropdown-content">
 				<?php
-                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Views\">Views</a>";
-                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Name\">Name</a>";
-                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Newest\">Newest</a>";
-                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Newest\">Newest</a>";
-                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Name\">Name</a>";
-                    print "<a href=\"section.php?Category={$_GET['Category']}&sort=Views\">Views</a>";
                     print "<a href=\"section.php?Category={$_GET['Category']}&sort=Newest\">Newest</a>";
                     print "<a href=\"section.php?Category={$_GET['Category']}&sort=Name\">Name</a>";
                     print "<a href=\"section.php?Category={$_GET['Category']}&sort=Views\">Views</a>";
